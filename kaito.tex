@@ -110,6 +110,133 @@ $\mathrm{rank} = 2$、未知数 $4$ 個なので自由度は $2$。$x_2 = s$, $x
 
 \section*{第III部}
 
+\noindent\textbf{問 \ref{q:vs-ex1}}\quad
+\textbf{答え}:$4 - 7x + 3x^2$。\\
+\textbf{方針}:各多項式をスカラー倍してから、同じ次数の係数どうしを足す。\\
+\textbf{計算}:$3(2 - x + x^2) = 6 - 3x + 3x^2$、$-2(1 + 2x) = -2 - 4x$。
+和は $(6 - 2) + (-3 - 4)x + 3x^2 = 4 - 7x + 3x^2$。\\
+\textbf{よくあるミス}:定数項 $-2$ の足し忘れや符号の取り違え。
+$x^2$ の項は一方にしか現れないので $3x^2$ がそのまま残る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex2}}\quad
+\textbf{答え}:零ベクトルは恒等的に $0$ をとる関数 $o(x) = 0$。
+逆ベクトルは $-f(x) = -e^x$。\\
+\textbf{方針}:零ベクトルは「足しても相手を変えない元」、
+逆ベクトルは「足すと零ベクトルになる元」を、\emph{関数として}考える。\\
+\textbf{計算}:$(f + o)(x) = f(x) + 0 = f(x)$ より $o(x) = 0$。
+$(f + (-f))(x) = e^x + (-e^x) = 0 = o(x)$ より逆ベクトルは $-e^x$。\\
+\textbf{よくあるミス}:零ベクトルを「数の $0$」と書くこと。
+関数空間では零ベクトルは「恒等的に $0$ の関数」である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex3}}\quad
+\textbf{答え}:$L_1$ は閉じている(ベクトル空間)、$L_2$ は閉じていない。\\
+\textbf{方針}:原点を含むか、和とスカラー倍の結果が集合内に留まるかを調べる。\\
+\textbf{計算}:$L_1$ では
+$(x_1, 2x_1) + (x_2, 2x_2) = (x_1 + x_2,\ 2(x_1 + x_2)) \in L_1$、
+$c(x, 2x) = (cx,\ 2cx) \in L_1$ で、原点 $(0,0) \in L_1$ も成り立つ。
+$L_2$ は原点 $(0,0)$ が $0 = 2\cdot 0 + 1 = 1$ を満たさず含まれない。
+あるいは $(0,1), (1,3) \in L_2$ の和 $(1,4)$ は $4 \ne 2\cdot 1 + 1 = 3$ で
+$L_2$ の外に出る。よって $L_2$ は閉じない。\\
+\textbf{よくあるミス}:「どちらも直線だから両方ベクトル空間」とすること。
+原点を通らない直線は和・スカラー倍で閉じない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex4}}\quad
+\textbf{答え}:$2A - B = \mat{-1 & 4 \\ -1 & -4}$。零ベクトルは零行列 $O = \mat{0 & 0 \\ 0 & 0}$。\\
+\textbf{方針}:成分ごとに計算する。\\
+\textbf{計算}:$2A = \mat{2 & 4 \\ 0 & -2}$ より
+$2A - B = \mat{2 - 3 & 4 - 0 \\ 0 - 1 & -2 - 2} = \mat{-1 & 4 \\ -1 & -4}$。\\
+\textbf{よくあるミス}:$(2,2)$ 成分 $-2 - 2 = -4$ の符号。
+零ベクトルを「数の $0$」と書くこと(正しくは零行列)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex5}}\quad
+\textbf{答え}:公理8($1 \odot \vect{v} = \vect{v}$)が破れる。\\
+\textbf{方針}:スカラー倍を変えたので、スカラー倍が関わる公理5〜8を順に調べる。\\
+\textbf{計算}:公理5・6・7は成り立つ。たとえば
+$(a + b) \odot (x, y) = ((a+b)x,\ 0)$ と
+$a \odot (x,y) \oplus b \odot (x,y) = (ax, 0) + (bx, 0) = ((a+b)x,\ 0)$ は一致する。
+しかし公理8は $1 \odot (1, 1) = (1\cdot 1,\ 0) = (1, 0) \ne (1, 1)$ で破れる。
+よってベクトル空間ではない。\\
+\textbf{よくあるミス}:「成分はすべて実数だから全公理OK」と早合点すること。
+$1$ 倍がもとに戻らない点が盲点になる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex6}}\quad
+\textbf{答え}:ベクトル空間になる(数列空間の部分空間)。\\
+\textbf{方針}:和とスカラー倍が同じ漸化式を保つ(=$W$ に留まる)ことだけ示せばよい。
+結合律・交換律などの公理は数列空間から自動的に遺伝する。\\
+\textbf{計算}:$(a_n), (b_n) \in W$ のとき
+$a_{n+2} + b_{n+2} = (2a_{n+1} - a_n) + (2b_{n+1} - b_n)
+= 2(a_{n+1} + b_{n+1}) - (a_n + b_n)$ より $(a_n + b_n) \in W$。
+$c a_{n+2} = 2(c a_{n+1}) - (c a_n)$ より $(c a_n) \in W$。
+零数列も漸化式を満たし $W$ に属する。よって閉じており、ベクトル空間。\\
+\textbf{よくあるミス}:公理を $1$〜$8$ まで全部書こうとして遠回りすること。
+閉性と零の所属を示せば、残りは数列空間から遺伝する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex7}}\quad
+\textbf{答え}:ベクトル空間になる($C(\R)$ の部分空間)。\\
+\textbf{方針}:$f, g$ が偶関数なら $f + g$ と $cf$ も偶関数であることを、
+偶関数の定義 $f(-x) = f(x)$ に戻って確かめる。\\
+\textbf{計算}:$(f + g)(-x) = f(-x) + g(-x) = f(x) + g(x) = (f + g)(x)$、
+$(cf)(-x) = c f(-x) = c f(x) = (cf)(x)$。零関数も偶関数。
+よって和とスカラー倍で閉じており、ベクトル空間。\\
+\textbf{よくあるミス}:$f(-x)$ を $-f(x)$ と取り違えること
+(それは\emph{奇}関数の条件)。偶関数は $f(-x) = f(x)$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex8}}\quad
+\textbf{答え}:$1$。これはこの空間の零ベクトルである。\\
+\textbf{方針}:$\odot$ は累乗、$\oplus$ は通常の掛け算であることに注意して計算する。\\
+\textbf{計算}:$3 \odot 2 = 2^3 = 8$、$(-1) \odot 8 = 8^{-1} = \dfrac{1}{8}$、
+$8 \oplus \dfrac{1}{8} = 8 \cdot \dfrac{1}{8} = 1$。
+通常の式に直せば $\dfrac{2^3}{8} = 1$。例題 \ref{rei:exotic} より零ベクトルは $1$ だったから、
+結果はちょうど零ベクトルである。\\
+\textbf{よくあるミス}:$\oplus, \odot$ を普通の $+, \times$ と混同すること。
+$3 \odot 2$ を $6$ としてはいけない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex9}}\quad
+\textbf{答え}:$S$, $T$ はともにベクトル空間。$S \cap T = \{O\}$。\\
+\textbf{方針}:転置の線形性 ${}^t(A + B) = {}^t\!A + {}^t\!B$、
+${}^t(cA) = c\,{}^t\!A$ を使い、和とスカラー倍が条件を保つことを示す。
+共通部分は両方の条件を連立する。\\
+\textbf{計算}:$A, B \in S$ なら
+${}^t(A + B) = {}^t\!A + {}^t\!B = A + B$、${}^t(cA) = c\,{}^t\!A = cA$ で $S$ に属し、
+$O \in S$。同様に $A, B \in T$ なら
+${}^t(A + B) = -A - B = -(A + B)$、${}^t(cA) = -cA$ で $T$ に属す。
+$A \in S \cap T$ なら $A = {}^t\!A = -A$ より $2A = O$、すなわち $A = O$。\\
+\textbf{よくあるミス}:$S \cap T$ を空集合とすること。零行列は対称かつ交代なので、
+共通部分は $\{O\}$(空ではない)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex10}}\quad
+\textbf{答え}:$\vect{v} = \vect{0}$。\\
+\textbf{方針}:$\vect{v} = \vect{v} + \vect{0}$ と書き直し、消去律(例題 \ref{rei:cancel})を使う。\\
+\textbf{計算}:仮定 $\vect{v} + \vect{v} = \vect{v}$ の右辺を $\vect{v} + \vect{0}$ と書けば
+$\vect{v} + \vect{v} = \vect{v} + \vect{0}$。消去律より $\vect{v} = \vect{0}$。
+(両辺に $-\vect{v}$ を加えて $\vect{0} + \vect{v} = \vect{0}$、すなわち $\vect{v} = \vect{0}$ としてもよい。)\\
+\textbf{よくあるミス}:「$2\vect{v} = \vect{v}$ だから両辺を $\vect{v}$ で割る」式の操作。
+ベクトルで割ることはできない。加法の公理だけで処理する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vs-ex11}}\quad
+\textbf{答え}:$\vect{v} = \vect{0}$。\\
+\textbf{方針}:$a \ne 0$ だから逆数 $\dfrac{1}{a}$ が使える。
+$\vect{v} = 1\vect{v} = \left(\dfrac{1}{a}\cdot a\right)\vect{v}$ と変形する。\\
+\textbf{計算}:
+\[
+\vect{v} = 1\vect{v} = \left(\frac{1}{a}\cdot a\right)\vect{v}
+= \frac{1}{a}(a\vect{v}) = \frac{1}{a}\vect{0} = \vect{0}.
+\]
+順に公理8、公理7、仮定 $a\vect{v} = \vect{0}$、$c\vect{0} = \vect{0}$ を用いた。\\
+\textbf{よくあるミス}:$a = 0$ でも同じ論法を使おうとすること。
+$\dfrac{1}{a}$ が存在しないので成立しない。$a \ne 0$ という仮定が本質である。
+
+\bigskip
 \noindent\textbf{問 \ref{q:fib}}\quad
 $(a_n), (b_n) \in V$ とすると、各 $n$ で
 $(a_{n+2} + b_{n+2}) = (a_{n+1} + b_{n+1}) + (a_n + b_n)$、
