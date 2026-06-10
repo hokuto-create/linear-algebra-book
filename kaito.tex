@@ -1,0 +1,477 @@
+% =====================================================
+% kaito.tex ― 巻末:問の解答
+% =====================================================
+\chapter*{問の解答}
+\addcontentsline{toc}{chapter}{問の解答}
+
+\section*{第I部}
+
+\noindent\textbf{問 \ref{q:vec}}\quad
+$2\vect{a} - \vect{b} = \mat{2 - 3 \\ 4 + 1} = \mat{-1 \\ 5}$。
+後半は $s + 3t = 5$, $2s - t = 0$ を解いて $s = \dfrac{5}{7}$,
+$t = \dfrac{10}{7}$。よって
+$\mat{5 \\ 0} = \dfrac{5}{7}\vect{a} + \dfrac{10}{7}\vect{b}$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matvec}}\quad
+$A\vect{x} = \mat{1 \cdot 2 + 2 \cdot 1 + 0 \cdot (-3) \\
+(-1) \cdot 2 + 3 \cdot 1 + 1 \cdot (-3)} = \mat{4 \\ -2}$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inv2}}\quad
+$\det A = 2 \cdot (-3) - 1 \cdot 1 = -7 \neq 0$ より
+\[
+A^{-1} = \frac{1}{-7}\mat{-3 & -1 \\ -1 & 2}
+= \frac{1}{7}\mat{3 & 1 \\ 1 & -2},
+\qquad
+\vect{x} = A^{-1}\mat{5 \\ -1} = \frac{1}{7}\mat{15 - 1 \\ 5 + 2} = \mat{2 \\ 1}.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:det3}}\quad
+サラスの方法により
+\[
+6 + 2 + 2 - (-3) - (-1) - 8 = 6.
+\]
+$\det \neq 0$ なので解はただ一つ。第 \ref{chap:gauss} 章の結果と符合する。
+
+\section*{第II部}
+
+\noindent\textbf{問 \ref{q:perm}}\quad
+$S_3$ の要素と符号:
+恒等置換 $\varepsilon$($+1$)、互換 $(1\;2), (1\;3), (2\;3)$(いずれも $-1$)、
+巡回置換 $\mat{1 & 2 & 3 \\ 2 & 3 & 1}$ と
+$\mat{1 & 2 & 3 \\ 3 & 1 & 2}$(いずれも互換 $2$ 個の積で $+1$)。
+偶置換 $3$ 個、奇置換 $3$ 個。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det4}}\quad
+(1) 第 $1$ 行と第 $2$ 行を入れ替え(符号 $-1$)、掃き出して上三角化すると
+\[
+-\det \mat{1 & 1 & 1 \\ 0 & 1 & 2 \\ 0 & 0 & -3} = -(1 \cdot 1 \cdot (-3)) = 3.
+\]
+(2) 第 $2$ 行・第 $3$ 行から第 $1$ 行を引き、第 $1$ 列で余因子展開すると
+\[
+\det \mat{b - a & b^2 - a^2 \\ c - a & c^2 - a^2}
+= (b - a)(c - a)\det \mat{1 & b + a \\ 1 & c + a}
+= (b - a)(c - a)(c - b).
+\]
+この行列式が $0$ でないこと、すなわち $a, b, c$ がすべて異なることは、
+「$3$ 点を通る $2$ 次以下の多項式がただ一つ定まる」ことの条件である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:cramer}}\quad
+(1) 第 $1$ 行に沿って展開:
+\[
+2 \det \mat{3 & -1 \\ 2 & 1} - 0 + 1 \cdot \det \mat{1 & 3 \\ 0 & 2}
+= 2 \cdot 5 + 2 = 12.
+\]
+(2) $\det A = -7$。クラメルの公式より
+\[
+x = \frac{1}{-7}\det \mat{5 & 1 \\ -1 & -3} = \frac{-14}{-7} = 2,
+\qquad
+y = \frac{1}{-7}\det \mat{2 & 5 \\ 1 & -1} = \frac{-7}{-7} = 1.
+\]
+逆行列で解いた問 \ref{q:inv2} と同じ答えになる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:indep}}\quad
+(1) $\vect{a}_1 + \vect{a}_2 = \mat{3 \\ 5 \\ 7} = \vect{a}_3$ なので
+\textbf{線形従属}。非自明な関係式は
+$\vect{a}_1 + \vect{a}_2 - \vect{a}_3 = \vect{0}$。
+(2) 第 $2$ 行は第 $1$ 行の $2$ 倍なので消え、簡約化すると零でない行は $2$ 本。
+$\mathrm{rank} = 2$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:struct}}\quad
+(1) 第 $2$ 式は第 $1$ 式の $2$ 倍だから、拡大係数行列の階数が
+係数行列の階数($= 1$)と一致するのは $a = 2$ のときに限る。
+よって $a = 2$ のとき解は無数に存在し(自由度 $1$)、
+$a \neq 2$ のとき解は存在しない。
+
+(2) 掃き出すと
+\[
+\left(\begin{array}{cccc}
+1 & 2 & -1 & 1 \\
+2 & 4 & -1 & 5
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cccc}
+1 & 2 & 0 & 4 \\
+0 & 0 & 1 & 3
+\end{array}\right)
+\]
+$\mathrm{rank} = 2$、未知数 $4$ 個なので自由度は $2$。$x_2 = s$, $x_4 = t$ とおき
+\[
+\mat{x_1 \\ x_2 \\ x_3 \\ x_4}
+= s \mat{-2 \\ 1 \\ 0 \\ 0} + t \mat{-4 \\ 0 \\ -3 \\ 1}
+\qquad (s, t \text{ は任意の実数}).
+\]
+
+\section*{第III部}
+
+\noindent\textbf{問 \ref{q:fib}}\quad
+$(a_n), (b_n) \in V$ とすると、各 $n$ で
+$(a_{n+2} + b_{n+2}) = (a_{n+1} + b_{n+1}) + (a_n + b_n)$、
+$ca_{n+2} = ca_{n+1} + ca_n$ が成り立つので、和もスカラー倍も
+同じ漸化式を満たし $V$ に属する。よって $V$ は数列空間の部分空間であり、
+それ自身ベクトル空間である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:subsp}}\quad
+部分空間は $W_1$ のみ。$W_2$ は $\vect{0}$ を含まない
+($0 + 0 + 0 \neq 1$)ので不可。$W_3$ はスカラー倍で閉じない
+(例:$(1,0,0) \in W_3$ だが $(-1)(1,0,0) = (-1,0,0) \notin W_3$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:basis1}}\quad
+(1) $x = y - 2z$ より $y = s$, $z = t$ とおくと
+\[
+\mat{x \\ y \\ z} = s\mat{1 \\ 1 \\ 0} + t\mat{-2 \\ 0 \\ 1}.
+\]
+この $2$ 本は線形独立で $W$ を生成するから基底をなし、$\dim W = 2$。
+(2) $c_1 \cdot 1 + c_2(1 + x) + c_3(1 + x)^2 = 0$(恒等的に)とすると、
+展開して $x^2, x, 1$ の係数を比べ $c_3 = 0$, $c_2 + 2c_3 = 0$,
+$c_1 + c_2 + c_3 = 0$、よって $c_1 = c_2 = c_3 = 0$ で線形独立。
+$\dim \R[x]_2 = 3$ で、$3$ 次元空間の独立な $3$ 本は基底をなす
+(生成しないなら基底を拡張でき、$4$ 本以上の独立系が $3$ 次元空間に
+存在して矛盾)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:basis2}}\quad
+$(p_n)$ を $p_0 = 1, p_1 = 0$ から、$(q_n)$ を $q_0 = 0, q_1 = 1$ から
+漸化式で定める。任意の $(a_n) \in V$ に対し $(a_n)$ と
+$a_0 (p_n) + a_1 (q_n)$ は最初の $2$ 項が一致し、漸化式により全項一致する。
+よって $(a_n) = a_0(p_n) + a_1(q_n)$ であり、$(p_n), (q_n)$ は $V$ を生成する。
+また $c_1(p_n) + c_2(q_n) = (0)$ の最初の $2$ 項から $c_1 = c_2 = 0$ で
+線形独立。よって基底をなし $\dim V = 2$。
+(数列の無限の情報が、初期値 $2$ 個=座標 $(a_0, a_1)$ に圧縮される。
+$V \cong \R^2$ である。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap}}\quad
+$\mathrm{Ker}\,D$ は $p' = 0$ となる多項式、すなわち定数全体で次元 $1$
+(基底は $1$)。$\mathrm{Im}\,D$ は $3$ 次以下の多項式の導関数全体、
+すなわち $\R[x]_2$ で次元 $3$(基底は $1, x, x^2$)。
+$\dim \R[x]_3 = 4 = 1 + 3$ となり次元定理が成り立つ。
+
+\bigskip
+\noindent\textbf{問 \ref{q:repmat}}\quad
+$P = \mat{1 & 1 \\ 1 & -1}$, $\det P = -2$,
+$P^{-1} = \dfrac{1}{-2}\mat{-1 & -1 \\ -1 & 1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$。
+\[
+AP = \mat{3 & 1 \\ 1 & 3}\mat{1 & 1 \\ 1 & -1} = \mat{4 & 2 \\ 4 & -2},
+\qquad
+A' = P^{-1}(AP) = \frac{1}{2}\mat{1 & 1 \\ 1 & -1}\mat{4 & 2 \\ 4 & -2}
+= \mat{4 & 0 \\ 0 & 2}.
+\]
+対角行列になった。$\vect{e}'_1$ 方向は $4$ 倍、$\vect{e}'_2$ 方向は $2$ 倍に
+伸ばすだけの変換だったのである(これが第IV部で学ぶ固有ベクトルと対角化の予告)。
+
+\section*{第IV部}
+
+\noindent\textbf{問 \ref{q:eigen}}\quad
+$\varphi_A(\lambda) = (\lambda - 1)(\lambda - 3) - 8 = \lambda^2 - 4\lambda - 5
+= (\lambda - 5)(\lambda + 1)$。固有値は $5, -1$。
+$\lambda = 5$:$(5E - A)\vect{v} = \mat{4 & -4 \\ -2 & 2}\vect{v} = \vect{0}$
+より $\vect{v} = t\mat{1 \\ 1}$。
+$\lambda = -1$:$\mat{-2 & -4 \\ -2 & -4}\vect{v} = \vect{0}$ より
+$\vect{v} = t\mat{2 \\ -1}$($t \neq 0$)。
+和は $5 + (-1) = 4 = \mathrm{tr}\,A$、積は $5 \cdot (-1) = -5 = \det A$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:diag}}\quad
+(1) $\varphi_B(\lambda) = \lambda^2 - 1$ より固有値 $1, -1$。
+固有ベクトルはそれぞれ $\mat{1 \\ 1}$, $\mat{1 \\ -1}$。
+$P = \mat{1 & 1 \\ 1 & -1}$ とすると
+$P^{-1}AP = \mat{1 & 0 \\ 0 & -1}$。
+この変換は直線 $y = x$ に関する鏡映である
+($y = x$ 方向は不動 = 固有値 $1$、垂直方向は反転 = 固有値 $-1$)。
+(2) 固有値は $3$ のみで代数的重複度 $2$。固有空間は
+$(3E - B)\vect{v} = \mat{0 & -1 \\ 0 & 0}\vect{v} = \vect{0}$ の解空間で
+$1$ 次元(幾何的重複度 $1$)。$1 \neq 2$ なので対角化不可能。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power}}\quad
+問 \ref{q:eigen} より $P = \mat{1 & 2 \\ 1 & -1}$,
+$D = \mat{5 & 0 \\ 0 & -1}$, $P^{-1} = \dfrac{1}{3}\mat{1 & 2 \\ 1 & -1}$。
+\[
+A^n = P D^n P^{-1}
+= \frac{1}{3}\mat{1 & 2 \\ 1 & -1}\mat{5^n & 0 \\ 0 & (-1)^n}\mat{1 & 2 \\ 1 & -1}
+= \frac{1}{3}\mat{5^n + 2(-1)^n & 2 \cdot 5^n - 2(-1)^n \\
+5^n - (-1)^n & 2 \cdot 5^n + (-1)^n}.
+\]
+($n = 1$ を代入すると $A$ に戻ることを確認せよ。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:rec}}\quad
+特性方程式 $\lambda^2 = \lambda + 2$ すなわち
+$(\lambda - 2)(\lambda + 1) = 0$ より、一般項は
+$a_n = c_1 \cdot 2^n + c_2 \cdot (-1)^n$ の形。
+初期条件 $c_1 + c_2 = 1$, $2c_1 - c_2 = 1$ より
+$c_1 = \dfrac{2}{3}$, $c_2 = \dfrac{1}{3}$。よって
+\[
+a_n = \frac{2^{n+1} + (-1)^n}{3}.
+\]
+($a_2 = 3$ を漸化式と公式の両方で確かめよ。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch}}\quad
+(1) $A^2 = \mat{9 & 16 \\ 8 & 17}$ であり、
+\[
+A^2 - 4A - 5E = \mat{9 - 4 - 5 & 16 - 16 \\ 8 - 8 & 17 - 12 - 5} = O.
+\]
+(2) $A^2 - 4A = 5E$ の両辺に $A^{-1}$ を掛けて整理すると
+\[
+A^{-1} = \frac{1}{5}(A - 4E) = \frac{1}{5}\mat{-3 & 4 \\ 2 & -1}.
+\]
+(第I部の $2$ 次逆行列公式で検算できる。)
+
+\section*{第V部}
+
+\noindent\textbf{問 \ref{q:innerp}}\quad
+(1) $\langle \vect{a}, \vect{b} \rangle = 1$,
+$\|\vect{a}\| = \|\vect{b}\| = \sqrt{2}$ より
+$\cos\theta = \dfrac{1}{2}$、$\theta = 60^\circ$。
+(2) $\displaystyle \langle x, x^2 \rangle = \int_{-1}^{1} x^3\,dx = 0$
+(奇関数の対称区間の積分)。よって直交する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs}}\quad
+$\vect{b}_1 = \mat{1 \\ 0 \\ 1}$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 1$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 1 \\ 0} - \frac{1}{2}\mat{1 \\ 0 \\ 1}
+= \mat{1/2 \\ 1 \\ -1/2}.
+\]
+正規化して
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{6}}\mat{1 \\ 2 \\ -1}$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orthm}}\quad
+(1)
+\[
+{}^t R_\theta R_\theta
+= \mat{\cos\theta & \sin\theta \\ -\sin\theta & \cos\theta}
+\mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}
+= \mat{\cos^2\theta + \sin^2\theta & 0 \\ 0 & \sin^2\theta + \cos^2\theta} = E.
+\]
+(2) ${}^t(PQ)(PQ) = {}^tQ\,{}^tP\,P\,Q = {}^tQ\,E\,Q = {}^tQ\,Q = E$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec}}\quad
+単位固有ベクトルは
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$。正射影行列は
+\[
+P_1 = \vect{u}_1\,{}^t\vect{u}_1 = \frac{1}{2}\mat{1 & 1 \\ 1 & 1},
+\qquad
+P_2 = \vect{u}_2\,{}^t\vect{u}_2 = \frac{1}{2}\mat{1 & -1 \\ -1 & 1}.
+\]
+\[
+3P_1 + P_2 = \frac{1}{2}\mat{3 + 1 & 3 - 1 \\ 3 - 1 & 3 + 1}
+= \mat{2 & 1 \\ 1 & 2} = A. \quad
+\]
+($P_1 + P_2 = E$、$P_1 P_2 = O$ も確かめてみてほしい。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:quad}}\quad
+(1) 行列は $\mat{2 & 1 \\ 1 & 2}$。首座小行列式は
+$2 > 0$ と $\det = 4 - 1 = 3 > 0$。よって正定値。
+(2) 行列は $\mat{1 & 2 \\ 2 & 1}$。固有方程式
+$(\lambda - 1)^2 - 4 = 0$ より $\lambda = 3, -1$。
+符号が $(+, -)$ なので\textbf{双曲線}であり、標準形は
+$3X^2 - Y^2 = 1$。
+
+\section*{第VI部}
+
+\noindent\textbf{問 \ref{q:nilp}}\quad
+$N^2 = \mat{0 & 0 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0}$, $N^3 = O$。
+$\mathrm{Ker}\,N = \langle \vect{e}_1 \rangle$(次元 $1$)、
+$\mathrm{Ker}\,N^2 = \langle \vect{e}_1, \vect{e}_2 \rangle$(次元 $2$)、
+$\mathrm{Ker}\,N^3 = \mathbb{C}^3$(次元 $3$)。
+一回掛けるごとに一段ずつ消えていく階段構造が見える。
+
+\bigskip
+\noindent\textbf{問 \ref{q:jordan}}\quad
+固有多項式は $\lambda^2 - 8\lambda + 16 = (\lambda - 4)^2$、固有値 $4$ のみ。
+$A - 4E = \mat{-1 & 1 \\ -1 & 1}$ は階数 $1$ なので幾何的重複度 $1$、
+よって $J = \mat{4 & 1 \\ 0 & 4}$。
+固有ベクトル $\vect{p}_1 = \mat{1 \\ 1}$ をとり、
+$(A - 4E)\vect{p}_2 = \vect{p}_1$ すなわち $-x + y = 1$ から
+$\vect{p}_2 = \mat{0 \\ 1}$。$P = \mat{1 & 0 \\ 1 & 1}$ とすると
+$P = \mat{1 & 0 \\ 1 & 1}$ とすると $P^{-1}AP = J$
+(検算:$AP = \mat{4 & 1 \\ 4 & 5} = PJ$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp}}\quad
+問 \ref{q:power} と同じ三段構えで、$5^n, (-1)^n$ を
+$e^{5t}, e^{-t}$ に置き換えればよい:
+\[
+e^{tA} = P\mat{e^{5t} & 0 \\ 0 & e^{-t}}P^{-1}
+= \frac{1}{3}\mat{e^{5t} + 2e^{-t} & 2e^{5t} - 2e^{-t} \\
+e^{5t} - e^{-t} & 2e^{5t} + e^{-t}}.
+\]
+($t = 0$ で $E$ になることを確認せよ。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:ode}}\quad
+(1) 固有値 $5, -1$、固有ベクトル $\mat{1 \\ 1}$, $\mat{2 \\ -1}$。
+初期値の展開 $\mat{1 \\ 1} = 1 \cdot \mat{1 \\ 1} + 0 \cdot \mat{2 \\ -1}$ より
+\[
+\vect{x}(t) = e^{5t}\mat{1 \\ 1}.
+\]
+(初期値がたまたま固有ベクトルだったので、解はその方向を保ったまま
+伸びるだけである。)固有値 $5 > 0$ が存在するので系は\textbf{不安定}。
+(2) $e^{tJ} = e^{2t}\mat{1 & t \\ 0 & 1}$ より、
+$\vect{x}(0) = \mat{c_1 \\ c_2}$ として
+\[
+\vect{x}(t) = e^{2t}\mat{c_1 + c_2 t \\ c_2}.
+\]
+第 $1$ 成分に $te^{2t}$ 型の項が現れる。
+
+\section*{第VII部}
+
+\noindent\textbf{問 \ref{q:lsq}}\quad
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{0 \\ 1 \\ 1}$。
+\[
+{}^t\!AA = \mat{3 & 3 \\ 3 & 5}, \qquad
+{}^t\!A\vect{b} = \mat{2 \\ 3}.
+\]
+正規方程式を解いて $a = \dfrac{1}{6}$, $b = \dfrac{1}{2}$、
+回帰直線は $y = \dfrac{1}{6} + \dfrac{1}{2}x$。
+予測値は $\dfrac{1}{6}, \dfrac{2}{3}, \dfrac{7}{6}$、残差は
+$\mat{-1/6 \\ 1/3 \\ -1/6}$ で、成分の和は $0$、
+すなわち $\vect{1}$ と直交している。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr}}\quad
+問 \ref{q:gs} より
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{6}}\mat{1 \\ 2 \\ -1}$。よって
+\[
+Q = \mat{1/\sqrt{2} & 1/\sqrt{6} \\ 0 & 2/\sqrt{6} \\ 1/\sqrt{2} & -1/\sqrt{6}},
+\qquad
+R = \mat{\sqrt{2} & 1/\sqrt{2} \\ 0 & \sqrt{6}/2}.
+\]
+($R$ の成分は $r_{11} = \|\vect{b}_1\|$,
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle$,
+$r_{22} = \|\vect{b}_2\|$。$QR = A$ を確かめよ。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd}}\quad
+${}^t\!AA = \mat{1 & 0 \\ 0 & 4}$ の固有値は $4, 1$(すでに対角)。
+$\vect{v}_1 = \mat{0 \\ 1}$, $\vect{v}_2 = \mat{1 \\ 0}$,
+特異値 $\sigma_1 = 2$, $\sigma_2 = 1$。
+$\vect{u}_1 = A\vect{v}_1/2 = \mat{1 \\ 0}$,
+$\vect{u}_2 = A\vect{v}_2/1 = \mat{0 \\ 1}$。よって
+\[
+A = \mat{1 & 0 \\ 0 & 1}\mat{2 & 0 \\ 0 & 1}\mat{0 & 1 \\ 1 & 0}.
+\]
+($最後の行列は {}^tV$。「軸を入れ替えてから、各軸を $2$ 倍・$1$ 倍する」
+変換だと読める。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv}}\quad
+(1) 本文の SVD($U = E$, $\sigma_1 = \sqrt{2}$)より
+\[
+A^{+} = V\mat{1/\sqrt{2} & 0 \\ 0 & 0}{}^tU
+= \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}\cdot
+\frac{1}{\sqrt{2}}\mat{1 & 0 \\ 0 & 0}
+= \frac{1}{2}\mat{1 & 0 \\ 1 & 0}.
+\]
+(2) $\vect{x}^{*} = A^{+}\mat{1 \\ 1} = \mat{1/2 \\ 1/2}$。
+直接確かめる:$A\vect{x} = \mat{x + y \\ 0}$ なので、
+残差 $\left\| \mat{1 \\ 1} - \mat{x+y \\ 0} \right\|$ を最小にする条件は
+$x + y = 1$(第 $2$ 成分の誤差 $1$ は消せない)。
+最小二乗解の全体は直線 $x + y = 1$ であり、その中で原点に最も近い点は
+$\mat{1/2 \\ 1/2}$。確かに $\vect{x}^{*}$ と一致する。
+
+\section*{第VIII部}
+
+\noindent\textbf{問 \ref{q:dual}}\quad
+$f_1(\vect{v}_1) = 1$, $f_1(\vect{v}_2) = 0$ を $f_1(x, y) = ax + by$ に
+課すと $a + b = 1$, $a - b = 0$ より $a = b = \dfrac{1}{2}$。同様に
+$f_2$ は $a + b = 0$, $a - b = 1$ より $a = \dfrac{1}{2}$, $b = -\dfrac{1}{2}$。
+\[
+f_1(x, y) = \frac{x + y}{2}, \qquad f_2(x, y) = \frac{x - y}{2}.
+\]
+(任意の $\vect{v}$ に対し
+$\vect{v} = f_1(\vect{v})\vect{v}_1 + f_2(\vect{v})\vect{v}_2$ となる
+「座標読み取り装置」である。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot}}\quad
+$x - y = 0$ かつ $y - z = 0$ より $x = y = z$、すなわち
+$\mathrm{Ker}\,f = \langle \mat{1 \\ 1 \\ 1} \rangle$(次元 $1$)。
+任意の $\mat{p \\ q}$ に対し $(x, y, z) = (p + q, q, 0)$ が
+$f(x,y,z) = \mat{p \\ q}$ を満たすので全射、
+$\mathrm{Im}\,f = \R^2$(次元 $2$)。準同型定理の両辺は
+$\dim(\R^3/\mathrm{Ker}\,f) = 3 - 1 = 2 = \dim \mathrm{Im}\,f$ で一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor}}\quad
+$\vect{u} = \mat{a \\ b}$, $\vect{v} = \mat{c \\ d}$ として
+$\vect{u} \otimes \vect{v}$ の係数を比較すると
+\[
+ac = 1, \qquad ad = 0, \qquad bc = 0, \qquad bd = 1.
+\]
+$ad = 0$ より $a = 0$ または $d = 0$。$a = 0$ なら $ac = 0 \neq 1$ に矛盾、
+$d = 0$ なら $bd = 0 \neq 1$ に矛盾。よって分解可能でない。
+(係数行列 $\mat{1 & 0 \\ 0 & 1}$ の階数が $2$ であることの直接証明である。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge}}\quad
+(1) $\vect{u} \wedge \vect{v} = (1 \cdot 4 - 2 \cdot 3)\,
+\vect{e}_1 \wedge \vect{e}_2 = -2\,\vect{e}_1 \wedge \vect{e}_2$。
+係数 $-2$ は $\det \mat{1 & 3 \\ 2 & 4} = 4 - 6 = -2$ に一致する。
+(2) 展開して
+\[
+(\vect{e}_1 + \vect{e}_2) \wedge (\vect{e}_2 + \vect{e}_3)
+= \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_1 \wedge \vect{e}_3
++ \vect{e}_2 \wedge \vect{e}_3
+\]
+($\vect{e}_2 \wedge \vect{e}_2 = \vect{0}$ に注意)。係数 $(1, 1, 1)$ は、
+クロス積 $\mat{1 \\ 1 \\ 0} \times \mat{0 \\ 1 \\ 1} = \mat{1 \\ -1 \\ 1}$ と
+符号の対応($\vect{e}_1 \wedge \vect{e}_3$ の成分はクロス積の第 $2$ 成分の
+$-1$ 倍に対応する)を込めて一致している。
+
+\section*{第IX部}
+
+\noindent\textbf{問 \ref{q:markov}}\quad
+固有多項式は $\lambda^2 - 1.6\lambda + 0.6 = (\lambda - 1)(\lambda - 0.6)$
+より固有値は $1, 0.6$。定常分布は $(P - E)\vect{\pi} = \vect{0}$:
+$-0.1\pi_1 + 0.3\pi_2 = 0$ より $\pi_1 = 3\pi_2$。
+和を $1$ に正規化して $\vect{\pi} = \mat{3/4 \\ 1/4}$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pca}}\quad
+\[
+S = \mat{1 \\ 1}\mat{1 & 1} + O + \mat{1 \\ 1}\mat{1 & 1}
+= \mat{2 & 2 \\ 2 & 2}.
+\]
+固有値は $4, 0$、第 $1$ 主成分は固有値 $4$ の固有ベクトル方向
+$\dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$。寄与率は $\dfrac{4}{4 + 0} = 1$
+($100\%$:データが完全に一直線上にあるため、$1$ 次元で全情報が説明できる)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power2}}\quad
+$\vect{x}_1 = \mat{2 \\ 1}$, $\vect{x}_2 = A\vect{x}_1 = \mat{5 \\ 4}$。
+成分比は $\vect{x}_0$ で $1 : 0$、$\vect{x}_1$ で $2 : 1$、
+$\vect{x}_2$ で $5 : 4$ と、固有ベクトル $\mat{1 \\ 1}$ の比 $1 : 1$ に
+近づいている(誤差は $(\lambda_2/\lambda_1)^k = (1/3)^k$ の速さで縮む)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:leontief}}\quad
+$E - A = \mat{0.8 & -0.4 \\ -0.3 & 0.9}$, $\det = 0.72 - 0.12 = 0.6$。
+\[
+(E - A)^{-1} = \frac{1}{0.6}\mat{0.9 & 0.4 \\ 0.3 & 0.8},
+\qquad
+\vect{x} = \frac{1}{0.6}\mat{0.9 \cdot 6 + 0.4 \cdot 3 \\
+0.3 \cdot 6 + 0.8 \cdot 3} = \frac{1}{0.6}\mat{6.6 \\ 4.2} = \mat{11 \\ 7}.
+\]
+検算:$A\vect{x} = \mat{0.2 \cdot 11 + 0.4 \cdot 7 \\
+0.3 \cdot 11 + 0.1 \cdot 7} = \mat{5 \\ 4}$ であり、
+$\vect{x} - A\vect{x} = \mat{6 \\ 3} = \vect{d}$。
