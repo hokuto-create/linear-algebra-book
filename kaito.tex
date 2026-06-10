@@ -205,6 +205,230 @@ $A\vect{x} = \mat{1 \cdot 2 + 2 \cdot 1 + 0 \cdot (-3) \\
 (-1) \cdot 2 + 3 \cdot 1 + 1 \cdot (-3)} = \mat{4 \\ -2}$。
 
 \bigskip
+\noindent\textbf{問 \ref{q:matmul-ex1}}\quad
+\textbf{方針}:第 $i$ 成分は「$A$ の第 $i$ 行とベクトルの組合せ」。\\
+\textbf{解答}:
+\[
+A\vect{x} = \mat{2 \cdot 3 - 1 \cdot 1 \\ 1 \cdot 3 + 3 \cdot 1} = \mat{5 \\ 6},
+\qquad
+A\vect{y} = \mat{2 \cdot (-1) - 1 \cdot 2 \\ 1 \cdot (-1) + 3 \cdot 2}
+= \mat{-4 \\ 5}.
+\]
+$\vect{x} + \vect{y} = \mat{2 \\ 3}$ より
+$A(\vect{x} + \vect{y}) = \mat{2 \cdot 2 - 1 \cdot 3 \\ 1 \cdot 2 + 3 \cdot 3}
+= \mat{1 \\ 11}$。一方
+$A\vect{x} + A\vect{y} = \mat{5 - 4 \\ 6 + 5} = \mat{1 \\ 11}$ で確かに一致する
+(積の線形性、定理 \ref{thm:matvec-linear})。\\
+\textbf{よくあるミス}:行と列の対応のずれ。$A\vect{x}$ の第 $1$ 成分を
+$A$ の第 $1$ \emph{列}で計算してしまう誤り(正しくは第 $1$ \emph{行})。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex2}}\quad
+\textbf{方針}:$(i,j)$ 成分は「$A$ の第 $i$ 行 $\times$ $B$ の第 $j$ 列」。
+$BA$ では掛ける順序が逆になる。\\
+\textbf{解答}:
+\[
+AB = \mat{1 \cdot 2 + 0 \cdot 1 & 1 \cdot 1 + 0 \cdot 1 \\
+-2 \cdot 2 + 3 \cdot 1 & -2 \cdot 1 + 3 \cdot 1} = \mat{2 & 1 \\ -1 & 1},
+\qquad
+BA = \mat{2 \cdot 1 + 1 \cdot (-2) & 2 \cdot 0 + 1 \cdot 3 \\
+1 \cdot 1 + 1 \cdot (-2) & 1 \cdot 0 + 1 \cdot 3} = \mat{0 & 3 \\ -1 & 3}.
+\]
+よって $AB \neq BA$ である。\\
+\textbf{よくあるミス}:$AB$ を計算するとき「$B$ の行」を使ってしまうこと。
+左の行列からは\emph{行}を、右の行列からは\emph{列}を取る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex3}}\quad
+\textbf{方針}:$m \times n$ と $n' \times p$ の積は $n = n'$(内側の一致)のとき
+だけ定義でき、型は $m \times p$(外側が残る)。\\
+\textbf{解答}:定義できるのは次の $4$ つ。
+\[
+AB:\ (2 \times 3)(3 \times 3) = 2 \times 3, \qquad
+AC:\ (2 \times 3)(3 \times 2) = 2 \times 2,
+\]
+\[
+CA:\ (3 \times 2)(2 \times 3) = 3 \times 3, \qquad
+BC:\ (3 \times 3)(3 \times 2) = 3 \times 2.
+\]
+$BA$ は内側が $3 \ne 2$、$CB$ は内側が $2 \ne 3$ で定義できない。\\
+\textbf{よくあるミス}:$AC$ と $CA$ を「同じもの」と思うこと。
+定義できても型からして違う($2 \times 2$ と $3 \times 3$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex4}}\quad
+\textbf{方針}:行ごと(学生ごと)に、重みを掛けて足す。\\
+\textbf{解答}:
+\[
+G\vect{w} = \mat{80 \cdot 0.2 + 60 \cdot 0.5 + 70 \cdot 0.3 \\
+90 \cdot 0.2 + 80 \cdot 0.5 + 100 \cdot 0.3 \\
+70 \cdot 0.2 + 100 \cdot 0.5 + 70 \cdot 0.3}
+= \mat{16 + 30 + 21 \\ 18 + 40 + 30 \\ 14 + 50 + 21}
+= \mat{67 \\ 88 \\ 85}.
+\]
+等しい重みの $(70, 90, 80)$ と比べると、学生 $1$ は $70 \to 67$、
+学生 $2$ は $90 \to 88$ とやや下がり、数学が $100$ 点の学生 $3$ は
+$80 \to 85$ と上がって、学生 $2$ との差が $10$ 点から $3$ 点に縮まった。
+\textbf{どの重みベクトルを掛けるかで、同じデータの「要約」は変わる}
+――データの集計は中立な操作ではない、という教訓でもある。\\
+\textbf{よくあるミス}:重みを科目の順(国・数・英)と対応させずに掛けること。
+$0.5$ は数学(第 $2$ 列)に掛かる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex5}}\quad
+\textbf{方針}:$\cos 30^\circ = \dfrac{\sqrt{3}}{2}$,
+$\sin 30^\circ = \dfrac{1}{2}$, $\cos 60^\circ = \dfrac{1}{2}$,
+$\sin 60^\circ = \dfrac{\sqrt{3}}{2}$ を代入して積を計算する。\\
+\textbf{解答}:
+\[
+R_{30^\circ} = \mat{\sqrt{3}/2 & -1/2 \\ 1/2 & \sqrt{3}/2}, \qquad
+R_{60^\circ} = \mat{1/2 & -\sqrt{3}/2 \\ \sqrt{3}/2 & 1/2}.
+\]
+積を計算すると
+\[
+R_{30^\circ} R_{60^\circ}
+= \mat{\dfrac{\sqrt{3}}{4} - \dfrac{\sqrt{3}}{4} & -\dfrac{3}{4} - \dfrac{1}{4} \\[2mm]
+\dfrac{1}{4} + \dfrac{3}{4} & -\dfrac{\sqrt{3}}{4} + \dfrac{\sqrt{3}}{4}}
+= \mat{0 & -1 \\ 1 & 0} = R_{90^\circ}.
+\]
+可換性:$R_\alpha R_\beta$ は「$\beta$ 回してから $\alpha$ 回す」変換で、
+合計 $\alpha + \beta$ の回転。$R_\beta R_\alpha$ は「$\alpha$ 回してから
+$\beta$ 回す」変換で、合計 $\beta + \alpha$ の回転。回す角度の合計は
+順序によらないから、$R_\alpha R_\beta = R_{\alpha + \beta} = R_\beta R_\alpha$。\\
+\textbf{よくあるミス}:$\sin$ と $\cos$ の取り違え、符号(右上が $-\sin$)。
+「一般に $AB \neq BA$」は「つねに $AB \neq BA$」ではない
+――回転どうしのような\emph{可換な組}も存在する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex6}}\quad
+\textbf{方針}:行列の列には基本ベクトルの行き先を入れる
+(定理 \ref{thm:lin-is-matrix})。\\
+\textbf{解答}:直線 $y = x$ で折り返すと、$\vect{e}_1 = \mat{1 \\ 0}$ は
+$\mat{0 \\ 1}$ へ、$\vect{e}_2 = \mat{0 \\ 1}$ は $\mat{1 \\ 0}$ へうつる
+($x$ 座標と $y$ 座標が入れ替わる)。よって
+\[
+S = \mat{0 & 1 \\ 1 & 0}, \qquad
+S\mat{3 \\ -1} = \mat{0 \cdot 3 + 1 \cdot (-1) \\ 1 \cdot 3 + 0 \cdot (-1)}
+= \mat{-1 \\ 3}.
+\]
+さらに
+$S^2 = \mat{0 & 1 \\ 1 & 0}\mat{0 & 1 \\ 1 & 0} = \mat{1 & 0 \\ 0 & 1} = E$。
+\textbf{同じ直線で $2$ 回折り返すと元に戻る}(恒等変換)ことの行列版である。\\
+\textbf{よくあるミス}:行き先を行に書いてしまい $S$ を転置すること
+(この $S$ は対称なので結果は同じだが、一般の変換では誤りになる)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex7}}\quad
+\textbf{方針}:定義どおり掛ける。$N$ は
+$\mat{x \\ y \\ z} \mapsto \mat{y \\ z \\ 0}$ という
+「成分を一つずつ繰り上げ、末尾に $0$ を入れる」変換である。\\
+\textbf{解答}:
+\[
+N^2 = \mat{0 & 0 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0}, \qquad
+N^3 = N^2 N = O.
+\]
+$1$ 回掛けるごとに成分が一つずつ押し出され、$3$ 回で全部消える。
+\textbf{零行列でないのに、累乗すると零行列になる}行列が存在するのである
+(零因子(反例 \ref{hanrei:zerodiv})の累乗版。このような行列は
+\textbf{べき零行列}と呼ばれ、第VI部のジョルダン標準形で主役を演じる)。\\
+\textbf{よくあるミス}:$N^2$ の $(1,3)$ 成分を見落として $N^2 = O$ とすること。
+消えるのは $3$ 乗からである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex8}}\quad
+\textbf{方針}:係数を位置どおりに並べる。後半は「列で読む」。\\
+\textbf{解答}:
+\[
+A = \mat{1 & 2 \\ 3 & -1}, \quad \vect{b} = \mat{4 \\ 5}
+\qquad \text{として} \qquad A\vect{x} = \vect{b}.
+\]
+$\vect{x} = \mat{2 \\ 1}$ を代入すると
+$A\vect{x} = \mat{1 \cdot 2 + 2 \cdot 1 \\ 3 \cdot 2 - 1 \cdot 1}
+= \mat{4 \\ 5} = \vect{b}$ で、確かに解である。列で読めば
+\[
+\vect{b} = \mat{4 \\ 5} = 2\mat{1 \\ 3} + 1\mat{2 \\ -1},
+\]
+すなわち\textbf{解 $(x, y) = (2, 1)$ とは、$\vect{b}$ を係数行列の列ベクトルの
+線形結合で表すときの係数}である。この見方は第II部で繰り返し使う。\\
+\textbf{よくあるミス}:第 $2$ 式の $-1$(係数 $y$ の符号)を落とすこと。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex9}}\quad
+\textbf{方針}:(1) は定義どおり。(2) は分配律で展開し、$J^2 = -E$ を代入する。\\
+\textbf{解答}:(1)
+\[
+J^2 = \mat{0 & -1 \\ 1 & 0}\mat{0 & -1 \\ 1 & 0} = \mat{-1 & 0 \\ 0 & -1} = -E,
+\qquad
+J^3 = J^2 J = -J = \mat{0 & 1 \\ -1 & 0}, \qquad J^4 = (J^2)^2 = E.
+\]
+(2) 分配律で展開し($E$ は何に掛けても相手を変えない)、$J^2 = -E$ を使うと
+\[
+(aE + bJ)(cE + dJ) = ac\,E + ad\,J + bc\,J + bd\,J^2
+= (ac - bd)E + (ad + bc)J.
+\]
+$E \leftrightarrow 1$、$J \leftrightarrow i$ と読み替えると、これは複素数の積
+$(a + bi)(c + di) = (ac - bd) + (ad + bc)i$ と完全に同じ規則である。
+$90^\circ$ 回転 $J$ が虚数単位 $i$ の役を演じている。
+$J^2 = -E$ は「$90^\circ$ 回転を $2$ 回続けると $180^\circ$ 回転
+($= -1$ 倍)」ということであり、$i^2 = -1$ の幾何的な意味にほかならない。\\
+\textbf{よくあるミス}:(2) で $JE$ や $EJ$ を複雑に考えること
+(どちらも $J$ である)。なお $E$ と $J$ は可換なので、
+この展開では「数の感覚」の計算が許される。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex10}}\quad
+\textbf{方針}:$B = \mat{p & q \\ r & s}$ とおき、$AB$ と $BA$ を成分比較する。\\
+\textbf{解答}:
+\[
+AB = \mat{1 & 0 \\ 0 & 2}\mat{p & q \\ r & s} = \mat{p & q \\ 2r & 2s},
+\qquad
+BA = \mat{p & q \\ r & s}\mat{1 & 0 \\ 0 & 2} = \mat{p & 2q \\ r & 2s}.
+\]
+$AB = BA$ とすると $q = 2q$ かつ $2r = r$、すなわち $q = 0$, $r = 0$
+($p, s$ は任意)。よって $A$ と可換な行列は
+\[
+B = \mat{p & 0 \\ 0 & s} \qquad (p, s \text{ は任意の実数}),
+\]
+すなわち\textbf{対角行列の全体}である(逆に対角行列どうしが可換なことは
+直接計算で分かる)。\\
+\textbf{よくあるミス}:「$E$ と $O$ と $A$ の定数倍だけ」と答えること。
+$p \ne s$ の対角行列も可換である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex11}}\quad
+\textbf{方針}:積の定義どおり $4$ 成分を計算する。\\
+\textbf{解答}:
+\[
+\mat{a & b \\ 0 & c}\mat{d & e \\ 0 & f}
+= \mat{ad + b \cdot 0 & ae + bf \\ 0 \cdot d + c \cdot 0 & 0 \cdot e + cf}
+= \mat{ad & ae + bf \\ 0 & cf}.
+\]
+$(2,1)$ 成分は $0 \cdot d + c \cdot 0 = 0$ となるから、積はやはり
+上三角行列である。さらに対角成分は $ad$ と $cf$、すなわち
+\textbf{対角成分どうしの積}になっている。
+「上三角」という形が積で保たれるこの性質は、第II部の行列式の計算や
+第VI部で繰り返し役に立つ。\\
+\textbf{よくあるミス}:結論だけ覚えて計算を省くこと。
+$(1,2)$ 成分 $ae + bf$ は対角成分の積のような簡単な形には\emph{ならない}。
+
+\bigskip
+\noindent\textbf{問 \ref{q:matmul-ex12}}\quad
+\textbf{方針}:分配律で左辺を展開する。「必要十分」なので両方向を述べる。\\
+\textbf{解答}:分配律(定理 \ref{thm:matmul-rules})より
+\[
+(A + B)(A - B) = A(A - B) + B(A - B) = A^2 - AB + BA - B^2.
+\]
+($\Leftarrow$)$AB = BA$ ならば $-AB + BA = O$ だから
+$(A + B)(A - B) = A^2 - B^2$。
+($\Rightarrow$)逆に $(A + B)(A - B) = A^2 - B^2$ ならば、上の展開と
+見比べて $-AB + BA = O$、すなわち $AB = BA$。
+以上より、求める必要十分条件は $AB = BA$ である。
+たとえば反例 \ref{hanrei:noncommute} の $A, B$ のように非可換な組では、
+$(A + B)(A - B) \ne A^2 - B^2$ となる。\\
+\textbf{よくあるミス}:$-AB + BA = O$ を「$0$」と書くこと
+(正しくは\emph{零行列} $O$)。また、片方向しか示さないこと。
+
+\bigskip
 \noindent\textbf{問 \ref{q:inv2}}\quad
 $\det A = 2 \cdot (-3) - 1 \cdot 1 = -7 \neq 0$ より
 \[
