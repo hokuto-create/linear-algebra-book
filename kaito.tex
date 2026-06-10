@@ -13,6 +13,193 @@ $t = \dfrac{10}{7}$。よって
 $\mat{5 \\ 0} = \dfrac{5}{7}\vect{a} + \dfrac{10}{7}\vect{b}$。
 
 \bigskip
+\noindent\textbf{問 \ref{q:freevec}}\quad
+$\overrightarrow{AB} = \mat{5 - 2 \\ 1 - 3} = \mat{3 \\ -2}$。
+終点は始点に成分を加えて $D(-1 + 3,\ 4 - 2) = D(2, 2)$。
+始点を変えても成分は変わらない(自由ベクトル)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex1}}\quad
+\textbf{方針}:スカラー倍を先に計算し、成分ごとに加減する。\\
+\textbf{解答}:$3\vect{a} = \mat{6 \\ -3 \\ 9}$,
+$2\vect{b} = \mat{2 \\ 0 \\ -4}$ であるから
+\[
+3\vect{a} + 2\vect{b} = \mat{6 + 2 \\ -3 + 0 \\ 9 - 4} = \mat{8 \\ -3 \\ 5},
+\qquad
+\vect{a} - 2\vect{b} = \mat{2 - 2 \\ -1 - 0 \\ 3 - (-4)} = \mat{0 \\ -1 \\ 7}.
+\]
+\textbf{よくあるミス}:第 $3$ 成分の $3 - 2 \cdot (-2) = 3 + 4 = 7$ の符号処理。
+マイナスを含むスカラー倍は、いったん書き出してから引くと安全。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex2}}\quad
+\textbf{方針}:成分は「終点 $-$ 始点」、大きさは三平方の定理。
+等しいベクトルは始点を変えても成分が同じ。\\
+\textbf{解答}:$\overrightarrow{AB} = \mat{5 - 2 \\ 3 - (-1)} = \mat{3 \\ 4}$ で、
+大きさは $\sqrt{3^2 + 4^2} = \sqrt{25} = 5$。
+終点は $C$ の座標に成分を加えて $D(-1 + 3,\ 2 + 4) = D(2, 6)$。\\
+\textbf{よくあるミス}:「始点 $-$ 終点」と逆に引いて $\mat{-3 \\ -4}$ とすること。
+$\overrightarrow{AB}$ は $A$ から $B$ への移動である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex3}}\quad
+\textbf{方針}:次元が上がっても操作は同じ。成分ごとに計算する。\\
+\textbf{解答}:
+\[
+\vect{x} + \vect{y} = \mat{5 \\ 5 \\ 5 \\ 5},
+\qquad
+2\vect{x} - \vect{y} = \mat{2 - 4 \\ 4 - 3 \\ 6 - 2 \\ 8 - 1}
+= \mat{-2 \\ 1 \\ 4 \\ 7}.
+\]
+\textbf{よくあるミス}:成分の対応のずれ。$4$ 次元を不安がる必要はない
+――新しい規則は何もない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex4}}\quad
+\textbf{方針}:$3$ 本の和をとってから $\dfrac{1}{3}$ 倍する。\\
+\textbf{解答}:$\vect{u} + \vect{v} + \vect{w} = \mat{240 \\ 240 \\ 240}$ より
+\[
+\frac{1}{3}(\vect{u} + \vect{v} + \vect{w}) = \mat{80 \\ 80 \\ 80}.
+\]
+どの科目もクラス平均は $80$ 点である。\\
+\textbf{よくあるミス}:「科目ごとの平均(ベクトル)」と「学生ごとの平均(数)」の
+混同。学生ごとの平均点は $\vect{u}$ で $70$、$\vect{v}$ で $90$、
+$\vect{w}$ で $80$ であり、これは別の集計である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex5}}\quad
+\textbf{方針}:成分を比較して $s, t$ の連立一次方程式を立てる。\\
+\textbf{解答}:$s\vect{a} + t\vect{b} = \mat{s - t \\ 2s + 4t}$ より
+$s - t = 1$, $2s + 4t = 8$。第 $2$ 式を $2$ で割って $s + 2t = 4$、
+これから第 $1$ 式を引くと $3t = 3$ より $t = 1$、$s = 2$。よって
+\[
+\mat{1 \\ 8} = 2\vect{a} + \vect{b}.
+\]
+検算:$2\mat{1 \\ 2} + \mat{-1 \\ 4} = \mat{2 - 1 \\ 4 + 4} = \mat{1 \\ 8}$。\\
+\textbf{よくあるミス}:検算を省くこと。線形結合の問題は代入一発で確かめられる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex6}}\quad
+\textbf{方針}:数の方程式と同様に、両辺に $-\vect{a}$ を加えてから
+$\dfrac{1}{2}$ 倍する。\\
+\textbf{解答}:$2\vect{x} = 3\vect{b} - \vect{a}
+= \mat{6 - 4 \\ 12 - (-2)} = \mat{2 \\ 14}$ より
+$\vect{x} = \mat{1 \\ 7}$。
+検算:$2\mat{1 \\ 7} + \mat{4 \\ -2} = \mat{6 \\ 12} = 3\vect{b}$。\\
+\textbf{よくあるミス}:第 $2$ 成分 $12 - (-2) = 14$ の符号と、
+最後の $\dfrac{1}{2}$ 倍の忘れ。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex7}}\quad
+\textbf{方針}:$P$ は $A$ から $B$ へ全体の $\dfrac{2}{3}$ だけ進んだ点:
+$\vect{p} = \vect{a} + \dfrac{2}{3}(\vect{b} - \vect{a})$。\\
+\textbf{解答}:$\vect{b} - \vect{a} = \mat{6 \\ 3}$ より
+\[
+\vect{p} = \mat{1 \\ 2} + \frac{2}{3}\mat{6 \\ 3}
+= \mat{1 + 4 \\ 2 + 2} = \mat{5 \\ 4}.
+\]
+よって $P(5, 4)$。整理すると $\vect{p} = \dfrac{\vect{a} + 2\vect{b}}{3}$
+(内分点の公式)であり、係数の和は $\dfrac{1}{3} + \dfrac{2}{3} = 1$ になっている。\\
+\textbf{よくあるミス}:比を取り違えて $\dfrac{2\vect{a} + \vect{b}}{3}$ と
+すること($m : n$ の内分点は $\dfrac{n\vect{a} + m\vect{b}}{m + n}$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex8}}\quad
+\textbf{方針}:$\vect{b} = 2\vect{a}$ に気づくと、線形結合はすべて
+$\vect{a}$ の実数倍になる。\\
+\textbf{解答}:$s\vect{a} + t\vect{b} = s\vect{a} + 2t\,\vect{a} = (s + 2t)\vect{a}$
+である。
+(1) $(s + 2t)\vect{a} = \mat{3 \\ 6} = 3\vect{a}$ となる条件は $s + 2t = 3$。
+これを満たす組はすべて解であり、$(s, t) = (3, 0),\ (1, 1),\ (-1, 2)$ など
+\textbf{無数に存在する}(一般に $(s, t) = (3 - 2t,\ t)$、$t$ は任意の実数)。
+(2) $(s + 2t)\mat{1 \\ 2} = \mat{1 \\ 0}$ とすると、第 $1$ 成分から
+$s + 2t = 1$、第 $2$ 成分から $2(s + 2t) = 0$ すなわち $s + 2t = 0$ となり矛盾。
+よって表せない。幾何的には、$s\vect{a} + t\vect{b}$ は直線 $y = 2x$ 上の
+ベクトルに限られ、$\mat{1 \\ 0}$ はその外にある(反例 \ref{hanrei:parallel})。\\
+\textbf{よくあるミス}:(1) で「表し方は一通り」と思い込むこと。
+表し方が一通りに定まるのは $2$ 本が平行でない場合であり、
+この区別が第II部の「線形独立・従属」につながる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex9}}\quad
+\textbf{方針}:成分比較で $3$ 元連立。$3$ 本の式をすべて足すと、
+対称性から早く解ける。\\
+\textbf{解答}:$s\mat{1 \\ 1 \\ 0} + t\mat{0 \\ 1 \\ 1} + u\mat{1 \\ 0 \\ 1}
+= \mat{3 \\ 1 \\ 4}$ の成分を比較すると
+\[
+s + u = 3, \qquad s + t = 1, \qquad t + u = 4.
+\]
+$3$ 式の和は $2(s + t + u) = 8$ より $s + t + u = 4$。ここから各式を引いて
+$t = 4 - 3 = 1$, $u = 4 - 1 = 3$, $s = 4 - 4 = 0$。よって
+\[
+\mat{3 \\ 1 \\ 4} = 0\mat{1 \\ 1 \\ 0} + 1\mat{0 \\ 1 \\ 1} + 3\mat{1 \\ 0 \\ 1}.
+\]
+検算:$\mat{0 + 0 + 3 \\ 0 + 1 + 0 \\ 0 + 1 + 3} = \mat{3 \\ 1 \\ 4}$。\\
+\textbf{よくあるミス}:$s = 0$ を見て「$1$ 本目は不要だったから誤りでは」と
+動揺すること。係数 $0$ も立派な線形結合の一部である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex10}}\quad
+\textbf{方針}:平均 $\bar{x}$ を計算し、各成分から引く。
+後半は成分の和を $\bar{x}$ の定義で書き直す。\\
+\textbf{解答}:$\bar{x} = \dfrac{72 + 90 + 65 + 88 + 70}{5}
+= \dfrac{385}{5} = 77$。よって
+\[
+\vect{d} = \vect{x} - 77\,\vect{1}
+= \mat{72 - 77 \\ 90 - 77 \\ 65 - 77 \\ 88 - 77 \\ 70 - 77}
+= \mat{-5 \\ 13 \\ -12 \\ 11 \\ -7}.
+\]
+成分の和は $-5 + 13 - 12 + 11 - 7 = 0$。
+一般に、$\vect{x}$ の成分を $x_1, \dots, x_n$、平均を
+$\bar{x} = \dfrac{x_1 + \cdots + x_n}{n}$ とすると、偏差の和は
+\[
+\sum_{i=1}^{n}(x_i - \bar{x}) = (x_1 + \cdots + x_n) - n\bar{x}
+= n\bar{x} - n\bar{x} = 0.
+\]
+\textbf{よくあるミス}:平均の計算ミス(合計が $385$ になることを確認する)。
+なお $\vect{x} \mapsto \vect{d}$ はデータ分析で「中心化」と呼ばれる前処理で、
+第IX部の主成分分析で再会する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex11}}\quad
+\textbf{方針}:ベクトルの等式は「すべての成分が等しい」こと。
+第 $i$ 成分どうしを比べ、実数の計算法則に帰着させる。\\
+\textbf{解答}:$\vect{a} + \vect{b}$ の第 $i$ 成分は $a_i + b_i$、
+$\vect{b} + \vect{a}$ の第 $i$ 成分は $b_i + a_i$ であり、
+\textbf{実数の和の交換法則}により $a_i + b_i = b_i + a_i$。
+すべての $i = 1, \dots, n$ で成分が一致するから
+$\vect{a} + \vect{b} = \vect{b} + \vect{a}$ である。
+同様に、$c(\vect{a} + \vect{b})$ の第 $i$ 成分は $c(a_i + b_i)$、
+$c\vect{a} + c\vect{b}$ の第 $i$ 成分は $ca_i + cb_i$ であり、
+\textbf{実数の分配法則}により $c(a_i + b_i) = ca_i + cb_i$。
+よって $c(\vect{a} + \vect{b}) = c\vect{a} + c\vect{b}$ である。\\
+\textbf{よくあるミス}:「明らか」で済ませて成分に下ろさないこと。
+ベクトルの計算法則は、実数の計算法則から\textbf{証明される}事実である。
+第III部では逆に、このような法則を「公理」として出発点に据える。
+
+\bigskip
+\noindent\textbf{問 \ref{q:vec-ex12}}\quad
+\textbf{方針}:原点 $O$ を固定し、各点を位置ベクトルで書く。
+中点の位置ベクトルは $2$ 点の位置ベクトルの平均である。\\
+\textbf{解答}:$A$, $B$, $C$ の位置ベクトルを $\vect{a}, \vect{b}, \vect{c}$
+とすると、中点の位置ベクトルは
+\[
+\vect{m} = \frac{1}{2}(\vect{a} + \vect{b}), \qquad
+\vect{n} = \frac{1}{2}(\vect{a} + \vect{c}).
+\]
+よって
+\[
+\overrightarrow{MN} = \vect{n} - \vect{m}
+= \frac{1}{2}(\vect{a} + \vect{c}) - \frac{1}{2}(\vect{a} + \vect{b})
+= \frac{1}{2}(\vect{c} - \vect{b})
+= \frac{1}{2}\overrightarrow{BC}.
+\]
+すなわち $\overrightarrow{MN}$ は $\overrightarrow{BC}$ の $\dfrac{1}{2}$ 倍
+だから、$MN$ と $BC$ は平行で、長さはちょうど半分である(中点連結定理)。\\
+\textbf{よくあるミス}:$\overrightarrow{MN} = \vect{m} - \vect{n}$ と
+向きを逆にすること。「終点 $-$ 始点」を徹底する。
+
+\bigskip
 \noindent\textbf{問 \ref{q:matvec}}\quad
 $A\vect{x} = \mat{1 \cdot 2 + 2 \cdot 1 + 0 \cdot (-3) \\
 (-1) \cdot 2 + 3 \cdot 1 + 1 \cdot (-3)} = \mat{4 \\ -2}$。
