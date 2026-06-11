@@ -1328,12 +1328,277 @@ $A\vect{x} = \vect{b}_0$ は $(R \mid \vect{e}_n)$ と同じ解集合、
 ところが証明の核心である。
 
 \bigskip
+\noindent\textbf{問 \ref{q:det-area}}\quad
+$\vect{u}, \vect{v}$ を列に並べて
+\[
+\det \mat{2 & -1 \\ 1 & 3} = 2 \cdot 3 - (-1) \cdot 1 = 7
+\]
+だから、平行四辺形の面積は $|7| = 7$。列を入れ替えると
+\[
+\det \mat{-1 & 2 \\ 3 & 1} = -1 - 6 = -7.
+\]
+面積は $|-7| = 7$ で同じだが、符号が反転した。これは
+「第 $1$ 列から第 $2$ 列へ回る向き」が、$\vect{u} \to \vect{v}$ では
+反時計回り($+$)、$\vect{v} \to \vect{u}$ では時計回り($-$)と
+逆になったことを表している。図形そのものは同じ平行四辺形である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-mult}}\quad
+\[
+AB = \mat{2 & 0 \\ 0 & 2}\mat{1 & 1 \\ 0 & 1} = \mat{2 & 2 \\ 0 & 2},
+\qquad
+\det(AB) = 4 - 0 = 4.
+\]
+一方 $\det A = 4$, $\det B = 1$ だから $\det A \, \det B = 4$ で一致する。
+解釈:$B$(せん断)は図形を傾けるだけで面積を変えず($1$ 倍)、
+続く $A$(各方向 $2$ 倍の拡大)が面積を $4$ 倍にする。
+合成変換の面積拡大率は $1 \times 4 = 4$ 倍――拡大率は掛け算で合成される。
+
+\bigskip
 \noindent\textbf{問 \ref{q:det3}}\quad
 サラスの方法により
 \[
 6 + 2 + 2 - (-3) - (-1) - 8 = 6.
 \]
 $\det \neq 0$ なので解はただ一つ。第 \ref{chap:gauss} 章の結果と符合する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex1}}\quad
+\textbf{方針}:$ad - bc$ を符号に注意して計算する。\\
+\textbf{解答}:(1) $\det = 5 \cdot 1 - 3 \cdot 2 = -1 \neq 0$ より正則。
+(2) $\det = 6 \cdot 2 - 4 \cdot 3 = 0$ より正則でない。
+(3) $\det = 1 \cdot 4 - (-2) \cdot 3 = 4 + 6 = 10 \neq 0$ より正則。
+(2) の $A\vect{x} = \vect{0}$ は $6x + 4y = 0$ と $3x + 2y = 0$、
+すなわち実質 $3x + 2y = 0$ の $1$ 本だから、たとえば
+$\vect{x} = \mat{2 \\ -3}$ が $\vect{0}$ でない解である
+(検算:$6 \cdot 2 + 4 \cdot (-3) = 0$, $3 \cdot 2 + 2 \cdot (-3) = 0$。
+その実数倍もすべて解)。\\
+\textbf{よくあるミス}:(3) で $-(-2) \cdot 3$ の二重の符号を誤って
+$4 - 6 = -2$ とすること。\emph{$bc$ を作ってから引く}と間違えにくい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex2}}\quad
+\textbf{方針}:足す $3$ 項・引く $3$ 項を書き出してから合計する。\\
+\textbf{解答}:(1) 足す項は
+$1 \cdot 5 \cdot 9 = 45$, $2 \cdot 6 \cdot 7 = 84$, $3 \cdot 4 \cdot 8 = 96$
+で計 $225$。引く項は
+$3 \cdot 5 \cdot 7 = 105$, $1 \cdot 6 \cdot 8 = 48$, $2 \cdot 4 \cdot 9 = 72$
+で計 $225$。よって $\det = 225 - 225 = 0$ となり、正則でない。
+連番を並べた一見何の変哲もない行列だが、
+第 $1$ 行 $+$ 第 $3$ 行 $= 2 \times$ 第 $2$ 行という関係が隠れており、
+空間をつぶす変換になっているのである。
+(2) 足す項は $2 \cdot 1 \cdot 2 = 4$, $0 \cdot 0 \cdot 3 = 0$,
+$1 \cdot 1 \cdot 1 = 1$、引く項は $1 \cdot 1 \cdot 3 = 3$,
+$2 \cdot 0 \cdot 1 = 0$, $0 \cdot 1 \cdot 2 = 0$。
+よって $\det = 5 - 3 = 2 \neq 0$ で正則(体積を $2$ 倍にする変換)。\\
+\textbf{よくあるミス}:引く項の選び方(右上から左下への対角線)を
+足す項と取り違えること。$6$ 項を必ず書き出してから集計する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex3}}\quad
+\textbf{方針}:$\overrightarrow{OA}$, $\overrightarrow{OB}$ を列に並べて
+行列式を作る。\\
+\textbf{解答}:
+\[
+\det \mat{4 & 2 \\ 1 & 3} = 4 \cdot 3 - 2 \cdot 1 = 10.
+\]
+平行四辺形の面積は $10$、三角形 $OAB$ はその半分で $5$。
+行列式が正だから、$\overrightarrow{OA}$ から $\overrightarrow{OB}$ へは
+\textbf{反時計回り}に回る
+($A$ は $x$ 軸寄り、$B$ はそれより上にある。図を描いて確かめよ)。\\
+\textbf{よくあるミス}:三角形の面積で半分にし忘れること。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex4}}\quad
+\textbf{方針}:計算は一瞬。解釈を言葉にする。\\
+\textbf{解答}:
+(1) $\det = 9$。各方向 $3$ 倍の拡大だから面積は $3^2 = 9$ 倍。裏返しなし。
+(2) $\det = -1$。$x$ 軸に関する折り返し。面積は変えない($1$ 倍)が
+図形を\emph{裏返す}ので符号が負になる。
+(3) $\det = 1$。せん断(例題 \ref{rei:shear} の型)。図形は傾くが、
+底辺も高さも変わらないので面積は不変、裏返しもなし。
+(4) $\det = 0$。$x$ 軸への射影。平面を直線につぶすので、
+どんな図形も面積 $0$ になる(だから元に戻せない=正則でない)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex5}}\quad
+\textbf{方針}:積と和をそれぞれ計算して比べる。\\
+\textbf{解答}:$\det A = 1 \cdot 7 - 2 \cdot 3 = 1$,
+$\det B = 4 \cdot 1 - 1 \cdot 2 = 2$。積は
+\[
+AB = \mat{1 \cdot 4 + 2 \cdot 2 & 1 \cdot 1 + 2 \cdot 1 \\
+3 \cdot 4 + 7 \cdot 2 & 3 \cdot 1 + 7 \cdot 1}
+= \mat{8 & 3 \\ 26 & 10}, \qquad
+\det(AB) = 80 - 78 = 2
+\]
+となり、確かに $\det A \, \det B = 1 \cdot 2 = 2$ に一致する。一方、和は
+\[
+A + B = \mat{5 & 3 \\ 5 & 8}, \qquad
+\det(A + B) = 40 - 15 = 25 \neq 1 + 2 = 3.
+\]
+\emph{積では成り立ち、和では崩れる}(反例 \ref{hanrei:detsum})。\\
+\textbf{よくあるミス}:$\det(AB)$ を確かめるとき、$AB$ の成分計算
+($26$ や $10$ など)を雑にして「一致しない!」と慌てること。
+大きめの数こそ丁寧に。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex6}}\quad
+\textbf{方針}:サラスで展開し、$a = 1$ が根であることを使って因数分解する。\\
+\textbf{解答}:サラスの方法で
+\[
+\det A = a \cdot a \cdot a + 1 \cdot 1 \cdot 1 + 1 \cdot 1 \cdot 1
+- 1 \cdot a \cdot 1 - a \cdot 1 \cdot 1 - 1 \cdot 1 \cdot a
+= a^3 - 3a + 2.
+\]
+$a = 1$ を代入すると $1 - 3 + 2 = 0$ なので $(a - 1)$ でくくれて
+\[
+a^3 - 3a + 2 = (a - 1)(a^2 + a - 2) = (a - 1)^2 (a + 2).
+\]
+よって $\det A = 0$ となるのは $a = 1$ と $a = -2$ のときであり、
+\textbf{正則になる条件は $a \neq 1$ かつ $a \neq -2$}。
+$a = 1$ のときは $3$ つの行がすべて $(1, 1, 1)$ で一致し、
+$a = -2$ のときは各行の成分の和が $0$ になる
+($\vect{x} = \mat{1 \\ 1 \\ 1}$ が $A\vect{x} = \vect{0}$ の
+$\vect{0}$ でない解になる)。どちらも空間をつぶす変換である。\\
+\textbf{よくあるミス}:$3$ 次方程式を因数分解せず
+「$a^3 - 3a + 2 \neq 0$」のまま答えとすること。
+根を求めてはじめて「除くべき $a$」が分かる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex7}}\quad
+\textbf{方針}:$\cos^2 + \sin^2 = 1$ を使う。\\
+\textbf{解答}:回転は
+\[
+\det R_\theta = \cos\theta \cdot \cos\theta - (-\sin\theta) \cdot \sin\theta
+= \cos^2\theta + \sin^2\theta = 1.
+\]
+鏡映は
+\[
+\det S_\theta = \cos 2\theta \cdot (-\cos 2\theta) - \sin 2\theta \cdot \sin 2\theta
+= -(\cos^2 2\theta + \sin^2 2\theta) = -1.
+\]
+どちらも面積を変えない変換($|\det| = 1$)だが、
+回転は裏返さない($+1$)のに対し、鏡映は図形を裏返す($-1$)。
+\textbf{向きの反転の有無が、符号として正確に検出される}のである。
+$\theta = 0$ のとき $S_0 = \mat{1 & 0 \\ 0 & -1}$ となり、
+例 \ref{rei:det-trans} の $x$ 軸鏡映に一致する。\\
+\textbf{よくあるミス}:$S_\theta$ の $(2,2)$ 成分の $-\cos 2\theta$ を
+見落として $\det = \cos^2 - \sin^2$ などとすること。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex8}}\quad
+\textbf{方針}:すべて定理 \ref{thm:det-mult}・\ref{thm:det-rules} の
+組合せで、$A$ の成分は不要。\\
+\textbf{解答}:
+(1) $\det(A^{-1}) = \dfrac{1}{\det A} = \dfrac{1}{5}$。
+(2) $\det(A^3) = (\det A)^3 = 125$。
+(3) $2$ 次なので $\det(2A) = 2^2 \det A = 20$
+(反例 \ref{hanrei:detscalar}:$2 \det A = 10$ ではない)。
+(4) $\det({}^t\!A) = \det A = 5$。
+(5) 行列式は数だから積の順序を入れ替えてよく、
+\[
+\det(P^{-1}AP) = \det(P^{-1}) \det A \det P
+= \frac{1}{\det P} \cdot 5 \cdot \det P = 5.
+\]
+$P^{-1}AP$ という形(基底の取り替え)で行列式が変わらないことは、
+第III部・第IV部で大切な役割を果たす。\\
+\textbf{よくあるミス}:(3) で $\det(2A) = 2\det A = 10$ とすること。
+「面積は辺の $2$ 乗で効く」と思い出す。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex9}}\quad
+\textbf{方針}:一つの頂点を始点とするベクトルを $2$ 本作る。\\
+\textbf{解答}:(1) $\overrightarrow{AB} = \mat{4 - 1 \\ 2 - 1} = \mat{3 \\ 1}$,
+$\overrightarrow{AC} = \mat{2 - 1 \\ 5 - 1} = \mat{1 \\ 4}$ だから
+\[
+\det \mat{3 & 1 \\ 1 & 4} = 12 - 1 = 11
+\]
+より、三角形 $ABC$ の面積は $\dfrac{11}{2}$。
+(2) $\overrightarrow{PQ} = \mat{2 \\ 4}$,
+$\overrightarrow{PR} = \mat{-3 \\ -6}$ だから
+\[
+\det \mat{2 & -3 \\ 4 & -6} = 2 \cdot (-6) - (-3) \cdot 4 = -12 + 12 = 0.
+\]
+$2$ 本のベクトルの張る平行四辺形の面積が $0$、すなわち
+$\overrightarrow{PQ}$ と $\overrightarrow{PR}$ は同一直線上にあるから、
+$3$ 点 $P, Q, R$ は一直線上にある(実際、$3$ 点とも直線 $y = 2x$ 上にある)。\\
+\textbf{よくあるミス}:(1) で頂点の座標をそのまま列に並べること。
+原点が頂点でない三角形では、まず\emph{差をとってベクトルにする}。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex10}}\quad
+\textbf{方針}:(1) は $2$ 次の公式の分母、(2) は整数の積が $1$ になる条件。\\
+\textbf{解答}:(1) $A = \mat{a & b \\ c & d}$($a, b, c, d$ は整数)とする。
+$\det A = \pm 1$ のとき、定理 \ref{thm:inv2x2} より
+\[
+A^{-1} = \frac{1}{\det A} \mat{d & -b \\ -c & a}
+= \pm \mat{d & -b \\ -c & a}
+\]
+であり、成分は整数の $\pm 1$ 倍だからすべて整数である。
+(2) $A$ も $A^{-1}$ も成分が整数だから、$\det A$ と $\det(A^{-1})$ は
+どちらも整数である($ad - bc$ は整数の和と積)。定理 \ref{thm:det-rules} より
+\[
+\det A \cdot \det(A^{-1}) = 1
+\]
+で、整数どうしの積が $1$ になるのは $1 \cdot 1$ か $(-1) \cdot (-1)$ に
+限るから、$\det A = \pm 1$。
+たとえば $\mat{2 & 5 \\ 1 & 3}$($\det = 1$)の逆行列
+$\mat{3 & -5 \\ -1 & 2}$ は確かに整数成分である(問 \ref{q:inv-ex1})。
+$\blacksquare$\\
+\textbf{よくあるミス}:(2) で「$\det(A^{-1}) = 1/\det A$ だから分数」と
+即断すること。仮定により $\det(A^{-1})$ 自身が\emph{整数}である点が効く。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex11}}\quad
+\textbf{方針}:両辺の行列式をとる。\\
+\textbf{解答}:${}^t\!A A = E$ の両辺の行列式をとると、
+定理 \ref{thm:det-mult} と $\det {}^t\!A = \det A$
+(定理 \ref{thm:det-rules})より
+\[
+\det({}^t\!A A) = \det {}^t\!A \cdot \det A = (\det A)^2 = \det E = 1.
+\]
+よって $\det A = \pm 1$ である。 $\blacksquare$
+
+回転:${}^t R_\theta = \mat{\cos\theta & \sin\theta \\ -\sin\theta & \cos\theta}
+= R_{-\theta}$ だから、問 \ref{q:inv-ex7} より
+${}^t R_\theta R_\theta = R_{-\theta} R_\theta = E$ を満たし、
+$\det R_\theta = +1$。
+鏡映:$S_\theta$ は対称(${}^t S_\theta = S_\theta$)で、
+\[
+S_\theta^2 = \mat{\cos^2 2\theta + \sin^2 2\theta & 0 \\
+0 & \sin^2 2\theta + \cos^2 2\theta} = E
+\]
+(非対角成分は $\cos 2\theta \sin 2\theta - \sin 2\theta \cos 2\theta = 0$)
+だから ${}^t S_\theta S_\theta = E$ を満たし、$\det S_\theta = -1$。
+${}^t\!A A = E$ を満たす行列は「長さと角度を変えない変換」
+(\textbf{直交行列})であり、第V部で主役の一つになる。
+本問は、それが\emph{回転型($+1$)と鏡映型($-1$)の二種類に分かれる}
+ことの最初の兆候である。\\
+\textbf{よくあるミス}:$(\det A)^2 = 1$ から $\det A = 1$ のみを
+結論すること。$2$ 乗して $1$ になる実数は $\pm 1$ の二つある。
+
+\bigskip
+\noindent\textbf{問 \ref{q:det-ex12}}\quad
+\textbf{方針}:「$B$ が正則」と仮定して矛盾を導く。$A$ も対称に扱う。\\
+\textbf{解答}:もし $B$ が正則なら、$AB = O$ の両辺に右から $B^{-1}$ を
+掛けて
+\[
+A = (AB)B^{-1} = O B^{-1} = O
+\]
+となり、$A \neq O$ に矛盾する。よって $B$ は正則でなく、
+定理 \ref{thm:det-regular} により $\det B = 0$。
+同様に、もし $A$ が正則なら左から $A^{-1}$ を掛けて
+$B = A^{-1}(AB) = A^{-1}O = O$ となり $B \neq O$ に矛盾するから、
+$\det A = 0$。以上で $\det A = \det B = 0$。 $\blacksquare$
+
+反例 \ref{hanrei:zerodiv} の $A = \mat{0 & 1 \\ 0 & 0}$,
+$B = \mat{1 & 0 \\ 0 & 0}$ では、確かに
+$\det A = 0 \cdot 0 - 1 \cdot 0 = 0$, $\det B = 1 \cdot 0 - 0 \cdot 0 = 0$
+である。\\
+\textbf{よくあるミス}:$\det A \, \det B = \det O = 0$ だけで
+済ませること。これでは「少なくとも一方が $0$」しか言えず、
+\emph{両方}が $0$ であることの証明にならない。
+$A \neq O$, $B \neq O$ という仮定を使う上の論法が必要である。
 
 \section*{第II部}
 
