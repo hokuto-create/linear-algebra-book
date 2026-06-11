@@ -637,6 +637,355 @@ $(A + B)(A - B) \ne A^2 - B^2$ となる。\\
 (正しくは\emph{零行列} $O$)。また、片方向しか示さないこと。
 
 \bigskip
+\noindent\textbf{問 \ref{q:gauss}}\quad
+\[
+\left(\begin{array}{cc|c}
+1 & 2 & 5 \\
+3 & 4 & 11
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c}
+1 & 2 & 5 \\
+0 & -2 & -4
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c}
+1 & 0 & 1 \\
+0 & 1 & 2
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 3$、第2行 $\times (-\frac{1}{2})$ ののち
+第1行 $-$ 第2行 $\times 2$)。よって $(x, y) = (1, 2)$。
+検算:$1 + 4 = 5$、$3 + 8 = 11$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex1}}\quad
+\textbf{方針}:拡大係数行列に行基本変形。右辺の列も忘れずに変形する。\\
+\textbf{解答}:
+\[
+\left(\begin{array}{cc|c}
+1 & 2 & 4 \\
+3 & 1 & 7
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c}
+1 & 2 & 4 \\
+0 & -5 & -5
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c}
+1 & 2 & 4 \\
+0 & 1 & 1
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c}
+1 & 0 & 2 \\
+0 & 1 & 1
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 3$、第2行 $\times(-\frac{1}{5})$、
+第1行 $-$ 第2行 $\times 2$)。よって $(x, y) = (2, 1)$。
+検算:$2 + 2 = 4$、$6 + 1 = 7$。\\
+\textbf{よくあるミス}:係数だけ変形して、右辺の列を変形し忘れること。
+拡大係数行列の「行」は式全体である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex2}}\quad
+\textbf{方針}:第1列→第2列→第3列の順に掃き出す。\\
+\textbf{解答}:
+\[
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+2 & 1 & -1 & 1 \\
+1 & -1 & 2 & 5
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+0 & -1 & -3 & -11 \\
+0 & -2 & 1 & -1
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+0 & 1 & 3 & 11 \\
+0 & 0 & 7 & 21
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 2$・第3行 $-$ 第1行、第2行 $\times (-1)$ ののち
+第3行 $+$ 第2行 $\times 2$)。第3行から $z = 3$、第2行から
+$y = 11 - 3 \cdot 3 = 2$、第1行から $x = 6 - 2 - 3 = 1$。
+よって $(x, y, z) = (1, 2, 3)$。
+検算:$1 + 2 + 3 = 6$、$2 + 2 - 3 = 1$、$1 - 2 + 6 = 5$。\\
+\textbf{よくあるミス}:一つの列を掃き出している途中で別の列に手を出し、
+消したはずの成分を復活させてしまうこと。「左の列から一列ずつ片付ける」を守る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex3}}\quad
+\textbf{方針}:矛盾行の有無 → 自由な未知数、の順に読む。\\
+\textbf{解答}:(1) 矛盾行なし・パラメータなし。ただ一つの解
+$(x, y, z) = (2, -1, 3)$。
+(2) 矛盾行なし。主成分のない第3列の $z = t$ がパラメータで、
+$x = 1 - 2t$, $y = 2 + t$。すなわち
+\[
+\mat{x \\ y \\ z} = \mat{1 \\ 2 \\ 0} + t\mat{-2 \\ 1 \\ 1}
+\qquad (t \text{ は任意の実数})
+\]
+の無数の解をもつ。
+(3) 第3行が $0 = 5$ の矛盾行なので、解なし。\\
+\textbf{よくあるミス}:(3) で第1・2行だけを見て「解あり」とすること。
+矛盾行が一つでもあれば、他の行と無関係に解なしである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex4}}\quad
+\textbf{方針}:掃き出すと主成分が第1列と第3列に現れる。
+主成分のない第2列の $y$ をパラメータにとる。\\
+\textbf{解答}:
+\[
+\left(\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+2 & 4 & -1 & 7
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+0 & 0 & 1 & 1
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 2 & 0 & 4 \\
+0 & 0 & 1 & 1
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 2$、第1行 $+$ 第2行)。$y = t$ とおくと
+$x = 4 - 2t$, $z = 1$ で
+\[
+\mat{x \\ y \\ z} = \mat{4 \\ 0 \\ 1} + t\mat{-2 \\ 1 \\ 0}
+\qquad (t \text{ は任意の実数}).
+\]
+検算:$(4 - 2t) + 2t - 1 = 3$、$2(4 - 2t) + 4t - 1 = 7$ で、
+$t$ によらず成り立つ。\\
+\textbf{よくあるミス}:主成分のある列の未知数($x$ や $z$)をパラメータに
+とってしまうこと。自由にできるのは\emph{主成分のない列}の未知数である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex5}}\quad
+\textbf{方針}:掃き出して矛盾行を導く。\\
+\textbf{解答}:
+\[
+\left(\begin{array}{ccc|c}
+1 & -1 & 1 & 2 \\
+2 & 1 & -3 & 1 \\
+3 & 0 & -2 & 4
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & -1 & 1 & 2 \\
+0 & 3 & -5 & -3 \\
+0 & 3 & -5 & -2
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & -1 & 1 & 2 \\
+0 & 3 & -5 & -3 \\
+0 & 0 & 0 & 1
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 2$・第3行 $-$ 第1行 $\times 3$、第3行 $-$ 第2行)。
+第3行は $0 = 1$ の矛盾行なので、解は存在しない。
+実は左辺では(第1式)$+$(第2式)$=$(第3式)なのに、右辺は
+$2 + 1 = 3 \neq 4$ であり、はじめから両立しない条件だったのである。\\
+\textbf{よくあるミス}:矛盾行 $(0\ 0\ 0 \mid 1)$ を「$z$ が決まらないから無数」と
+読み違えること。「$0 = 1$」は\emph{成り立たない式}であり、解なしの印である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex6}}\quad
+\textbf{方針}:$3$ 点を代入して $a, b, c$ の連立一次方程式を作る
+(例題 \ref{rei:gauss-fit})。\\
+\textbf{解答}:代入により $a + b + c = 0$、$4a + 2b + c = 1$、
+$a - b + c = 10$。
+\[
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 0 \\
+4 & 2 & 1 & 1 \\
+1 & -1 & 1 & 10
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 0 \\
+0 & -2 & -3 & 1 \\
+0 & -2 & 0 & 10
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 0 \\
+0 & -2 & -3 & 1 \\
+0 & 0 & 3 & 9
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 4$・第3行 $-$ 第1行、第3行 $-$ 第2行)。
+第3行から $c = 3$、第2行に戻して $-2b - 9 = 1$ より $b = -5$、
+第1行から $a = 0 - (-5) - 3 = 2$。よって $y = 2x^2 - 5x + 3$。
+検算:$x = 1$ で $2 - 5 + 3 = 0$、$x = 2$ で $8 - 10 + 3 = 1$、
+$x = -1$ で $2 + 5 + 3 = 10$。\\
+\textbf{よくあるミス}:点 $(-1, 10)$ の代入で $b$ の符号を誤ること
+($a \cdot (-1)^2 + b \cdot (-1) + c = a - b + c$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex7}}\quad
+\textbf{方針}:第2行から第1行の $a$ 倍を引き、$(4 - a^2)y = 2 - a$ を作る。
+文字で割る前に、割れない場合を別扱いにする。\\
+\textbf{解答}:
+\[
+\left(\begin{array}{cc|c}
+1 & a & 1 \\
+a & 4 & 2
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c}
+1 & a & 1 \\
+0 & 4 - a^2 & 2 - a
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times a$)。
+(i) $a \neq \pm 2$ のとき $4 - a^2 \neq 0$ で割れて
+\[
+y = \frac{2 - a}{4 - a^2} = \frac{1}{2 + a}, \qquad
+x = 1 - ay = \frac{2}{2 + a}
+\]
+の\textbf{ただ一つ}の解。
+(ii) $a = 2$ のとき第2行は $(0\ 0 \mid 0)$ となり、$x + 2y = 1$ だけが残る。
+$y = t$, $x = 1 - 2t$($t$ は任意)の\textbf{無数}の解
+(二つの式は同じ直線を表している)。
+(iii) $a = -2$ のとき第2行は $(0\ 0 \mid 4)$ の矛盾行となり\textbf{解なし}
+(平行な $2$ 直線)。\\
+\textbf{よくあるミス}:いきなり $4 - a^2$ で割って (ii)(iii) を落とすこと。
+\emph{文字で割るときは、その文字が $0$ になる場合を必ず別扱いにする}。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex8}}\quad
+\textbf{方針}:「右辺の $0$ は行基本変形で $0$ のまま」がポイント。\\
+\textbf{解答}:(1)
+\[
+\left(\begin{array}{ccc|c}
+1 & 2 & 3 & 0 \\
+2 & 3 & 4 & 0 \\
+3 & 4 & 5 & 0
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 2 & 3 & 0 \\
+0 & -1 & -2 & 0 \\
+0 & -2 & -4 & 0
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 0 & -1 & 0 \\
+0 & 1 & 2 & 0 \\
+0 & 0 & 0 & 0
+\end{array}\right)
+\]
+(第2行 $-$ 第1行 $\times 2$・第3行 $-$ 第1行 $\times 3$、
+第2行 $\times (-1)$ ののち第1行 $-$ 第2行 $\times 2$・
+第3行 $+$ 第2行 $\times 2$)。$z = t$ とおいて
+\[
+\mat{x \\ y \\ z} = t\mat{1 \\ -2 \\ 1} \qquad (t \text{ は任意の実数}).
+\]
+(2) 同次方程式の右辺はすべて $0$ であり、行基本変形($c$ 倍・入れ替え・
+$c$ 倍を加える)をどう施しても $0$ のままである。よって矛盾行
+$(0 \cdots 0 \mid c)$($c \neq 0$)は決して現れず、解なしにはならない。
+実際、$\vect{x} = \vect{0}$ はつねに解である(\textbf{自明解})。\\
+\textbf{よくあるミス}:(1) で「自明解 $\vect{x} = \vect{0}$ しかない」と
+早合点すること。掃き出して自由な未知数の有無を確かめるまでは分からない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex9}}\quad
+\textbf{方針}:主成分の個数($0$ 個・$1$ 個・$2$ 個)と位置で場合分けする。\\
+\textbf{解答}:主成分 $0$ 個:零行列 $O = \mat{0 & 0 \\ 0 & 0}$。
+主成分 $1$ 個:主成分が第1列にある形 $\mat{1 & a \\ 0 & 0}$($a$ は任意の実数)と、
+主成分が第2列にある形 $\mat{0 & 1 \\ 0 & 0}$。
+主成分 $2$ 個:単位行列 $E = \mat{1 & 0 \\ 0 & 1}$
+(両方の列に主成分があれば、互いの列は掃き出されて他の成分が $0$ になる)。
+以上の $4$ つの型ですべてである。\\
+\textbf{よくあるミス}:$\mat{1 & a \\ 0 & 0}$ の $a$ を $0$ に限ってしまうこと。
+$0$ でなければならないのは主成分の\emph{列}の他の成分であり、
+主成分の\emph{右}の成分は何でもよい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex10}}\quad
+\textbf{方針}:条件(式)は $2$ 本、未知数は $3$ 個なので解は無数。
+非負条件でパラメータの範囲を絞る。\\
+\textbf{解答}:(1) たんぱく質と脂質の条件はそれぞれ
+$2x + y + 3z = 8$、$x + y + z = 4$。
+\[
+\left(\begin{array}{ccc|c}
+2 & 1 & 3 & 8 \\
+1 & 1 & 1 & 4
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 4 \\
+0 & -1 & 1 & 0
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 0 & 2 & 4 \\
+0 & 1 & -1 & 0
+\end{array}\right)
+\]
+(行の入れ替えののち第2行 $-$ 第1行 $\times 2$、第2行 $\times (-1)$ ののち
+第1行 $-$ 第2行)。$z = t$ とおくと $x = 4 - 2t$, $y = t$:
+\[
+\mat{x \\ y \\ z} = \mat{4 \\ 0 \\ 0} + t\mat{-2 \\ 1 \\ 1}
+\qquad (t \text{ は任意の実数}).
+\]
+検算:たんぱく質 $2(4 - 2t) + t + 3t = 8$、脂質 $(4 - 2t) + t + t = 4$。
+(2) $x = 4 - 2t \ge 0$ かつ $y = t \ge 0$ かつ $z = t \ge 0$ より
+$0 \le t \le 2$。たとえば $t = 0$ なら A だけを $400$ g、
+$t = 2$ なら A をやめて B と C を $200$ g ずつ、その中間も自由に選べる。\\
+\textbf{よくあるミス}:(2) の非負条件を忘れて「$t$ は任意」と答えること。
+数学的な解集合と、現実に許される解は別物である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex11}}\quad
+\textbf{方針}:$A(s\vect{x}_1 + t\vect{x}_2)$ を線形性で展開し、
+$(s + t)\vect{b}$ にまとめる。\\
+\textbf{解答}:積の線形性(定理 \ref{thm:matvec-linear})より
+\[
+A(s\vect{x}_1 + t\vect{x}_2) = s\,A\vect{x}_1 + t\,A\vect{x}_2
+= s\vect{b} + t\vect{b} = (s + t)\vect{b}.
+\]
+$s + t = 1$ ならこれは $\vect{b}$ に等しいから、$s\vect{x}_1 + t\vect{x}_2$ は
+解である。逆に $\vect{b} \neq \vect{0}$ で $s + t \neq 1$ のとき、もし
+$(s + t)\vect{b} = \vect{b}$ なら $(s + t - 1)\vect{b} = \vect{0}$ となるが、
+$s + t - 1 \neq 0$ なので各成分を $s + t - 1$ で割って $\vect{b} = \vect{0}$
+となり矛盾。よって解にならない。
+第1章の「係数の和が $1$ の組合せ(中点・内分点・重心)だけは位置ベクトルで
+作ってよい」という注意と同じ型の事実である:解どうしも、係数の和が $1$ の
+組合せでだけ混ぜてよい。特に $s = t = \frac{1}{2}$ とすれば
+\textbf{二つの解の中点もまた解}であり、定理 \ref{thm:threesol}
+(解が $2$ つあれば無数)のもう一つの顔が見えている。\\
+\textbf{よくあるミス}:$(s + t)\vect{b} \neq \vect{b}$ を「明らか」で
+済ませること。$(s + t - 1)\vect{b} = \vect{0}$ の形に直してから論じる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gauss-ex12}}\quad
+\textbf{方針}:主成分の個数を数える。\\
+\textbf{解答}:係数の行列(右辺は $0$ なので係数部分だけ考えればよい)を
+簡約な階段形に変形する。主成分は $1$ つの行に高々 $1$ 個しかないから、
+主成分の個数 $r$ は式の本数 $m$ 以下であり、仮定より $r \le m < n$。
+よって $n$ 本の列のうち、主成分のない列が $n - r \ge 1$ 本残る。
+同次方程式に矛盾行は現れない(問 \ref{q:gauss-ex8})から、
+主成分のない列に対応する未知数は自由なパラメータである。
+その一つに $1$、残りに $0$ を入れれば、成分に $1$ を含む解、
+すなわち $\vect{0}$ でない解が得られる。 $\blacksquare$\\
+この事実は「式が足りなければ、$\vect{0}$ 以外の解が必ず漏れ出す」ことを
+示しており、第II部(線形独立性)や第III部(次元)で繰り返し使われる
+基本原理である。\\
+\textbf{よくあるミス}:「式より未知数が多いから明らか」で済ませること。
+階段形・主成分・自由な未知数という言葉で、きちんと根拠を述べる。
+
+\bigskip
 \noindent\textbf{問 \ref{q:inv2}}\quad
 $\det A = 2 \cdot (-3) - 1 \cdot 1 = -7 \neq 0$ より
 \[
