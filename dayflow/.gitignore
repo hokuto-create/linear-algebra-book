@@ -1,0 +1,4 @@
+# 実際の secret 値を入れた .env はコミットしない（.env.example のみ管理）
+.env
+.env.local
+supabase/.temp/

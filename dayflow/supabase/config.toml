@@ -1,0 +1,14 @@
+project_id = "dayflow"
+
+# create-checkout-session / ai-toc-import はプラットフォーム側でも JWT を検証する
+# （関数内でも getUserFromRequest() で再検証している）
+[functions.create-checkout-session]
+verify_jwt = true
+
+[functions.ai-toc-import]
+verify_jwt = true
+
+# Stripe からの webhook は Supabase の JWT を持たないため検証を無効化する。
+# 代わりに Stripe-Signature の HMAC 署名検証を関数内で必ず行う。
+[functions.stripe-webhook]
+verify_jwt = false
