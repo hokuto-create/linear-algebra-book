@@ -2677,8 +2677,35 @@ $\vect{0}$ とおき、$\vect{a}_i$ ごとに係数を整理して連立方程�
 \chapter{連立一次方程式の解の構造}\label{chap:structure}
 % =====================================================
 
-第I部の掃き出し法で、解は「一意・無数・なし」の三択だと知った。
-本章はその完全な理論化であり、第2部のゴールである。
+\begin{goal}
+\begin{itemize}
+\item 同次方程式の解空間が線形結合で閉じることを示し、
+\textbf{自由度} $n - \mathrm{rank}\,A$ の定理を証明付きで理解して、
+一般解をパラメータ表示できるようになる。
+\item \textbf{解の構造定理}「一般解 $=$ 特殊解 $+$ 同次方程式の一般解」を
+証明し、非同次方程式の解集合を完全に記述できるようになる。
+\item 存在条件 $\mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b})$ を
+証明付きで理解し、解の個数(なし・ただ一つ・無数)を
+\textbf{階数だけで}完全に判定できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 三択を「定理」に格上げする}
+
+第I部の掃き出し法で、解は「一意・無数・なし」の三択だと知った
+(定理 \ref{thm:threesol})。しかしあの定理は「三択である」ことしか
+言っていない。\textbf{いつ}どの場合が起こるのか。「無数」のとき、
+どれくらい無数で、解の全体はどんな\textbf{形}をしているのか。
+前章までで階数と線形独立という道具が出揃った今、
+これらの問いにすべて証明付きで答えられる。
+本章はその完全な理論化であり、第II部のゴールである。
+
+問いを三つに分けて進む:
+\textbf{(i)} 右辺が $\vect{0}$ の方程式(同次方程式)の解の全体は
+どんな集合か。
+\textbf{(ii)} 一般の右辺 $\vect{b}$ のとき、解の全体は同次方程式と
+どう関係するか。
+\textbf{(iii)} そもそも解は\textbf{いつ}存在するのか。
 
 \section{同次方程式の解空間}
 
@@ -2686,42 +2713,96 @@ $\vect{0}$ とおき、$\vect{a}_i$ ごとに係数を整理して連立方程�
 同次方程式は必ず $\vect{x} = \vect{0}$ という解(自明解)をもつので、
 問題は「それ以外の解があるか」である。
 
-同次方程式の解の集合 $W$ には、際立った性質がある:
-$\vect{u}, \vect{v} \in W$ ならば
+\begin{teiri}[解空間は線形結合で閉じる]\label{thm:homog-closed}
+同次方程式 $A\vect{x} = \vect{0}$ の解の集合を $W$ とすると、
+$\vect{u}, \vect{v} \in W$ ならば $\vect{u} + \vect{v} \in W$ であり、
+任意のスカラー $c$ に対して $c\vect{u} \in W$ である。
+すなわち\textbf{解どうしの線形結合もまた解}である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+行列とベクトルの積の線形性(定理 \ref{thm:matvec-linear})により
 \[
-A(\vect{u} + \vect{v}) = A\vect{u} + A\vect{v} = \vect{0}, \qquad
-A(c\vect{u}) = c\,A\vect{u} = \vect{0}
+A(\vect{u} + \vect{v}) = A\vect{u} + A\vect{v}
+= \vect{0} + \vect{0} = \vect{0}, \qquad
+A(c\vect{u}) = c\,A\vect{u} = c\vect{0} = \vect{0}. \qquad \blacksquare
 \]
-だから、$\vect{u} + \vect{v} \in W$ かつ $c\vect{u} \in W$。すなわち
-\textbf{解どうしの線形結合もまた解}である。
+
 このように和とスカラー倍について閉じた集合を\textbf{部分空間}と呼ぶ
 (第III部の主役の先取りである)。同次方程式の解集合を\textbf{解空間}という。
 
-\begin{teiri}[解の自由度]
-$A$ を $m \times n$ 行列とすると、同次方程式 $A\vect{x} = \vect{0}$ の解は
+では、解空間は「どのくらいの大きさ」なのか。
+答えは階数で完全に決まる。
+
+\begin{teiri}[解の自由度]\label{thm:freedom}
+$A$ を $m \times n$ 行列、$r = \mathrm{rank}\,A$ とすると、
+同次方程式 $A\vect{x} = \vect{0}$ の解の全体は、$n - r$ 本のベクトル
+$\vect{w}_1, \dots, \vect{w}_{n-r}$ を用いて
 \[
-n - \mathrm{rank}\,A
+\vect{x} = t_1 \vect{w}_1 + \cdots + t_{n-r} \vect{w}_{n-r}
+\qquad (t_1, \dots, t_{n-r} \text{ は任意の実数})
 \]
-個のパラメータを用いて、ちょうど一通りに表される。
-この個数を解の\textbf{自由度}という。
+と表される。しかも、パラメータの組 $(t_1, \dots, t_{n-r})$ と解は
+一対一に対応する(異なるパラメータは異なる解を与える)。
+この個数 $n - \mathrm{rank}\,A$ を解の\textbf{自由度}という。
 \end{teiri}
 
-理由は掃き出し法から直接読み取れる。簡約な階段形にしたとき、
-主成分のある列に対応する未知数($\mathrm{rank}\,A$ 個)は他で決まり、
-残りの未知数($n - \mathrm{rank}\,A$ 個)は自由に選べるパラメータになる。
+\noindent\textbf{(証明)}\quad
+$A$ の簡約な階段形を $R$ とすると、行基本変形は解集合を変えない
+(定理 \ref{thm:rowop})から、$R\vect{x} = \vect{0}$ を調べればよい。
+主成分のある列に対応する $r$ 個の未知数を\textbf{主成分未知数}、
+残りの $n - r$ 個を\textbf{自由未知数}と呼ぶ。$R$ の零でない各行は
+「(主成分未知数)$+$(自由未知数の定数倍の和)$= 0$」という式だから、
+\textbf{各主成分未知数は自由未知数の式として一意に解ける}。
+
+そこで自由未知数を順に $t_1, \dots, t_{n-r}$ とおくと、
+解は $t$ たちの $1$ 次式で書け、$t$ ごとの係数を縦に集めれば
+\[
+\vect{x} = t_1 \vect{w}_1 + \cdots + t_{n-r}\vect{w}_{n-r}
+\]
+の形になる($\vect{w}_k$ は「$t_k = 1$、他の $t = 0$」とおいた解)。
+逆に任意の解 $\vect{x}$ は、その自由未知数の値を $t$ たちに代入した
+ものとして必ず得られる(主成分未知数の値は自由未知数から一意に
+決まるため)。一対一であること:二つのパラメータ組が同じ解を
+与えたなら、解の自由未知数の成分を見ればパラメータ組自体が
+一致している。 $\blacksquare$
+
+理由を一言でいえば、
 \[
 \text{(未知数の個数)} = \text{(縛られる個数)} + \text{(自由な個数)}
 \]
 という当たり前の勘定が、$n = \mathrm{rank}\,A + (\text{自由度})$ という
 定理になっている。この式は第III部で\textbf{次元定理}として再登場する。
 
-\section{非同次方程式:特殊解 + 同次解}
+\begin{teiri}[系:横長の同次方程式]\label{thm:wide-homog}
+式の本数より未知数が多い($m < n$)同次方程式は、
+必ず自明でない解をもつ(自由度は $n - r \ge n - m \ge 1$)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$r = \mathrm{rank}\,A \le m < n$(定理 \ref{thm:rank-basic})だから
+自由度 $n - r \ge 1$。パラメータに $1$ を入れれば非自明な解を得る。
+(これは第 \ref{chap:rank} 章の定理 \ref{thm:toomany} を方程式の言葉で
+言い直したものでもある。) $\blacksquare$
+
+\begin{mondai}\label{q:sol-freedom}
+(1) $A$ が $3 \times 5$ 行列で $\mathrm{rank}\,A = 2$ のとき、
+$A\vect{x} = \vect{0}$ の自由度を求めよ。
+(2) $A$ が $4$ 次正方行列で $\mathrm{rank}\,A = 4$ のとき、
+$A\vect{x} = \vect{0}$ の解をすべて求めよ。
+(3) $A$ が $5 \times 3$ 行列(縦長)のとき、$A\vect{x} = \vect{0}$ が
+自明解しかもたないことはありうるか。あるならば
+$\mathrm{rank}\,A$ の条件を述べよ。
+\end{mondai}
+
+\section{非同次方程式 ― 特殊解 + 同次解}
 
 一般の $A\vect{x} = \vect{b}$($\vect{b} \neq \vect{0}$)の解集合は、
-部分空間には\textbf{ならない}(たとえば $\vect{0}$ が解でない)。
+部分空間には\textbf{ならない}(たとえば $\vect{0}$ が解でない。
+反例 \ref{hanrei:nonhomog-sum} で詳しく見る)。
 しかし、同次方程式と美しい関係で結ばれている。
 
-\begin{teiri}[解の構造定理]
+\begin{teiri}[解の構造定理]\label{thm:structure}
 $A\vect{x} = \vect{b}$ の一つの解(\textbf{特殊解})を $\vect{x}_0$ とすると、
 すべての解は
 \[
@@ -2731,9 +2812,25 @@ $A\vect{x} = \vect{b}$ の一つの解(\textbf{特殊解})を $\vect{x}_0$ と�
 の形にちょうど一通りに書ける。
 \end{teiri}
 
-証明は一行である:$\vect{x}$ が解なら
-$A(\vect{x} - \vect{x}_0) = \vect{b} - \vect{b} = \vect{0}$ だから
-$\vect{w} = \vect{x} - \vect{x}_0$ は同次方程式の解。逆も明らか。
+\noindent\textbf{(証明)}\quad
+三つのことを確かめる。
+
+(この形は解である)\ $\vect{w}$ を同次方程式の任意の解とすると
+\[
+A(\vect{x}_0 + \vect{w}) = A\vect{x}_0 + A\vect{w}
+= \vect{b} + \vect{0} = \vect{b}.
+\]
+
+(解はすべてこの形である)\ $\vect{x}$ を任意の解とすると
+\[
+A(\vect{x} - \vect{x}_0) = A\vect{x} - A\vect{x}_0
+= \vect{b} - \vect{b} = \vect{0}
+\]
+だから、$\vect{w} = \vect{x} - \vect{x}_0$ は同次方程式の解であり、
+$\vect{x} = \vect{x}_0 + \vect{w}$ と書けている。
+
+(一通りである)\ $\vect{x}_0 + \vect{w} = \vect{x}_0 + \vect{w}'$ なら、
+両辺から $\vect{x}_0$ を引いて $\vect{w} = \vect{w}'$。 $\blacksquare$
 
 幾何的にいえば、同次方程式の解空間(原点を通る直線や平面)を、
 特殊解 $\vect{x}_0$ の分だけ\textbf{平行移動}したものが非同次方程式の解集合である。
@@ -2758,11 +2855,19 @@ $x_3 = t$ とおいて解くと
 点 $\mat{0 \\ 1 \\ 0}$ を通るように平行移動したものである。
 \end{rei}
 
+\begin{chui}
+特殊解の選び方は一通りではない(解ならどれでも特殊解に使える)。
+特殊解を取り替えると一般解の\textbf{見た目}は変わるが、
+解集合そのものは変わらない(問 \ref{q:sol-ex11} で証明する)。
+答え合わせのときは、見た目ではなく「もとの方程式を満たすか」で
+確認するのがよい。
+\end{chui}
+
 \section{解の存在条件}
 
 最後に「解なし」の場合を理論化する。
 
-\begin{teiri}[解の存在条件]
+\begin{teiri}[解の存在条件]\label{thm:solvable}
 $A\vect{x} = \vect{b}$ が解をもつための必要十分条件は
 \[
 \mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b})
@@ -2770,11 +2875,65 @@ $A\vect{x} = \vect{b}$ が解をもつための必要十分条件は
 である($(A \mid \vect{b})$ は拡大係数行列)。
 \end{teiri}
 
-掃き出して「$0 = (\text{零でない数})$」の行が現れることは、
-拡大係数行列側だけ階数が $1$ 増えることにほかならない、
-というのがこの定理の中身である。また、列ベクトルの言葉では
-「$\vect{b}$ が $A$ の列ベクトルたちの線形結合で書けること」と言い換えられる
+\noindent\textbf{(証明)}\quad
+拡大係数行列 $(A \mid \vect{b})$ を行基本変形で簡約な階段形にする。
+このとき左側の $n$ 列だけを見れば、それは $A$ の簡約な階段形 $R$ に
+なっている(同じ変形を $A$ に施したことになるから)。
+$r = \mathrm{rank}\,A$ とすると、$R$ の零でない行は $r$ 本で、
+拡大側の階段形の零でない行は、$r$ 本(最終列に主成分が立たない場合)か
+$r + 1$ 本(最終列に主成分が立つ場合)のどちらかである。すなわち
+\[
+\mathrm{rank}\,(A \mid \vect{b}) = r \text{ または } r + 1.
+\]
+$r + 1$ になるのは、階段形に
+\[
+(0 \ \cdots \ 0 \mid 1)
+\]
+という行――もとの方程式でいえば「$0 = 1$」という矛盾式――が
+現れるときであり、このとき(またこのときに限り)解は存在しない。
+逆にこの行が現れなければ、第 \ref{chap:gauss} 章の手順どおり、
+自由未知数に任意の値を与えて主成分未知数を決めれば解が作れる。
+まとめると:解が存在する $\iff$ 矛盾式が現れない $\iff$
+$\mathrm{rank}\,(A \mid \vect{b}) = \mathrm{rank}\,A$。 $\blacksquare$
+
+また、列ベクトルの言葉では、$A\vect{x} = \vect{b}$ が解をもつことは
+\[
+x_1 \vect{a}_1 + \cdots + x_n \vect{a}_n = \vect{b}
+\]
+を満たす係数があること、すなわち
+「\textbf{$\vect{b}$ が $A$ の列ベクトルたちの線形結合で書ける}こと」と
+言い換えられる(問 \ref{q:sol-ex12} で存在条件と直接つなぐ)
 ――第 \ref{chap:rank} 章の冒頭で立てた問いに、これで完全な答えが付いた。
+
+以上をすべて束ねると、第I部の「三択」が完全版になる。
+
+\begin{teiri}[解の個数の完全な分類]\label{thm:sol-count}
+$A$ を $m \times n$ 行列、$r = \mathrm{rank}\,A$ とすると、
+$A\vect{x} = \vect{b}$ について次が成り立つ。
+\begin{enumerate}
+\item $\mathrm{rank}\,(A \mid \vect{b}) > r$ ならば、解はない。
+\item $\mathrm{rank}\,(A \mid \vect{b}) = r$ かつ $r = n$ ならば、
+解はただ一つ。
+\item $\mathrm{rank}\,(A \mid \vect{b}) = r$ かつ $r < n$ ならば、
+解は無数にあり、自由度 $n - r$ のパラメータ表示をもつ。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) は定理 \ref{thm:solvable} そのもの。解が存在する場合、
+構造定理(定理 \ref{thm:structure})により解集合は
+「特殊解 $+$ 同次方程式の解」で、その広がりは同次方程式の自由度
+$n - r$ で決まる(定理 \ref{thm:freedom})。
+$r = n$ なら自由度 $0$ で、同次方程式の解は $\vect{0}$ のみ。
+よって解は $\vect{x}_0$ ただ一つである。
+$r < n$ なら自由度が $1$ 以上あり、パラメータ $t_1$ に異なる実数を
+入れれば異なる解が得られる(定理 \ref{thm:freedom} の一対一対応)から、
+解は実数の個数だけ――無数に――存在する。 $\blacksquare$
+
+これで「一意・無数・なし」のすべてが、\textbf{二つの階数
+$\mathrm{rank}\,A$, $\mathrm{rank}\,(A \mid \vect{b})$ と未知数の個数 $n$ を
+見るだけで}判定できるようになった。掃き出し法は答えを求める手段で
+あると同時に、この二つの階数を読み取る手段でもある。
 
 \begin{itembox}[l]{深掘り:この構造定理は微分方程式にもそっくり現れる}
 「一般解 = 特殊解 + 同次方程式の一般解」という構造は、
@@ -2788,7 +2947,7 @@ $C_1 e^{t} + C_2 e^{2t}$ に、特殊解(たとえば $\frac{1}{12}e^{5t}$)を
 偶然ではない。微分も「和を保ち定数倍を保つ」操作、
 すなわち\textbf{線形写像}だからである(関数の集合をベクトル空間とみなす
 ――この飛躍は第III部で正当化される)。
-$A\vect{x} = \vect{b}$ で証明した一行の論法が、
+$A\vect{x} = \vect{b}$ で証明した論法が、
 微分方程式でも漸化式でも一字一句そのまま通用する。
 \textbf{線形代数を学ぶとは、この「同じ構造」を見抜く目を手に入れることである}。
 \end{itembox}
@@ -2801,3 +2960,334 @@ $x_1 + 2x_2 - x_3 + x_4 = 0$,
 $2x_1 + 4x_2 - x_3 + 5x_4 = 0$
 の解空間の自由度を求め、一般解をパラメータ表示せよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[非同次方程式の解集合は、和とスカラー倍で閉じない]\label{hanrei:nonhomog-sum}
+方程式 $x + y = 1$ の解として $(1, 0)$ と $(0, 1)$ がある。
+ところが、その和 $(1, 1)$ は $1 + 1 = 2 \neq 1$ で解ではないし、
+$2$ 倍の $(2, 0)$ も $2 \neq 1$ で解ではない。
+$\vect{0} = (0, 0)$ も $0 \neq 1$ で解ではない。
+つまり\textbf{同次方程式で成り立った「解の線形結合は解」
+(定理 \ref{thm:homog-closed})は、$\vect{b} \neq \vect{0}$ では
+全面的に崩れる}。構造定理の「平行移動」という言葉が正確で、
+原点を通らない直線は、ベクトルの演算とは噛み合わないのである。
+解集合が和とスカラー倍で閉じるのは $\vect{b} = \vect{0}$ のときに
+限る(例題 \ref{rei:sol-closed} で証明する)。
+\end{hanrei}
+
+\begin{hanrei}[自由度の公式は「解があるとき」専用]\label{hanrei:freedom-misuse}
+$A$ が $1 \times 2$ 行列の方程式
+\[
+\begin{cases} x + y = 1 \\ 2x + 2y = 3 \end{cases}
+\]
+で、$\mathrm{rank}\,A = 1$、未知数 $2$ 個だから
+「自由度 $2 - 1 = 1$ で解は直線をなす」と結論してはいけない。
+実際は第 $1$ 式の $2$ 倍と第 $2$ 式が矛盾し(\,$2 = 3$\,)、解は
+\textbf{存在しない}($\mathrm{rank}\,(A \mid \vect{b}) = 2 >
+1 = \mathrm{rank}\,A$)。
+自由度の定理 \ref{thm:freedom} は\textbf{同次方程式}の定理であり、
+非同次方程式では「まず存在条件(定理 \ref{thm:solvable})、
+それから自由度」という順序を守らなければならない。
+\end{hanrei}
+
+\section{例題}
+
+同次・非同次の解法、構造定理による整理、存在条件の運用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(同次方程式を解く)]\label{rei:sol-homog}
+同次方程式
+$\begin{cases} x + 2y - z = 0 \\ 2x + 3y + z = 0 \end{cases}$
+の自由度を求め、一般解をパラメータ表示せよ。\\
+\textbf{解.}\ 係数行列を掃き出す:
+\[
+\mat{1 & 2 & -1 \\ 2 & 3 & 1}
+\longrightarrow
+\mat{1 & 2 & -1 \\ 0 & -1 & 3}
+\longrightarrow
+\mat{1 & 0 & 5 \\ 0 & 1 & -3}.
+\]
+$\mathrm{rank}\,A = 2$、未知数 $3$ 個だから自由度は $3 - 2 = 1$。
+自由未知数 $z = t$ とおくと $x = -5t$, $y = 3t$ で
+\[
+\mat{x \\ y \\ z} = t\mat{-5 \\ 3 \\ 1} \qquad (t \text{ は任意の実数}).
+\]
+検算:$(-5) + 2 \cdot 3 - 1 = 0$, $2(-5) + 3 \cdot 3 + 1 = 0$ で適合。
+解空間は原点を通る直線である。
+\end{rei}
+
+\begin{rei}[例題・基本(非同次方程式と構造定理)]\label{rei:sol-nonhomog}
+$\begin{cases} x + y + 2z = 4 \\ 2x + 3y + 5z = 9 \end{cases}$
+の一般解を「特殊解 $+$ 同次解」の形で表せ。\\
+\textbf{解.}\ 拡大係数行列を掃き出す:
+\[
+\left(\begin{array}{ccc|c} 1 & 1 & 2 & 4 \\ 2 & 3 & 5 & 9 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c} 1 & 1 & 2 & 4 \\ 0 & 1 & 1 & 1 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c} 1 & 0 & 1 & 3 \\ 0 & 1 & 1 & 1 \end{array}\right).
+\]
+矛盾式はなく $\mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b}) = 2$。
+自由度 $1$ で、$z = t$ とおくと $x = 3 - t$, $y = 1 - t$:
+\[
+\mat{x \\ y \\ z} = \mat{3 \\ 1 \\ 0} + t\mat{-1 \\ -1 \\ 1}.
+\]
+第 $1$ 項は $t = 0$ の特殊解(検算:$3 + 1 + 0 = 4$,
+$6 + 3 + 0 = 9$)、第 $2$ 項は同次方程式の一般解
+(検算:$-1 - 1 + 2 = 0$, $-2 - 3 + 5 = 0$)である。
+\end{rei}
+
+\begin{rei}[例題・基本(存在条件)]\label{rei:sol-exist}
+連立方程式 $x + 2y = 3$, $2x + 4y = a$ が解をもつ $a$ の条件を求め、
+そのときの一般解を求めよ。\\
+\textbf{解.}\ 拡大係数行列を掃き出すと
+\[
+\left(\begin{array}{cc|c} 1 & 2 & 3 \\ 2 & 4 & a \end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c} 1 & 2 & 3 \\ 0 & 0 & a - 6 \end{array}\right).
+\]
+$\mathrm{rank}\,A = 1$ で、$a \neq 6$ なら最終列に主成分が立ち
+$\mathrm{rank}\,(A \mid \vect{b}) = 2$ となって解なし。
+$a = 6$ のときに限り階数が一致して解が存在する。
+このとき自由度は $2 - 1 = 1$ で、$y = t$ とおいて
+\[
+\mat{x \\ y} = \mat{3 \\ 0} + t\mat{-2 \\ 1}.
+\]
+検算:$(3 - 2t) + 2t = 3$、$2(3 - 2t) + 4t = 6 = a$ で適合する。
+\end{rei}
+
+\begin{rei}[例題・標準(自由度 $2$ の同次方程式)]\label{rei:sol-free2}
+同次方程式
+$\begin{cases}
+x_1 + 2x_2 + x_3 + 3x_4 = 0 \\
+2x_1 + 4x_2 + 3x_3 + 8x_4 = 0
+\end{cases}$
+の一般解を求めよ。\\
+\textbf{解.}\ 掃き出すと
+\[
+\mat{1 & 2 & 1 & 3 \\ 2 & 4 & 3 & 8}
+\longrightarrow
+\mat{1 & 2 & 1 & 3 \\ 0 & 0 & 1 & 2}
+\longrightarrow
+\mat{1 & 2 & 0 & 1 \\ 0 & 0 & 1 & 2}.
+\]
+主成分は第 $1$・$3$ 列で $\mathrm{rank}\,A = 2$、自由度は $4 - 2 = 2$。
+自由未知数 $x_2 = s$, $x_4 = t$ とおくと
+$x_1 = -2s - t$, $x_3 = -2t$ で
+\[
+\mat{x_1 \\ x_2 \\ x_3 \\ x_4}
+= s\mat{-2 \\ 1 \\ 0 \\ 0} + t\mat{-1 \\ 0 \\ -2 \\ 1}.
+\]
+検算:第 $2$ のベクトルについて
+$-1 + 0 - 2 + 3 = 0$, $-2 + 0 - 6 + 8 = 0$ で適合
+(第 $1$ のベクトルも同様)。解空間は $\R^4$ の中の
+「$2$ 方向に広がる平面」である。
+\end{rei}
+
+\begin{rei}[例題・標準(パラメータによる場合分け)]\label{rei:sol-case}
+連立方程式
+$\begin{cases}
+x + y + z = 1 \\
+2x + 3y + z = 2 \\
+3x + 4y + 2z = a
+\end{cases}$
+の解の個数を、$a$ の値で場合分けして調べ、解がある場合は一般解を求めよ。\\
+\textbf{解.}\ 拡大係数行列を掃き出す:
+\[
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\ 2 & 3 & 1 & 2 \\ 3 & 4 & 2 & a
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\ 0 & 1 & -1 & 0 \\ 0 & 1 & -1 & a - 3
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 0 & 2 & 1 \\ 0 & 1 & -1 & 0 \\ 0 & 0 & 0 & a - 3
+\end{array}\right).
+\]
+$\mathrm{rank}\,A = 2$ は $a$ によらない。
+$a \neq 3$ のときは最終行が矛盾式となり
+$\mathrm{rank}\,(A \mid \vect{b}) = 3$ で\textbf{解なし}。
+$a = 3$ のときは階数が一致し、自由度 $3 - 2 = 1$ で\textbf{解は無数}:
+$z = t$ とおいて
+\[
+\mat{x \\ y \\ z} = \mat{1 \\ 0 \\ 0} + t\mat{-2 \\ 1 \\ 1}.
+\]
+検算($t = 1$, $a = 3$):$(-1) + 1 + 1 = 1$, $-2 + 3 + 1 = 2$,
+$-3 + 4 + 2 = 3$ で適合。なお、この方程式では
+「ただ一つ」の場合は起こらない($\mathrm{rank}\,A = 2 < 3$ が
+$a$ によらないため)。三択のどれが起こりうるかまで、
+階数を見れば先に分かる。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:閉じるのは同次のときだけ)]\label{rei:sol-closed}
+$A\vect{x} = \vect{b}$ の解集合 $S$ が空でないとする。
+$S$ が和とスカラー倍で閉じる(すなわち部分空間になる)ための
+必要十分条件は $\vect{b} = \vect{0}$ であることを示せ。\\
+\textbf{解.}\ ($\Leftarrow$)\ $\vect{b} = \vect{0}$ のときは
+定理 \ref{thm:homog-closed} そのものである。\\
+($\Rightarrow$)\ $S$ がスカラー倍で閉じるとする。$S$ は空でないから
+解 $\vect{x}_0 \in S$ をとれて、$0$ 倍 $0\vect{x}_0 = \vect{0}$ も
+$S$ に属する。すると $\vect{0}$ が解だから
+\[
+\vect{b} = A\vect{0} = \vect{0}. \qquad \blacksquare
+\]
+非同次方程式($\vect{b} \neq \vect{0}$)の解集合は、空でなければ
+\textbf{決して}部分空間にならない、ということでもある
+(反例 \ref{hanrei:nonhomog-sum} の一般化)。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{同次方程式} $A\vect{x} = \vect{0}$ の解集合(\textbf{解空間})は
+線形結合で閉じる(定理 \ref{thm:homog-closed})。その大きさは
+\textbf{自由度} $n - \mathrm{rank}\,A$ で決まり、解は $n - r$ 本の
+ベクトルのパラメータ表示でちょうど一通りに書ける
+(定理 \ref{thm:freedom})。$m < n$ なら非自明解が必ずある。
+\item \textbf{非同次方程式}の解集合は「特殊解 $+$ 同次方程式の解」
+(構造定理 \ref{thm:structure})。幾何的には解空間の\textbf{平行移動}で、
+部分空間にはならない($\vect{0}$ を含まない)。
+\item \textbf{存在条件}:解がある $\iff$
+$\mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b})$
+(定理 \ref{thm:solvable})$\iff$ $\vect{b}$ が $A$ の列の線形結合。
+\item \textbf{完全な分類}(定理 \ref{thm:sol-count}):
+階数が増えれば解なし。一致して $\mathrm{rank} = n$ ならただ一つ。
+一致して $\mathrm{rank} < n$ なら自由度 $n - \mathrm{rank}\,A$ で無数。
+非同次では「存在の確認が先、自由度はその後」。
+\item この「特殊解 $+$ 同次解」の構造は、線形微分方程式・線形漸化式にも
+そのまま現れる(第III部で同じ定理として統合される)。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:sol-ex1}
+同次方程式
+$\begin{cases} x - y + 2z = 0 \\ 2x + y + z = 0 \end{cases}$
+の自由度を求め、一般解をパラメータ表示せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:sol-ex2}
+$\begin{cases} x + 2y - z = 2 \\ 2x + 5y + z = 5 \end{cases}$
+の一般解を「特殊解 $+$ 同次解」の形で表せ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:sol-ex3}
+連立方程式 $2x + 6y = 4$, $3x + 9y = a$ が解をもつ $a$ の条件を
+階数の言葉で述べ、そのときの一般解を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:sol-ex4}
+(1) $A$ が $4 \times 6$ 行列で $\mathrm{rank}\,A = 3$ のとき、
+同次方程式 $A\vect{x} = \vect{0}$ の自由度を求めよ。
+(2) $A\vect{x} = \vect{0}$ の解集合と、$A\vect{x} = \vect{b}$
+($\vect{b} \neq \vect{0}$、解は存在するとする)の解集合のうち、
+$\vect{0}$ を含むのはどちらか。
+(3) (2) の二つの解集合のうち、和とスカラー倍で閉じるのはどちらか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sol-ex5}
+連立方程式
+$\begin{cases}
+x + y - z = 2 \\
+x + 2y + z = 3 \\
+2x + 3y + az = 5
+\end{cases}$
+の解の個数を $a$ の値で場合分けして調べ、解がある場合は一般解を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sol-ex6}
+連立方程式 $x + y = 1$, $x + ay = b$ の解の個数を、
+$a, b$ の値の組合せで完全に分類せよ(ただ一つ/無数/なし、の
+それぞれが起こる条件を求める)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sol-ex7}
+同次方程式
+$\begin{cases}
+x_1 + x_2 + x_3 + x_4 = 0 \\
+x_1 + 2x_2 + 3x_3 + 4x_4 = 0 \\
+x_1 + 3x_2 + 5x_3 + 7x_4 = 0
+\end{cases}$
+の自由度を求め、一般解をパラメータ表示せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sol-ex8}
+$A = \mat{1 & 2 \\ 2 & 4 \\ 3 & 6}$ とする。
+$A\vect{x} = \vect{b}$ が解をもつような $\vect{b} \in \R^3$ を
+すべて求めよ(ヒント:$\vect{b}$ が $A$ の列の線形結合で書ける条件を
+考える)。また $\vect{b} = \mat{1 \\ 2 \\ 4}$ のとき解がないことを、
+階数の不一致で確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:sol-ex9}
+$2$ 点 $(1, 1)$, $(2, 3)$ を通る $2$ 次以下の多項式
+$p(x) = a_0 + a_1 x + a_2 x^2$ をすべて求めたい。
+(1) 条件を $a_0, a_1, a_2$ の連立一次方程式として書き、一般解を
+求めよ。
+(2) 解の族を「特殊解 $+$ 同次解」と読むとき、同次解にあたる多項式は
+どんな形か。$p(1) = p(2) = 0$ という条件と結びつけて説明せよ。
+(3) 通る点を $3$ つに増やすと解がただ一つになる理由を、
+第 \ref{chap:cofactor} 章の例 \ref{rei:cramer-poly} と結びつけて述べよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:sol-ex10}
+原点を通る $\R^3$ の二つの平面
+$x + y + z = 0$ と $x - y + 2z = 0$ について、
+(1) 二つの平面の交わり(共通解の集合)を求めよ。
+(2) 一般に、原点を通る二つの平面($2$ 本の同次 $1$ 次方程式)は、
+必ず原点以外の共通点をもつことを、自由度の定理から示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:sol-ex11}
+$\vect{x}_0$, $\vect{x}_0'$ がともに $A\vect{x} = \vect{b}$ の解であるとき、
+(1) $\vect{x}_0' - \vect{x}_0$ は同次方程式の解であることを示せ。
+(2) 「$\vect{x}_0 +$ 同次解」全体の集合と「$\vect{x}_0' +$ 同次解」全体の
+集合が一致することを示せ(特殊解の選び方によらず、構造定理の表す
+解集合は同じである)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:sol-ex12}
+第 \ref{chap:rank} 章の定理を使って、次を証明せよ:
+$\mathrm{rank}\,(A \mid \vect{b}) = \mathrm{rank}\,A$ であることと、
+$\vect{b}$ が $A$ の列ベクトルの線形結合で書けることは同値である。
+ヒント:$\mathrm{rank}$ は「列から独立に選べる最大本数」
+(定理 \ref{thm:rank-rowcol})。$A$ の主成分列と補題
+\ref{thm:span-bound}・\ref{thm:extend-indep} を使う。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:sol-ex1}}:掃き出して主成分の個数を数え、
+自由未知数を $t$ とおく。
+\item \textbf{問 \ref{q:sol-ex2}}:拡大係数行列を簡約化し、
+$t = 0$ の解を特殊解にとる。
+\item \textbf{問 \ref{q:sol-ex3}}:掃き出すと最終列だけの行が現れる。
+それが $0$ になる条件が答え。
+\item \textbf{問 \ref{q:sol-ex4}}:自由度の公式と
+「$\vect{0}$ が解 $\iff$ $\vect{b} = \vect{0}$」を使う。
+\item \textbf{問 \ref{q:sol-ex5}}:掃き出しの最終行に $a$ が残る。
+例題 \ref{rei:sol-case} と違い「ただ一つ」も起こりうる。
+\item \textbf{問 \ref{q:sol-ex6}}:第 $2$ 式から第 $1$ 式を引くと
+$(a - 1)y = b - 1$。$a - 1$ が $0$ かどうかで分ける。
+\item \textbf{問 \ref{q:sol-ex7}}:自由未知数が二つ出る。
+$x_3 = s$, $x_4 = t$ とおく。
+\item \textbf{問 \ref{q:sol-ex8}}:$A$ の列はどちらも
+$\mat{1 \\ 2 \\ 3}$ の定数倍である。
+\item \textbf{問 \ref{q:sol-ex9}}:未知数 $3$ 個・式 $2$ 本。
+同次解は「$x = 1, 2$ を根にもつ $2$ 次以下の多項式」になるはず。
+\item \textbf{問 \ref{q:sol-ex10}}:式 $2$ 本・未知数 $3$ 個の
+同次方程式とみなす(定理 \ref{thm:wide-homog})。
+\item \textbf{問 \ref{q:sol-ex11}}:(2) は集合の相等なので、
+両向きの包含を示す。差がつねに同次解であることが鍵。
+\item \textbf{問 \ref{q:sol-ex12}}:「書ける $\Rightarrow$ 階数不変」は
+補題 \ref{thm:span-bound}、「書けない $\Rightarrow$ 階数増加」は
+補題 \ref{thm:extend-indep} を使う。
+\end{itemize}
+}

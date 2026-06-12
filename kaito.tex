@@ -2734,11 +2734,31 @@ $\vect{a}_1, \dots, \vect{a}_k$ は線形独立だから、係数はすべて $0
 突き合わせようとして一般論にならないこと。
 
 \bigskip
+\noindent\textbf{問 \ref{q:sol-freedom}}\quad
+\textbf{方針}:自由度 $= n - \mathrm{rank}\,A$($n$ は未知数の個数
+$=$ 列数)。\\
+\textbf{解答}:(1) 未知数 $5$ 個、$\mathrm{rank}\,A = 2$ だから
+自由度は $5 - 2 = 3$。
+(2) 自由度は $4 - 4 = 0$、すなわちパラメータが一つもないので、
+解は自明解 $\vect{x} = \vect{0}$ ただ一つである
+(定理 \ref{thm:reg-rank} の (3) $\Rightarrow$ (5) でもある)。
+(3) ありうる。自由度は $3 - \mathrm{rank}\,A$ だから、
+$\mathrm{rank}\,A = 3$ のとき(またそのときに限り)自明解のみとなる。
+縦長($m > n$)では $\mathrm{rank}\,A = n$ が可能なので、
+横長(定理 \ref{thm:wide-homog})と違って非自明解は強制されない。\\
+\textbf{よくあるミス}:自由度を「$m - \mathrm{rank}$」(行数から引く)と
+覚えること。引く相手は\emph{未知数の個数} $n$ である。
+
+\bigskip
 \noindent\textbf{問 \ref{q:struct}}\quad
-(1) 第 $2$ 式は第 $1$ 式の $2$ 倍だから、拡大係数行列の階数が
-係数行列の階数($= 1$)と一致するのは $a = 2$ のときに限る。
-よって $a = 2$ のとき解は無数に存在し(自由度 $1$)、
-$a \neq 2$ のとき解は存在しない。
+\textbf{方針}:(1) 係数行列と拡大係数行列の階数を見比べる。
+(2) 掃き出して自由未知数にパラメータを置く。\\
+\textbf{解答}:(1) 係数行列の第 $2$ 行は第 $1$ 行の $2$ 倍だから
+$\mathrm{rank}\,A = 1$。拡大係数行列の階数がこれと一致するのは、
+第 $2$ 式が第 $1$ 式の $2$ 倍、すなわち $a = 2$ のときに限る
+(定理 \ref{thm:solvable})。よって $a = 2$ のとき解は無数に存在し
+(自由度 $2 - 1 = 1$)、$a \neq 2$ のときは
+$\mathrm{rank}\,(A \mid \vect{b}) = 2 > 1$ で解は存在しない。
 
 (2) 掃き出すと
 \[
@@ -2758,6 +2778,326 @@ $\mathrm{rank} = 2$、未知数 $4$ 個なので自由度は $2$。$x_2 = s$, $x
 = s \mat{-2 \\ 1 \\ 0 \\ 0} + t \mat{-4 \\ 0 \\ -3 \\ 1}
 \qquad (s, t \text{ は任意の実数}).
 \]
+検算:第 $2$ のベクトルは $-4 + 0 + 3 + 1 = 0$,
+$-8 + 0 + 3 + 5 = 0$ を満たす(第 $1$ のベクトルも同様)。\\
+\textbf{よくあるミス}:(1) で自由度の公式だけから「解は無数」と
+即断すること(反例 \ref{hanrei:freedom-misuse}:存在の確認が先)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex1}}\quad
+\textbf{方針}:係数行列を簡約化し、自由未知数を $t$ とおく。\\
+\textbf{解答}:
+\[
+\mat{1 & -1 & 2 \\ 2 & 1 & 1}
+\longrightarrow
+\mat{1 & -1 & 2 \\ 0 & 3 & -3}
+\longrightarrow
+\mat{1 & 0 & 1 \\ 0 & 1 & -1}.
+\]
+$\mathrm{rank}\,A = 2$、未知数 $3$ 個だから自由度は $1$。
+$z = t$ とおくと $x = -t$, $y = t$ で
+\[
+\mat{x \\ y \\ z} = t\mat{-1 \\ 1 \\ 1} \qquad (t \text{ は任意の実数}).
+\]
+検算:$-1 - 1 + 2 = 0$, $-2 + 1 + 1 = 0$ で適合。\\
+\textbf{よくあるミス}:簡約化の途中の符号ミス。最後に必ずもとの式に
+代入して検算する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex2}}\quad
+\textbf{方針}:拡大係数行列を簡約化し、自由未知数を $0$ とおいた解を
+特殊解にとる。\\
+\textbf{解答}:
+\[
+\left(\begin{array}{ccc|c} 1 & 2 & -1 & 2 \\ 2 & 5 & 1 & 5 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c} 1 & 2 & -1 & 2 \\ 0 & 1 & 3 & 1 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c} 1 & 0 & -7 & 0 \\ 0 & 1 & 3 & 1 \end{array}\right).
+\]
+矛盾式はなく、自由度は $3 - 2 = 1$。$z = t$ とおくと
+$x = 7t$, $y = 1 - 3t$ で
+\[
+\mat{x \\ y \\ z} = \mat{0 \\ 1 \\ 0} + t\mat{7 \\ -3 \\ 1}.
+\]
+検算:特殊解は $0 + 2 - 0 = 2$, $0 + 5 + 0 = 5$。同次部分は
+$7 - 6 - 1 = 0$, $14 - 15 + 1 = 0$ で適合。\\
+\textbf{よくあるミス}:特殊解と同次解の足し合わせ方を逆にして、
+同次部分にだけ右辺の値を満たさせようとすること。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex3}}\quad
+\textbf{方針}:掃き出すと最終列だけの行が現れる。それが $0$ になる
+条件が存在条件である。\\
+\textbf{解答}:拡大係数行列を掃き出す:
+\[
+\left(\begin{array}{cc|c} 2 & 6 & 4 \\ 3 & 9 & a \end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c} 1 & 3 & 2 \\ 0 & 0 & a - 6 \end{array}\right)
+\]
+(第 $1$ 行を $2$ で割り、第 $2$ 行から第 $1$ 行の $3$ 倍を引いた)。
+$\mathrm{rank}\,A = 1$ で、$a \neq 6$ なら
+$\mathrm{rank}\,(A \mid \vect{b}) = 2$ となり解なし。
+\textbf{$a = 6$ のときに限り}階数が一致して解が存在する。
+このとき自由度 $1$ で、$y = t$ とおいて
+\[
+\mat{x \\ y} = \mat{2 \\ 0} + t\mat{-3 \\ 1}.
+\]
+検算:$2(2 - 3t) + 6t = 4$, $3(2 - 3t) + 9t = 6 = a$ で適合。\\
+\textbf{よくあるミス}:存在条件を求めただけで一般解を答え忘れること。
+また「$\mathrm{rank}\,A = 1$ だから自由度 $1$ で解は無数」と
+$a$ の条件を確かめずに言うこと。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex4}}\quad
+\textbf{方針}:自由度の公式と、「$\vect{0}$ が解 $\iff$ 右辺が
+$\vect{0}$」を使う。\\
+\textbf{解答}:(1) 自由度 $= 6 - 3 = 3$。
+(2) $A\vect{0} = \vect{0}$ だから、$\vect{0}$ を含むのは
+\textbf{同次方程式の解集合}である。$\vect{b} \neq \vect{0}$ の側は
+$A\vect{0} = \vect{0} \neq \vect{b}$ より $\vect{0}$ を含まない。
+(3) 和とスカラー倍で閉じるのも\textbf{同次方程式の解集合}
+(定理 \ref{thm:homog-closed})。非同次の解集合は閉じない
+(反例 \ref{hanrei:nonhomog-sum}、例題 \ref{rei:sol-closed})。\\
+\textbf{よくあるミス}:非同次の解集合も「直線や平面の形だから
+部分空間」と思うこと。原点を通らない直線・平面は部分空間ではない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex5}}\quad
+\textbf{方針}:掃き出して最終行に $a$ を残し、$a = 0$ かどうかで分ける。\\
+\textbf{解答}:拡大係数行列を掃き出す:
+\[
+\left(\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\ 1 & 2 & 1 & 3 \\ 2 & 3 & a & 5
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\ 0 & 1 & 2 & 1 \\ 0 & 1 & a + 2 & 1
+\end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\ 0 & 1 & 2 & 1 \\ 0 & 0 & a & 0
+\end{array}\right).
+\]
+\textbf{$a \neq 0$ のとき}:$\mathrm{rank}\,A =
+\mathrm{rank}\,(A \mid \vect{b}) = 3 = n$ で、解は\textbf{ただ一つ}。
+第 $3$ 行から $z = 0$、第 $2$ 行から $y = 1$、第 $1$ 行から
+$x = 2 - 1 + 0 = 1$:$(x, y, z) = (1, 1, 0)$。
+検算:$1 + 1 - 0 = 2$, $1 + 2 + 0 = 3$, $2 + 3 + 0 = 5$($a$ によらず適合)。
+\textbf{$a = 0$ のとき}:零行ができて
+$\mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b}) = 2 < 3$、
+解は\textbf{無数}(自由度 $1$)。$z = t$ とおくと $y = 1 - 2t$,
+$x = 2 - y + z = 1 + 3t$:
+\[
+\mat{x \\ y \\ z} = \mat{1 \\ 1 \\ 0} + t\mat{3 \\ -2 \\ 1}.
+\]
+検算($t$ の項):$3 - 2 - 1 = 0$, $3 - 4 + 1 = 0$,
+$6 - 6 + 0 = 0$ で適合。なお最終列が $0$ なので「解なし」は
+どの $a$ でも起こらない。\\
+\textbf{よくあるミス}:$a = 0$ の場合に特殊解を求め直さず、
+$a \neq 0$ の解 $(1,1,0)$ が使えることに気づかないこと
+(同じ方程式の解だからそのまま特殊解にできる)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex6}}\quad
+\textbf{方針}:第 $2$ 式から第 $1$ 式を引いて $(a - 1)y = b - 1$ に
+まとめ、係数 $a - 1$ が $0$ かどうかで分ける。\\
+\textbf{解答}:掃き出すと
+\[
+\left(\begin{array}{cc|c} 1 & 1 & 1 \\ 1 & a & b \end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c} 1 & 1 & 1 \\ 0 & a - 1 & b - 1 \end{array}\right).
+\]
+\textbf{$a \neq 1$ のとき}:$\mathrm{rank}\,A = 2 = n$ で解はただ一つ:
+$y = \dfrac{b - 1}{a - 1}$, $x = 1 - y = \dfrac{a - b}{a - 1}$。
+\textbf{$a = 1$, $b = 1$ のとき}:第 $2$ 行が零行になり
+$\mathrm{rank} = 1 < 2$、解は無数($x = 1 - t$, $y = t$)。
+\textbf{$a = 1$, $b \neq 1$ のとき}:第 $2$ 行が
+$(0\ 0 \mid b - 1)$ の矛盾式になり、解なし。
+検算($a = 3$, $b = 2$):$y = \frac{1}{2}$, $x = \frac{1}{2}$ で
+$x + 3y = \frac{1}{2} + \frac{3}{2} = 2 = b$ と適合。\\
+\textbf{よくあるミス}:$a - 1$ で割るときに $a = 1$ の場合を
+落とすこと。場合分けの分岐点は「割ろうとした式が $0$ になるところ」に
+ある。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex7}}\quad
+\textbf{方針}:掃き出して主成分の位置を確かめ、残り二つの未知数を
+$s, t$ とおく。\\
+\textbf{解答}:係数行列を掃き出す:
+\[
+\mat{1 & 1 & 1 & 1 \\ 1 & 2 & 3 & 4 \\ 1 & 3 & 5 & 7}
+\longrightarrow
+\mat{1 & 1 & 1 & 1 \\ 0 & 1 & 2 & 3 \\ 0 & 2 & 4 & 6}
+\longrightarrow
+\mat{1 & 0 & -1 & -2 \\ 0 & 1 & 2 & 3 \\ 0 & 0 & 0 & 0}.
+\]
+$\mathrm{rank}\,A = 2$、未知数 $4$ 個だから自由度は $2$。
+$x_3 = s$, $x_4 = t$ とおくと $x_1 = s + 2t$, $x_2 = -2s - 3t$ で
+\[
+\mat{x_1 \\ x_2 \\ x_3 \\ x_4}
+= s\mat{1 \\ -2 \\ 1 \\ 0} + t\mat{2 \\ -3 \\ 0 \\ 1}.
+\]
+検算:$s$ のベクトルは $1 - 2 + 1 + 0 = 0$, $1 - 4 + 3 + 0 = 0$,
+$1 - 6 + 5 + 0 = 0$、$t$ のベクトルは $2 - 3 + 0 + 1 = 0$,
+$2 - 6 + 0 + 4 = 0$, $2 - 9 + 0 + 7 = 0$ ですべて適合。\\
+\textbf{よくあるミス}:パラメータを置く未知数を主成分未知数に
+してしまい、表示が一通りに定まらず混乱すること(自由未知数
+=主成分のない列の未知数、に置く)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex8}}\quad
+\textbf{方針}:解の存在は「$\vect{b}$ が $A$ の列の線形結合で
+書けること」。$A$ の列の線形結合がどんな集合になるかを先に調べる。\\
+\textbf{解答}:$A$ の列は
+$\vect{a}_1 = \mat{1 \\ 2 \\ 3}$, $\vect{a}_2 = \mat{2 \\ 4 \\ 6}
+= 2\vect{a}_1$ で、どんな線形結合も
+\[
+x\vect{a}_1 + y\vect{a}_2 = (x + 2y)\vect{a}_1
+\]
+すなわち $\vect{a}_1$ の定数倍である。よって解をもつ $\vect{b}$ は
+\[
+\vect{b} = c\mat{1 \\ 2 \\ 3} \qquad (c \text{ は任意の実数})
+\]
+に限る(このとき $x + 2y = c$ を満たす $(x, y)$ がすべて解で、
+解は無数にある)。$\vect{b} = \mat{1 \\ 2 \\ 4}$ は
+この形でないから解はない。階数で確かめると
+\[
+\left(\begin{array}{cc|c} 1 & 2 & 1 \\ 2 & 4 & 2 \\ 3 & 6 & 4 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{cc|c} 1 & 2 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{array}\right)
+\]
+で $\mathrm{rank}\,A = 1$、$\mathrm{rank}\,(A \mid \vect{b}) = 2$。
+階数が増えているので解なし(定理 \ref{thm:solvable})。\\
+\textbf{よくあるミス}:「$\vect{b}$ の成分が $A$ の成分より大きい/
+小さい」など、線形結合と無関係な基準で判定しようとすること。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex9}}\quad
+\textbf{方針}:$p(1) = 1$, $p(2) = 3$ を $a_0, a_1, a_2$ の方程式に
+直す。未知数 $3$ 個・式 $2$ 本である。\\
+\textbf{解答}:(1) 条件は
+\[
+\begin{cases}
+a_0 + a_1 + a_2 = 1 \\
+a_0 + 2a_1 + 4a_2 = 3
+\end{cases}
+\]
+である。掃き出すと
+\[
+\left(\begin{array}{ccc|c} 1 & 1 & 1 & 1 \\ 1 & 2 & 4 & 3 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c} 1 & 1 & 1 & 1 \\ 0 & 1 & 3 & 2 \end{array}\right)
+\longrightarrow
+\left(\begin{array}{ccc|c} 1 & 0 & -2 & -1 \\ 0 & 1 & 3 & 2 \end{array}\right).
+\]
+自由度 $1$ で、$a_2 = t$ とおくと
+\[
+\mat{a_0 \\ a_1 \\ a_2} = \mat{-1 \\ 2 \\ 0} + t\mat{2 \\ -3 \\ 1},
+\qquad\text{すなわち}\qquad
+p(x) = (-1 + 2x) + t(x^2 - 3x + 2).
+\]
+検算($t = 1$):$p(x) = 1 - x + x^2$ は $p(1) = 1$, $p(2) = 3$ を満たす。
+(2) 同次解にあたるのは $t(x^2 - 3x + 2) = t(x - 1)(x - 2)$、
+すなわち\textbf{$x = 1, 2$ を根にもつ $2$ 次以下の多項式}である。
+実際、同次方程式は「$p(1) = 0$ かつ $p(2) = 0$」という条件に
+対応するから、因数定理により $(x - 1)(x - 2)$ の定数倍が
+ちょうどその全体になる。特殊解 $-1 + 2x$(直線)に
+「$2$ 点で $0$ になる補正」を足したものが解の族、という
+構造定理の読み方ができる。
+(3) 点を $3$ つにすると式が $3$ 本になり、係数行列は
+ヴァンデルモンドの形になる。$x$ 座標が相異なれば行列式が $0$ でなく
+(問 \ref{q:det4} (2))、解はただ一つ
+――それを実際に求めたのが例 \ref{rei:cramer-poly} である。\\
+\textbf{よくあるミス}:(2) で「同次解 = $0$ になる多項式」を
+零多項式だけと思うこと。条件は「$x = 1, 2$ \emph{で} $0$」であり、
+多項式自体が $0$ である必要はない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex10}}\quad
+\textbf{方針}:$2$ 本の同次 $1$ 次方程式とみなして解く。
+一般論は自由度 $\ge 1$ を言えばよい。\\
+\textbf{解答}:(1) 連立して掃き出す:
+\[
+\mat{1 & 1 & 1 \\ 1 & -1 & 2}
+\longrightarrow
+\mat{1 & 1 & 1 \\ 0 & -2 & 1}
+\longrightarrow
+\mat{1 & 0 & 3/2 \\ 0 & 1 & -1/2}.
+\]
+$z = 2t$ とおくと(分数を避けるため)$x = -3t$, $y = t$:交わりは直線
+\[
+\mat{x \\ y \\ z} = t\mat{-3 \\ 1 \\ 2}.
+\]
+検算:$-3 + 1 + 2 = 0$, $-3 - 1 + 4 = 0$ で両平面の上にある。
+(2) $2$ 本の同次方程式・未知数 $3$ 個だから、
+$\mathrm{rank}\,A \le 2 < 3$ で自由度は $1$ 以上
+(定理 \ref{thm:wide-homog})。よって原点以外の解(共通点)が
+必ず存在する。自由度 $1$ なら交わりは直線、
+自由度 $2$ なら二つの平面は一致している。\\
+\textbf{よくあるミス}:(2) で「平行な $2$ 平面は交わらない」と
+反論したくなること。\emph{原点を通る}平面どうしは平行でも一致して
+しまうので、共通点(原点以外)は必ずある。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex11}}\quad
+\textbf{方針}:(1) は差を $A$ に通す。(2) は集合の相等なので
+両向きの包含を示す。\\
+\textbf{解答}:(1)
+\[
+A(\vect{x}_0' - \vect{x}_0) = A\vect{x}_0' - A\vect{x}_0
+= \vect{b} - \vect{b} = \vect{0}.
+\]
+よって $\vect{d} = \vect{x}_0' - \vect{x}_0$ は同次方程式の解である。
+(2) $S = \{\vect{x}_0 + \vect{w} \mid A\vect{w} = \vect{0}\}$,
+$S' = \{\vect{x}_0' + \vect{w}' \mid A\vect{w}' = \vect{0}\}$ とおく。
+$S \subset S'$:$S$ の元 $\vect{x}_0 + \vect{w}$ は
+\[
+\vect{x}_0 + \vect{w} = \vect{x}_0' + (\vect{w} - \vect{d})
+\]
+と書け、$\vect{w} - \vect{d}$ は同次解どうしの差だから同次解
+(定理 \ref{thm:homog-closed})。よって $S' $ の元である。
+$S' \subset S$ も同様($\vect{x}_0' + \vect{w}' = \vect{x}_0 +
+(\vect{w}' + \vect{d})$)。両方の包含から $S = S'$。 $\blacksquare$\\
+どの解を特殊解に選んでも、構造定理の表す解集合は同一である。\\
+\textbf{よくあるミス}:(2) で片方の包含だけ示して終えること。
+集合が等しいことの証明は両向きが必要である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:sol-ex12}}\quad
+\textbf{方針}:$r = \mathrm{rank}\,A$ 本の主成分列が $A$ の全列を
+張ることを使う。「書ける」なら補題 \ref{thm:span-bound}、
+「書けない」なら補題 \ref{thm:extend-indep}。\\
+\textbf{解答}:$r = \mathrm{rank}\,A$ とし、$A$ の主成分列
+$\vect{p}_1, \dots, \vect{p}_r$ をとる。定理 \ref{thm:rank-rowcol} の
+証明(第 1 段)により、これらは線形独立で、$A$ のすべての列は
+その線形結合で書ける。
+
+($\Leftarrow$)\ $\vect{b}$ が $A$ の列の線形結合で書けるとする。
+各列は $\vect{p}_1, \dots, \vect{p}_r$ の線形結合だから、$\vect{b}$ も
+そうである。すると $(A \mid \vect{b})$ の\textbf{すべての}列が
+$r$ 本の $\vect{p}_s$ の線形結合で書けるから、
+補題 \ref{thm:span-bound} により $(A \mid \vect{b})$ の列から独立に
+選べるのは高々 $r$ 本。一方 $\vect{p}_1, \dots, \vect{p}_r$ という
+独立な $r$ 本は $(A \mid \vect{b})$ の列に含まれている。
+定理 \ref{thm:rank-rowcol} により
+$\mathrm{rank}\,(A \mid \vect{b}) = r = \mathrm{rank}\,A$。
+
+($\Rightarrow$)\ 対偶を示す。$\vect{b}$ が $A$ の列の線形結合で
+\textbf{書けない}とすると、特に $\vect{p}_1, \dots, \vect{p}_r$ の
+線形結合でも書けない(書ければ $A$ の列の結合になってしまう)。
+補題 \ref{thm:extend-indep} により
+$\vect{p}_1, \dots, \vect{p}_r, \vect{b}$ は独立な $r + 1$ 本で、
+これらはすべて $(A \mid \vect{b})$ の列だから、
+定理 \ref{thm:rank-rowcol} により
+$\mathrm{rank}\,(A \mid \vect{b}) \ge r + 1 > \mathrm{rank}\,A$。
+すなわち階数は一致しない。 $\blacksquare$\\
+これで「掃き出しの矛盾式」(定理 \ref{thm:solvable} の証明)と
+「列の線形結合」という二つの存在条件の見方が、定理どうしとして
+直結した。\\
+\textbf{よくあるミス}:($\Rightarrow$) を直接示そうとして
+行き詰まること。「書けない $\Rightarrow$ 階数が増える」という
+対偶の形が、補題 \ref{thm:extend-indep} とぴったり噛み合う。
 
 \section*{第III部}
 
