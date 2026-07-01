@@ -1594,6 +1594,36 @@ $\vect{w}_1 + \vect{w}_2$ を、二組の基底の線形結合で書く。
 \chapter{線形写像 ― 構造を保つ写像}\label{chap:linmap}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 線形写像の定義(和とスカラー倍を保つ写像)を理解し、
+与えられた写像が線形かどうかを判定・証明できるようになる。
+また、線形写像が\textbf{基底の行き先だけで決まる}ことを使えるようになる。
+\item \textbf{核}と\textbf{像}を計算し、核による単射性の判定を
+使えるようになる。
+\item \textbf{次元定理} $\dim V = \dim \mathrm{Ker}\,f + \dim \mathrm{Im}\,f$
+の証明を理解し、微分・積分・数列など様々な線形写像に適用できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 空間の次は、空間のあいだの写像}
+
+第I部で、行列 $A$ を掛ける操作 $\vect{x} \mapsto A\vect{x}$ が
+$\R^n$ から $\R^m$ への「変換」であることを学び、
+それが和とスカラー倍を保つこと(定理 \ref{thm:matvec-linear})も確かめた。
+いま舞台はベクトル空間一般に広がった。ならば写像の概念も広げよう
+――行列という道具立てを離れ、\textbf{「和とスカラー倍を保つ」という
+性質だけ}を要求するのである。
+
+こうして得られる線形写像の世界には、思いがけない住人が加わる。
+なんと\textbf{微分も積分も線形写像}である。高校以来使ってきた
+「項別に微分してよい」という規則は、線形性の主張にほかならない。
+ベクトル空間の公理化(第 \ref{chap:vs} 章)が多項式や関数を
+ベクトルの仲間にしたように、線形写像の公理化は微分や積分を
+「行列の仲間」にする。そして第II部で調べた解空間や階数の理論が、
+\textbf{核}と\textbf{像}という言葉で一斉に一般化される。
+本章の頂点は、自由度定理の抽象版である\textbf{次元定理}の証明である。
+
 \section{定義と例}
 
 \begin{teigi}[線形写像]
@@ -1608,7 +1638,39 @@ f(c\vect{u}) = c\,f(\vect{u})
 \end{teigi}
 
 第I部で「行列 $A$ の定める写像 $\vect{x} \mapsto A\vect{x}$」として
-出会った概念の、抽象版である。新しい舞台では、驚くべき例が加わる。
+出会った概念の、抽象版である。まず、定義から直ちに従う基本性質を
+まとめておく。
+
+\begin{teiri}[線形写像の基本性質]\label{thm:linmap-basic}
+線形写像 $f : V \to W$ について、次が成り立つ。
+\begin{enumerate}
+\item $f(\vect{0}) = \vect{0}$(零ベクトルは零ベクトルにうつる)。
+\item $f(-\vect{v}) = -f(\vect{v})$。
+\item 線形結合は線形結合にうつる:
+\[
+f(c_1\vect{v}_1 + \cdots + c_k\vect{v}_k)
+= c_1 f(\vect{v}_1) + \cdots + c_k f(\vect{v}_k).
+\]
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $f(\vect{0}) = f(0 \cdot \vect{0}) = 0 \cdot f(\vect{0}) = \vect{0}$
+(スカラー倍の保存と、$0\vect{w} = \vect{0}$(定理 \ref{thm:vs-basic}))。
+(2) $f(-\vect{v}) = f((-1)\vect{v}) = (-1)f(\vect{v}) = -f(\vect{v})$。
+(3) 和の保存を繰り返し使って項ごとに分け、各項でスカラー倍の保存を使う。
+$\blacksquare$
+
+(1) は実用上重要である:\textbf{$f(\vect{0}) \neq \vect{0}$ なら、
+その時点で線形写像ではない}(反例 \ref{hanrei:linmap-affine})。
+
+\begin{rei}[行列の定める写像]
+$m \times n$ 行列 $A$ に対し、$f(\vect{x}) = A\vect{x}$ は
+$\R^n \to \R^m$ の線形写像である(定理 \ref{thm:matvec-linear})。
+回転・鏡映・拡大などの幾何的変換(第I部)はすべてこの形だった。
+逆に、$\R^n \to \R^m$ の線形写像はすべて行列で書けること
+(定理 \ref{thm:lin-is-matrix})も第I部で見た。
+\end{rei}
 
 \begin{rei}[微分は線形写像である]
 微分 $D : \R[x]_n \to \R[x]_n$、$D(p) = p'$ は
@@ -1617,13 +1679,64 @@ f(c\vect{u}) = c\,f(\vect{u})
 \]
 を満たすから線形写像である。高校で「項別に微分してよい」と教わった規則は、
 「微分は線形写像である」という一文に凝縮される。
-定積分 $p \mapsto \int_0^1 p(x)\,dx$($\R[x]_n \to \R$)も線形写像である。
+定積分 $p \mapsto \int_0^1 p(x)\,dx$($\R[x]_n \to \R$)も線形写像である
+(積分の線形性)。
 \end{rei}
 
 \begin{rei}[数列のシフト]
 数列空間上で、$(a_0, a_1, a_2, \dots) \mapsto (a_1, a_2, a_3, \dots)$ と
 一つずらす写像も線形写像である。漸化式の理論はこの写像の分析にほかならない。
 \end{rei}
+
+\begin{rei}[評価写像]
+点を一つ決めて多項式の値を読む写像、たとえば
+$T : \R[x]_2 \to \R$, $T(p) = p(1)$ も線形写像である:
+$(p + q)(1) = p(1) + q(1)$, $(cp)(1) = c\,p(1)$。
+「$x = 1$ を代入する」という操作さえ、線形写像なのである。
+\end{rei}
+
+\section{線形写像は基底の行き先で決まる}
+
+線形写像の著しい特徴は、\textbf{ごく少数の情報で全体が決まる}ことである。
+
+\begin{teiri}[基底の行き先が写像を決める]\label{thm:linmap-basis}
+$V$ を有限次元ベクトル空間、$\vect{e}_1, \dots, \vect{e}_n$ をその基底とし、
+$W$ のベクトル $\vect{w}_1, \dots, \vect{w}_n$ を任意に指定する。
+このとき、
+\[
+f(\vect{e}_i) = \vect{w}_i \qquad (i = 1, \dots, n)
+\]
+を満たす線形写像 $f : V \to W$ が\textbf{ただ一つ}存在する。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+存在:任意の $\vect{v} \in V$ は座標を使って
+$\vect{v} = c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ とただ一通りに書ける
+(定理 \ref{thm:coord-unique})から、
+\[
+f(\vect{v}) = c_1\vect{w}_1 + \cdots + c_n\vect{w}_n
+\]
+と定めれば $f$ は矛盾なく定義され、$f(\vect{e}_i) = \vect{w}_i$ を満たす。
+線形性を確かめる。$\vect{v}, \vect{v}'$ の座標を $(c_i)$, $(c'_i)$ とすると、
+$\vect{v} + \vect{v}' = \sum_i (c_i + c'_i)\vect{e}_i$ だから
+座標の一意性により $\vect{v} + \vect{v}'$ の座標は $(c_i + c'_i)$ であり、
+\[
+f(\vect{v} + \vect{v}') = \sum_i (c_i + c'_i)\vect{w}_i
+= \sum_i c_i\vect{w}_i + \sum_i c'_i\vect{w}_i = f(\vect{v}) + f(\vect{v}').
+\]
+スカラー倍も同様である。
+
+一意性:$g$ も条件を満たす線形写像とすると、任意の $\vect{v}$ に対し
+定理 \ref{thm:linmap-basic}(3) より
+\[
+g(\vect{v}) = g\Bigl(\sum_i c_i\vect{e}_i\Bigr) = \sum_i c_i\,g(\vect{e}_i)
+= \sum_i c_i\vect{w}_i = f(\vect{v}).
+\]
+よって $g = f$ である。 $\blacksquare$
+
+$n$ 次元空間からの線形写像は、基底 $n$ 本の行き先という
+\textbf{有限個のデータで完全に決まる}。「線形写像を行列で表す」
+(次章の表現行列)ことができるのは、この定理のおかげである。
 
 \section{核と像、そして次元定理}
 
@@ -1635,28 +1748,87 @@ f(c\vect{u}) = c\,f(\vect{u})
 \mathrm{Im}\,f = \{\, f(\vect{v}) \mid \vect{v} \in V \,\}
 \]
 をそれぞれ $f$ の\textbf{核}、\textbf{像}という。
-$\mathrm{Ker}\,f$ は $V$ の、$\mathrm{Im}\,f$ は $W$ の部分空間になる。
 \end{teigi}
+
+\begin{teiri}\label{thm:kerim-sub}
+$\mathrm{Ker}\,f$ は $V$ の部分空間、$\mathrm{Im}\,f$ は $W$ の部分空間である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+核:$f(\vect{0}) = \vect{0}$ より $\vect{0} \in \mathrm{Ker}\,f$。
+$\vect{u}, \vect{v} \in \mathrm{Ker}\,f$ ならば
+$f(\vect{u} + \vect{v}) = f(\vect{u}) + f(\vect{v}) = \vect{0} + \vect{0}
+= \vect{0}$、$f(c\vect{u}) = c\,f(\vect{u}) = \vect{0}$ だから、
+和もスカラー倍も核に留まる。
+
+像:$\vect{0} = f(\vect{0}) \in \mathrm{Im}\,f$。
+$f(\vect{u}), f(\vect{v}) \in \mathrm{Im}\,f$ の和は
+$f(\vect{u}) + f(\vect{v}) = f(\vect{u} + \vect{v}) \in \mathrm{Im}\,f$、
+スカラー倍は $c\,f(\vect{u}) = f(c\vect{u}) \in \mathrm{Im}\,f$ である。
+$\blacksquare$
 
 $f(\vect{x}) = A\vect{x}$ のとき、$\mathrm{Ker}\,f$ は同次方程式の解空間であり、
 $\mathrm{Im}\,f$ は $A$ の列ベクトルが生成する空間(その次元は $\mathrm{rank}\,A$)である。
 つまり核と像は、第II部の主役たちの抽象化である。
 
-\begin{teiri}[単射性の判定]
+\begin{teiri}[単射性の判定]\label{thm:linmap-inj}
 線形写像 $f$ が単射(一対一)であることと、
 $\mathrm{Ker}\,f = \{\vect{0}\}$ は同値である。
 \end{teiri}
 
-「写像がつぶれていないこと」を、たった一点 $\vect{0}$ の逆像だけで
-判定できる――線形性のご利益である
-($f(\vect{u}) = f(\vect{v}) \iff f(\vect{u} - \vect{v}) = \vect{0}$ に注意)。
+\noindent\textbf{(証明)}\quad
+$f$ が単射なら、$f(\vect{v}) = \vect{0} = f(\vect{0})$ を満たす
+$\vect{v}$ は $\vect{0}$ しかないから $\mathrm{Ker}\,f = \{\vect{0}\}$。
+逆に $\mathrm{Ker}\,f = \{\vect{0}\}$ とする。$f(\vect{u}) = f(\vect{v})$
+ならば、線形性より
+$f(\vect{u} - \vect{v}) = f(\vect{u}) - f(\vect{v}) = \vect{0}$、
+すなわち $\vect{u} - \vect{v} \in \mathrm{Ker}\,f = \{\vect{0}\}$ だから
+$\vect{u} = \vect{v}$。よって単射である。 $\blacksquare$
 
-\begin{teiri}[次元定理]
+「写像がつぶれていないこと」を、たった一点 $\vect{0}$ の逆像だけで
+判定できる――線形性のご利益である。
+
+\begin{teiri}[次元定理]\label{thm:dimension}
 $V$ が有限次元のとき、線形写像 $f : V \to W$ に対して
 \[
 \dim V = \dim \mathrm{Ker}\,f + \dim \mathrm{Im}\,f.
 \]
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\dim V = n$、$\dim \mathrm{Ker}\,f = k$ とおき、
+$\mathrm{Ker}\,f$ の基底 $\vect{u}_1, \dots, \vect{u}_k$ をとる。
+拡張定理 \ref{thm:dim-extend}(2) により、これに $r = n - k$ 本を
+付け足して $V$ の基底
+\[
+\vect{u}_1, \dots, \vect{u}_k,\ \vect{v}_1, \dots, \vect{v}_r
+\]
+が作れる。このとき
+\textbf{$f(\vect{v}_1), \dots, f(\vect{v}_r)$ が $\mathrm{Im}\,f$ の基底}
+であることを示せば、$\dim \mathrm{Im}\,f = r = n - k$ となって証明が終わる。
+
+生成:$\mathrm{Im}\,f$ の任意の元は $f(\vect{v})$ の形である。
+$\vect{v} = a_1\vect{u}_1 + \cdots + a_k\vect{u}_k
++ b_1\vect{v}_1 + \cdots + b_r\vect{v}_r$ と基底で書いて $f$ を施すと、
+$f(\vect{u}_i) = \vect{0}$ だから
+\[
+f(\vect{v}) = b_1 f(\vect{v}_1) + \cdots + b_r f(\vect{v}_r).
+\]
+よって $f(\vect{v}_1), \dots, f(\vect{v}_r)$ は $\mathrm{Im}\,f$ を生成する。
+
+独立:$c_1 f(\vect{v}_1) + \cdots + c_r f(\vect{v}_r) = \vect{0}$ とすると、
+線形性より $f(c_1\vect{v}_1 + \cdots + c_r\vect{v}_r) = \vect{0}$、
+すなわち $c_1\vect{v}_1 + \cdots + c_r\vect{v}_r \in \mathrm{Ker}\,f$。
+核の元は核の基底で書けるから、ある $d_1, \dots, d_k$ により
+\[
+c_1\vect{v}_1 + \cdots + c_r\vect{v}_r
+= d_1\vect{u}_1 + \cdots + d_k\vect{u}_k,
+\]
+移項すれば
+$d_1\vect{u}_1 + \cdots + d_k\vect{u}_k - c_1\vect{v}_1 - \cdots
+- c_r\vect{v}_r = \vect{0}$。
+これは $V$ の基底の線形結合だから、係数はすべて $0$、
+とくに $c_1 = \cdots = c_r = 0$ である。 $\blacksquare$
 
 $f(\vect{x}) = A\vect{x}$($A$ は $m \times n$)の場合に翻訳すると
 \[
@@ -1666,6 +1838,19 @@ n = (n - \mathrm{rank}\,A) + \mathrm{rank}\,A
 「入力の次元 = つぶれて消える次元 + 生き残って出力される次元」という
 \textbf{情報の保存則}として読める。
 
+\begin{teiri}[合成写像の線形性]\label{thm:linmap-comp}
+$f : V \to W$、$g : W \to U$ が線形写像ならば、合成
+$g \circ f : V \to U$($\vect{v} \mapsto g(f(\vect{v}))$)も線形写像である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$(g \circ f)(\vect{u} + \vect{v}) = g(f(\vect{u}) + f(\vect{v}))
+= g(f(\vect{u})) + g(f(\vect{v}))$、スカラー倍も同様。 $\blacksquare$
+
+行列の定める写像でいえば、合成は行列の積に対応する(第 \ref{chap:matmul} 章)。
+この対応が一般の線形写像でも成り立つことは、次章で表現行列を導入すると
+はっきり見える。
+
 \section{同型 ― 「見た目が違うだけ」を厳密にいう}
 
 \begin{teigi}[同型]
@@ -1673,11 +1858,21 @@ n = (n - \mathrm{rank}\,A) + \mathrm{rank}\,A
 同型写像が存在する $V$ と $W$ は\textbf{同型}であるという($V \cong W$ と書く)。
 \end{teigi}
 
-\begin{teiri}
+\begin{teiri}\label{thm:iso-rn}
 $n$ 次元ベクトル空間 $V$ は、すべて $\R^n$ と同型である。
 実際、基底を一組固定し、各ベクトルをその座標にうつす写像
 $\vect{v} \mapsto (c_1, \dots, c_n)$ が同型写像になる。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+座標写像を $\varphi$ とする。定理 \ref{thm:linmap-basis} の証明で見たとおり、
+和の座標は座標の和、スカラー倍の座標は座標のスカラー倍だから
+$\varphi$ は線形である。$\varphi(\vect{v}) = \vect{0}$ は
+$\vect{v} = 0\vect{e}_1 + \cdots + 0\vect{e}_n = \vect{0}$ を意味するから
+$\mathrm{Ker}\,\varphi = \{\vect{0}\}$ で単射
+(定理 \ref{thm:linmap-inj})。また任意の $(c_1, \dots, c_n) \in \R^n$ は
+$c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ の座標だから全射。
+よって $\varphi$ は同型写像である。 $\blacksquare$
 
 \begin{itembox}[l]{深掘り:同型の哲学 ― では抽象論は無駄だったのか}
 「どうせすべて $\R^n$ と同型なら、最初から $\R^n$ だけ考えれば
@@ -1696,6 +1891,291 @@ $\vect{v} \mapsto (c_1, \dots, c_n)$ が同型写像になる。
 微分 $D : \R[x]_3 \to \R[x]_3$ について、$\mathrm{Ker}\,D$ と
 $\mathrm{Im}\,D$ を求め、それぞれの次元が次元定理を満たすことを確かめよ。
 \end{mondai}
+
+\section{反例 ― 「線形」の落とし穴}
+
+\begin{hanrei}[一次関数は線形写像とは限らない]\label{hanrei:linmap-affine}
+高校で「一次関数」と呼んだ $f(x) = 2x + 3$($\R \to \R$)は、
+線形写像では\textbf{ない}。実際 $f(0) = 3 \neq 0$ であり、
+定理 \ref{thm:linmap-basic}(1) に反する
+(和も保たない:$f(1 + 1) = 7$ だが $f(1) + f(1) = 10$)。
+線形写像なのは $b = 0$ の場合 $f(x) = ax$ だけである。
+一般に、平行移動 $\vect{v} \mapsto \vect{v} + \vect{b}$
+($\vect{b} \neq \vect{0}$)は線形でない。
+線形写像+平行移動の形の写像は\textbf{アフィン写像}と呼ばれ、
+部分空間とアフィン部分空間(第 \ref{chap:subspace} 章の深掘り)と
+同じ関係にある。
+\end{hanrei}
+
+\begin{hanrei}[$f(\vect{0}) = \vect{0}$ でも線形とは限らない]\label{hanrei:linmap-square}
+$f : \R \to \R$, $f(x) = x^2$ は $f(0) = 0$ を満たすが線形でない。
+スカラー倍が保たれない:$f(2 \cdot 1) = 4$ だが $2f(1) = 2$。
+同様に $g : \R^2 \to \R$, $g(x, y) = xy$ も $g(0,0) = 0$ だが、
+$g(2, 2) = 4 \neq 2\,g(1, 1) = 2$ で線形でない。
+$f(\vect{0}) = \vect{0}$ は線形性の\textbf{必要条件にすぎず}、
+判定には和とスカラー倍の保存を正面から確かめる必要がある。
+\end{hanrei}
+
+\section{例題}
+
+線形性の判定、核と像の計算、次元定理の運用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(線形性の判定)]\label{rei:linmap-check}
+次の写像 $\R^2 \to \R^2$ は線形写像か。
+\[
+f(x, y) = (2x + y,\ x - 3y), \qquad g(x, y) = (x + 1,\ y)
+\]
+\textbf{解.}\ $f$ は線形である。
+$\vect{u} = (x_1, y_1)$, $\vect{v} = (x_2, y_2)$ に対し
+\[
+f(\vect{u} + \vect{v})
+= \bigl(2(x_1 + x_2) + (y_1 + y_2),\ (x_1 + x_2) - 3(y_1 + y_2)\bigr)
+= f(\vect{u}) + f(\vect{v}),
+\]
+$f(c\vect{u}) = (2cx_1 + cy_1,\ cx_1 - 3cy_1) = c\,f(\vect{u})$。
+実は $f(\vect{x}) = \mat{2 & 1 \\ 1 & -3}\vect{x}$ と行列で書ける。
+
+$g$ は線形でない。$g(0, 0) = (1, 0) \neq (0, 0)$ だから、
+定理 \ref{thm:linmap-basic}(1) に反する。
+\end{rei}
+
+\begin{rei}[例題・基本(核と像の計算)]\label{rei:linmap-kerim}
+$A = \mat{1 & 2 \\ 2 & 4}$ の定める線形写像
+$f : \R^2 \to \R^2$ の核と像を求め、次元定理を確かめよ。\\
+\textbf{解.}\ 核:$A\vect{x} = \vect{0}$ すなわち $x + 2y = 0$
+($2$ 行目は $1$ 行目の $2$ 倍)を解いて
+$\vect{x} = t\mat{-2 \\ 1}$。よって
+$\mathrm{Ker}\,f = \left\langle \mat{-2 \\ 1} \right\rangle$、次元は $1$。
+
+像:列ベクトルの張る空間で、$\mat{2 \\ 4} = 2\mat{1 \\ 2}$ だから
+$\mathrm{Im}\,f = \left\langle \mat{1 \\ 2} \right\rangle$、次元は $1$
+($\mathrm{rank}\,A = 1$)。
+
+次元定理:$\dim \R^2 = 2 = 1 + 1$ で成立している。
+「入力 $2$ 次元のうち、$1$ 次元分がつぶれ、$1$ 次元分が生き残る」。
+\end{rei}
+
+\begin{rei}[例題・基本(基底の行き先から写像を求める)]\label{rei:linmap-fromdata}
+線形写像 $f : \R^2 \to \R^2$ が
+\[
+f\mat{1 \\ 0} = \mat{1 \\ 3}, \qquad f\mat{0 \\ 1} = \mat{2 \\ -1}
+\]
+を満たすとき、$f\mat{4 \\ 5}$ と、一般の $f\mat{x \\ y}$ を求めよ。\\
+\textbf{解.}\ $\mat{4 \\ 5} = 4\mat{1 \\ 0} + 5\mat{0 \\ 1}$ だから、
+線形性(定理 \ref{thm:linmap-basic}(3))より
+\[
+f\mat{4 \\ 5} = 4\mat{1 \\ 3} + 5\mat{2 \\ -1} = \mat{14 \\ 7}.
+\]
+一般には
+$f\mat{x \\ y} = x\mat{1 \\ 3} + y\mat{2 \\ -1} = \mat{x + 2y \\ 3x - y}$、
+行列で書けば $f(\vect{x}) = \mat{1 & 2 \\ 3 & -1}\vect{x}$
+(基底の行き先が列に並ぶ)。基底 $2$ 本の行き先だけで、
+平面全体の写像が完全に決まった(定理 \ref{thm:linmap-basis})。
+\end{rei}
+
+\begin{rei}[例題・標準(評価写像の核と像)]\label{rei:linmap-eval}
+$T : \R[x]_2 \to \R$, $T(p) = p(1)$ について、
+$\mathrm{Ker}\,T$ の次元と基底を求め、次元定理を確かめよ。\\
+\textbf{解.}\ $T(1) = 1 \neq 0$ より $\mathrm{Im}\,T$ は $\{0\}$ ではなく、
+$\R$ の部分空間だから $\mathrm{Im}\,T = \R$(次元 $1$。
+定理 \ref{thm:dim-sub}(2) を $V = \R$ に使った)。
+次元定理より
+\[
+\dim \mathrm{Ker}\,T = \dim \R[x]_2 - \dim \mathrm{Im}\,T = 3 - 1 = 2.
+\]
+基底を具体的に求める。$p(1) = 0$ を満たす多項式として
+$x - 1$ と $x^2 - 1$ が取れる。この $2$ 本は独立
+(次数が違うので一方が他方の定数倍にならない)で、
+$\dim \mathrm{Ker}\,T = 2$ の空間の独立な $2$ 本だから基底である
+(定理 \ref{thm:dim-ncheck})。
+因数定理の言葉でいえば、$\mathrm{Ker}\,T$ は「$x - 1$ で割り切れる
+$2$ 次以下の多項式」の全体である。
+\end{rei}
+
+\begin{rei}[例題・標準($\R^3$ からの写像)]\label{rei:linmap-r3}
+$A = \mat{1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2}$ の定める線形写像
+$f : \R^3 \to \R^3$ の核と像の次元を求め、次元定理を確かめよ。\\
+\textbf{解.}\ 核:$A\vect{x} = \vect{0}$ は
+$x + z = 0$, $y + z = 0$, $x + y + 2z = 0$ で、第 $3$ 式は
+第 $1$ 式+第 $2$ 式なので落とせる。$z = t$ とおくと
+$\vect{x} = t\mat{-1 \\ -1 \\ 1}$、
+よって $\mathrm{Ker}\,f = \left\langle \mat{-1 \\ -1 \\ 1} \right\rangle$
+で次元 $1$。
+
+像:列ベクトル $3$ 本の張る空間である。第 $3$ 列 = 第 $1$ 列 + 第 $2$ 列
+だから、独立な第 $1$・第 $2$ 列が基底で、次元は $2$
+($\mathrm{rank}\,A = 2$。問 \ref{q:sub-ex9} で見た平面 $x + y - z = 0$
+である)。
+
+次元定理:$3 = 1 + 2$ で成立している。
+\end{rei}
+
+\begin{rei}[例題・標準(単射・全射・同型の判定)]\label{rei:linmap-iso}
+$T : \R[x]_2 \to \R^3$, $T(p) = \bigl(p(0),\ p(1),\ p(2)\bigr)$ が
+同型写像であることを示せ。\\
+\textbf{解.}\ 線形性:$(p + q)(a) = p(a) + q(a)$,
+$(cp)(a) = c\,p(a)$ が各点 $a = 0, 1, 2$ で成り立つから、
+$T$ は線形である。
+
+単射:$T(p) = \vect{0}$ とすると $p(0) = p(1) = p(2) = 0$、
+すなわち $2$ 次以下の多項式 $p$ が相異なる $3$ 点で $0$ になる。
+$p$ が零多項式でなければ、因数定理により $p$ は
+$x(x - 1)(x - 2)$ で割り切れて次数が $3$ 以上になり矛盾。
+よって $p = 0$、$\mathrm{Ker}\,T = \{0\}$ で単射である
+(定理 \ref{thm:linmap-inj})。
+
+全射:次元定理より
+$\dim \mathrm{Im}\,T = \dim \R[x]_2 - \dim \mathrm{Ker}\,T = 3 - 0 = 3$。
+$\mathrm{Im}\,T$ は $\R^3$ の $3$ 次元部分空間だから
+$\mathrm{Im}\,T = \R^3$(定理 \ref{thm:dim-sub}(2))で全射である。
+
+よって $T$ は同型写像である。「$2$ 次以下の多項式は、相異なる $3$ 点での
+値を指定すればただ一つに決まる」――第I部の多項式フィッティング
+(例 \ref{rei:gauss-fit})の背後にあった事実の、写像による言い換えである。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{線形写像}=和とスカラー倍を保つ写像。
+$f(\vect{0}) = \vect{0}$ は必要条件(反例 \ref{hanrei:linmap-affine})だが
+十分条件ではない(反例 \ref{hanrei:linmap-square})。
+行列写像だけでなく、\textbf{微分・積分・シフト・評価}も線形写像である。
+\item 線形写像は\textbf{基底の行き先だけで完全に決まる}
+(定理 \ref{thm:linmap-basis})。これが次章の表現行列の根拠になる。
+\item \textbf{核} $\mathrm{Ker}\,f$(つぶれて $\vect{0}$ になる入力全体)と
+\textbf{像} $\mathrm{Im}\,f$(出力全体)は部分空間であり、
+$f$ が単射 $\iff \mathrm{Ker}\,f = \{\vect{0}\}$。
+\item \textbf{次元定理}:$\dim V = \dim \mathrm{Ker}\,f + \dim \mathrm{Im}\,f$。
+証明は「核の基底を全体の基底に拡張し、付け足した分の行き先が像の基底になる」。
+自由度定理はその行列版である。
+\item 全単射な線形写像が\textbf{同型写像}。$n$ 次元空間はすべて
+$\R^n$ と同型であり、座標写像がその同型を与える。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:linmap-ex1}
+次の写像はそれぞれ線形写像か。線形であるものは証明し、
+そうでないものは理由を一つ挙げよ。\\
+　(1) $f : \R^2 \to \R^2$, $f(x, y) = (x - y,\ 2x)$\\
+　(2) $g : \R^2 \to \R^2$, $g(x, y) = (x + 2,\ y)$\\
+　(3) $h : \R^2 \to \R^2$, $h(x, y) = (x^2,\ y)$
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:linmap-ex2}
+$A = \mat{1 & 2 \\ 3 & 6}$ の定める線形写像 $f : \R^2 \to \R^2$ の
+核と像を求め(それぞれ基底を示せ)、次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:linmap-ex3}
+線形写像 $f : \R^2 \to \R^2$ が
+$f\mat{1 \\ 0} = \mat{2 \\ 1}$, $f\mat{0 \\ 1} = \mat{-1 \\ 1}$ を
+満たすとき、$f\mat{3 \\ 2}$ を求めよ。また一般の $f\mat{x \\ y}$ を
+成分で書き、$f$ を定める行列を答えよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:linmap-ex4}
+微分 $D : \R[x]_2 \to \R[x]_2$ について、$\mathrm{Ker}\,D$ と
+$\mathrm{Im}\,D$ を求め(それぞれ基底を示せ)、次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex5}
+$T : \R[x]_2 \to \R$, $T(p) = \displaystyle\int_0^1 p(x)\,dx$ について、\\
+　(1) $T$ が線形写像であることを示せ。\\
+　(2) $\dim \mathrm{Ker}\,T$ を次元定理を用いて求めよ。\\
+　(3) $\mathrm{Ker}\,T$ の基底を一組求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex6}
+$T : \R[x]_2 \to \R^2$, $T(p) = \bigl(p(0),\ p(1)\bigr)$ について、
+$\mathrm{Ker}\,T$ の基底と次元を求め、$T$ が全射かどうか、
+単射かどうかを判定せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex7}
+トレース $\mathrm{tr} : M_{2,2} \to \R$(例題 \ref{rei:sub-trace})に
+ついて、$\mathrm{Im}\,\mathrm{tr}$ と $\dim \mathrm{Ker}\,\mathrm{tr}$ を
+求め、次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex8}
+数列空間上のシフト写像
+$S : (a_0, a_1, a_2, \dots) \mapsto (a_1, a_2, a_3, \dots)$ について、\\
+　(1) $\mathrm{Ker}\,S$ を求めよ(どんな数列の集合か)。\\
+　(2) $S$ は全射であること、しかし単射でないことを示せ。
+(有限次元では起こらない現象である。問 \ref{q:linmap-ex11} と比較せよ。)
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:linmap-ex9}
+$2$ 回微分 $D^2 : \R[x]_3 \to \R[x]_3$($p \mapsto p''$)について、
+$\mathrm{Ker}\,D^2$ と $\mathrm{Im}\,D^2$ の基底と次元を求め、
+次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:linmap-ex10}
+差分写像 $\Delta : \R[x]_2 \to \R[x]_2$,
+$(\Delta p)(x) = p(x + 1) - p(x)$ について、\\
+　(1) $\Delta$ が線形写像であることを示せ。\\
+　(2) $\Delta(1)$, $\Delta(x)$, $\Delta(x^2)$ を計算せよ。\\
+　(3) $\mathrm{Ker}\,\Delta$ と $\mathrm{Im}\,\Delta$ の基底と次元を求め、
+次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:linmap-ex11}
+$V, W$ を同じ次元 $n$ の有限次元ベクトル空間、$f : V \to W$ を
+線形写像とする。このとき
+「$f$ が単射 $\iff$ $f$ が全射」
+を次元定理を用いて証明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:linmap-ex12}
+線形写像 $f : V \to W$、$g : W \to U$ の合成 $g \circ f$ について、
+次を証明せよ。\\
+　(1) $\mathrm{Ker}\,f \subseteq \mathrm{Ker}\,(g \circ f)$\\
+　(2) $\mathrm{Im}\,(g \circ f) \subseteq \mathrm{Im}\,g$\\
+　(3) $V, W, U$ が有限次元のとき
+$\dim \mathrm{Im}\,(g \circ f) \le \min\{\dim \mathrm{Im}\,f,\ \dim \mathrm{Im}\,g\}$
+(行列でいえば $\mathrm{rank}\,(BA) \le \min\{\mathrm{rank}\,A,
+\mathrm{rank}\,B\}$ にあたる)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:linmap-ex1}}:まず $f(\vect{0})$ を見る。
+$\vect{0}$ にうつるものは、和とスカラー倍の保存を文字で確かめる。
+\item \textbf{問 \ref{q:linmap-ex2}}:核は同次方程式を解く。
+像は列ベクトルの張る空間。$2$ 列が平行であることに注意。
+\item \textbf{問 \ref{q:linmap-ex3}}:$\mat{3 \\ 2} = 3\vect{e}_1 + 2\vect{e}_2$
+と分解して線形性を使う(例題 \ref{rei:linmap-fromdata})。
+\item \textbf{問 \ref{q:linmap-ex4}}:微分して $0$ になる多項式、
+微分の結果として現れる多項式をそれぞれ考える。
+\item \textbf{問 \ref{q:linmap-ex5}}:(2) は $\mathrm{Im}\,T = \R$ を
+先に示す($T(1)$ を計算)。(3) は $\int_0^1 p = 0$ を係数の条件に直す。
+\item \textbf{問 \ref{q:linmap-ex6}}:$p(0) = p(1) = 0$ は
+因数定理で「$x(x - 1)$ で割り切れる」と読める。
+\item \textbf{問 \ref{q:linmap-ex7}}:$\mathrm{tr}\,E = 2 \neq 0$ から
+像が $\R$ 全体と分かる。核は例題 \ref{rei:sub-trace} の空間である。
+\item \textbf{問 \ref{q:linmap-ex8}}:(1) は $S$ でうつした結果が
+零数列になる条件を書く。(2) 全射は「任意の数列の先頭に $0$ を足した
+数列」を考える。単射でないことは核から。
+\item \textbf{問 \ref{q:linmap-ex9}}:$2$ 回微分して消えるのは
+$1$ 次以下。像は何次以下になるか。
+\item \textbf{問 \ref{q:linmap-ex10}}:(2) の計算結果を並べれば
+像の生成系が得られる。核は $\Delta p = 0$ を係数比較で解く。
+\item \textbf{問 \ref{q:linmap-ex11}}:単射 $\iff \dim \mathrm{Ker} = 0$、
+全射 $\iff \dim \mathrm{Im} = n$(定理 \ref{thm:dim-sub}(2) を使う)。
+両者を次元定理でつなぐ。
+\item \textbf{問 \ref{q:linmap-ex12}}:(1)(2) は定義どおり元をとって追う。
+(3) は (2) と、「$g$ を $\mathrm{Im}\,f$ に制限した写像に次元定理を使う」
+または $\mathrm{Im}(g \circ f) = g(\mathrm{Im}\,f)$ に注目する。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{表現行列と基底の取り替え}\label{chap:repmat}

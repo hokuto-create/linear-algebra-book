@@ -3787,10 +3787,238 @@ $\vect{x}$ は $\vect{u}_i$ たちの、$\vect{y}$ は $\vect{w}_j$ たちの
 
 \bigskip
 \noindent\textbf{問 \ref{q:linmap}}\quad
-$\mathrm{Ker}\,D$ は $p' = 0$ となる多項式、すなわち定数全体で次元 $1$
-(基底は $1$)。$\mathrm{Im}\,D$ は $3$ 次以下の多項式の導関数全体、
-すなわち $\R[x]_2$ で次元 $3$(基底は $1, x, x^2$)。
-$\dim \R[x]_3 = 4 = 1 + 3$ となり次元定理が成り立つ。
+\textbf{方針}:「微分して $0$ になる多項式」と「導関数として現れる多項式」を
+それぞれ特定する。\\
+\textbf{解答}:$\mathrm{Ker}\,D$ は $p' = 0$ となる多項式、
+すなわち定数全体で次元 $1$(基底は $1$)。
+$\mathrm{Im}\,D$ は $3$ 次以下の多項式の導関数全体である。
+$D(a_0 + a_1 x + a_2 x^2 + a_3 x^3) = a_1 + 2a_2 x + 3a_3 x^2$ は
+$2$ 次以下の任意の多項式を表せるから、$\mathrm{Im}\,D = \R[x]_2$ で
+次元 $3$(基底は $1, x, x^2$)。
+$\dim \R[x]_3 = 4 = 1 + 3$ となり次元定理が成り立つ。\\
+\textbf{よくあるミス}:$\mathrm{Im}\,D$ を $\R[x]_3$ 全体とすること。
+微分すると次数が $1$ 下がるので、$3$ 次の多項式は導関数として現れない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex1}}\quad
+\textbf{方針}:まず $\vect{0}$ の行き先を見る。$\vect{0}$ にうつるものは
+和とスカラー倍の保存を文字で確かめる。\\
+\textbf{解答}:
+　(1) 線形である。$(x_1, y_1), (x_2, y_2)$ に対し
+\[
+f\bigl((x_1, y_1) + (x_2, y_2)\bigr)
+= \bigl((x_1 + x_2) - (y_1 + y_2),\ 2(x_1 + x_2)\bigr)
+= f(x_1, y_1) + f(x_2, y_2)
+\]
+であり、$f(c(x, y)) = (cx - cy,\ 2cx) = c\,f(x, y)$。
+行列で書けば $f(\vect{x}) = \mat{1 & -1 \\ 2 & 0}\vect{x}$ である。\\
+　(2) 線形でない。$g(0, 0) = (2, 0) \neq (0, 0)$ だから、
+$f(\vect{0}) = \vect{0}$(定理 \ref{thm:linmap-basic}(1))に反する。\\
+　(3) 線形でない。$h(0,0) = (0,0)$ ではあるが、
+$h(2, 0) = (4, 0)$ と $2\,h(1, 0) = (2, 0)$ が一致せず、
+スカラー倍を保たない。\\
+\textbf{よくあるミス}:(3) を「$\vect{0}$ が $\vect{0}$ にうつるから線形」と
+すること。それは必要条件にすぎない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex2}}\quad
+\textbf{方針}:核は同次方程式を解く。像は列ベクトルの張る空間。\\
+\textbf{解答}:核:$A\vect{x} = \vect{0}$ は $x + 2y = 0$ と
+$3x + 6y = 0$ で、第 $2$ 式は第 $1$ 式の $3$ 倍だから条件は
+$x = -2y$ のみ。よって
+$\mathrm{Ker}\,f = \left\langle \mat{-2 \\ 1} \right\rangle$
+(基底 $\mat{-2 \\ 1}$、次元 $1$)。
+像:列ベクトルは $\mat{1 \\ 3}$ と $\mat{2 \\ 6} = 2\mat{1 \\ 3}$ で
+平行だから、$\mathrm{Im}\,f = \left\langle \mat{1 \\ 3} \right\rangle$
+(基底 $\mat{1 \\ 3}$、次元 $1$)。
+次元定理:$\dim \R^2 = 2 = 1 + 1$ で成立。\\
+\textbf{よくあるミス}:像を「値域は $\R^2$」とすること。
+出力がすべて直線 $y = 3x$ 上に乗ることを列ベクトルから読み取る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex3}}\quad
+\textbf{方針}:入力を標準基底で分解し、線形性で運ぶ。\\
+\textbf{解答}:$\mat{3 \\ 2} = 3\mat{1 \\ 0} + 2\mat{0 \\ 1}$ だから
+\[
+f\mat{3 \\ 2} = 3\mat{2 \\ 1} + 2\mat{-1 \\ 1} = \mat{4 \\ 5}.
+\]
+一般には
+$f\mat{x \\ y} = x\mat{2 \\ 1} + y\mat{-1 \\ 1} = \mat{2x - y \\ x + y}$
+であり、$f$ を定める行列は基底の行き先を列に並べた
+$\mat{2 & -1 \\ 1 & 1}$ である。\\
+\textbf{よくあるミス}:行き先ベクトルを行列の\emph{行}に並べること。
+第 $j$ 列に $f(\vect{e}_j)$ が入る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex4}}\quad
+\textbf{方針}:微分して $0$ になるのは定数。導関数として現れるのは
+何次以下かを考える。\\
+\textbf{解答}:$D(a_0 + a_1 x + a_2 x^2) = a_1 + 2a_2 x$ である。
+これが $0$ になるのは $a_1 = a_2 = 0$、すなわち定数のときだから、
+$\mathrm{Ker}\,D$ は定数全体(基底 $1$、次元 $1$)。
+また $a_1 + 2a_2 x$ は $a_1, a_2$ を動かすと $1$ 次以下の任意の多項式に
+なるから、$\mathrm{Im}\,D = \R[x]_1$(基底 $1, x$、次元 $2$)。
+次元定理:$\dim \R[x]_2 = 3 = 1 + 2$ で成立。\\
+\textbf{よくあるミス}:核を「零多項式だけ」とすること。
+定数はすべて微分で消える。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex5}}\quad
+\textbf{方針}:(2) は先に像を確定して次元定理を使う。
+(3) は $\int_0^1 p\,dx = 0$ を係数の条件式に直す。\\
+\textbf{解答}:
+　(1) 積分の線形性
+$\int_0^1 (p + q)\,dx = \int_0^1 p\,dx + \int_0^1 q\,dx$,
+$\int_0^1 cp\,dx = c\int_0^1 p\,dx$ より $T$ は線形写像である。\\
+　(2) $T(1) = \int_0^1 1\,dx = 1 \neq 0$ より $\mathrm{Im}\,T$ は
+$\{0\}$ でない $\R$ の部分空間だから $\mathrm{Im}\,T = \R$、次元 $1$。
+次元定理より $\dim \mathrm{Ker}\,T = 3 - 1 = 2$。\\
+　(3) $p = a + bx + cx^2$ に対し
+$T(p) = a + \dfrac{b}{2} + \dfrac{c}{3}$ だから、核の条件は
+$a + \dfrac{b}{2} + \dfrac{c}{3} = 0$。これを満たす独立な $2$ 本として
+\[
+2x - 1 \quad \Bigl(T = 1 - 1 = 0\Bigr), \qquad
+3x^2 - 1 \quad \Bigl(T = 1 - 1 = 0\Bigr)
+\]
+が取れる(次数が違うので独立)。$\dim \mathrm{Ker}\,T = 2$ だから
+この $2$ 本が基底である(定理 \ref{thm:dim-ncheck})。\\
+\textbf{よくあるミス}:核の基底を求めるとき、条件式を満たすことの
+検算を怠ること。$T(2x - 1) = 0$ は実際に積分して確かめられる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex6}}\quad
+\textbf{方針}:$p(0) = p(1) = 0$ を因数定理で読み替える。
+全射・単射は次元と核で判定する。\\
+\textbf{解答}:$p \in \mathrm{Ker}\,T$ は $p(0) = p(1) = 0$ を満たす
+$2$ 次以下の多項式である。因数定理により $p$ は $x$ でも $x - 1$ でも
+割り切れるから $p = c\,x(x - 1) = c(x^2 - x)$ の形。よって
+$\mathrm{Ker}\,T = \langle x^2 - x \rangle$(基底 $x^2 - x$、次元 $1$)。
+次元定理より $\dim \mathrm{Im}\,T = 3 - 1 = 2 = \dim \R^2$ だから
+$\mathrm{Im}\,T = \R^2$ で\textbf{全射}である
+(定理 \ref{thm:dim-sub}(2))。一方
+$\mathrm{Ker}\,T \neq \{0\}$ だから\textbf{単射ではない}
+(定理 \ref{thm:linmap-inj})。\\
+\textbf{よくあるミス}:核を $\{0\}$ とすること。
+$x^2 - x$ のように $2$ 点で消える $2$ 次式が存在する
+($3$ 点指定なら核が $\{0\}$ になる:例題 \ref{rei:linmap-iso})。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex7}}\quad
+\textbf{方針}:$\mathrm{tr}\,E \neq 0$ から像を確定し、次元定理で核の
+次元を出す。\\
+\textbf{解答}:$\mathrm{tr}\,E = 2 \neq 0$ より $\mathrm{Im}\,\mathrm{tr}$
+は $\{0\}$ でない $\R$ の部分空間だから $\mathrm{Im}\,\mathrm{tr} = \R$、
+次元 $1$。$\dim M_{2,2} = 4$ だから次元定理より
+$\dim \mathrm{Ker}\,\mathrm{tr} = 4 - 1 = 3$。
+実際、核はトレース $0$ の行列全体(例題 \ref{rei:sub-trace})で、
+$\mat{1 & 0 \\ 0 & -1}$, $\mat{0 & 1 \\ 0 & 0}$, $\mat{0 & 0 \\ 1 & 0}$
+が基底になる($\mat{a & b \\ c & -a}$ の形の行列をちょうど表せる)。
+$4 = 3 + 1$ で次元定理が成立。\\
+\textbf{よくあるミス}:$\dim \mathrm{Ker}$ を「条件式 $1$ 本だから $1$」と
+すること。次元は「全体の次元 $-$ 独立な条件の本数」で、$4 - 1 = 3$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex8}}\quad
+\textbf{方針}:(1) はうつした結果がすべて $0$ になる条件。
+(2) 全射は逆向きの数列を具体的に作る。\\
+\textbf{解答}:
+　(1) $S(a_0, a_1, a_2, \dots) = (a_1, a_2, a_3, \dots)$ が零数列になる
+条件は $a_1 = a_2 = \cdots = 0$($a_0$ は自由)。よって
+$\mathrm{Ker}\,S = \{\, (a, 0, 0, \dots) \mid a \in \R \,\}
+= \langle (1, 0, 0, \dots) \rangle$(次元 $1$)。\\
+　(2) 全射:任意の数列 $(b_0, b_1, \dots)$ に対し、先頭に $0$ を
+付け足した $(0, b_0, b_1, \dots)$ をシフトすればちょうど
+$(b_0, b_1, \dots)$ になる。よって全射である。
+単射でないこと:$(1, 0, 0, \dots) \neq \vect{0}$ が核に属するから
+単射でない(定理 \ref{thm:linmap-inj})。\\
+\textbf{よくあるミス}:「全射なら単射のはず」と考えること。
+それは同じ有限次元どうしの話(問 \ref{q:linmap-ex11})であり、
+無限次元の数列空間では破れる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex9}}\quad
+\textbf{方針}:$2$ 回微分して消えるのは $1$ 次以下。像は次数がいくつ
+下がるかを見る。\\
+\textbf{解答}:$D^2(a_0 + a_1 x + a_2 x^2 + a_3 x^3) = 2a_2 + 6a_3 x$
+である。これが $0$ になるのは $a_2 = a_3 = 0$ のときだから、
+$\mathrm{Ker}\,D^2 = \R[x]_1$(基底 $1, x$、次元 $2$)。
+また $2a_2 + 6a_3 x$ は $1$ 次以下の任意の多項式を表せるから
+$\mathrm{Im}\,D^2 = \R[x]_1$(基底 $1, x$、次元 $2$)。
+次元定理:$4 = 2 + 2$ で成立。
+(この例では核と像がたまたま同じ部分空間になっている。)\\
+\textbf{よくあるミス}:$\mathrm{Ker}$ と $\mathrm{Im}$ が同じ空間に
+なったのを見て計算ミスと思うこと。核と像はどちらも
+$\R[x]_3$ の部分空間なので、一致することもありうる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex10}}\quad
+\textbf{方針}:(2) の計算結果が像の生成系になる。核は係数比較。\\
+\textbf{解答}:
+　(1) $\bigl(\Delta(p + q)\bigr)(x) = (p + q)(x + 1) - (p + q)(x)
+= \bigl(p(x + 1) - p(x)\bigr) + \bigl(q(x + 1) - q(x)\bigr)$ より
+$\Delta(p + q) = \Delta p + \Delta q$。同様に
+$\Delta(cp) = c\,\Delta p$。よって線形写像である。\\
+　(2) $\Delta(1) = 1 - 1 = 0$。$\Delta(x) = (x + 1) - x = 1$。
+$\Delta(x^2) = (x + 1)^2 - x^2 = 2x + 1$。\\
+　(3) $p = a + bx + cx^2$ に対し、線形性と (2) より
+$\Delta p = b \cdot 1 + c\,(2x + 1) = (b + c) + 2c\,x$。
+これが $0$ になるのは $c = 0$ かつ $b = 0$ のときだから、
+$\mathrm{Ker}\,\Delta$ は定数全体(基底 $1$、次元 $1$)。
+像は $(b + c) + 2cx$ の全体で、$b, c$ を動かせば $1$ 次以下の任意の
+多項式になるから $\mathrm{Im}\,\Delta = \R[x]_1$(基底 $1, x$、次元 $2$)。
+次元定理:$3 = 1 + 2$ で成立。\\
+\textbf{よくあるミス}:$\Delta(x^2)$ の展開ミス($2x + 1$ の $+1$ を
+落とす)。微分 $D$ との類似($D(x^2) = 2x$)に引きずられやすいが、
+差分は「$+1$ ずらした差」なので定数項が残る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex11}}\quad
+\textbf{方針}:単射 $\iff \dim \mathrm{Ker}\,f = 0$、
+全射 $\iff \dim \mathrm{Im}\,f = n$ に言い換えて次元定理でつなぐ。\\
+\textbf{解答}:定理 \ref{thm:linmap-inj} より、$f$ が単射であることは
+$\mathrm{Ker}\,f = \{\vect{0}\}$、すなわち $\dim \mathrm{Ker}\,f = 0$ と
+同値である。一方、$f$ が全射であることは $\mathrm{Im}\,f = W$ と
+同値であり、$\mathrm{Im}\,f$ は $W$($\dim W = n$)の部分空間だから、
+定理 \ref{thm:dim-sub}(2) により $\dim \mathrm{Im}\,f = n$ と同値である。
+ここで次元定理より
+\[
+\dim \mathrm{Ker}\,f = 0
+\iff \dim \mathrm{Im}\,f = \dim V - \dim \mathrm{Ker}\,f = n - 0 = n
+\]
+であり(逆向きも $\dim \mathrm{Ker}\,f = n - \dim \mathrm{Im}\,f = 0$)、
+両条件は同値。よって単射 $\iff$ 全射である。\\
+\textbf{よくあるミス}:$\dim V = \dim W$ の仮定を使わずに済ませること。
+次元が異なれば同値は成り立たない(問 \ref{q:linmap-ex6} は
+$3 \to 2$ 次元で全射だが単射でない)。無限次元でも破れる
+(問 \ref{q:linmap-ex8})。
+
+\bigskip
+\noindent\textbf{問 \ref{q:linmap-ex12}}\quad
+\textbf{方針}:(1)(2) は元をとって定義どおり追う。(3) は (2) の包含と、
+$\mathrm{Im}\,(g \circ f) = g(\mathrm{Im}\,f)$ への次元定理の適用。\\
+\textbf{解答}:
+　(1) $\vect{v} \in \mathrm{Ker}\,f$ とすると $f(\vect{v}) = \vect{0}$
+だから $(g \circ f)(\vect{v}) = g(\vect{0}) = \vect{0}$
+(定理 \ref{thm:linmap-basic}(1))。よって
+$\vect{v} \in \mathrm{Ker}\,(g \circ f)$。\\
+　(2) $\mathrm{Im}\,(g \circ f)$ の任意の元は $g(f(\vect{v}))$ の形で、
+これは $g$ の出力だから $\mathrm{Im}\,g$ に属する。\\
+　(3) (2) と定理 \ref{thm:dim-sub}(1) より
+$\dim \mathrm{Im}\,(g \circ f) \le \dim \mathrm{Im}\,g$。
+また、$g$ の定義域を $\mathrm{Im}\,f$ に制限した線形写像
+$h : \mathrm{Im}\,f \to U$ を考えると、$h$ の像はちょうど
+$g(\mathrm{Im}\,f) = \mathrm{Im}\,(g \circ f)$ である。$h$ に次元定理を
+使うと
+\[
+\dim \mathrm{Im}\,(g \circ f) = \dim \mathrm{Im}\,f - \dim \mathrm{Ker}\,h
+\le \dim \mathrm{Im}\,f.
+\]
+両者を合わせて
+$\dim \mathrm{Im}\,(g \circ f) \le \min\{\dim \mathrm{Im}\,f,\
+\dim \mathrm{Im}\,g\}$ である。\\
+\textbf{よくあるミス}:(3) で「明らか」と済ませること。
+$\mathrm{Im}\,f$ を通ってから $g$ でさらにつぶされる、という
+二段階の絞り込みを、包含と次元定理で正確に書く。
 
 \bigskip
 \noindent\textbf{問 \ref{q:repmat}}\quad
