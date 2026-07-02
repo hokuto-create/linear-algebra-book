@@ -7,30 +7,85 @@
 \chapter{べき零行列 ― 対角化を阻むものの正体}\label{chap:nilp}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item べき零行列と\textbf{べき零指数}の定義を理解し、与えられた行列が
+べき零かどうかを、直接計算と固有多項式(ケーリー・ハミルトンの定理)の
+両方で判定できるようになる。
+\item \textbf{核の増大列} $\mathrm{Ker}\,N \subseteq \mathrm{Ker}\,N^2
+\subseteq \cdots$ を計算し、「掛けるたびに一段ずつ消えていく」という
+べき零行列の内部構造を読み取れるようになる。
+\item \textbf{一般固有空間}の定義を理解し、小さい行列で固有空間
+$W_\lambda$ と一般固有空間 $\widetilde{W}_\lambda$ を計算して、
+対角化で足りなかった次元が一般固有空間でちょうど回復することを
+確かめられるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 対角化の「失敗の中身」を取り出す}
+
 第IV部で、$\mat{1 & 1 \\ 0 & 1}$ のような対角化できない行列に出会った。
-本部の目標は、\textbf{対角化できない行列を、可能な限り対角に近い形まで
-持っていく}ことである(以下、固有値が必ず存在するように、
-スカラーは複素数まで許して考える。実行列でも結論は実数の範囲に翻訳できる)。
+固有値 $1$ の代数的重複度は $2$ なのに、固有ベクトルは
+$\mat{1 \\ 0}$ の方向しかない(幾何的重複度 $1$)。
+判定法(定理 \ref{thm:diag-criterion})は「対角化不可」と告げるだけで、
+\textbf{なぜ足りないのか、足りない分はどこへ消えたのか}には
+答えてくれなかった。本部の目標は、\textbf{対角化できない行列を、
+可能な限り対角に近い形まで持っていく}ことである
+(以下、固有値が必ず存在するように、スカラーは複素数まで許して考える。
+第IV部の深掘りで見たとおり、複素数の範囲では固有多項式が必ず $1$ 次式の
+積に分解する。実行列でも結論は実数の範囲に翻訳できる)。
 
-\section{べき零行列}
+手がかりは、失敗例そのものの中にある。
+\[
+\mat{1 & 1 \\ 0 & 1} = \mat{1 & 0 \\ 0 & 1} + \mat{0 & 1 \\ 0 & 0}
+= E + N, \qquad N = \mat{0 & 1 \\ 0 & 0}
+\]
+と「対角部分」と「残り」に分けてみると、残りの $N$ は
+$N^2 = O$ を満たす――\textbf{掛けるうちに消えてしまう}行列である。
+対角化を阻んでいた「何か」の正体は、この消える部分ではないか。
+本章ではまず、この「消える行列」そのものを主役に据えて調べ、
+そのうえで、狭すぎた固有空間を広げ直す装置(一般固有空間)を導入する。
 
-\begin{teigi}[べき零行列]
+\section{べき零行列とべき零指数}
+
+\begin{teigi}[べき零行列・べき零指数]
 ある自然数 $k$ で $N^k = O$ となる正方行列 $N$ を\textbf{べき零行列}という。
+また、$N^k = O$ となる最小の $k$、すなわち
+$N^{k-1} \neq O$ かつ $N^k = O$ となる $k$ を、$N$ の\textbf{べき零指数}という。
 \end{teigi}
 
+\begin{chui}
+零行列 $O$ もべき零行列である(指数 $1$)。また、正則な行列は決して
+べき零にならない:$N$ が正則なら $N^k$ も正則(逆行列は $(N^{-1})^k$)で、
+$O$ にはなり得ないからである。べき零行列は「正則から最も遠い」行列といえる。
+\end{chui}
+
 第III部の微分の表現行列 $\mat{0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0}$
-($3$ 乗で消える)がその例だった。最も基本的なべき零行列は\textbf{シフト行列}
+($3$ 乗で消える。$2$ 次以下の多項式は $3$ 回微分すれば必ず $0$ になる)
+がその例だった。最も基本的なべき零行列は\textbf{シフト行列}
 \[
 N = \mat{0 & 1 & & \\ & 0 & \ddots & \\ & & \ddots & 1 \\ & & & 0}
 \]
 である。$N$ を掛けるたびに $1$ の斜めの列が右上へ一段ずつ追いやられ、
-$n$ 乗でついに消える。基底の言葉でいえば、$N$ は
+$n$ 乗でついに消える(べき零指数 $n$)。基底の言葉でいえば、$N$ は
 $\vect{e}_n \mapsto \vect{e}_{n-1} \mapsto \cdots \mapsto \vect{e}_1 \mapsto \vect{0}$
 という「玉突きの列」を作る変換である。
 
-べき零行列の固有値は $0$ のみである
-($N\vect{v} = \lambda\vect{v}$ なら $N^k\vect{v} = \lambda^k\vect{v} = \vect{0}$
-で $\lambda = 0$)。それなのに $N \neq O$ でありうる
+べき零行列の固有値について、まず基本の事実を確かめておく。
+
+\begin{teiri}[べき零行列の固有値]\label{thm:nilp-eigen}
+べき零行列の固有値は $0$ のみである。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$N^k = O$ とし、$\lambda$ を $N$ の固有値、$\vect{v} \neq \vect{0}$ を
+対応する固有ベクトルとする。$N\vect{v} = \lambda\vect{v}$ の両辺に
+$N$ を繰り返し掛けると $N^k\vect{v} = \lambda^k\vect{v}$。左辺は
+$O\vect{v} = \vect{0}$ だから $\lambda^k\vect{v} = \vect{0}$、
+$\vect{v} \neq \vect{0}$ より $\lambda^k = 0$、すなわち $\lambda = 0$ である。
+$\blacksquare$
+
+固有値は $0$ しかない。それなのに $N \neq O$ でありうる
 ――つまり\textbf{固有値が行列のすべてを語らない}部分こそ、
 べき零成分なのである。
 
@@ -41,10 +96,95 @@ $\mathrm{Ker}\,N$, $\mathrm{Ker}\,N^2$, $\mathrm{Ker}\,N^3$ の次元を順に�
 核が一段ずつ広がっていく様子を確かめよ。
 \end{mondai}
 
+\section{核の増大列 ― 「一段ずつ消える」を定理にする}
+
+問 \ref{q:nilp} で観察した「核が一段ずつ広がる」現象は、
+べき零行列に限らない一般的な構造である。きちんと定理にしておくと、
+本章の後半(一般固有空間)と次章(ジョルダン標準形)の土台になる。
+
+\begin{teiri}[核の増大列]\label{thm:nilp-chain}
+正方行列 $N$ に対し、核の列は増大列をなす:
+\[
+\{\vect{0}\} \subseteq \mathrm{Ker}\,N \subseteq \mathrm{Ker}\,N^2
+\subseteq \mathrm{Ker}\,N^3 \subseteq \cdots.
+\]
+さらに、ある $k$ で $\mathrm{Ker}\,N^k = \mathrm{Ker}\,N^{k+1}$ となれば、
+それ以降の核はすべて $\mathrm{Ker}\,N^k$ に等しい
+(一度止まった増大列は、二度と動かない)。
+とくに、$n$ 次のべき零行列のべき零指数は $n$ 以下である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(前半)$N^k\vect{v} = \vect{0}$ ならば
+$N^{k+1}\vect{v} = N(N^k\vect{v}) = N\vect{0} = \vect{0}$。
+よって $\mathrm{Ker}\,N^k \subseteq \mathrm{Ker}\,N^{k+1}$ である。
+
+(中盤)$\mathrm{Ker}\,N^k = \mathrm{Ker}\,N^{k+1}$ と仮定し、
+$\vect{v} \in \mathrm{Ker}\,N^{k+2}$ をとる。
+$N^{k+1}(N\vect{v}) = N^{k+2}\vect{v} = \vect{0}$ より
+$N\vect{v} \in \mathrm{Ker}\,N^{k+1} = \mathrm{Ker}\,N^k$、
+すなわち $N^k(N\vect{v}) = N^{k+1}\vect{v} = \vect{0}$ で
+$\vect{v} \in \mathrm{Ker}\,N^{k+1}$。よって
+$\mathrm{Ker}\,N^{k+2} = \mathrm{Ker}\,N^{k+1}$ であり、以下繰り返せば
+それ以降もすべて等しい。
+
+(後半)べき零指数を $k$ とすると、$N^{k-1} \neq O$ かつ $N^k = O$ だから
+$\mathrm{Ker}\,N^{k-1} \neq \mathbb{C}^n = \mathrm{Ker}\,N^k$ である。
+もし途中のどこか($j < k$)で
+$\mathrm{Ker}\,N^j = \mathrm{Ker}\,N^{j+1}$ となっていたら、中盤の結果により
+それ以降ずっと等しくなり、$\mathrm{Ker}\,N^{k-1} = \mathrm{Ker}\,N^k$ に
+矛盾する。よって
+\[
+\{\vect{0}\} \subsetneq \mathrm{Ker}\,N \subsetneq \mathrm{Ker}\,N^2
+\subsetneq \cdots \subsetneq \mathrm{Ker}\,N^k = \mathbb{C}^n
+\]
+と、$k$ 段すべてで次元が真に増える。次元は一段で $1$ 以上増えるから
+$\dim \mathrm{Ker}\,N^j \ge j$、とくに $n = \dim \mathrm{Ker}\,N^k \ge k$ である。
+$\blacksquare$
+
+「べき零指数 $\le n$」のおかげで、\textbf{べき零かどうかは $N^n$ を
+一度計算すれば判定できる}($N^n \neq O$ なら、何乗しても消えない)。
+さらに、固有値の言葉による判定法も得られる。
+
+\begin{teiri}[べき零性の特徴づけ]\label{thm:nilp-char}
+$n$ 次正方行列 $N$ について、次の三つは同値である。
+\begin{enumerate}
+\item $N$ はべき零である。
+\item $N$ の固有値は(複素数の範囲で)$0$ のみである。すなわち
+固有多項式が $f_N(\lambda) = \lambda^n$ となる。
+\item $N^n = O$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1)$\Rightarrow$(2):定理 \ref{thm:nilp-eigen} より固有値は $0$ のみ。
+固有多項式 $f_N(\lambda)$ は最高次の係数 $1$ の $n$ 次多項式で、
+複素数の範囲で $1$ 次式の積に分解し、その根が固有値だから
+$f_N(\lambda) = \lambda^n$ である。
+
+(2)$\Rightarrow$(3):ケーリー・ハミルトンの定理
+(定理 \ref{thm:ch-main})より $N^n = f_N(N) = O$。
+
+(3)$\Rightarrow$(1):定義そのものである。 $\blacksquare$
+
+\begin{chui}
+この定理により、べき零性は\textbf{固有多項式の計算だけで}判定できる。
+たとえば $2$ 次なら、固有多項式は
+$\lambda^2 - (\mathrm{tr}\,N)\lambda + \det N$
+(定理 \ref{thm:eigen-trdet2})だから、
+\[
+N \text{ がべき零} \iff \mathrm{tr}\,N = 0 \text{ かつ } \det N = 0
+\]
+である。掛け算を繰り返すより速いことも多い。
+\end{chui}
+
 \section{一般固有空間}
 
 固有空間 $\mathrm{Ker}(A - \lambda E)$ が狭すぎる(幾何的重複度 $<$
 代数的重複度)のが対角化失敗の原因だった。そこで器を広げる。
+広げ方のヒントは冒頭の分解 $A = \lambda E + N$ にある:
+$A - \lambda E$ を\textbf{一回}掛けて消えるベクトル(固有ベクトル)だけでなく、
+\textbf{何回かで}消えるベクトルまで仲間に入れるのである。
 
 \begin{teigi}[一般固有空間]
 固有値 $\lambda$ に対し、
@@ -56,10 +196,25 @@ $\mathrm{Ker}\,N$, $\mathrm{Ker}\,N^2$, $\mathrm{Ker}\,N^3$ の次元を順に�
 \textbf{一般固有ベクトル}という。
 \end{teigi}
 
-「$1$ 発で消えるベクトル」だけでなく「何発かで消えるベクトル」まで
-仲間に入れるのである。すると、次の見事な定理が成り立つ。
+定義には「ある $k$ で」とあるが、定理 \ref{thm:nilp-chain} を
+$N = A - \lambda E$ に適用すれば、核の増大列は遅くとも $n$ 段目で
+止まっている。したがって
+\[
+\widetilde{W}_\lambda = \mathrm{Ker}\,(A - \lambda E)^n
+\]
+であり、$k$ を無限に調べる必要はない($n$ 乗まで見れば十分)。
+また $\widetilde{W}_\lambda$ は核として部分空間であり、
+$W_\lambda \subseteq \widetilde{W}_\lambda$ が定義から直ちに従う。
 
-\begin{teiri}[一般固有空間分解]
+\begin{mondai}\label{q:nilp-gen}
+$A = \mat{1 & 1 \\ -1 & 3}$ の固有値は $2$ のみ(代数的重複度 $2$)である
+ことを確かめ、固有空間 $W_2$ と一般固有空間 $\widetilde{W}_2$ を求めて
+次元を比較せよ(この行列は次章で再登場する)。
+\end{mondai}
+
+「仲間を増やした」ことの見返りは、次の見事な定理である。
+
+\begin{teiri}[一般固有空間分解]\label{thm:gen-decomp}
 $n$ 次正方行列 $A$ の相異なる固有値を $\lambda_1, \dots, \lambda_k$ とすると、
 空間全体は一般固有空間の直和に分解される:
 \[
@@ -67,11 +222,373 @@ $n$ 次正方行列 $A$ の相異なる固有値を $\lambda_1, \dots, \lambda_k
 \qquad
 \dim \widetilde{W}_{\lambda_i} = (\lambda_i \text{ の代数的重複度}).
 \]
+すなわち、任意のベクトルは各一般固有空間の要素の和として
+\textbf{ただ一通り}に書ける。
 \end{teiri}
 
 固有空間では足りなかった次元が、一般固有空間では\textbf{過不足なく}
 代数的重複度に一致する。対角化はできなくとも、
 空間を固有値ごとの「縄張り」に完全に分割することは、いつでもできるのである。
+証明の骨格は本章の深掘りで紹介する。
+この分解を認めると、第IV部の対角化可能性の判定が、次のように言い換えられる。
+
+\begin{teiri}[対角化可能性の言い換え]\label{thm:nilp-diagchar}
+正方行列 $A$ が対角化可能であることと、すべての固有値 $\lambda$ で
+$\widetilde{W}_\lambda = W_\lambda$(一般固有空間が固有空間からはみ出さない)
+ことは同値である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+各固有値で $W_\lambda \subseteq \widetilde{W}_\lambda$ だから、
+$\widetilde{W}_\lambda = W_\lambda$ は
+$\dim W_\lambda = \dim \widetilde{W}_\lambda$ と同値である。
+定理 \ref{thm:gen-decomp} より $\dim \widetilde{W}_\lambda$ は代数的重複度に
+等しいので、これは「幾何的重複度 $=$ 代数的重複度」と同値であり、
+それがすべての固有値で成り立つことは、対角化可能性の判定
+(定理 \ref{thm:diag-criterion})そのものである。 $\blacksquare$
+
+つまり、対角化できない行列とは
+「$W_\lambda \subsetneq \widetilde{W}_\lambda$ となる固有値をもつ行列」であり、
+そのはみ出しの部分に住んでいるのが一般固有ベクトルである。
+次章では、このはみ出しを\textbf{鎖}の形に整列させて、
+標準形(ジョルダン標準形)を作る。
+
+\begin{itembox}[l]{深掘り:一般固有空間分解はなぜ成り立つのか ― 証明の骨格}
+固有値が $2$ 個の場合($f_A(\lambda) = (\lambda - \lambda_1)^{m_1}
+(\lambda - \lambda_2)^{m_2}$)で骨格を示す。
+$g_1(\lambda) = (\lambda - \lambda_1)^{m_1}$ と
+$g_2(\lambda) = (\lambda - \lambda_2)^{m_2}$ は共通の根をもたない
+(互いに素)。整数の場合と同じく、互いに素な二つの多項式に対しては
+\[
+p(\lambda)\,g_1(\lambda) + q(\lambda)\,g_2(\lambda) = 1
+\]
+となる多項式 $p, q$ がとれる(多項式の割り算を繰り返す、
+ユークリッドの互除法)。$\lambda$ に $A$ を代入すると
+\[
+p(A)(A - \lambda_1 E)^{m_1} + q(A)(A - \lambda_2 E)^{m_2} = E
+\]
+となり、任意の $\vect{v}$ が
+$\vect{v} = \vect{v}_1 + \vect{v}_2$,
+$\vect{v}_1 = q(A)(A - \lambda_2 E)^{m_2}\vect{v}$,
+$\vect{v}_2 = p(A)(A - \lambda_1 E)^{m_1}\vect{v}$ と分かれる。ここで
+$(A - \lambda_1 E)^{m_1}\vect{v}_1 = q(A)\,f_A(A)\,\vect{v} = \vect{0}$
+(ケーリー・ハミルトン。$A$ の多項式どうしは順序を交換できることに注意)
+だから $\vect{v}_1 \in \widetilde{W}_{\lambda_1}$、同様に
+$\vect{v}_2 \in \widetilde{W}_{\lambda_2}$。
+すなわち全体が二つの一般固有空間の和になる。
+分解の一意性も同じ式から出る:$\vect{v} \in \widetilde{W}_{\lambda_1}
+\cap \widetilde{W}_{\lambda_2}$ なら、上の式の二つの項がどちらも
+$\vect{0}$ になり($g_i(A)$ が $\vect{v}$ を消すため)、$\vect{v} = \vect{0}$
+となる。固有値が $3$ 個以上でも同じ論法が通り、
+次元が代数的重複度にちょうど一致することは、次章のジョルダン標準形と
+合わせて確かめられる。「多項式の互いに素性が空間を切り分ける」
+――ケーリー・ハミルトンの定理(第IV部)が、ここで構造定理の
+エンジンとして働くのである。
+\end{itembox}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[べき零指数は次数 $n$ とは限らない]\label{hanrei:nilp-index}
+「$n$ 次のべき零行列は $n$ 乗して初めて消える」は誤りである。
+$3$ 次の
+\[
+N = \mat{0 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0}
+\]
+は $N \neq O$, $N^2 = O$ で、べき零指数は $2$ である。
+シフト行列(指数 $n$)は「最も消えにくい」端の例にすぎず、
+指数は $1$(零行列)から $n$(シフト行列)まで何でもありうる。
+定理 \ref{thm:nilp-chain} が保証するのは「遅くとも $n$ 乗で消える」
+という上限だけである。指数の違いは核の増大列の伸び方の違いであり、
+次章で見るように、標準形の細胞の大きさの違いに対応する。
+\end{hanrei}
+
+\begin{hanrei}[べき零どうしの和・積はべき零とは限らない]\label{hanrei:nilp-sum}
+$N_1 = \mat{0 & 1 \\ 0 & 0}$ と $N_2 = \mat{0 & 0 \\ 1 & 0}$ は
+どちらもべき零($2$ 乗で消える)である。しかし和は
+\[
+N_1 + N_2 = \mat{0 & 1 \\ 1 & 0}, \qquad
+(N_1 + N_2)^2 = E
+\]
+となり、べき乗は $E$ と $N_1 + N_2$ を交互に繰り返すだけで
+決して $O$ にならない(固有値は $\pm 1$ で、
+定理 \ref{thm:nilp-char} からもべき零でないと分かる)。積も
+\[
+N_1 N_2 = \mat{1 & 0 \\ 0 & 0}, \qquad (N_1 N_2)^2 = N_1 N_2 \neq O
+\]
+でべき零でない($1$ が固有値である)。原因は $N_1 N_2 \neq N_2 N_1$、
+すなわち\textbf{非可換性}にある。互いに可換なべき零行列どうしなら、
+和も積も必ずべき零になる(章末問題 \ref{q:nilp-ex11})。
+「べき零」は一つの行列の性質としては扱いやすいが、
+複数の行列を組み合わせるときは可換性の確認が欠かせない。
+\end{hanrei}
+
+\section{例題}
+
+べき零性の判定、核の増大列、一般固有空間の計算と証明の型を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(べき零性の判定)]\label{rei:nilp-2x2}
+$A = \mat{2 & -4 \\ 1 & -2}$ がべき零であることを、
+(a) 直接計算、(b) 固有多項式、の二通りで確かめよ。\\
+\textbf{解.}\ (a)
+\[
+A^2 = \mat{2 & -4 \\ 1 & -2}\mat{2 & -4 \\ 1 & -2}
+= \mat{4 - 4 & -8 + 8 \\ 2 - 2 & -4 + 4} = O.
+\]
+$A \neq O$ だから、べき零指数 $2$ のべき零行列である。
+(b) $\mathrm{tr}\,A = 2 + (-2) = 0$,
+$\det A = 2 \cdot (-2) - (-4) \cdot 1 = 0$ より固有多項式は
+$f_A(\lambda) = \lambda^2$。固有値は $0$ のみだから、
+定理 \ref{thm:nilp-char} によりべき零である
+(ケーリー・ハミルトンの定理から $A^2 = O$ も出る)。
+\end{rei}
+
+\begin{rei}[例題・基本(核の増大列)]\label{rei:nilp-chain-ex}
+$N = \mat{0 & 2 & 3 \\ 0 & 0 & 4 \\ 0 & 0 & 0}$ について、$N^2, N^3$ を
+計算し、$\mathrm{Ker}\,N$, $\mathrm{Ker}\,N^2$, $\mathrm{Ker}\,N^3$ の
+次元を求めよ。\\
+\textbf{解.}\
+\[
+N^2 = \mat{0 & 0 & 8 \\ 0 & 0 & 0 \\ 0 & 0 & 0}, \qquad N^3 = O
+\]
+(べき零指数 $3$)。$N\vect{x} = \vect{0}$ は $2y + 3z = 0$, $4z = 0$、
+すなわち $y = z = 0$ だから
+$\mathrm{Ker}\,N = \langle \vect{e}_1 \rangle$(次元 $1$)。
+$N^2\vect{x} = \vect{0}$ は $8z = 0$ だから
+$\mathrm{Ker}\,N^2 = \langle \vect{e}_1, \vect{e}_2 \rangle$(次元 $2$)。
+$N^3 = O$ より $\mathrm{Ker}\,N^3 = \mathbb{C}^3$(次元 $3$)。
+次元は $1, 2, 3$ と一段ずつ増え、$3$ 段目で止まる
+(定理 \ref{thm:nilp-chain} のとおり、止まったら以後は不変)。
+\end{rei}
+
+\begin{rei}[例題・基本(一般固有空間の計算)]\label{rei:nilp-gen2}
+$A = \mat{3 & 1 \\ 0 & 3}$ の固有空間 $W_3$ と一般固有空間
+$\widetilde{W}_3$ を求めよ。\\
+\textbf{解.}\ 固有多項式は $(\lambda - 3)^2$、固有値は $3$ のみ
+(代数的重複度 $2$)。
+\[
+A - 3E = \mat{0 & 1 \\ 0 & 0}
+\]
+より $W_3 = \mathrm{Ker}(A - 3E) = \langle \vect{e}_1 \rangle$(次元 $1$)。
+一方 $(A - 3E)^2 = O$ だから
+$\widetilde{W}_3 = \mathrm{Ker}(A - 3E)^2 = \mathbb{C}^2$(次元 $2$)。
+幾何的重複度 $1 <$ 代数的重複度 $2$ なので対角化はできないが、
+一般固有空間はちょうど代数的重複度まで広がっている。
+\end{rei}
+
+\begin{rei}[例題・標準(固有多項式による判定)]\label{rei:nilp-charpoly}
+$A = \mat{1 & 1 & 1 \\ -1 & -1 & -1 \\ 0 & 0 & 0}$ がべき零であることを
+固有多項式で示し、べき零指数を求めよ。\\
+\textbf{解.}\ $3$ 次の固有多項式は
+$f_A(\lambda) = \lambda^3 - (\mathrm{tr}\,A)\lambda^2 + c\lambda - \det A$
+の形をもつ($c$ は $2$ 次の主小行列式の和。第IV部の章末問題で扱った)。
+$\mathrm{tr}\,A = 1 - 1 + 0 = 0$。第 $3$ 行が零ベクトルだから $\det A = 0$。
+$c$ は
+\[
+\det\mat{1 & 1 \\ -1 & -1} + \det\mat{1 & 1 \\ 0 & 0}
++ \det\mat{-1 & -1 \\ 0 & 0} = 0 + 0 + 0 = 0.
+\]
+よって $f_A(\lambda) = \lambda^3$ となり、定理 \ref{thm:nilp-char} により
+$A$ はべき零で、$A^3 = O$。実際に掛けてみると
+\[
+A^2 = \mat{1 - 1 + 0 & 1 - 1 + 0 & 1 - 1 + 0 \\
+-1 + 1 + 0 & -1 + 1 + 0 & -1 + 1 + 0 \\ 0 & 0 & 0} = O
+\]
+なので、べき零指数は($3$ ではなく)$2$ である
+(反例 \ref{hanrei:nilp-index} と同じ注意:指数は次数より小さくてよい)。
+\end{rei}
+
+\begin{rei}[例題・標準(一般固有空間分解)]\label{rei:nilp-decomp3}
+$A = \mat{2 & 1 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 5}$ について、
+すべての一般固有空間を求め、$\mathbb{C}^3$ が直和に分解されることを
+確かめよ。\\
+\textbf{解.}\ 上三角行列だから固有値は対角成分で、$2$(代数的重複度 $2$)と
+$5$(代数的重複度 $1$)。まず固有値 $2$:
+\[
+A - 2E = \mat{0 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 3}, \qquad
+(A - 2E)^2 = \mat{0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 9}.
+\]
+$W_2 = \langle \vect{e}_1 \rangle$(次元 $1$)に対し、
+$\widetilde{W}_2 = \mathrm{Ker}(A - 2E)^2 = \langle \vect{e}_1, \vect{e}_2 \rangle$
+(次元 $2$ $=$ 代数的重複度)。次に固有値 $5$:
+\[
+A - 5E = \mat{-3 & 1 & 0 \\ 0 & -3 & 0 \\ 0 & 0 & 0}
+\]
+の核は $-3x + y = 0$, $-3y = 0$ より $x = y = 0$、すなわち
+$\widetilde{W}_5 = W_5 = \langle \vect{e}_3 \rangle$(次元 $1$。
+重複度 $1$ の固有値では一般固有空間は固有空間のまま広がらない)。
+$\langle \vect{e}_1, \vect{e}_2 \rangle$ と $\langle \vect{e}_3 \rangle$ を
+合わせると $\mathbb{C}^3$ 全体になり、次元も $2 + 1 = 3$。確かに
+$\mathbb{C}^3 = \widetilde{W}_2 \oplus \widetilde{W}_5$ である。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$E - N$ の正則性)]\label{rei:nilp-neumann}
+$N$ をべき零指数 $k$ のべき零行列とする。$E - N$ が正則で、
+\[
+(E - N)^{-1} = E + N + N^2 + \cdots + N^{k-1}
+\]
+となることを示せ。\\
+\textbf{解.}\ 右辺を $S$ とおく。$E$ と $N$ の積は順序を交換できるから
+\[
+(E - N)S = (E + N + \cdots + N^{k-1}) - (N + N^2 + \cdots + N^k)
+= E - N^k = E
+\]
+($N^k = O$ を使った)。同様に $S(E - N) = E$。よって $E - N$ は正則で、
+逆行列は $S$ である。たとえば $N = \mat{0 & 1 \\ 0 & 0}$ なら
+$(E - N)^{-1} = E + N = \mat{1 & 1 \\ 0 & 1}$ で、実際
+$\mat{1 & -1 \\ 0 & 1}\mat{1 & 1 \\ 0 & 1} = E$ と確かめられる。
+これは等比数列の和の公式 $\dfrac{1}{1 - x} = 1 + x + x^2 + \cdots$ の
+行列版であり、べき零性のおかげで\textbf{無限級数が有限で切れる}。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{べき零行列}とは $N^k = O$ となる行列で、最小の $k$ が
+\textbf{べき零指数}である。指数は必ず次数 $n$ 以下なので、
+$N^n$ を計算すれば判定できる。
+\item べき零 $\iff$ 固有値が $0$ のみ($f_N(\lambda) = \lambda^n$)
+$\iff$ $N^n = O$(定理 \ref{thm:nilp-char})。判定は
+ケーリー・ハミルトンの定理経由で、固有多項式の計算に帰着する。
+\item \textbf{核の増大列} $\mathrm{Ker}\,N \subseteq \mathrm{Ker}\,N^2
+\subseteq \cdots$ は一段ずつ広がり、一度止まったら以後は不変
+(定理 \ref{thm:nilp-chain})。
+\item \textbf{一般固有空間} $\widetilde{W}_\lambda
+= \mathrm{Ker}(A - \lambda E)^n$ の次元は代数的重複度にちょうど一致し、
+空間全体が直和 $\mathbb{C}^n = \widetilde{W}_{\lambda_1} \oplus \cdots
+\oplus \widetilde{W}_{\lambda_k}$ に分解される(定理 \ref{thm:gen-decomp})。
+\item 対角化可能 $\iff$ すべての固有値で
+$\widetilde{W}_\lambda = W_\lambda$(定理 \ref{thm:nilp-diagchar})。
+はみ出し($\widetilde{W}_\lambda \supsetneq W_\lambda$)の整理が次章の主題。
+\item べき零指数は次数と一致するとは限らず、べき零どうしの和・積は
+非可換だとべき零性を失う(反例 \ref{hanrei:nilp-index},
+\ref{hanrei:nilp-sum})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:nilp-ex1}
+$N = \mat{0 & 0 & 0 \\ 1 & 0 & 0 \\ 2 & 3 & 0}$ について、
+$N^2$ と $N^3$ を計算し、べき零指数を求めよ。また
+$\mathrm{Ker}\,N$, $\mathrm{Ker}\,N^2$ の次元を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:nilp-ex2}
+$A = \mat{6 & -4 \\ 9 & -6}$ がべき零であることを、トレースと行列式
+(定理 \ref{thm:nilp-char} の注意)を用いて示せ。
+また $A^2$ を直接計算して確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:nilp-ex3}
+$4$ 次のシフト行列 $N$($(i, i+1)$ 成分だけが $1$)について、
+$N^2, N^3, N^4$ を書き、
+$\mathrm{Ker}\,N^k$($k = 1, 2, 3, 4$)の次元を順に求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:nilp-ex4}
+$A = \mat{4 & 1 \\ 0 & 4}$ の固有空間 $W_4$ と一般固有空間
+$\widetilde{W}_4$ を求め、それぞれの次元を代数的重複度と比較せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:nilp-ex5}
+$A = \mat{1 & -1 \\ 1 & -1}$ について、\\
+　(1) $A^2 = O$ を確かめよ。\\
+　(2) $E$ と $A$ が可換であることを用いて、$(E + A)^{10}$ を求めよ
+(ヒント:二項定理を使うと $A^2$ 以上の項がすべて消える)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:nilp-ex6}
+$A = \mat{3 & 1 & 1 \\ 0 & 3 & 0 \\ 0 & 0 & 1}$ について、
+固有値とその代数的重複度を求め、すべての固有値の固有空間と
+一般固有空間を求めよ。また、一般固有空間の次元の和が $3$ になる
+(定理 \ref{thm:gen-decomp})ことを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:nilp-ex7}
+対角成分がすべて $0$ の $3$ 次上三角行列
+$N = \mat{0 & a & b \\ 0 & 0 & c \\ 0 & 0 & 0}$ について、\\
+　(1) $a, b, c$ の値によらず $N^3 = O$ となることを示せ。\\
+　(2) べき零指数がちょうど $3$ になるのは、$a, b, c$ がどんな条件を
+満たすときか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:nilp-ex8}
+$N = \mat{0 & 1 & 2 \\ 0 & 0 & 3 \\ 0 & 0 & 0}$ について、
+例題 \ref{rei:nilp-neumann} の公式を用いて $(E - N)^{-1}$ を求め、
+$(E - N)(E - N)^{-1} = E$ を検算せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:nilp-ex9}
+$4$ 次のべき零行列 $N$ で、
+$\dim \mathrm{Ker}\,N = 2$, $\dim \mathrm{Ker}\,N^2 = 3$,
+$\dim \mathrm{Ker}\,N^3 = 4$ となるものを考える。\\
+　(1) $N$ のべき零指数を求めよ。\\
+　(2) このような $N$ の例を一つ構成せよ
+(ヒント:シフト行列と零行列をブロック対角に並べる)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:nilp-ex10}
+$2$ 次以下の多項式の空間 $\R[x]_2$ 上の微分写像 $D(p) = p'$ を考える。\\
+　(1) 基底 $\{1, x, x^2\}$ に関する $D$ の表現行列 $N$ を書け。\\
+　(2) $N^3 = O$ を行列の計算で確かめ、同じことを
+「微分」の言葉でも説明せよ。\\
+　(3) $\mathrm{Ker}\,D$, $\mathrm{Ker}\,D^2$, $\mathrm{Ker}\,D^3$ は
+それぞれどんな多項式の集合か。次元とともに答えよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:nilp-ex11}
+$N_1, N_2$ をべき零行列(べき零指数をそれぞれ $k_1, k_2$)とし、
+$N_1 N_2 = N_2 N_1$(可換)とする。\\
+　(1) $N_1 N_2$ がべき零であることを示せ。\\
+　(2) $N_1 + N_2$ がべき零であることを示せ
+(ヒント:可換なので二項定理が使える。$(N_1 + N_2)^{k_1 + k_2 - 1}$ を
+展開すると、各項で $N_1$ か $N_2$ の指数が大きくなりすぎる)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:nilp-ex12}
+　(1) べき零かつ対角化可能な行列は零行列に限ることを示せ。\\
+　(2) (1) とスペクトル定理(定理 \ref{thm:spec-main})を用いて、
+べき零な実対称行列は零行列に限ることを示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:nilp-ex1}}:下三角版のシフト構造。掛けるたびに
+$0$ でない成分が左下へ追いやられる。核は連立方程式を解く。
+\item \textbf{問 \ref{q:nilp-ex2}}:$2$ 次では
+「$\mathrm{tr} = 0$ かつ $\det = 0$ $\iff$ べき零」。
+\item \textbf{問 \ref{q:nilp-ex3}}:$1$ の斜め列が一段ずつ右上へ動く。
+核の次元は $1$ ずつ増える。
+\item \textbf{問 \ref{q:nilp-ex4}}:例題 \ref{rei:nilp-gen2} と同型。
+$(A - 4E)^2$ を計算する。
+\item \textbf{問 \ref{q:nilp-ex5}}:$(E + A)^{10} = E + 10A$ になる。
+$A^2 = O$ で二項展開のほとんどが消える。
+\item \textbf{問 \ref{q:nilp-ex6}}:上三角なので固有値は対角成分。
+固有値 $3$ は $(A - 3E)^2$ まで、固有値 $1$ は $A - E$ の核だけでよい
+(重複度 $1$)。
+\item \textbf{問 \ref{q:nilp-ex7}}:$N^2$ を成分で計算すると
+$(1, 3)$ 成分だけが残る。それが $0$ かどうかが指数の分かれ目。
+\item \textbf{問 \ref{q:nilp-ex8}}:$N^2$ の $(1, 3)$ 成分は $3$。
+$E + N + N^2$ を作って掛け算で検算する。
+\item \textbf{問 \ref{q:nilp-ex9}}:次元列が $2, 3, 4$ と増えて $4$ で
+止まるから、$N^2 \neq O$, $N^3 = O$。$3$ 次のシフト行列に
+$1 \times 1$ の零行列を添えると、核の次元が一つ底上げされる。
+\item \textbf{問 \ref{q:nilp-ex10}}:$D(1) = 0$, $D(x) = 1$,
+$D(x^2) = 2x$ を列に並べる。「$k$ 回微分して消える $2$ 次以下の多項式」は
+次数 $k - 1$ 以下の多項式である。
+\item \textbf{問 \ref{q:nilp-ex11}}:可換なら
+$(N_1 N_2)^k = N_1^k N_2^k$。和は指数 $k_1 + k_2 - 1$ で展開し、
+各項 $N_1^i N_2^{k_1 + k_2 - 1 - i}$ において $i \ge k_1$ か
+$k_1 + k_2 - 1 - i \ge k_2$ のどちらかが必ず成り立つことを確かめる。
+\item \textbf{問 \ref{q:nilp-ex12}}:対角化 $P^{-1}NP = D$ の対角成分は
+固有値、べき零の固有値は $0$ のみ(定理 \ref{thm:nilp-eigen})。
+スペクトル定理は「実対称なら直交行列で対角化できる」という主張だった。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{ジョルダン標準形}\label{chap:jordan}
