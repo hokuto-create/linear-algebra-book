@@ -1135,11 +1135,34 @@ $\mu - \lambda \neq 0$ の三角行列で正則。
 \chapter{行列の指数関数}\label{chap:exp}
 % =====================================================
 
-\section{定義}
+\begin{goal}
+\begin{itemize}
+\item 行列の指数関数 $e^{A}$ の定義(テイラー展開への代入)を理解し、
+べき零行列・対角行列については\textbf{定義の級数から直接} $e^{tA}$ を
+計算できるようになる。
+\item 基本性質($e^{A+B} = e^{A}e^{B}$ は可換なときに限る、
+$\frac{d}{dt}e^{tA} = Ae^{tA}$、$P^{-1}e^{A}P = e^{P^{-1}AP}$、
+$\det e^{A} = e^{\mathrm{tr}\,A}$)を、根拠とともに使えるようになる。
+\item 対角化またはジョルダン標準形を経由して $e^{tA}$ を計算し、
+細胞の $1$ が $te^{\lambda t}$ 型の項を生むことを説明できるようになる。
+\end{itemize}
+\end{goal}
 
-指数関数のテイラー展開
-$e^x = 1 + x + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \cdots$ の
-$x$ に行列を代入する、という大胆な発想が見事に機能する。
+\section{動機 ― べき乗の「究極の束ね方」}
+
+第IV部で $A^n$ を、前章でジョルダン標準形経由の $A^n$ を手に入れた。
+本章はその総仕上げとして、\textbf{すべてのべき乗 $E, A, A^2, \dots$ を
+一つの級数に束ねた対象}を作る。手本は指数関数のテイラー展開
+\[
+e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots
+\]
+である。この $x$ に行列を代入する、という大胆な発想が見事に機能する。
+なぜ指数関数なのか。一変数の微分方程式 $y' = ay$ の解が
+$y = e^{at}y_0$ だったことを思い出そう。連立微分方程式
+$\vect{x}' = A\vect{x}$ を「一本の式」として解くために、
+$e^{at}$ の行列版がどうしても欲しいのである(次章で実現する)。
+
+\section{定義と最初の計算}
 
 \begin{teigi}[行列の指数関数]
 正方行列 $A$ に対し、
@@ -1149,16 +1172,75 @@ e^{A} = E + A + \frac{1}{2!}A^2 + \frac{1}{3!}A^3 + \cdots
 と定める(この級数はすべての $A$ で収束することが知られている)。
 \end{teigi}
 
-\begin{teiri}[基本性質]
+\begin{chui}
+「収束」は成分ごとの意味である:左辺の $(i, j)$ 成分は、部分和の
+$(i, j)$ 成分の極限として定まる。分母の $k!$ が急激に大きくなるため、
+どの成分の級数も必ず収束することが示せる(証明は解析学に譲る)。
+本書ではこの事実を認めて使う。
+\end{chui}
+
+定義から直ちに計算できる例を二つ見よう。まず\textbf{対角行列}では
+\[
+D = \mat{a & 0 \\ 0 & b} \quad\Longrightarrow\quad
+D^k = \mat{a^k & 0 \\ 0 & b^k} \quad\Longrightarrow\quad
+e^{D} = \mat{\displaystyle\sum_k \frac{a^k}{k!} & 0 \\
+0 & \displaystyle\sum_k \frac{b^k}{k!}} = \mat{e^a & 0 \\ 0 & e^b}
+\]
+と、\textbf{対角成分ごとに数の指数関数をとるだけ}である。
+次に\textbf{べき零行列}では、級数が途中で切れて\textbf{有限和}になる。
+この二つが $e^{A}$ 計算のすべての部品になる。
+
+\begin{mondai}\label{q:exp-shift}
+$N = \mat{0 & 1 \\ 0 & 0}$ について、定義の級数から $e^{tN}$ を求めよ
+($t$ はスカラー。$tN$ に定義を適用する)。また、得られた結果を
+$t$ で微分すると $N e^{tN}$ に一致することを直接確かめよ。
+\end{mondai}
+
+\section{基本性質}
+
+\begin{teiri}[基本性質]\label{thm:exp-basic}
 \begin{enumerate}
 \item $e^{O} = E$。
 \item $AB = BA$ ならば $e^{A+B} = e^{A}e^{B}$。
 特に $e^{A}e^{-A} = E$ なので $e^{A}$ はつねに正則で、
 $(e^{A})^{-1} = e^{-A}$。
 \item $\dfrac{d}{dt}e^{tA} = A\,e^{tA}$。
-\item $P^{-1}e^{A}P = e^{P^{-1}AP}$(級数の各項で $P^{-1}A^kP = (P^{-1}AP)^k$)。
+\item $P^{-1}e^{A}P = e^{P^{-1}AP}$。
 \end{enumerate}
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $O^k = O$($k \ge 1$)だから級数は $E$ だけが残る。
+
+(4) $P^{-1}A^kP = (P^{-1}AP)^k$(内側の $PP^{-1}$ が消える)を
+級数の各項に使えばよい:
+\[
+P^{-1}e^{A}P = \sum_{k=0}^{\infty} \frac{1}{k!}P^{-1}A^kP
+= \sum_{k=0}^{\infty} \frac{1}{k!}(P^{-1}AP)^k = e^{P^{-1}AP}.
+\]
+
+(2) 数の場合の $e^{a+b} = e^a e^b$ の証明をなぞる。右辺の積を展開し、
+$A^i B^j / (i!\,j!)$ の項を $i + j = k$ ごとに集めると
+\[
+e^{A}e^{B} = \sum_{k=0}^{\infty} \frac{1}{k!}
+\sum_{i+j=k} \frac{k!}{i!\,j!} A^i B^j
+= \sum_{k=0}^{\infty} \frac{1}{k!}
+\sum_{i=0}^{k} \binom{k}{i} A^i B^{k-i}.
+\]
+ここで $AB = BA$ ならば二項定理により
+$\sum_i \binom{k}{i}A^iB^{k-i} = (A + B)^k$ となり、右辺は
+$e^{A+B}$ に一致する(級数の項の集め直しが許されることは、
+収束の速さから正当化できる。詳細は解析学に譲る)。
+\textbf{可換性は二項定理を使う一点で効いている}ことに注意。
+$B = -A$ とすれば($A$ と $-A$ は可換)
+$e^{A}e^{-A} = e^{O} = E$ を得る。
+
+(3) 級数を項ごとに $t$ で微分する(これも正当化できる):
+\[
+\frac{d}{dt}e^{tA} = \frac{d}{dt}\sum_{k=0}^{\infty} \frac{t^k}{k!}A^k
+= \sum_{k=1}^{\infty} \frac{t^{k-1}}{(k-1)!}A^k
+= A\sum_{k=1}^{\infty} \frac{t^{k-1}}{(k-1)!}A^{k-1} = A\,e^{tA}. \qquad\blacksquare
+\]
 
 性質 3 は「$e^{tA}$ を $t$ で微分すると $A$ が降りてくる」、
 すなわち $y' = ay \Rightarrow y = e^{at}y_0$ の行列版が成り立つ予感を与える
@@ -1166,9 +1248,9 @@ $(e^{A})^{-1} = e^{-A}$。
 
 \begin{itembox}[l]{深掘り:$e^{A+B} = e^{A}e^{B}$ は当たり前ではない}
 数の世界の常識 $e^{a+b} = e^a e^b$ は、行列では\textbf{可換なときに限り}
-成り立つ。級数の積を展開すると分かるように、証明には
-$AB$ と $BA$ を自由に入れ替える操作(二項定理)が必要だからである。
-非可換な例では実際に破れる(小さな例で確かめる価値がある)。
+成り立つ。上の証明で見たとおり、鍵は
+$AB$ と $BA$ を自由に入れ替える操作(二項定理)だからである。
+非可換な例では実際に破れる(反例 \ref{hanrei:exp-product})。
 「回転を組み合わせる順序で結果が変わる」(第I部)ことの、指数関数版である。
 非可換性のずれ $AB - BA$ を主役に据えた数学が\textbf{リー群・リー環}の理論で、
 連続的な対称性(回転群など)を微分で研究する、物理学と直結した分野である。
@@ -1195,12 +1277,338 @@ $N$ がべき零なので\textbf{級数が有限項で切れる}。たとえば 
 e^{tJ} = e^{\lambda t}\mat{1 & t \\ 0 & 1}.
 \]
 指数の前に多項式 $t$ が現れた――この $t$ こそ、
-ジョルダン細胞の $1$ が解析の世界に落とす影である。
+ジョルダン細胞の $1$ が解析の世界に落とす影である
+(べき乗のときの $n\lambda^{n-1}$(問 \ref{q:jordan-ex10})と対をなす)。
 
 \begin{mondai}\label{q:exp}
 第IV部の問 \ref{q:eigen} の行列 $A = \mat{1 & 4 \\ 2 & 3}$ について、
 対角化を用いて $e^{tA}$ を求めよ。
 \end{mondai}
+
+\section{行列式とトレース ― $\det e^{A} = e^{\mathrm{tr}\,A}$}
+
+性質 2 から $e^{A}$ はつねに正則だった。実は行列式の値まで、
+$A$ から直接読み取れる。
+
+\begin{teiri}[指数関数の行列式]\label{thm:exp-det}
+任意の正方行列 $A$ に対して
+\[
+\det e^{A} = e^{\mathrm{tr}\,A}
+\]
+が成り立つ($\mathrm{tr}\,A$ は対角成分の和(トレース)。第IV部)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+二つの補題を先に確かめる。
+
+(i) \textbf{トレースは相似で変わらない。}
+まず $\mathrm{tr}(XY) = \mathrm{tr}(YX)$ である。実際、両辺とも
+$\sum_i \sum_k x_{ik}y_{ki}$ に等しい($XY$ の $(i,i)$ 成分は
+$\sum_k x_{ik}y_{ki}$、$YX$ の $(k,k)$ 成分は $\sum_i y_{ki}x_{ik}$)。
+これを $X = P^{-1}$, $Y = AP$ に使えば
+$\mathrm{tr}(P^{-1}AP) = \mathrm{tr}(APP^{-1}) = \mathrm{tr}\,A$。
+
+(ii) \textbf{上三角行列 $T$ では主張が成り立つ。}
+上三角行列の積は上三角で、対角成分は対角成分どうしの積になる。
+よって $T$ の対角成分を $\lambda_1, \dots, \lambda_n$ とすると
+$T^k$ の対角成分は $\lambda_1^k, \dots, \lambda_n^k$ であり、
+$e^{T}$ は対角成分が $e^{\lambda_1}, \dots, e^{\lambda_n}$ の
+上三角行列になる。三角行列の行列式は対角成分の積だから
+\[
+\det e^{T} = e^{\lambda_1} \cdots e^{\lambda_n}
+= e^{\lambda_1 + \cdots + \lambda_n} = e^{\mathrm{tr}\,T}.
+\]
+
+一般の $A$ は、ジョルダン標準形定理(定理 \ref{thm:jordan-main})により
+上三角行列 $J$ に相似である:$P^{-1}AP = J$。性質 4 と積の行列式より
+\[
+\det e^{A} = \det (P e^{J} P^{-1})
+= \det P \cdot \det e^{J} \cdot \frac{1}{\det P} = \det e^{J}
+= e^{\mathrm{tr}\,J} = e^{\mathrm{tr}\,A}
+\]
+(最後に (i) を使った)。 $\blacksquare$
+
+\begin{chui}
+$e^{\mathrm{tr}\,A} > 0$ だから、$\det e^{A}$ は\textbf{つねに正}である。
+「$e^{A}$ が正則」という定性的事実の、定量版といえる
+(体積拡大率が $e^{\mathrm{tr}\,A}$ 倍で、決して $0$ や負にならない)。
+逆に、行列式が負の行列(たとえば鏡映)は、実行列 $A$ の $e^{A}$ の形には
+決して書けない(章末問題 \ref{q:exp-ex10})。
+\end{chui}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[非可換なら $e^{A+B} \neq e^{A}e^{B}$ が起こる]\label{hanrei:exp-product}
+$A = \mat{0 & 1 \\ 0 & 0}$, $B = \mat{0 & 0 \\ 1 & 0}$
+(反例 \ref{hanrei:nilp-sum} の組)はどちらもべき零で、
+$e^{A} = E + A$, $e^{B} = E + B$ と直ちに計算できる。積は
+\[
+e^{A}e^{B} = \mat{1 & 1 \\ 0 & 1}\mat{1 & 0 \\ 1 & 1} = \mat{2 & 1 \\ 1 & 1},
+\qquad
+e^{B}e^{A} = \mat{1 & 0 \\ 1 & 1}\mat{1 & 1 \\ 0 & 1} = \mat{1 & 1 \\ 1 & 2}
+\]
+で、そもそも $e^{A}e^{B} \neq e^{B}e^{A}$ である。もし
+$e^{A+B} = e^{A}e^{B}$ がいつでも成り立つなら、左辺は $A$ と $B$ の
+和だけで決まり入れ替えに無関係だから
+$e^{A}e^{B} = e^{B}e^{A}$ となるはずで、矛盾する。
+よってこの $A, B$ では $e^{A+B}$ は $e^{A}e^{B}$ と
+$e^{B}e^{A}$ の少なくとも一方と異なる(実は両方と異なる。
+章末問題 \ref{q:exp-ex9} で数値でも確かめる)。
+公式を使う前に\textbf{可換性の確認}が欠かせない。
+\end{hanrei}
+
+\begin{hanrei}[$e^{A} = E$ でも $A = O$ とは限らない]\label{hanrei:exp-identity}
+数の世界では $e^a = 1$ なら $a = 0$ である。行列では違う。
+例題 \ref{rei:exp-rotation} で見るように、
+$K = \mat{0 & -1 \\ 1 & 0}$ に対し $e^{tK}$ は角 $t$ の回転行列である。
+そこで $A = 2\pi K = \mat{0 & -2\pi \\ 2\pi & 0}$ とすれば、
+$e^{A}$ は角 $2\pi$ の回転、すなわち $e^{A} = E$ となるが
+$A \neq O$ である。「一周回って戻ってくる」道があるため、
+行列の指数関数は\textbf{単射ではない}。対数(指数の逆の操作)を
+行列で考えるときに、この現象が本質的な困難になる。
+\end{hanrei}
+
+\section{例題}
+
+定義からの直接計算、対角化・ジョルダン経由の計算、
+性質を使う証明を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(べき零行列:級数が切れる)]\label{rei:exp-nilp}
+$N = \mat{0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0}$(第III部の微分の表現行列)
+について $e^{tN}$ を求めよ。\\
+\textbf{解.}\ $N^2 = \mat{0 & 0 & 2 \\ 0 & 0 & 0 \\ 0 & 0 & 0}$,
+$N^3 = O$ だから級数は $3$ 項で切れる:
+\[
+e^{tN} = E + tN + \frac{t^2}{2}N^2
+= \mat{1 & t & t^2 \\ 0 & 1 & 2t \\ 0 & 0 & 1}
+\]
+($(1,3)$ 成分は $\frac{t^2}{2} \cdot 2 = t^2$)。
+$t = 0$ で $E$ になること、$t$ で微分すると $N e^{tN}$ になることも
+確かめられる。
+\end{rei}
+
+\begin{rei}[例題・基本(対角化経由)]\label{rei:exp-diag}
+本書で繰り返し登場した $A = \mat{3 & 1 \\ 1 & 3}$ について
+$e^{tA}$ を求めよ。\\
+\textbf{解.}\ 固有値 $4, 2$、固有ベクトル $\mat{1 \\ 1}, \mat{1 \\ -1}$、
+$P = \mat{1 & 1 \\ 1 & -1}$, $P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$。
+三段構えで
+\[
+e^{tA} = P\mat{e^{4t} & 0 \\ 0 & e^{2t}}P^{-1}
+= \frac{1}{2}\mat{e^{4t} + e^{2t} & e^{4t} - e^{2t} \\
+e^{4t} - e^{2t} & e^{4t} + e^{2t}}.
+\]
+検算:$t = 0$ で $E$。また対角化のときの $\lambda^n$ が
+そっくり $e^{\lambda t}$ に置き換わっただけ、という形にも注目
+(第IV部のべき乗公式との対応)。
+\end{rei}
+
+\begin{rei}[例題・基本(性質の確認)]\label{rei:exp-props}
+$D = \mat{a & 0 \\ 0 & b}$ について、
+(a) $\dfrac{d}{dt}e^{tD} = D\,e^{tD}$、
+(b) $e^{D}e^{-D} = E$ を直接確かめよ。\\
+\textbf{解.}\ $e^{tD} = \mat{e^{at} & 0 \\ 0 & e^{bt}}$ である。\\
+(a) 成分ごとに微分して
+$\dfrac{d}{dt}e^{tD} = \mat{ae^{at} & 0 \\ 0 & be^{bt}}
+= \mat{a & 0 \\ 0 & b}\mat{e^{at} & 0 \\ 0 & e^{bt}} = D\,e^{tD}$。\\
+(b) $e^{D}e^{-D} = \mat{e^a & 0 \\ 0 & e^b}\mat{e^{-a} & 0 \\ 0 & e^{-b}}
+= \mat{e^a e^{-a} & 0 \\ 0 & e^b e^{-b}} = E$。
+数の指数法則が、対角成分ごとにそのまま働いている。
+\end{rei}
+
+\begin{rei}[例題・標準(ジョルダン標準形経由)]\label{rei:exp-jordan}
+$A = \mat{1 & 1 \\ -1 & 3}$(例 \ref{rei:jordan-2x2})について
+$e^{tA}$ を求めよ。\\
+\textbf{解.}\ 例 \ref{rei:jordan-2x2} より
+$P^{-1}AP = J = \mat{2 & 1 \\ 0 & 2}$,
+$P = \mat{1 & 0 \\ 1 & 1}$, $P^{-1} = \mat{1 & 0 \\ -1 & 1}$。
+細胞の公式から $e^{tJ} = e^{2t}\mat{1 & t \\ 0 & 1}$ なので
+\[
+e^{tA} = P\,e^{tJ}\,P^{-1}
+= e^{2t}\mat{1 & 0 \\ 1 & 1}\mat{1 & t \\ 0 & 1}\mat{1 & 0 \\ -1 & 1}
+= e^{2t}\mat{1 - t & t \\ -t & 1 + t}.
+\]
+検算:$t = 0$ で $E$。$t$ で微分して $t = 0$ とおくと
+$2E + \mat{-1 & 1 \\ -1 & 1} = \mat{1 & 1 \\ -1 & 3} = A$ となり、
+性質 3($t = 0$ での傾きは $A$)とも合う。
+$te^{2t}$ 型の項が現れるのが、細胞の $1$ の効果である。
+\end{rei}
+
+\begin{rei}[例題・標準(回転の生成)]\label{rei:exp-rotation}
+$K = \mat{0 & -1 \\ 1 & 0}$ について $e^{tK}$ を求めよ。\\
+\textbf{解.}\ $K^2 = -E$ だから、べきは $4$ つ周期で循環する:
+\[
+K^2 = -E, \quad K^3 = -K, \quad K^4 = E, \quad \dots,
+\qquad K^{2m} = (-1)^m E, \quad K^{2m+1} = (-1)^m K.
+\]
+級数を偶数次と奇数次に分けると
+\[
+e^{tK} = \Bigl(\sum_{m=0}^{\infty} \frac{(-1)^m t^{2m}}{(2m)!}\Bigr)E
++ \Bigl(\sum_{m=0}^{\infty} \frac{(-1)^m t^{2m+1}}{(2m+1)!}\Bigr)K.
+\]
+ここで、$e^x$ と同様に $\cos, \sin$ にも級数表示
+\[
+\cos t = 1 - \frac{t^2}{2!} + \frac{t^4}{4!} - \cdots, \qquad
+\sin t = t - \frac{t^3}{3!} + \frac{t^5}{5!} - \cdots
+\]
+があることが知られている。よって
+\[
+e^{tK} = (\cos t)E + (\sin t)K = \mat{\cos t & -\sin t \\ \sin t & \cos t}
+\]
+――\textbf{角 $t$ の回転行列}(第I部)である。
+$K$ は「回転の速度」を表す行列で、指数関数がそれを積み重ねて
+回転そのものを作り出す。複素数の $e^{i\theta} = \cos\theta + i\sin\theta$
+と同じ形なのは偶然ではない($K^2 = -E$ が $i^2 = -1$ の行列版である)。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:対称行列の指数関数)]\label{rei:exp-sym}
+$A$ が実対称行列ならば、$e^{A}$ は対称かつ\textbf{正定値}であることを
+示せ。\\
+\textbf{解.}\ スペクトル定理(定理 \ref{thm:spec-main})により、
+直交行列 $Q$ で ${}^t\!QAQ = D = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$
+(実固有値)とできる。性質 4($P = Q$, $P^{-1} = {}^t\!Q$)より
+\[
+e^{A} = Q\,e^{D}\,{}^t\!Q
+= Q\,\mathrm{diag}(e^{\lambda_1}, \dots, e^{\lambda_n})\,{}^t\!Q.
+\]
+これは「直交行列 $\times$ 対角 $\times$ 転置」の形だから対称であり
+(${}^t(Qe^{D}{}^t\!Q) = Qe^{D}{}^t\!Q$)、固有値は
+$e^{\lambda_1}, \dots, e^{\lambda_n}$ で\textbf{すべて正}。
+固有値がすべて正の対称行列は正定値である(第V部)。
+どんな対称行列も、指数関数を通すと正定値になる――
+「どんな実数 $a$ でも $e^a > 0$」の行列版である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item $e^{A}$ は\textbf{テイラー展開に行列を代入した級数}で定義され、
+つねに収束する。対角行列は対角成分ごと、べき零行列は\textbf{有限和}で
+計算できる。
+\item $e^{A+B} = e^{A}e^{B}$ は\textbf{可換なときに限る}
+(反例 \ref{hanrei:exp-product})。$e^{A}$ はつねに正則で
+$(e^{A})^{-1} = e^{-A}$、$\dfrac{d}{dt}e^{tA} = Ae^{tA}$、
+$P^{-1}e^{A}P = e^{P^{-1}AP}$(定理 \ref{thm:exp-basic})。
+\item 計算は三段構え:対角化できれば $\lambda^n \to e^{\lambda t}$ と
+置き換えるだけ。できなければジョルダン標準形で、細胞から
+$t^k e^{\lambda t}$ 型の項が生じる。
+\item $\det e^{A} = e^{\mathrm{tr}\,A} > 0$(定理 \ref{thm:exp-det})。
+トレースが体積拡大率の指数を握っている。
+\item $K = \mat{0 & -1 \\ 1 & 0}$ は回転を生成する:
+$e^{tK}$ は角 $t$ の回転行列。ゆえに $e^{2\pi K} = E$ で、
+指数関数は単射でない(反例 \ref{hanrei:exp-identity})。
+対称行列の指数は正定値になる(例題 \ref{rei:exp-sym})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:exp-ex1}
+$N = \mat{0 & 3 \\ 0 & 0}$ について、定義の級数から $e^{tN}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:exp-ex2}
+$A = \mat{2 & 1 \\ 1 & 2}$ について、対角化を用いて $e^{tA}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:exp-ex3}
+$J = \mat{5 & 1 \\ 0 & 5}$ について $e^{tJ}$ を求めよ。また、
+$t$ で微分して $t = 0$ とおくと $J$ に戻ることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:exp-ex4}
+問 \ref{q:exp} の $A = \mat{1 & 4 \\ 2 & 3}$ について、
+$\det e^{tA}$ を二通りで求めよ:
+(a) 定理 \ref{thm:exp-det} を $tA$ に適用する。
+(b) 問 \ref{q:exp} で求めた $e^{tA}$ の行列式を直接計算する。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:exp-ex5}
+$N = \mat{0 & 1 & 2 \\ 0 & 0 & 3 \\ 0 & 0 & 0}$(問 \ref{q:nilp-ex8})に
+ついて $e^{tN}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:exp-ex6}
+$A = \mat{3 & 1 \\ -1 & 5}$(問 \ref{q:jordan})について、
+ジョルダン標準形を用いて $e^{tA}$ を求めよ。
+また $t$ で微分して $t = 0$ とおくと $A$ に戻ることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:exp-ex7}
+$B = \mat{0 & -2 \\ 2 & 0}$ について、例題 \ref{rei:exp-rotation} を
+利用して $e^{tB}$ を求めよ。$e^{tB}$ はどんな変換か。また、
+$e^{tB} = E$ となる最小の $t > 0$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:exp-ex8}
+$A = \mat{a & b \\ 0 & a}$($a, b$ は実数)について、
+$A = aE + bN$($N = \mat{0 & 1 \\ 0 & 0}$)と分解し、
+性質 2(可換性)を用いて $e^{tA}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:exp-ex9}
+$S = \mat{0 & 1 \\ 1 & 0}$ について、\\
+　(1) 対角化を用いて $e^{S}$ を求めよ(固有値は $\pm 1$)。\\
+　(2) 反例 \ref{hanrei:exp-product} の $A = \mat{0 & 1 \\ 0 & 0}$,
+$B = \mat{0 & 0 \\ 1 & 0}$ に対し $S = A + B$ である。
+$e^{A+B}$ の $(1,1)$ 成分と $e^{A}e^{B}$ の $(1,1)$ 成分を比較し、
+$e^{A+B} \neq e^{A}e^{B}$ を数値で確かめよ
+($e \approx 2.718$ を使ってよい)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:exp-ex10}
+$B = \mat{1 & 0 \\ 0 & -1}$($x$ 軸に関する鏡映)について、
+$e^{A} = B$ となる\textbf{実}行列 $A$ が存在しないことを示せ
+(ヒント:定理 \ref{thm:exp-det})。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:exp-ex11}
+　(1) 任意のスカラー $s, t$ に対し $e^{(s+t)A} = e^{sA}e^{tA}$ が
+成り立つことを示せ(ヒント:$sA$ と $tA$ は可換)。\\
+　(2) (1) を用いて、自然数 $n$ に対し $(e^{A})^n = e^{nA}$ を示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:exp-ex12}
+　(1) ${}^t(e^{A}) = e^{{}^t\!A}$ を示せ
+(ヒント:${}^t(A^k) = ({}^t\!A)^k$ と、級数の各項の転置)。\\
+　(2) $A$ が交代行列(${}^t\!A = -A$)ならば、$e^{A}$ は直交行列で
+あることを示せ。\\
+　(3) 例題 \ref{rei:exp-rotation} の $K$ は交代行列である。
+(2) の結論は $e^{tK}$ が回転行列であることとどう整合するか、
+一言で述べよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:exp-ex1}}:$N^2 = O$ なので級数は $2$ 項で切れる。
+\item \textbf{問 \ref{q:exp-ex2}}:固有値は $3, 1$。
+例題 \ref{rei:exp-diag} と同じ三段構え。
+\item \textbf{問 \ref{q:exp-ex3}}:$J = 5E + N$ に細胞の公式。
+微分では積の微分法を忘れずに。
+\item \textbf{問 \ref{q:exp-ex4}}:$\mathrm{tr}(tA) = t\,\mathrm{tr}\,A$。
+(b) は $\dfrac{1}{9}$ と $e^{5t}e^{-t} = e^{4t}$ などの整理。
+\item \textbf{問 \ref{q:exp-ex5}}:$N^3 = O$。$N^2$ の $(1,3)$ 成分は $3$。
+\item \textbf{問 \ref{q:exp-ex6}}:$e^{tJ} = e^{4t}\mat{1 & t \\ 0 & 1}$、
+$P = \mat{1 & 0 \\ 1 & 1}$。例題 \ref{rei:exp-jordan} と同じ流れ。
+\item \textbf{問 \ref{q:exp-ex7}}:$B = 2K$ だから $e^{tB} = e^{(2t)K}$。
+角 $2t$ の回転。一周は $2t = 2\pi$。
+\item \textbf{問 \ref{q:exp-ex8}}:$aE$ と $bN$ は可換。
+$e^{taE} = e^{at}E$、$e^{tbN} = E + btN$。
+\item \textbf{問 \ref{q:exp-ex9}}:$P = \mat{1 & 1 \\ 1 & -1}$ で対角化。
+$(1,1)$ 成分は $\dfrac{e + e^{-1}}{2} \approx 1.54$ と $2$ の比較になる。
+\item \textbf{問 \ref{q:exp-ex10}}:$\det B$ の符号と
+$\det e^{A} = e^{\mathrm{tr}\,A} > 0$ を突き合わせる。
+\item \textbf{問 \ref{q:exp-ex11}}:性質 2 を $sA, tA$ に適用。
+(2) は (1) を繰り返す($s = t = 1$ から始めて帰納法)。
+\item \textbf{問 \ref{q:exp-ex12}}:転置は級数の項ごとにとれる。
+(2) は ${}^t(e^{A})e^{A} = e^{-A}e^{A}$ を計算する。
+(3) 回転行列は直交行列の代表例だった(第V部)。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{線形微分方程式系 ― 本書の二本柱が合流する}\label{chap:ode}

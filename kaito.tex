@@ -6955,6 +6955,17 @@ $\dim \mathrm{Ker}(J - \lambda E) = (\lambda_i = \lambda
 証明が完成する。
 
 \bigskip
+\noindent\textbf{問 \ref{q:exp-shift}}\quad
+\textbf{方針}:$(tN)^2 = O$ なので級数は $2$ 項で切れる。\\
+\textbf{解答}:$(tN)^2 = t^2N^2 = O$ より
+\[
+e^{tN} = E + tN = \mat{1 & t \\ 0 & 1}.
+\]
+$t$ で微分すると $\mat{0 & 1 \\ 0 & 0} = N$。一方
+$N e^{tN} = N(E + tN) = N + tN^2 = N$ だから、確かに
+$\dfrac{d}{dt}e^{tN} = Ne^{tN}$ が成り立っている。
+
+\bigskip
 \noindent\textbf{問 \ref{q:exp}}\quad
 問 \ref{q:power} と同じ三段構えで、$5^n, (-1)^n$ を
 $e^{5t}, e^{-t}$ に置き換えればよい:
@@ -6964,6 +6975,208 @@ e^{tA} = P\mat{e^{5t} & 0 \\ 0 & e^{-t}}P^{-1}
 e^{5t} - e^{-t} & 2e^{5t} + e^{-t}}.
 \]
 ($t = 0$ で $E$ になることを確認せよ。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex1}}\quad
+\textbf{方針}:$N^2 = O$。\\
+\textbf{解答}:$(tN)^2 = O$ より
+$e^{tN} = E + tN = \mat{1 & 3t \\ 0 & 1}$。\\
+\textbf{よくあるミス}:成分ごとに $e$ のべきをとって
+$\mat{1 & e^{3t} \\ 0 & 1}$ とすること。指数関数は級数で定義されて
+おり、成分ごとの操作ではない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex2}}\quad
+\textbf{方針}:固有値 $3, 1$ で対角化し、$\lambda^n$ を $e^{\lambda t}$ に
+置き換える三段構え。\\
+\textbf{解答}:固有多項式は $\lambda^2 - 4\lambda + 3 = (\lambda - 3)(\lambda - 1)$。
+固有値 $3$ の固有ベクトル $\mat{1 \\ 1}$、固有値 $1$ の固有ベクトル
+$\mat{1 \\ -1}$。$P = \mat{1 & 1 \\ 1 & -1}$,
+$P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$ として
+\[
+e^{tA} = P\mat{e^{3t} & 0 \\ 0 & e^{t}}P^{-1}
+= \frac{1}{2}\mat{e^{3t} + e^{t} & e^{3t} - e^{t} \\
+e^{3t} - e^{t} & e^{3t} + e^{t}}.
+\]
+検算:$t = 0$ で $E$。\\
+\textbf{よくあるミス}:$P$ と $P^{-1}$ の掛ける順序。
+$e^{tA} = P e^{tD} P^{-1}$($P$ が左)である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex3}}\quad
+\textbf{方針}:$J = 5E + N$、細胞の公式。\\
+\textbf{解答}:$5E$ と $N = \mat{0 & 1 \\ 0 & 0}$ は可換だから
+\[
+e^{tJ} = e^{5t}(E + tN) = e^{5t}\mat{1 & t \\ 0 & 1}.
+\]
+微分すると、積の微分法により
+\[
+\frac{d}{dt}e^{tJ} = 5e^{5t}\mat{1 & t \\ 0 & 1} + e^{5t}\mat{0 & 1 \\ 0 & 0}
+\]
+で、$t = 0$ とおくと $5E + N = J$。性質 3 のとおり
+「$t = 0$ での傾きは行列そのもの」である。\\
+\textbf{よくあるミス}:微分で $e^{5t}$ の係数 $5$ を忘れる、
+または積の微分法を使わないこと。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex4}}\quad
+\textbf{方針}:(a) は $\mathrm{tr}(tA) = t\,\mathrm{tr}\,A$。
+(b) は根気よく展開する。\\
+\textbf{解答}:
+　(a) $\mathrm{tr}\,A = 1 + 3 = 4$ より
+$\det e^{tA} = e^{\mathrm{tr}(tA)} = e^{4t}$。\\
+　(b) 問 \ref{q:exp} の結果から
+\[
+\det e^{tA} = \frac{1}{9}\bigl[(e^{5t} + 2e^{-t})(2e^{5t} + e^{-t})
+- (2e^{5t} - 2e^{-t})(e^{5t} - e^{-t})\bigr].
+\]
+第 $1$ 項は $2e^{10t} + 5e^{4t} + 2e^{-2t}$、
+第 $2$ 項は $2e^{10t} - 4e^{4t} + 2e^{-2t}$ で、差は $9e^{4t}$。
+よって $\det e^{tA} = e^{4t}$ となり (a) と一致する。
+固有値の言葉でいえば $e^{5t} \cdot e^{-t} = e^{4t}$
+(行列式は固有値の積)である。\\
+\textbf{よくあるミス}:(b) の展開で $e^{5t}e^{-t} = e^{4t}$ を
+$e^{-5t^2}$ などとすること。指数法則は肩の和である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex5}}\quad
+\textbf{方針}:$N^3 = O$ なので $3$ 項の和。\\
+\textbf{解答}:$N^2 = \mat{0 & 0 & 3 \\ 0 & 0 & 0 \\ 0 & 0 & 0}$ より
+\[
+e^{tN} = E + tN + \frac{t^2}{2}N^2
+= \mat{1 & t & 2t + \dfrac{3t^2}{2} \\ 0 & 1 & 3t \\ 0 & 0 & 1}.
+\]
+検算:$t = 0$ で $E$。$(1,3)$ 成分は $tN$ から $2t$、
+$\frac{t^2}{2}N^2$ から $\frac{3t^2}{2}$ が来る。\\
+\textbf{よくあるミス}:$\frac{t^2}{2}$ の $\frac{1}{2}$ を落として
+$(1,3)$ 成分を $2t + 3t^2$ とすること。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex6}}\quad
+\textbf{方針}:問 \ref{q:jordan} の $J, P$ を流用し、
+$e^{tJ} = e^{4t}\mat{1 & t \\ 0 & 1}$。\\
+\textbf{解答}:$P = \mat{1 & 0 \\ 1 & 1}$, $P^{-1} = \mat{1 & 0 \\ -1 & 1}$,
+$J = \mat{4 & 1 \\ 0 & 4}$ だから
+\[
+e^{tA} = P\,e^{tJ}\,P^{-1}
+= e^{4t}\mat{1 & 0 \\ 1 & 1}\mat{1 & t \\ 0 & 1}\mat{1 & 0 \\ -1 & 1}
+= e^{4t}\mat{1 - t & t \\ -t & 1 + t}.
+\]
+微分して $t = 0$ とおくと
+\[
+4E + \mat{-1 & 1 \\ -1 & 1} = \mat{3 & 1 \\ -1 & 5} = A
+\]
+で、確かに戻る。$te^{4t}$ 型の項が細胞の $1$ の名残である。\\
+\textbf{よくあるミス}:$P$ と $P^{-1}$ の順序、および
+$e^{4t}$ を掛け忘れて多項式部分だけ書くこと。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex7}}\quad
+\textbf{方針}:$B = 2K$。\\
+\textbf{解答}:$e^{tB} = e^{(2t)K}$ だから、例題 \ref{rei:exp-rotation} の
+$t$ を $2t$ に置き換えて
+\[
+e^{tB} = \mat{\cos 2t & -\sin 2t \\ \sin 2t & \cos 2t}.
+\]
+これは\textbf{角 $2t$ の回転}である($B$ は「角速度 $2$」の回転の
+生成行列)。$e^{tB} = E$ となるのは $2t$ が $2\pi$ の整数倍のとき
+だから、最小の $t > 0$ は $t = \pi$。\\
+\textbf{よくあるミス}:最小の $t$ を $2\pi$ とすること。
+角は $t$ ではなく $2t$ で進む。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex8}}\quad
+\textbf{方針}:$aE$ と $bN$ は可換、$N^2 = O$。\\
+\textbf{解答}:$aE$ はどんな行列とも可換だから、性質 2 より
+\[
+e^{tA} = e^{t(aE) + t(bN)} = e^{atE}\,e^{btN}
+= e^{at}E \cdot (E + btN) = e^{at}\mat{1 & bt \\ 0 & 1}
+\]
+($e^{atE} = e^{at}E$ は対角行列の計算、$e^{btN} = E + btN$ は
+$(btN)^2 = O$ から)。$b = 0$ なら $e^{at}E$、$a = 0$ なら
+$E + btN$ となり、既知の特別な場合を含んでいる。\\
+\textbf{よくあるミス}:性質 2 を使う前に可換性($aE \cdot bN = bN \cdot aE$)
+を確認しないこと。ここでは $aE$ がスカラー行列なので問題ない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex9}}\quad
+\textbf{方針}:(1) は三段構え。(2) は $(1,1)$ 成分の数値比較。\\
+\textbf{解答}:
+　(1) $S$ の固有値は $\pm 1$、固有ベクトルは $\mat{1 \\ 1}, \mat{1 \\ -1}$。
+$P = \mat{1 & 1 \\ 1 & -1}$, $P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$
+として
+\[
+e^{S} = P\mat{e & 0 \\ 0 & e^{-1}}P^{-1}
+= \frac{1}{2}\mat{e + e^{-1} & e - e^{-1} \\ e - e^{-1} & e + e^{-1}}.
+\]
+　(2) $e^{A+B} = e^{S}$ の $(1,1)$ 成分は
+$\dfrac{e + e^{-1}}{2} \approx \dfrac{2.718 + 0.368}{2} \approx 1.54$。
+一方、反例 \ref{hanrei:exp-product} より $e^{A}e^{B} = \mat{2 & 1 \\ 1 & 1}$
+の $(1,1)$ 成分は $2$。$1.54 \neq 2$ だから
+$e^{A+B} \neq e^{A}e^{B}$ である($A$ と $B$ は非可換なので、
+性質 2 の前提が満たされていない)。\\
+\textbf{よくあるミス}:$e^{-1}$ を $-e$ と混同すること。
+$e^{-1} = 1/e \approx 0.368$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex10}}\quad
+\textbf{方針}:行列式の符号で矛盾を出す。\\
+\textbf{解答}:実行列 $A$ に対して、定理 \ref{thm:exp-det} より
+$\det e^{A} = e^{\mathrm{tr}\,A}$ であり、$\mathrm{tr}\,A$ は実数だから
+$\det e^{A} > 0$ である。ところが $\det B = 1 \cdot (-1) = -1 < 0$。
+よって $e^{A} = B$ となる実行列 $A$ は存在しない。
+幾何的にいえば、$e^{tA}$ は $t = 0$ の $E$ から連続につながる変換の
+族であり、向きを裏返す変換(行列式が負の鏡映)には決して到達できない
+のである。\\
+\textbf{よくあるミス}:「$B$ の対数として
+$\mathrm{diag}(0, \log(-1))$ をとればよい」とすること。
+$\log(-1)$ は実数の範囲には存在しない(複素数まで許せば話は別で、
+それがこの問題の「実行列」という条件の意味である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex11}}\quad
+\textbf{方針}:$sA$ と $tA$ は可換。\\
+\textbf{解答}:
+　(1) $(sA)(tA) = st\,A^2 = (tA)(sA)$ だから $sA$ と $tA$ は可換であり、
+性質 2 が使えて
+\[
+e^{sA}e^{tA} = e^{sA + tA} = e^{(s+t)A}.
+\]
+　(2) $n$ についての帰納法。$n = 1$ は明らか。
+$(e^{A})^n = e^{nA}$ と仮定すると、(1) で $s = n$, $t = 1$ として
+\[
+(e^{A})^{n+1} = (e^{A})^n e^{A} = e^{nA}e^{A} = e^{(n+1)A}.
+\]
+よってすべての自然数 $n$ で $(e^{A})^n = e^{nA}$ が成り立つ。\\
+\textbf{よくあるミス}:(1) を「性質 2 そのもの」と混同すること。
+性質 2 は一般の $A, B$ に可換性を要求する定理で、ここでは
+$B = tA$ という特別な場合に可換性が\textbf{自動的に}成り立つ、
+という論法である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:exp-ex12}}\quad
+\textbf{方針}:転置を級数の項ごとにとる。(2) は
+${}^t(e^{A})e^{A}$ を計算する。\\
+\textbf{解答}:
+　(1) ${}^t(A^k) = ({}^t\!A)^k$(転置の積の規則
+${}^t(XY) = {}^t Y\,{}^t\!X$ を繰り返す。累乗では順序が逆になっても
+同じ行列のべきなので変わらない)。転置は和と極限の操作と交換できる
+から
+\[
+{}^t(e^{A}) = {}^t\Bigl(\sum_{k} \frac{1}{k!}A^k\Bigr)
+= \sum_{k} \frac{1}{k!}({}^t\!A)^k = e^{{}^t\!A}.
+\]
+　(2) ${}^t\!A = -A$ とすると、(1) と性質 2($-A$ と $A$ は可換)より
+\[
+{}^t(e^{A})\,e^{A} = e^{{}^t\!A}\,e^{A} = e^{-A}e^{A} = e^{O} = E.
+\]
+よって $e^{A}$ は ${}^t(e^{A})e^{A} = E$ を満たし、直交行列である。\\
+　(3) $K$ は交代行列で、$e^{tK}$ は回転行列だった。回転行列は
+直交行列の代表例(第V部)だから、(2) の一般論と完全に整合している
+(交代行列は「回転の速度」、その指数関数が「回転そのもの」である)。\\
+\textbf{よくあるミス}:(1) で ${}^t(XY) = {}^t\!X\,{}^t Y$ と
+順序を保ったまま転置すること。順序は逆になる(累乗ではたまたま
+影響しない)。
 
 \bigskip
 \noindent\textbf{問 \ref{q:ode}}\quad
