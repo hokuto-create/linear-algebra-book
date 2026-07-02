@@ -7,14 +7,40 @@
 \chapter{内積とノルム}\label{chap:inner}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item $\R^n$ の標準内積とノルムを計算でき、コーシー・シュワルツの不等式と
+三角不等式を\textbf{証明つきで}理解する。
+\item 内積を使って $n$ 次元でも「角度」と「直交」が定義できることを理解し、
+直交条件・距離・単位ベクトルの計算を実行できるようになる。
+\item 内積の\textbf{公理}(対称・双線形・正値)を知り、関数の内積のような
+$\R^n$ 以外の内積空間でも同じ定理が使えることを理解する。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 長さと角度を舞台に呼び戻す}
+
 第IV部までの理論には、実は「長さ」と「角度」が登場しなかった。
 和とスカラー倍だけの世界(線形構造)で、どこまで行けるかを見てきたのである。
+基底も次元も固有値も、長さを測らずに定義できた。
 本部では幾何構造――内積――を導入する。
 舞台に定規と分度器が持ち込まれ、「直交」という強力な概念が使えるようになる。
 
-\section{標準内積}
+出発点は高校の内積である。平面ベクトルについて
+\[
+\vect{a} \cdot \vect{b} = |\vect{a}|\,|\vect{b}| \cos\theta
+= a_1 b_1 + a_2 b_2
+\]
+と、「長さと角度による定義」と「成分による計算式」の二本立てで学んだ。
+$n$ 次元ではどちらを定義に採用すべきか。$4$ 次元以上では
+「角度」を先に測る手段がないから、\textbf{成分の式を定義に採用し、
+そこから逆に角度を定義する}のが正しい順序である。
+この逆転がうまくいくこと(角度が矛盾なく定義できること)を保証するのが、
+本章の主役コーシー・シュワルツの不等式である。
 
-\begin{teigi}[標準内積とノルム]
+\section{標準内積とノルム}
+
+\begin{teigi}[標準内積とノルム]\label{def:inner-std}
 $\vect{a}, \vect{b} \in \R^n$ に対し、
 \[
 \langle \vect{a}, \vect{b} \rangle
@@ -29,32 +55,138 @@ $\vect{a}, \vect{b} \in \R^n$ に対し、
 \end{teigi}
 
 $n = 2, 3$ では高校の内積・大きさと完全に一致する。
-内積は各変数について線形であり、対称($\langle \vect{a}, \vect{b} \rangle
-= \langle \vect{b}, \vect{a} \rangle$)で、
-$\langle \vect{a}, \vect{a} \rangle \ge 0$(等号は $\vect{a} = \vect{0}$ のみ)
-を満たす。
+${}^t\vect{a}\,\vect{b}$ という行列の積の形($1 \times n$ 行列と
+$n \times 1$ 行列の積は $1 \times 1$、すなわち数)で書けることは、
+転置と積の計算法則(定理 \ref{thm:transpose})を内積に直結させる
+便利な表記であり、本部で繰り返し使う。
 
-\begin{teiri}[コーシー・シュワルツの不等式]
+\begin{teiri}[内積の基本性質]\label{thm:inner-props}
+任意の $\vect{a}, \vect{b}, \vect{c} \in \R^n$ と $k \in \R$ に対して:
+\begin{enumerate}
+\item \textbf{対称性}:$\langle \vect{a}, \vect{b} \rangle = \langle \vect{b}, \vect{a} \rangle$。
+\item \textbf{線形性}:$\langle \vect{a} + \vect{b}, \vect{c} \rangle
+= \langle \vect{a}, \vect{c} \rangle + \langle \vect{b}, \vect{c} \rangle$、
+$\langle k\vect{a}, \vect{b} \rangle = k\langle \vect{a}, \vect{b} \rangle$
+(対称性より第 $2$ 変数についても同様。あわせて\textbf{双線形}という)。
+\item \textbf{正値性}:$\langle \vect{a}, \vect{a} \rangle \ge 0$ であり、
+等号は $\vect{a} = \vect{0}$ のときに限る。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+すべて成分の計算に帰着する。
+(1) $a_i b_i = b_i a_i$(実数の積の交換律)を足し合わせればよい。
+(2) 第 $i$ 項が $(a_i + b_i)c_i = a_ic_i + b_ic_i$、$(ka_i)b_i = k(a_ib_i)$
+となること(実数の分配律・結合律)から従う。
+(3) $\langle \vect{a}, \vect{a} \rangle = a_1^2 + \cdots + a_n^2$ は
+$0$ 以上の実数の和だから $0$ 以上で、和が $0$ になるのは
+各 $a_i^2 = 0$、すなわちすべての成分が $0$ のときに限る。 $\blacksquare$
+
+ノルムについては、定義からただちに
+$\|k\vect{a}\| = |k|\,\|\vect{a}\|$ と、
+$\|\vect{a}\| \ge 0$(等号は $\vect{a} = \vect{0}$ のみ)が分かる。
+ノルム $1$ のベクトルを\textbf{単位ベクトル}という。
+$\vect{a} \neq \vect{0}$ を自分のノルムで割った
+$\dfrac{1}{\|\vect{a}\|}\vect{a}$ は、$\vect{a}$ と同じ向きの単位ベクトルである
+(この操作を\textbf{正規化}という)。また
+\[
+d(\vect{a}, \vect{b}) = \|\vect{a} - \vect{b}\|
+\]
+を $2$ 点(の位置ベクトル)$\vect{a}, \vect{b}$ の\textbf{距離}という。
+$n = 2, 3$ では座標幾何の $2$ 点間距離の公式そのものである。
+
+\begin{rei}[計算例]\label{rei:inner-firstcalc}
+$\vect{a} = \mat{1 \\ 2 \\ 2}$ について
+$\|\vect{a}\| = \sqrt{1 + 4 + 4} = 3$。正規化すると
+$\dfrac{1}{3}\mat{1 \\ 2 \\ 2}$(ノルム $1$ を確かめよ)。
+$\vect{b} = \mat{2 \\ -2 \\ 1}$ との内積は
+$\langle \vect{a}, \vect{b} \rangle = 2 - 4 + 2 = 0$、距離は
+$d(\vect{a}, \vect{b}) = \|(-1, 4, 1)\| = \sqrt{18} = 3\sqrt{2}$ である。
+\end{rei}
+
+\section{コーシー・シュワルツの不等式と三角不等式}
+
+\begin{teiri}[コーシー・シュワルツの不等式]\label{thm:inner-cs}
+任意の $\vect{a}, \vect{b} \in \R^n$ に対して
 \[
 |\langle \vect{a}, \vect{b} \rangle| \le \|\vect{a}\|\,\|\vect{b}\|.
 \]
+等号が成り立つのは、$\vect{a}, \vect{b}$ の一方が他方のスカラー倍
+(線形従属)のとき、かつそのときに限る。
 \end{teiri}
 
-証明は高校で習った判別式の技がそのまま使える。任意の実数 $t$ に対し
+\noindent\textbf{(証明)}\quad
+高校で習った判別式の技がそのまま使える。
+$\vect{a} = \vect{0}$ なら両辺とも $0$ で成立する(等号の場合も
+$\vect{0} = 0\vect{b}$ で線形従属)。$\vect{a} \neq \vect{0}$ とし、
+任意の実数 $t$ に対して
 \[
-\| t\vect{a} + \vect{b} \|^2
-= t^2 \|\vect{a}\|^2 + 2t\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2 \ge 0
+f(t) = \| t\vect{a} + \vect{b} \|^2
+= t^2 \|\vect{a}\|^2 + 2t\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2
 \]
-であり、$t$ の $2$ 次式が常に非負だから判別式 $\le 0$、すなわち
-$\langle \vect{a}, \vect{b} \rangle^2 \le \|\vect{a}\|^2 \|\vect{b}\|^2$ を得る。
+を考える(展開には定理 \ref{thm:inner-props} の双線形性を使った)。
+ノルムの $2$ 乗だから $f(t) \ge 0$ が\textbf{すべての} $t$ で成り立つ。
+$t^2$ の係数 $\|\vect{a}\|^2 > 0$ の $2$ 次式が常に非負だから判別式は
+$0$ 以下、すなわち
+\[
+\langle \vect{a}, \vect{b} \rangle^2 - \|\vect{a}\|^2 \|\vect{b}\|^2 \le 0
+\]
+であり、平方根をとれば不等式を得る。
+等号が成り立つのは判別式が $0$、すなわちある $t_0$ で $f(t_0) = 0$ と
+なるときである。$f(t_0) = \|t_0\vect{a} + \vect{b}\|^2 = 0$ は正値性より
+$\vect{b} = -t_0\vect{a}$ を意味し、これは線形従属にほかならない。
+逆に $\vect{b} = k\vect{a}$ なら両辺とも $|k|\,\|\vect{a}\|^2$ で等号が成り立つ。
+$\blacksquare$
 
 この不等式のおかげで、$n$ 次元でも
 \[
 \cos\theta = \frac{\langle \vect{a}, \vect{b} \rangle}{\|\vect{a}\|\,\|\vect{b}\|}
+\qquad (\vect{a}, \vect{b} \neq \vect{0})
 \]
-の右辺が必ず $-1$ 以上 $1$ 以下に収まり、\textbf{角度 $\theta$ が定義できる}。
-特に $\langle \vect{a}, \vect{b} \rangle = 0$ のとき
-$\vect{a}$ と $\vect{b}$ は\textbf{直交}するという。
+の右辺が必ず $-1$ 以上 $1$ 以下に収まり、\textbf{角度 $\theta$
+($0 \le \theta \le 180^\circ$)が矛盾なく定義できる}。
+測れないはずの $4$ 次元以上の「角度」が、内積を経由して意味をもつ。
+
+\begin{teigi}[直交]\label{def:inner-orth}
+$\langle \vect{a}, \vect{b} \rangle = 0$ のとき、$\vect{a}$ と $\vect{b}$ は
+\textbf{直交}するといい、$\vect{a} \perp \vect{b}$ と書く。
+零ベクトルは(角度は定義されないが)すべてのベクトルと直交すると約束する。
+\end{teigi}
+
+\begin{teiri}[三角不等式]\label{thm:inner-triangle}
+任意の $\vect{a}, \vect{b} \in \R^n$ に対して
+\[
+\|\vect{a} + \vect{b}\| \le \|\vect{a}\| + \|\vect{b}\|.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+両辺とも $0$ 以上だから、$2$ 乗して比べればよい。
+コーシー・シュワルツの不等式(定理 \ref{thm:inner-cs})より
+$\langle \vect{a}, \vect{b} \rangle \le \|\vect{a}\|\,\|\vect{b}\|$ だから
+\[
+\|\vect{a} + \vect{b}\|^2
+= \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2
+\le \|\vect{a}\|^2 + 2\|\vect{a}\|\,\|\vect{b}\| + \|\vect{b}\|^2
+= \bigl(\|\vect{a}\| + \|\vect{b}\|\bigr)^2. \qquad\blacksquare
+\]
+
+「寄り道すると遠くなる」という平面図形の常識(三角形の $2$ 辺の和は
+他の $1$ 辺より長い)が、$n$ 次元でも成り立つわけである。
+コーシー・シュワルツの不等式が幾何の常識を高次元へ運ぶ橋になっている。
+
+\begin{teiri}[ピタゴラスの定理]\label{thm:inner-pyth}
+$\vect{a} \perp \vect{b}$ ならば
+$\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + \|\vect{b}\|^2$。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2$ で、直交より中央の項が $0$。 $\blacksquare$
+
+三平方の定理が $n$ 次元で(しかも逆向きも。問 \ref{q:inner-ex12})
+成り立つ。次章で正射影が「最も近い点」であることを示すとき、
+この定理が決定打になる。
 
 \begin{itembox}[l]{深掘り:相関係数の正体は $\cos\theta$ である}
 統計学で学ぶ相関係数 $r$ は、$2$ 種類のデータ
@@ -78,10 +210,38 @@ $r = \pm 1$(等号成立)はデータベクトルが平行、
 \section{抽象的な内積空間}
 
 第III部でベクトルを公理化したのと同様、内積も公理化できる。
-双線形・対称・正値性を満たす演算をもつベクトル空間を
-\textbf{内積空間}という。重要な例を一つ挙げる。
+定理 \ref{thm:inner-props} で\textbf{証明した}性質を、こんどは
+\textbf{要求する公理}に格上げするのである。
 
-\begin{rei}[関数の内積]
+\begin{teigi}[内積空間]\label{def:inner-axioms}
+ベクトル空間 $V$ の任意の $2$ 元 $\vect{u}, \vect{v}$ に実数
+$\langle \vect{u}, \vect{v} \rangle$ を対応させる演算が
+\begin{enumerate}
+\item 対称性:$\langle \vect{u}, \vect{v} \rangle = \langle \vect{v}, \vect{u} \rangle$、
+\item 双線形性:$\langle \vect{u} + \vect{u}', \vect{v} \rangle
+= \langle \vect{u}, \vect{v} \rangle + \langle \vect{u}', \vect{v} \rangle$、
+$\langle k\vect{u}, \vect{v} \rangle = k\langle \vect{u}, \vect{v} \rangle$
+(第 $2$ 変数も同様)、
+\item 正値性:$\langle \vect{u}, \vect{u} \rangle \ge 0$、等号は
+$\vect{u} = \vect{0}$ のみ、
+\end{enumerate}
+を満たすとき、この演算を\textbf{内積}、組 $(V, \langle\ ,\ \rangle)$ を
+\textbf{内積空間}という。ノルム・距離・角度・直交は、標準内積のときと
+同じ式で定義する。
+\end{teigi}
+
+\begin{chui}
+コーシー・シュワルツの不等式(定理 \ref{thm:inner-cs})と
+三角不等式(定理 \ref{thm:inner-triangle})の証明を見返すと、
+使ったのは\textbf{双線形性と正値性だけ}で、成分は一度も登場していない。
+したがって両定理は、どんな内積空間でも\textbf{再証明なしに}成り立つ。
+第III部で学んだ「公理からの証明は使い回せる」という節約が、
+ここでも効いている。
+\end{chui}
+
+重要な例を一つ挙げる。
+
+\begin{rei}[関数の内積]\label{rei:inner-func}
 区間 $[-1, 1]$ 上の連続関数の空間で、
 \[
 \langle f, g \rangle = \int_{-1}^{1} f(x)\,g(x)\,dx
@@ -104,6 +264,296 @@ $\sin nx$ と $\cos mx$ たちの直交性を利用して任意の周期関数�
 　(2) 上の関数の内積に関して、$f(x) = x$ と $g(x) = x^2$ が
 直交することを示せ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[正値性が破れると「長さ」が壊れる]\label{hanrei:inner-indefinite}
+$\R^2$ に、内積もどきの演算
+\[
+\langle \vect{a}, \vect{b} \rangle' = a_1 b_1 - a_2 b_2
+\]
+を定めてみる(第 $2$ 成分の符号を反転した)。対称性と双線形性は
+成分計算でそのまま確かめられるが、\textbf{正値性が破れる}。実際
+\[
+\vect{a} = \mat{0 \\ 1} \ \text{に対し}\
+\langle \vect{a}, \vect{a} \rangle' = 0 - 1 = -1 < 0,
+\qquad
+\vect{b} = \mat{1 \\ 1} \ \text{に対し}\
+\langle \vect{b}, \vect{b} \rangle' = 1 - 1 = 0
+\ (\vect{b} \neq \vect{0}).
+\]
+「長さの $2$ 乗」が負になったり、零ベクトルでないのに $0$ に
+なったりするので、この演算からはノルムが定義できず、
+コーシー・シュワルツの不等式も保証されない。内積の三つの公理は
+どれも飾りではない。
+(なお、この符号ちがいの演算そのものは無意味ではなく、
+相対性理論の時空の幾何(ミンコフスキー計量)で主役を務める。
+「正値性を外すと何が起こるか」を真剣に研究した理論である。)
+\end{hanrei}
+
+\begin{hanrei}[内積は「消去」できない]\label{hanrei:inner-cancel}
+数の等式 $ab = ac$($a \neq 0$)なら $b = c$ と消去できるが、
+内積では $\langle \vect{a}, \vect{b} \rangle = \langle \vect{a}, \vect{c} \rangle$
+かつ $\vect{a} \neq \vect{0}$ でも $\vect{b} = \vect{c}$ とは限らない。
+\[
+\vect{a} = \mat{1 \\ 0}, \quad \vect{b} = \mat{0 \\ 1}, \quad
+\vect{c} = \mat{0 \\ 2}
+\]
+とすると $\langle \vect{a}, \vect{b} \rangle = \langle \vect{a}, \vect{c} \rangle = 0$
+だが $\vect{b} \neq \vect{c}$ である。内積は $\vect{a}$ 方向の情報しか
+見ておらず、それと直交する方向の違いを検出できないからである。
+ただし、\textbf{すべての} $\vect{a}$ に対して
+$\langle \vect{a}, \vect{b} \rangle = \langle \vect{a}, \vect{c} \rangle$
+が成り立つなら $\vect{b} = \vect{c}$ といえる(問 \ref{q:inner-ex9})。
+\end{hanrei}
+
+\section{例題}
+
+内積・ノルム・角度の計算と、不等式の使い方を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(計算)]\label{rei:inner-angle}
+$\R^4$ のベクトル $\vect{a} = (1, 1, 1, 1)$, $\vect{b} = (1, 1, 1, -1)$ の
+なす角を求めよ。\\
+\textbf{解.}\ $\langle \vect{a}, \vect{b} \rangle = 1 + 1 + 1 - 1 = 2$、
+$\|\vect{a}\| = \|\vect{b}\| = \sqrt{4} = 2$。よって
+\[
+\cos\theta = \frac{2}{2 \cdot 2} = \frac{1}{2}, \qquad \theta = 60^\circ.
+\]
+目で見ることのできない $4$ 次元のベクトルにも、内積を経由すれば
+角度が確定する。これが「成分の式を定義に採用する」ことの威力である。
+\end{rei}
+
+\begin{rei}[例題・基本(直交条件)]\label{rei:inner-orthparam}
+$\vect{a} = \mat{2 \\ -1 \\ 3}$ と $\vect{b} = \mat{1 \\ t \\ 2}$ が
+直交するように実数 $t$ を定めよ。\\
+\textbf{解.}\ 直交条件は $\langle \vect{a}, \vect{b} \rangle = 0$ だから
+\[
+2 \cdot 1 + (-1) \cdot t + 3 \cdot 2 = 8 - t = 0, \qquad t = 8.
+\]
+検算:$t = 8$ のとき $\langle \vect{a}, \vect{b} \rangle = 2 - 8 + 6 = 0$。
+「垂直」という幾何の条件が、内積 $= 0$ という $1$ 本の方程式に翻訳される。
+\end{rei}
+
+\begin{rei}[例題・基本(単位ベクトルと距離)]\label{rei:inner-normdist}
+　(1) $\vect{v} = \mat{3 \\ -4}$ と同じ向きの単位ベクトルを求めよ。\\
+　(2) $2$ 点 $\vect{a} = \mat{1 \\ 2}$, $\vect{b} = \mat{4 \\ 6}$ の距離を求めよ。\\
+\textbf{解.}\ (1) $\|\vect{v}\| = \sqrt{9 + 16} = 5$ だから、正規化して
+$\dfrac{1}{5}\mat{3 \\ -4} = \mat{3/5 \\ -4/5}$。
+ノルムを確かめると $\sqrt{9/25 + 16/25} = 1$ で正しい。\\
+　(2) $\vect{a} - \vect{b} = \mat{-3 \\ -4}$ より
+$d(\vect{a}, \vect{b}) = \sqrt{9 + 16} = 5$。
+座標平面の $2$ 点間距離の公式と同じ計算である。
+\end{rei}
+
+\begin{rei}[例題・標準(コーシー・シュワルツの応用)]\label{rei:inner-csapp}
+任意の実数 $a, b, c$ に対して
+\[
+(a + b + c)^2 \le 3(a^2 + b^2 + c^2)
+\]
+が成り立つことを示し、等号成立の条件を求めよ。\\
+\textbf{解.}\ $\vect{x} = (a, b, c)$, $\vect{y} = (1, 1, 1)$ にコーシー・
+シュワルツの不等式(定理 \ref{thm:inner-cs})を使う。
+$\langle \vect{x}, \vect{y} \rangle = a + b + c$、
+$\|\vect{x}\|^2 = a^2 + b^2 + c^2$、$\|\vect{y}\|^2 = 3$ だから
+\[
+(a + b + c)^2 = \langle \vect{x}, \vect{y} \rangle^2
+\le \|\vect{x}\|^2\,\|\vect{y}\|^2 = 3(a^2 + b^2 + c^2).
+\]
+等号は $\vect{x}$ と $\vect{y}$ が線形従属、すなわち
+$(a, b, c) = k(1, 1, 1)$、つまり $a = b = c$ のとき(逆も明らか)。
+高校で「うまい変形」を要した不等式が、ベクトルを一組選ぶだけで落ちる。
+\end{rei}
+
+\begin{rei}[例題・標準(関数の内積)]\label{rei:inner-funccalc}
+区間 $[-1, 1]$ 上の内積 $\langle f, g \rangle = \int_{-1}^{1} f(x)g(x)\,dx$
+について、$f(x) = 1$, $g(x) = x^2$ の内積とそれぞれのノルムを計算し、
+コーシー・シュワルツの不等式が成り立っていることを確かめよ。\\
+\textbf{解.}\
+\[
+\langle 1, x^2 \rangle = \int_{-1}^{1} x^2\,dx = \frac{2}{3}, \qquad
+\|1\|^2 = \int_{-1}^{1} 1\,dx = 2, \qquad
+\|x^2\|^2 = \int_{-1}^{1} x^4\,dx = \frac{2}{5}.
+\]
+よって $\|1\| = \sqrt{2}$, $\|x^2\| = \sqrt{2/5}$。不等式の両辺を
+$2$ 乗で比べると
+\[
+\langle 1, x^2 \rangle^2 = \frac{4}{9} \le \|1\|^2\|x^2\|^2
+= 2 \cdot \frac{2}{5} = \frac{4}{5}
+\]
+で、確かに成り立っている($4/9 < 4/5$)。等号でないのは、$1$ と $x^2$ が
+線形従属でない(定数倍の関係にない)ことの反映である。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:平行四辺形の法則)]\label{rei:inner-parallelogram}
+任意の $\vect{a}, \vect{b} \in \R^n$ に対して
+\[
+\|\vect{a} + \vect{b}\|^2 + \|\vect{a} - \vect{b}\|^2
+= 2\|\vect{a}\|^2 + 2\|\vect{b}\|^2
+\]
+が成り立つことを示せ(平行四辺形の $2$ 本の対角線の $2$ 乗和は、
+$4$ 辺の $2$ 乗和に等しい)。\\
+\textbf{解.}\ 双線形性(定理 \ref{thm:inner-props})で展開する。
+\[
+\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2, \qquad
+\|\vect{a} - \vect{b}\|^2 = \|\vect{a}\|^2 - 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2.
+\]
+辺々加えると内積の項が打ち消し合い、
+$2\|\vect{a}\|^2 + 2\|\vect{b}\|^2$ を得る。
+成分を書かずに、双線形性という「計算規則」だけで証明が済む点に注目せよ。
+この等式は標準内積に限らず、どんな内積空間のノルムでも成り立つ。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{標準内積}は $\langle \vect{a}, \vect{b} \rangle = \sum a_ib_i
+= {}^t\vect{a}\,\vect{b}$、\textbf{ノルム}は
+$\|\vect{a}\| = \sqrt{\langle \vect{a}, \vect{a} \rangle}$。
+対称・双線形・正値という三つの基本性質をもつ(定理 \ref{thm:inner-props})。
+\item \textbf{コーシー・シュワルツの不等式}
+$|\langle \vect{a}, \vect{b} \rangle| \le \|\vect{a}\|\,\|\vect{b}\|$
+(等号は線形従属のとき)により、$n$ 次元でも
+$\cos\theta$ を通じて\textbf{角度}が定義できる。
+$\langle \vect{a}, \vect{b} \rangle = 0$ が\textbf{直交}である。
+\item コーシー・シュワルツから\textbf{三角不等式}
+$\|\vect{a} + \vect{b}\| \le \|\vect{a}\| + \|\vect{b}\|$ が従う。
+直交すれば\textbf{ピタゴラスの定理}が使える。
+\item 対称・双線形・正値を公理とする\textbf{内積空間}では、
+上の定理がすべて再証明なしに成り立つ。関数の空間の
+$\langle f, g \rangle = \int f g\,dx$ が代表例で、
+「関数どうしの直交」が意味をもつ。
+\item 正値性の破れた演算(反例 \ref{hanrei:inner-indefinite})では
+長さが壊れる。また内積の値が一致しても、ベクトルは消去できない
+(反例 \ref{hanrei:inner-cancel})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:inner-ex1}
+次の各組のベクトルの内積・ノルム・なす角を求めよ。\\
+　(1) $\vect{a} = \mat{2 \\ 1}$, $\vect{b} = \mat{3 \\ -1}$\\
+　(2) $\vect{a} = \mat{1 \\ 2 \\ 2}$, $\vect{b} = \mat{-2 \\ 1 \\ 2}$
+(なす角は $\cos\theta$ の値まででよい)
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:inner-ex2}
+$\vect{a} = \mat{1 \\ -2 \\ 3}$ と $\vect{b} = \mat{2 \\ t \\ 4}$ が
+直交するように実数 $t$ を定めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:inner-ex3}
+　(1) $\vect{v} = \mat{1 \\ 2 \\ -2}$ と同じ向きの単位ベクトルを求めよ。\\
+　(2) $2$ 点 $\vect{a} = \mat{3 \\ 1}$, $\vect{b} = \mat{0 \\ 5}$ の
+距離を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:inner-ex4}
+区間 $[-1, 1]$ 上の内積 $\langle f, g \rangle = \int_{-1}^{1} f(x)g(x)\,dx$
+について、$f(x) = 1 + x$, $g(x) = x$ の内積 $\langle f, g \rangle$ と
+ノルム $\|f\|$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex5}
+コーシー・シュワルツの不等式を使って、任意の実数 $a, b, c$ に対して
+\[
+(a + 2b + 2c)^2 \le 9(a^2 + b^2 + c^2)
+\]
+が成り立つことを示し、等号成立の条件を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex6}
+$\|\vect{a}\| = 2$, $\|\vect{b}\| = 3$,
+$\langle \vect{a}, \vect{b} \rangle = -4$ のとき、\\
+　(1) $\|\vect{a} + \vect{b}\|$ と $\|\vect{a} - \vect{b}\|$ を求めよ
+(成分は与えられていないことに注意)。\\
+　(2) $\|\vect{a}\| = 2$, $\|\vect{b}\| = 3$ のまま
+$\langle \vect{a}, \vect{b} \rangle = 7$ となることはあり得るか。理由をつけて答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex7}
+$\R^2$ に演算 $\langle \vect{a}, \vect{b} \rangle_w = 2a_1b_1 + 3a_2b_2$ を
+定める。\\
+　(1) これが内積の公理(定義 \ref{def:inner-axioms})を満たすことを確かめよ。\\
+　(2) この内積での $\vect{e}_1 = \mat{1 \\ 0}$ のノルムを求めよ
+(標準内積とは「長さ」の値が変わることに注意)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex8}
+区間 $[-1, 1]$ 上の内積 $\langle f, g \rangle = \int_{-1}^{1} f(x)g(x)\,dx$
+について、$x^2 - c$ が定数関数 $1$ と直交するように定数 $c$ を定めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:inner-ex9}
+$\R^n$ のベクトル $\vect{b}, \vect{c}$ について、\textbf{すべての}
+$\vect{a} \in \R^n$ に対して $\langle \vect{a}, \vect{b} \rangle
+= \langle \vect{a}, \vect{c} \rangle$ が成り立つならば
+$\vect{b} = \vect{c}$ であることを示せ
+(ヒント:$\vect{a} = \vect{b} - \vect{c}$ を代入する)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:inner-ex10}
+$n$ 次元立方体の対角線ベクトル $\vect{d} = (1, 1, \dots, 1) \in \R^n$ と
+辺ベクトル $\vect{e}_1 = (1, 0, \dots, 0)$ のなす角を $\theta_n$ とする。\\
+　(1) $n = 4$ のとき $\theta_4$ を求めよ。\\
+　(2) 一般の $n$ で $\cos\theta_n$ を求め、$n$ を大きくすると
+$\theta_n$ がどうなるか述べよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:inner-ex11}
+　(1) 三角不等式(定理 \ref{thm:inner-triangle})を用いて、
+\textbf{逆向き三角不等式}
+$\bigl|\,\|\vect{a}\| - \|\vect{b}\|\,\bigr| \le \|\vect{a} - \vect{b}\|$
+を証明せよ
+(ヒント:$\vect{a} = (\vect{a} - \vect{b}) + \vect{b}$ と分解する)。\\
+　(2) 等号が成り立つ例を一つ挙げよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:inner-ex12}
+ピタゴラスの定理の\textbf{逆}、すなわち
+「$\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + \|\vect{b}\|^2$ ならば
+$\vect{a} \perp \vect{b}$」を証明せよ。
+また、この逆が成り立つ理由を、展開式のどの項が消えることと対応するか
+説明せよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:inner-ex1}}:内積・ノルムを定義どおり計算し、
+$\cos\theta = \langle \vect{a}, \vect{b} \rangle / (\|\vect{a}\|\|\vect{b}\|)$
+に代入する。
+\item \textbf{問 \ref{q:inner-ex2}}:直交 $\iff$ 内積 $= 0$。$t$ の
+$1$ 次方程式になる。
+\item \textbf{問 \ref{q:inner-ex3}}:単位ベクトルはノルムで割る。距離は
+差のノルム。
+\item \textbf{問 \ref{q:inner-ex4}}:定義の積分を計算する。
+奇関数の対称区間の積分は $0$ になることを使うと速い。
+\item \textbf{問 \ref{q:inner-ex5}}:例題 \ref{rei:inner-csapp} をまねて
+$\vect{y} = (1, 2, 2)$ を選ぶ。
+\item \textbf{問 \ref{q:inner-ex6}}:$\|\vect{a} \pm \vect{b}\|^2$ を
+双線形性で展開する。(2) はコーシー・シュワルツの上限と比べる。
+\item \textbf{問 \ref{q:inner-ex7}}:対称・双線形は成分計算、正値性は
+$2a_1^2 + 3a_2^2 \ge 0$ から。係数が正であることが効く。
+\item \textbf{問 \ref{q:inner-ex8}}:$\langle x^2 - c, 1 \rangle = 0$ を
+$c$ について解く。
+\item \textbf{問 \ref{q:inner-ex9}}:移項して
+$\langle \vect{a}, \vect{b} - \vect{c} \rangle = 0$。$\vect{a}$ は
+何でもよいのだから、いちばん役に立つものを選ぶ。
+\item \textbf{問 \ref{q:inner-ex10}}:$\cos\theta_n = 1/\sqrt{n}$ になる。
+$n \to \infty$ での挙動を考える。
+\item \textbf{問 \ref{q:inner-ex11}}:分解して三角不等式を使うと
+$\|\vect{a}\| - \|\vect{b}\| \le \|\vect{a} - \vect{b}\|$。
+$\vect{a}$ と $\vect{b}$ を入れ替えてもう一本作る。
+\item \textbf{問 \ref{q:inner-ex12}}:$\|\vect{a} + \vect{b}\|^2$ の展開式と
+仮定を見比べる。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{正規直交基底とグラム・シュミットの直交化法}\label{chap:gs}

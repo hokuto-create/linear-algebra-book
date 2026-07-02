@@ -5327,6 +5327,196 @@ $\cos\theta = \dfrac{1}{2}$、$\theta = 60^\circ$。\\
 (奇関数の対称区間の積分)。よって直交する。
 
 \bigskip
+\noindent\textbf{問 \ref{q:inner-ex1}}\quad
+\textbf{方針}:内積とノルムを定義どおり計算し、$\cos\theta$ の式に代入する。\\
+\textbf{解答}:
+　(1) $\langle \vect{a}, \vect{b} \rangle = 2 \cdot 3 + 1 \cdot (-1) = 5$、
+$\|\vect{a}\| = \sqrt{5}$, $\|\vect{b}\| = \sqrt{10}$。よって
+\[
+\cos\theta = \frac{5}{\sqrt{5}\sqrt{10}} = \frac{5}{5\sqrt{2}}
+= \frac{1}{\sqrt{2}}, \qquad \theta = 45^\circ.
+\]
+　(2) $\langle \vect{a}, \vect{b} \rangle = -2 + 2 + 4 = 4$、
+$\|\vect{a}\| = \sqrt{1 + 4 + 4} = 3$, $\|\vect{b}\| = \sqrt{4 + 1 + 4} = 3$。
+よって $\cos\theta = \dfrac{4}{9}$。\\
+\textbf{よくあるミス}:$\sqrt{5}\sqrt{10} = \sqrt{50} = 5\sqrt{2}$ の
+根号の整理。(2) で「$\cos\theta$ の値まででよい」のは、$4/9$ が
+有名角の余弦でないためである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex2}}\quad
+\textbf{方針}:直交 $\iff$ 内積 $= 0$ を $t$ の方程式として解く。\\
+\textbf{解答}:
+\[
+\langle \vect{a}, \vect{b} \rangle = 1 \cdot 2 + (-2)t + 3 \cdot 4
+= 14 - 2t = 0
+\]
+より $t = 7$。検算:$t = 7$ で $2 - 14 + 12 = 0$。\\
+\textbf{よくあるミス}:$(-2) \cdot t$ の符号の落とし。
+検算まで済ませれば防げる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex3}}\quad
+\textbf{方針}:単位ベクトルはノルムで割る。距離は差のノルム。\\
+\textbf{解答}:
+　(1) $\|\vect{v}\| = \sqrt{1 + 4 + 4} = 3$ だから、求める単位ベクトルは
+$\dfrac{1}{3}\mat{1 \\ 2 \\ -2}$。\\
+　(2) $\vect{a} - \vect{b} = \mat{3 \\ -4}$ より
+$d(\vect{a}, \vect{b}) = \sqrt{9 + 16} = 5$。\\
+\textbf{よくあるミス}:(1) で成分ごとに符号を勝手にそろえること。
+向きを保つには、全成分を同じ正の数 $1/\|\vect{v}\|$ で割るだけでよい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex4}}\quad
+\textbf{方針}:定義の積分を計算する。奇関数の対称区間の積分は $0$。\\
+\textbf{解答}:
+\[
+\langle f, g \rangle = \int_{-1}^{1} (1 + x)x\,dx
+= \int_{-1}^{1} x\,dx + \int_{-1}^{1} x^2\,dx = 0 + \frac{2}{3} = \frac{2}{3}.
+\]
+また
+\[
+\|f\|^2 = \int_{-1}^{1} (1 + x)^2\,dx
+= \int_{-1}^{1} (1 + 2x + x^2)\,dx = 2 + 0 + \frac{2}{3} = \frac{8}{3}
+\]
+より $\|f\| = \sqrt{\dfrac{8}{3}} = \dfrac{2\sqrt{6}}{3}$。\\
+\textbf{よくあるミス}:$\|f\|$ を $\int (1+x)\,dx$ と混同すること。
+ノルムは「$2$ 乗の積分の平方根」である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex5}}\quad
+\textbf{方針}:$\vect{x} = (a, b, c)$、$\vect{y} = (1, 2, 2)$ にコーシー・
+シュワルツの不等式を適用する。\\
+\textbf{解答}:$\langle \vect{x}, \vect{y} \rangle = a + 2b + 2c$、
+$\|\vect{y}\|^2 = 1 + 4 + 4 = 9$ だから、
+コーシー・シュワルツの不等式(定理 \ref{thm:inner-cs})より
+\[
+(a + 2b + 2c)^2 = \langle \vect{x}, \vect{y} \rangle^2
+\le \|\vect{x}\|^2\|\vect{y}\|^2 = 9(a^2 + b^2 + c^2).
+\]
+等号は $\vect{x}$ と $\vect{y}$ が線形従属のとき、すなわち
+$(a, b, c) = k(1, 2, 2)$($b = 2a$ かつ $c = 2a$)のときに限る。\\
+\textbf{よくあるミス}:等号条件を「$a = b = c$」とすること。
+比べる相手は $\vect{y} = (1, 2, 2)$ なので、比が $1 : 2 : 2$ のときである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex6}}\quad
+\textbf{方針}:成分は不要。$\|\vect{a} \pm \vect{b}\|^2$ を双線形性で展開し、
+与えられた三つの値を代入する。\\
+\textbf{解答}:
+　(1) $\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2
++ 2\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2
+= 4 - 8 + 9 = 5$ より $\|\vect{a} + \vect{b}\| = \sqrt{5}$。
+同様に $\|\vect{a} - \vect{b}\|^2 = 4 + 8 + 9 = 21$ より
+$\|\vect{a} - \vect{b}\| = \sqrt{21}$。\\
+　(2) あり得ない。コーシー・シュワルツの不等式より
+$|\langle \vect{a}, \vect{b} \rangle| \le \|\vect{a}\|\,\|\vect{b}\| = 6$
+でなければならず、$7 > 6$ はこれに反する。\\
+\textbf{よくあるミス}:(1) で $\|\vect{a} + \vect{b}\| = \|\vect{a}\| + \|\vect{b}\| = 5$
+とすること。ノルムの和とは一致しない(三角不等式は不等式である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex7}}\quad
+\textbf{方針}:三つの公理を順に確かめる。正値性では係数 $2, 3$ が
+正であることが効く。\\
+\textbf{解答}:
+　(1) 対称性:$2a_1b_1 + 3a_2b_2 = 2b_1a_1 + 3b_2a_2$。
+双線形性:第 $1$ 変数について
+$2(a_1 + a_1')b_1 + 3(a_2 + a_2')b_2
+= (2a_1b_1 + 3a_2b_2) + (2a_1'b_1 + 3a_2'b_2)$、
+$2(ka_1)b_1 + 3(ka_2)b_2 = k(2a_1b_1 + 3a_2b_2)$
+(第 $2$ 変数は対称性より従う)。
+正値性:$\langle \vect{a}, \vect{a} \rangle_w = 2a_1^2 + 3a_2^2 \ge 0$ で、
+$0$ になるのは $a_1 = a_2 = 0$ のときに限る。よって内積である。\\
+　(2) $\|\vect{e}_1\|_w = \sqrt{2 \cdot 1^2 + 3 \cdot 0^2} = \sqrt{2}$。
+標準内積では $1$ だった「長さ」が、内積の選び方で変わる。\\
+\textbf{よくあるミス}:正値性の等号条件を書き忘れること。
+「$\ge 0$」だけでなく「$= 0$ は零ベクトルのみ」まで確かめて初めて内積である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex8}}\quad
+\textbf{方針}:$\langle x^2 - c, 1 \rangle = 0$ を $c$ について解く。\\
+\textbf{解答}:
+\[
+\langle x^2 - c, 1 \rangle = \int_{-1}^{1} (x^2 - c)\,dx
+= \frac{2}{3} - 2c = 0
+\]
+より $c = \dfrac{1}{3}$。すなわち $x^2 - \dfrac{1}{3}$ が定数関数 $1$ と
+直交する(この関数は次章の深掘りで登場するルジャンドル多項式の一員である)。\\
+\textbf{よくあるミス}:$\int_{-1}^{1} c\,dx = c$ とすること
+(正しくは区間の長さ $2$ が掛かって $2c$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex9}}\quad
+\textbf{方針}:仮定は「すべての $\vect{a}$ で成立」なので、$\vect{a}$ に
+最も役立つベクトル $\vect{b} - \vect{c}$ を選んでよい。\\
+\textbf{解答}:仮定を移項すると、双線形性より、すべての $\vect{a}$ に対して
+$\langle \vect{a}, \vect{b} - \vect{c} \rangle = 0$。
+とくに $\vect{a} = \vect{b} - \vect{c}$ を選ぶと
+\[
+\langle \vect{b} - \vect{c}, \vect{b} - \vect{c} \rangle
+= \|\vect{b} - \vect{c}\|^2 = 0.
+\]
+正値性(定理 \ref{thm:inner-props}(3))より $\vect{b} - \vect{c} = \vect{0}$、
+すなわち $\vect{b} = \vect{c}$ である。
+(反例 \ref{hanrei:inner-cancel} との違いは、$1$ 本の $\vect{a}$ ではなく
+\textbf{すべての} $\vect{a}$ で内積が一致していることである。)\\
+\textbf{よくあるミス}:特定の $\vect{a}$(たとえば $\vect{e}_1$)だけで
+済ませようとすること。標準基底の全部を使うか、
+$\vect{b} - \vect{c}$ 自身を使うのが早い。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex10}}\quad
+\textbf{方針}:内積とノルムを $n$ の式で計算する。\\
+\textbf{解答}:
+　(1) $\langle \vect{d}, \vect{e}_1 \rangle = 1$、$\|\vect{d}\| = \sqrt{4} = 2$、
+$\|\vect{e}_1\| = 1$ より $\cos\theta_4 = \dfrac{1}{2}$、
+$\theta_4 = 60^\circ$。\\
+　(2) 一般に $\|\vect{d}\| = \sqrt{n}$ だから
+$\cos\theta_n = \dfrac{1}{\sqrt{n}}$。$n$ を大きくすると
+$\cos\theta_n \to 0$、すなわち $\theta_n$ は $90^\circ$ に近づく。
+高次元の立方体では、対角線はどの辺ともほとんど直交する。\\
+\textbf{よくあるミス}:$\|\vect{d}\|$ を $n$ とすること(正しくは
+$\sqrt{1^2 + \cdots + 1^2} = \sqrt{n}$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex11}}\quad
+\textbf{方針}:$\vect{a} = (\vect{a} - \vect{b}) + \vect{b}$ に三角不等式を
+使い、$\vect{a}, \vect{b}$ を入れ替えたもう $1$ 本と組み合わせる。\\
+\textbf{解答}:
+　(1) 三角不等式より
+$\|\vect{a}\| = \|(\vect{a} - \vect{b}) + \vect{b}\|
+\le \|\vect{a} - \vect{b}\| + \|\vect{b}\|$、すなわち
+$\|\vect{a}\| - \|\vect{b}\| \le \|\vect{a} - \vect{b}\|$。
+$\vect{a}$ と $\vect{b}$ を入れ替えると
+$\|\vect{b}\| - \|\vect{a}\| \le \|\vect{b} - \vect{a}\| = \|\vect{a} - \vect{b}\|$。
+$\pm(\|\vect{a}\| - \|\vect{b}\|)$ の両方が $\|\vect{a} - \vect{b}\|$ 以下
+だから、絶対値についても
+$\bigl|\,\|\vect{a}\| - \|\vect{b}\|\,\bigr| \le \|\vect{a} - \vect{b}\|$。\\
+　(2) たとえば $\vect{a} = 2\vect{b}$($\vect{b} \neq \vect{0}$)のとき、
+左辺 $= \|\vect{b}\|$、右辺 $= \|\vect{b}\|$ で等号が成り立つ
+(同じ向きに平行な場合)。\\
+\textbf{よくあるミス}:$1$ 本の不等式だけで絶対値の主張を導いた気になる
+こと。$\|\vect{a}\| - \|\vect{b}\|$ は負にもなり得るので、
+入れ替えた $2$ 本目が必要である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:inner-ex12}}\quad
+\textbf{方針}:$\|\vect{a} + \vect{b}\|^2$ の展開式と仮定を見比べる。\\
+\textbf{解答}:双線形性より、つねに
+\[
+\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2
+\]
+が成り立つ。仮定 $\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + \|\vect{b}\|^2$
+と見比べると $2\langle \vect{a}, \vect{b} \rangle = 0$、すなわち
+$\langle \vect{a}, \vect{b} \rangle = 0$ で $\vect{a} \perp \vect{b}$ である。
+ピタゴラスの定理(とその逆)は、展開式の交差項
+$2\langle \vect{a}, \vect{b} \rangle$ が消えることと過不足なく対応している。\\
+\textbf{よくあるミス}:逆の証明なのに「直交だから交差項が消える」と
+順方向の議論を書くこと。ここでは等式から交差項 $= 0$ を\emph{導く}。
+
+\bigskip
 \noindent\textbf{問 \ref{q:gs}}\quad
 $\vect{b}_1 = \mat{1 \\ 0 \\ 1}$。
 $\langle \vect{a}_2, \vect{b}_1 \rangle = 1$,
