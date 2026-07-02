@@ -541,6 +541,30 @@ $P^{-1}\vect{v} \neq \vect{0}$ の確認も忘れずに。
 \chapter{対角化}\label{chap:diag}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 対角化の定義と基本定理(独立な固有ベクトル $n$ 本 $\iff$ 対角化可能)
+を証明つきで理解し、$2$ 次・$3$ 次の行列を実際に対角化できるようになる。
+\item 「相異なる固有値の固有ベクトルは線形独立」の証明を理解し、
+固有値がすべて異なる行列が必ず対角化できる理由を説明できるようになる。
+\item 固有値が重複する場合に、固有空間の次元(幾何的重複度)を調べて
+対角化可能かどうかを判定できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 最良の座標系を探す}
+
+第III部の終わりに立てた問いを思い出そう。座標(基底)の取り方は自由
+なのだから、\textbf{表現行列が最も簡単になる基底}を選べばよいのでは
+ないか?――前章で、その「最良の基底」の候補が見つかった。固有ベクトル
+である。固有ベクトルの方向では、変換はただの $\lambda$ 倍であり、
+これ以上簡単な作用はない。
+
+もし空間全体を固有ベクトルの基底で張り尽くせたら、どの基底方向でも
+変換は定数倍、すなわち表現行列は\textbf{対角行列}になる。
+これが対角化である。本章では、いつそれが可能で、いつ不可能なのかを
+完全に見極める。
+
 \section{対角化の定義と基本定理}
 
 \begin{teigi}[対角化]
@@ -556,7 +580,7 @@ P^{-1} A P = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n}
 \textbf{表現行列が対角行列になるような基底を見つけること}である。
 そして、その基底の正体はもう分かっている。
 
-\begin{teiri}[対角化の基本定理]
+\begin{teiri}[対角化の基本定理]\label{thm:diag-main}
 $n$ 次正方行列 $A$ が対角化可能であるための必要十分条件は、
 \textbf{$A$ の固有ベクトルから線形独立な $n$ 本を選べる}ことである。
 このとき、固有ベクトル $\vect{p}_1, \dots, \vect{p}_n$ を列に並べた
@@ -565,52 +589,181 @@ $P^{-1}AP$ は対角行列になり、対角成分には対応する固有値が
 \textbf{並べた順に}現れる。
 \end{teiri}
 
-証明は一行の計算である。$A\vect{p}_j = \lambda_j \vect{p}_j$ を列ごとに束ねると
+\noindent\textbf{(証明)}\quad
+(十分性)独立な固有ベクトル $\vect{p}_1, \dots, \vect{p}_n$
+($A\vect{p}_j = \lambda_j\vect{p}_j$)があるとする。
+行列の積の列ごとの計算により
 \[
-AP = (\lambda_1 \vect{p}_1 \cdots \lambda_n \vect{p}_n) = P
-\mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n}
+AP = (A\vect{p}_1 \ \cdots \ A\vect{p}_n)
+= (\lambda_1 \vect{p}_1 \ \cdots \ \lambda_n \vect{p}_n) = P
+\mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n} = PD
 \]
-となり、$P$ が正則(列が線形独立)なら左から $P^{-1}$ を掛けてよい。
+となる。$P$ は列が線形独立だから正則(第II部の定理 \ref{thm:reg-rank})で、
+左から $P^{-1}$ を掛けて $P^{-1}AP = D$。
+
+(必要性)逆に $P^{-1}AP = D$(対角)とすると、両辺に左から $P$ を掛けて
+$AP = PD$。第 $j$ 列を比べると $A\vect{p}_j = \lambda_j \vect{p}_j$ であり、
+$P$ は正則だから各列 $\vect{p}_j$ は $\vect{0}$ でなく、$n$ 本は線形独立。
+すなわち独立な固有ベクトルが $n$ 本とれている。 $\blacksquare$
+
 問 \ref{q:repmat} で起きたことの完全な説明がこれである。
+実際の計算手順は次のとおり機械化される。
+\begin{enumerate}
+\item 固有方程式を解いて固有値をすべて求める。
+\item 各固有値の固有空間の基底を掃き出し法で求める。
+\item 集めた固有ベクトルが $n$ 本(独立)あれば、列に並べて $P$ を作る。
+$P^{-1}AP$ は、\textbf{並べた順に}固有値が並ぶ対角行列 $D$ になる。
+\item 検算は $AP = PD$ で行う($P^{-1}$ の計算は不要)。
+\end{enumerate}
 
 では、独立な固有ベクトルは $n$ 本そろうのか。
 強力な十分条件が一つある。
 
-\begin{teiri}
-相異なる固有値に属する固有ベクトルは線形独立である。
-したがって、\textbf{$n$ 次正方行列が $n$ 個の相異なる固有値をもてば、
-対角化可能}である。
+\section{相異なる固有値なら必ず対角化できる}
+
+\begin{teiri}[相異なる固有値の固有ベクトルは独立]\label{thm:diag-distinct}
+$\lambda_1, \dots, \lambda_k$ を $A$ の相異なる固有値、
+$\vect{v}_1, \dots, \vect{v}_k$ をそれぞれに属する固有ベクトルとすると、
+$\vect{v}_1, \dots, \vect{v}_k$ は線形独立である。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+本数 $k$ についての数学的帰納法で示す。$k = 1$ のときは、
+固有ベクトルは $\vect{0}$ でないから $1$ 本で独立である。
+
+$k - 1$ 本までは正しいとして、$k$ 本の場合を示す。
+\[
+c_1\vect{v}_1 + c_2\vect{v}_2 + \cdots + c_k\vect{v}_k = \vect{0}
+\tag{$*$}
+\]
+とする。($*$) の両辺に $A$ を掛けると、$A\vect{v}_i = \lambda_i\vect{v}_i$
+より
+\[
+c_1\lambda_1\vect{v}_1 + c_2\lambda_2\vect{v}_2 + \cdots
++ c_k\lambda_k\vect{v}_k = \vect{0}.
+\tag{$**$}
+\]
+一方、($*$) の両辺を $\lambda_k$ 倍すると
+\[
+c_1\lambda_k\vect{v}_1 + c_2\lambda_k\vect{v}_2 + \cdots
++ c_k\lambda_k\vect{v}_k = \vect{0}.
+\]
+($**$) からこれを辺々引くと、最後の項が消えて
+\[
+c_1(\lambda_1 - \lambda_k)\vect{v}_1 + \cdots
++ c_{k-1}(\lambda_{k-1} - \lambda_k)\vect{v}_{k-1} = \vect{0}.
+\]
+帰納法の仮定により $\vect{v}_1, \dots, \vect{v}_{k-1}$ は独立だから、
+係数はすべて $0$:$c_i(\lambda_i - \lambda_k) = 0$($i \le k - 1$)。
+固有値は相異なるので $\lambda_i - \lambda_k \neq 0$、よって
+$c_1 = \cdots = c_{k-1} = 0$。これを ($*$) に戻すと
+$c_k\vect{v}_k = \vect{0}$ で、$\vect{v}_k \neq \vect{0}$ より $c_k = 0$。
+以上ですべての係数が $0$ となり、独立が示された。 $\blacksquare$
+
+\begin{teiri}[$n$ 個の相異なる固有値をもてば対角化可能]\label{thm:diag-ndistinct}
+$n$ 次正方行列 $A$ が $n$ 個の相異なる実数の固有値をもてば、
+$A$ は対角化可能である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+各固有値から固有ベクトルを $1$ 本ずつとれば、
+定理 \ref{thm:diag-distinct} により独立な $n$ 本になる。
+あとは基本定理 \ref{thm:diag-main} による。 $\blacksquare$
+
+固有方程式は $n$ 次方程式だから解は高々 $n$ 個。
+「$n$ 個の相異なる固有値」はいわば\textbf{満員御礼}の状況であり、
+このとき対角化は自動的に成功する。
+問題は、固有方程式が重解をもつ場合である。
 
 \section{固有値が重複する場合}
 
-固有方程式が重解をもつ場合は、状況が分かれる。
-固有値 $\lambda$ の、固有方程式の解としての重複度を\textbf{代数的重複度}、
-固有空間の次元 $\dim W_\lambda$ を\textbf{幾何的重複度}と呼ぶと、
+\begin{teigi}[代数的重複度・幾何的重複度]
+固有値 $\lambda$ の、固有方程式の解としての重複度
+(固有多項式が $(\lambda' - \lambda)^m$ で割り切れる最大の $m$)を
+\textbf{代数的重複度}、固有空間の次元 $\dim W_\lambda$ を
+\textbf{幾何的重複度}と呼ぶ。
+\end{teigi}
+
 一般に
 \[
 1 \le (\text{幾何的重複度}) \le (\text{代数的重複度})
 \]
-が成り立ち、次が知られている。
+が成り立つ(左の不等号は固有ベクトルの存在そのもの。
+右の不等号の証明の粗筋は深掘りで述べる)。
+対角化可能性は、固有空間の次元だけで完全に判定できる。
 
-\begin{teiri}[対角化可能性の判定]
-$A$ が対角化可能 $\iff$ すべての固有値で
-幾何的重複度と代数的重複度が一致する。
+\begin{teiri}[対角化可能性の判定]\label{thm:diag-criterion}
+$n$ 次正方行列 $A$ の相異なる実数の固有値を
+$\lambda_1, \dots, \lambda_k$ とすると、
+\[
+A \text{ が対角化可能} \iff
+\dim W_{\lambda_1} + \cdots + \dim W_{\lambda_k} = n.
+\]
+固有多項式が実数の範囲で $1$ 次式の積に分解するときは、この条件は
+「\textbf{すべての固有値で幾何的重複度 = 代数的重複度}」と言い換えられる。
 \end{teiri}
 
-\begin{rei}[対角化できない行列]
+\noindent\textbf{(証明)}\quad
+($\Leftarrow$)各固有空間 $W_{\lambda_i}$ の基底を集めて
+$n$ 本のベクトルの組を作る。この組が線形独立であることを示す。
+線形結合が $\vect{0}$ になったとし、固有値ごとに項をまとめて
+$\vect{w}_1 + \cdots + \vect{w}_k = \vect{0}$
+($\vect{w}_i \in W_{\lambda_i}$)と書く。もしある $\vect{w}_i$ が
+$\vect{0}$ でなければ、$\vect{0}$ でないものだけを残した式は
+「相異なる固有値に属する固有ベクトルたちの、係数 $1$ の線形結合が
+$\vect{0}$」を意味し、定理 \ref{thm:diag-distinct} に矛盾する。
+よってすべての $\vect{w}_i = \vect{0}$ であり、各 $W_{\lambda_i}$ の中では
+基底の独立性から係数がすべて $0$ になる。ゆえにこの $n$ 本は独立な
+固有ベクトルであり、基本定理 \ref{thm:diag-main} により対角化可能である。
+
+($\Rightarrow$)対角化可能なら、基本定理により独立な固有ベクトル
+$n$ 本がとれる。それらを固有値ごとに分ければ、$W_{\lambda_i}$ の中に
+$n_i$ 本の独立なベクトルがあり($n_1 + \cdots + n_k = n$)、
+$\dim W_{\lambda_i} \ge n_i$。辺々足して
+$\sum_i \dim W_{\lambda_i} \ge n$。
+逆向きの不等式:各固有空間の基底を集めた
+$\sum_i \dim W_{\lambda_i}$ 本の組は、($\Leftarrow$)の議論と同じ理由で
+線形独立であり、$\R^n$ の独立系は $n$ 本以下(第 \ref{chap:basis} 章の
+交換補題 \ref{thm:exchange})だから
+$\sum_i \dim W_{\lambda_i} \le n$。よって等号が成り立つ。 $\blacksquare$
+
+\begin{rei}[対角化できない行列]\label{rei:diag-shear}
 $A = \mat{1 & 1 \\ 0 & 1}$ の固有多項式は $(\lambda - 1)^2$ で、
 固有値は $1$ のみ(代数的重複度 $2$)。固有空間は
 \[
 (E - A)\vect{v} = \mat{0 & -1 \\ 0 & 0}\vect{v} = \vect{0}
 \]
 の解空間で、$\vect{v} = t\mat{1 \\ 0}$ の $1$ 次元(幾何的重複度 $1$)。
-独立な固有ベクトルが $1$ 本しか取れず、\textbf{対角化できない}。
+次元の和は $1 < 2$ であり、\textbf{対角化できない}。
 この行列は「せん断(ずらし)変換」であり、どの方向も
 (横軸方向以外は)必ず傾けられてしまう。
 対角化できない行列をどこまで簡単にできるか
 ――その完全な答えが第VI部のジョルダン標準形である。
 \end{rei}
+
+\begin{itembox}[l]{深掘り:幾何的重複度 $\le$ 代数的重複度の理由}
+固有値 $\lambda_0$ の固有空間 $W_{\lambda_0}$ の次元を $m$ とし、
+その基底 $\vect{p}_1, \dots, \vect{p}_m$ を $\R^n$ の基底
+$\vect{p}_1, \dots, \vect{p}_m, \dots, \vect{p}_n$ に拡張する
+(第 \ref{chap:basis} 章の拡張定理)。この基底での $A$ の表現行列
+$A' = P^{-1}AP$ を考えると、最初の $m$ 本は固有ベクトルだから、
+$A'$ は左上 $m$ 列が「対角に $\lambda_0$、その下は $0$」という形になる:
+\[
+A' = \mat{\lambda_0 E_m & * \\ O & B}
+\]
+($E_m$ は $m$ 次単位行列、$B$ は $(n-m)$ 次正方行列)。
+この形の行列の行列式は、第 $1$ 列での余因子展開を $m$ 回繰り返すと
+分かるように「左上ブロックの行列式 × 右下ブロックの行列式」になるから、
+\[
+\varphi_A(\lambda) = \varphi_{A'}(\lambda)
+= (\lambda - \lambda_0)^m \det(\lambda E_{n-m} - B).
+\]
+(固有多項式が相似で不変であることは第 \ref{chap:eigen} 章の深掘りで
+示した。)よって $\varphi_A$ は $(\lambda - \lambda_0)^m$ で割り切れ、
+代数的重複度は $m$ 以上である。
+\textbf{固有空間が大きいほど、固有多項式にもその痕跡が残る}
+――というのがこの不等式の中身である。
+\end{itembox}
 
 \begin{itembox}[l]{深掘り:回転には実数の固有ベクトルがない ― 複素数の招待}
 回転行列 $R_\theta = \mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}$
@@ -643,6 +796,289 @@ $A = \mat{1 & 1 \\ 0 & 1}$ の固有多項式は $(\lambda - 1)^2$ で、
 　(2) $B = \mat{3 & 1 \\ 0 & 3}$ が対角化可能でないことを、
 重複度の言葉で説明せよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[固有値が重複しても対角化できることはある]\label{hanrei:diag-repeat}
+「固有値が重複したら対角化不可能」は誤りである。
+最も簡単な反例は単位行列 $E$:固有値は $1$(代数的重複度 $n$)だが、
+固有空間は $W_1 = \R^n$ 全体($n$ 次元)で、$E$ ははじめから対角である。
+$3$ 次の例では、例題 \ref{rei:eigen-3x3} の行列が固有値 $3$ を重複して
+もつのに対角化できる(例題 \ref{rei:diag-3x3})。
+定理 \ref{thm:diag-ndistinct} は\textbf{十分条件}であって必要条件ではない。
+重複があるときは、固有空間の次元を実際に数えて
+判定する(定理 \ref{thm:diag-criterion})。
+\end{hanrei}
+
+\begin{hanrei}[$P$ の列の順序と $D$ の順序はセットである]\label{hanrei:diag-order}
+$A = \mat{3 & 1 \\ 1 & 3}$ は、固有値 $4, 2$ と固有ベクトル
+$\mat{1 \\ 1}, \mat{1 \\ -1}$ をもつ(第 \ref{chap:eigen} 章)。ここで
+\[
+P = \mat{1 & 1 \\ -1 & 1} \quad
+\Bigl(\text{列の順序:} \mat{1 \\ -1},\ \mat{1 \\ 1}\Bigr)
+\]
+と並べたのに $D = \mat{4 & 0 \\ 0 & 2}$ とするのは\textbf{誤り}である。
+第 $1$ 列 $\mat{1 \\ -1}$ は固有値 $2$ の固有ベクトルだから、
+正しくは $D = \mat{2 & 0 \\ 0 & 4}$。実際
+$AP = \mat{2 & 4 \\ -2 & 4}$ と
+$P\mat{2 & 0 \\ 0 & 4} = \mat{2 & 4 \\ -2 & 4}$ は一致するが、
+$P\mat{4 & 0 \\ 0 & 2}$ は $\mat{4 & 2 \\ -4 & 2}$ で一致しない。
+\textbf{$D$ の第 $j$ 対角成分は、$P$ の第 $j$ 列の固有値}
+――順序の対応を崩してはならない。
+\end{hanrei}
+
+\section{例題}
+
+対角化の実行・判定・応用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(対角化の実行)]\label{rei:diag-basic}
+$A = \mat{1 & 2 \\ 2 & 1}$ を対角化せよ。\\
+\textbf{解.}\ $\varphi_A(\lambda) = (\lambda - 1)^2 - 4
+= (\lambda - 3)(\lambda + 1)$ より固有値は $3, -1$
+(相異なるので対角化可能と即断できる。定理 \ref{thm:diag-ndistinct})。
+
+$\lambda = 3$:$\mat{2 & -2 \\ -2 & 2}\vect{v} = \vect{0}$ より
+$\vect{v} = t\mat{1 \\ 1}$。
+$\lambda = -1$:$\mat{-2 & -2 \\ -2 & -2}\vect{v} = \vect{0}$ より
+$\vect{v} = t\mat{1 \\ -1}$。
+
+$P = \mat{1 & 1 \\ 1 & -1}$ と並べれば
+\[
+P^{-1}AP = \mat{3 & 0 \\ 0 & -1}.
+\]
+検算($AP = PD$):
+$AP = \mat{3 & -1 \\ 3 & 1}$、
+$PD = \mat{1 & 1 \\ 1 & -1}\mat{3 & 0 \\ 0 & -1} = \mat{3 & -1 \\ 3 & 1}$
+で一致。
+\end{rei}
+
+\begin{rei}[例題・基本(対角化可能性の判定)]\label{rei:diag-judge}
+次の行列は対角化可能か。
+\[
+(1)\ \mat{1 & 1 \\ 0 & 2} \qquad (2)\ \mat{2 & 1 \\ 0 & 2}
+\]
+\textbf{解.}\ (1) 三角行列だから固有値は対角成分の $1, 2$
+(定理 \ref{thm:eigen-tri})。$2$ 次で相異なる $2$ つの固有値をもつから、
+\textbf{固有ベクトルを求めるまでもなく}対角化可能である
+(定理 \ref{thm:diag-ndistinct})。
+
+(2) 固有値は $2$ のみ(代数的重複度 $2$)。固有空間は
+$\mat{0 & -1 \\ 0 & 0}\vect{v} = \vect{0}$ の解空間で
+$\vect{v} = t\mat{1 \\ 0}$ の $1$ 次元。次元の和が $1 < 2$ なので
+対角化不可能である(定理 \ref{thm:diag-criterion})。
+同じ三角行列でも、対角成分が重複するときは固有空間の次元を
+数えなければ判定できない。
+\end{rei}
+
+\begin{rei}[例題・基本($AP = PD$ による検算)]\label{rei:diag-verify}
+「$A = \mat{3 & 1 \\ 1 & 3}$ は $P = \mat{1 & 1 \\ 1 & -1}$ により
+$D = \mat{4 & 0 \\ 0 & 2}$ に対角化される」という主張
+(問 \ref{q:repmat} の結果)を、$P^{-1}$ を計算せずに検算せよ。\\
+\textbf{解.}\ $P^{-1}AP = D$ は(両辺に左から $P$ を掛ければ)
+$AP = PD$ と同値である。
+\[
+AP = \mat{3 & 1 \\ 1 & 3}\mat{1 & 1 \\ 1 & -1} = \mat{4 & 2 \\ 4 & -2},
+\qquad
+PD = \mat{1 & 1 \\ 1 & -1}\mat{4 & 0 \\ 0 & 2} = \mat{4 & 2 \\ 4 & -2}.
+\]
+一致するから主張は正しい($P$ が正則であること:
+$\det P = -2 \neq 0$ も確認)。
+逆行列の計算を避けられるので、検算はつねに $AP = PD$ で行うのがよい。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次行列の対角化)]\label{rei:diag-3x3}
+$A = \mat{1 & 0 & 2 \\ 0 & 3 & 0 \\ 2 & 0 & 1}$
+(例題 \ref{rei:eigen-3x3})を対角化せよ。\\
+\textbf{解.}\ 例題 \ref{rei:eigen-3x3} で求めたとおり、固有値は
+$3$(代数的重複度 $2$)と $-1$ で、固有空間は
+\[
+W_3 = \left\langle \mat{1 \\ 0 \\ 1}, \mat{0 \\ 1 \\ 0} \right\rangle
+\ (2 \text{ 次元}), \qquad
+W_{-1} = \left\langle \mat{1 \\ 0 \\ -1} \right\rangle \ (1 \text{ 次元}).
+\]
+次元の和は $2 + 1 = 3$ だから対角化可能である
+(定理 \ref{thm:diag-criterion})。基底を列に並べて
+\[
+P = \mat{1 & 0 & 1 \\ 0 & 1 & 0 \\ 1 & 0 & -1}, \qquad
+P^{-1}AP = \mat{3 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & -1}.
+\]
+検算($AP = PD$):$AP$ の各列は
+$A\mat{1 \\ 0 \\ 1} = \mat{3 \\ 0 \\ 3}$,
+$A\mat{0 \\ 1 \\ 0} = \mat{0 \\ 3 \\ 0}$,
+$A\mat{1 \\ 0 \\ -1} = \mat{-1 \\ 0 \\ 1}$ で、
+$PD$ の各列($3$ 倍、$3$ 倍、$-1$ 倍)と一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(パラメータつきの判定)]\label{rei:diag-param}
+$A = \mat{1 & 1 \\ 0 & a}$ が対角化可能であるための
+$a$ の条件を求めよ。\\
+\textbf{解.}\ 三角行列だから固有値は $1$ と $a$ である。
+
+$a \neq 1$ のとき:相異なる $2$ つの固有値をもつから対角化可能
+(定理 \ref{thm:diag-ndistinct})。
+
+$a = 1$ のとき:$A = \mat{1 & 1 \\ 0 & 1}$ はせん断行列
+(例 \ref{rei:diag-shear})で、固有空間が $1$ 次元しかなく対角化不可能。
+
+よって求める条件は $a \neq 1$ である。
+\textbf{パラメータの特別な値でだけ対角化が壊れる}――この現象は、
+固有値の衝突(重解化)が原因である。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:べきの対角化)]\label{rei:diag-power}
+$A$ が $P$ により $P^{-1}AP = D$(対角)と対角化されるならば、
+$A^2$ も同じ $P$ により対角化され、$P^{-1}A^2P = D^2$ となることを示せ。\\
+\textbf{解.}\ $P^{-1}AP = D$ の両辺を $2$ 乗すると、
+\[
+D^2 = (P^{-1}AP)(P^{-1}AP) = P^{-1}A\,(PP^{-1})\,AP = P^{-1}A^2P.
+\]
+真ん中の $PP^{-1} = E$ が消えるのが要点である。$D^2$ は対角行列
+(対角成分は $\lambda_i^2$)だから、$A^2$ は $P$ で対角化される。
+同様に繰り返せば $P^{-1}A^nP = D^n$、すなわち
+\[
+A^n = P D^n P^{-1}
+\]
+が任意の $n$ で成り立つ。この式が次章の主役になる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{対角化の基本定理}:$A$ が対角化可能 $\iff$ 独立な
+固有ベクトルが $n$ 本とれる。$P$ は固有ベクトルを列に並べた行列で、
+$D$ には\textbf{並べた順に}固有値が並ぶ(反例 \ref{hanrei:diag-order})。
+検算は $AP = PD$ で。
+\item \textbf{相異なる固有値の固有ベクトルは線形独立}
+(定理 \ref{thm:diag-distinct}、帰納法+固有値の差で消す証明)。
+したがって $n$ 個の相異なる固有値をもてば対角化可能。
+\item 固有値が重複する場合は、\textbf{固有空間の次元の和が $n$ に
+なるか}で判定する(定理 \ref{thm:diag-criterion})。
+言い換えれば、(固有多項式が $1$ 次式の積に分解するとき)
+すべての固有値で幾何的重複度=代数的重複度。
+\item 重複していても対角化できる例(単位行列など)はある
+(反例 \ref{hanrei:diag-repeat})。逆に、せん断
+$\mat{1 & 1 \\ 0 & 1}$ は固有空間が足りず対角化できない。
+その先はジョルダン標準形(第VI部)の出番である。
+\item 実数の固有値が存在しない行列(回転)もある。複素数まで広げれば
+固有値は必ず $n$ 個そろう(深掘り)。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:diag-ex1}
+$A = \mat{5 & 4 \\ 2 & 3}$(問 \ref{q:eigen-ex1} の行列)を対角化せよ
+($P$ と $P^{-1}AP$ を明示し、$AP = PD$ で検算すること)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:diag-ex2}
+$A = \mat{2 & 1 \\ 1 & 2}$(例題 \ref{rei:eigen-basic} の行列)を
+対角化せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:diag-ex3}
+次の行列はそれぞれ対角化可能か。理由とともに判定せよ
+(対角化の実行までは不要)。
+\[
+(1)\ \mat{1 & 1 \\ 0 & 1} \qquad
+(2)\ \mat{1 & 1 \\ 0 & 2} \qquad
+(3)\ \mat{4 & 0 \\ 0 & 4}
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:diag-ex4}
+$A = \mat{2 & 1 \\ 1 & 2}$ の固有ベクトルを
+$\mat{1 \\ -1}$, $\mat{1 \\ 1}$ の\textbf{順に}列に並べた
+$P = \mat{1 & 1 \\ -1 & 1}$ を使うとき、$P^{-1}AP$ はどんな対角行列に
+なるか。$AP = PD$ の検算で確かめよ(問 \ref{q:diag-ex2} と
+対角成分の順序を見比べること)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex5}
+$A = \mat{2 & 1 & 1 \\ 0 & 1 & 0 \\ 0 & 1 & 3}$
+(問 \ref{q:eigen-ex5} の行列)を対角化せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex6}
+$A = \mat{3 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 2}$ が対角化可能でないことを、
+固有空間の次元を計算して示せ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex7}
+固有値 $2$ と $5$ をもち、対応する固有ベクトルがそれぞれ
+$\mat{1 \\ 1}$, $\mat{1 \\ -1}$ である $2$ 次正方行列 $A$ を求めよ
+($A = PDP^{-1}$ を計算する)。
+求めた $A$ について $A\mat{1 \\ 1}$ を計算して検算せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex8}
+$A = \mat{a & 1 \\ 0 & 2}$ が対角化可能であるための $a$ の条件を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:diag-ex9}
+正射影行列 $P_0 = \dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$
+(例題 \ref{rei:eigen-proj})を対角化し、
+$Q^{-1}P_0Q = \mat{1 & 0 \\ 0 & 0}$ となる $Q$ を求めよ。
+さらに、この対角化を用いて $P_0^2 = P_0$(2度射影しても同じ)を
+計算で示せ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:diag-ex10}
+$A$ は対角化可能で、ある正の整数 $k$ について $A^k = O$ を満たすとする。
+このとき $A = O$ であることを示せ
+(対角化できるのに「べきで消える」行列は零行列しかない。
+逆にいえば、$A \neq O$ なのに $A^k = O$ となる行列
+――第VI部の主役「べき零行列」――は決して対角化できない)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:diag-ex11}
+$A$ が対角化可能ならば、転置行列 ${}^t\!A$ も対角化可能であることを
+証明せよ(ヒント:$A = PDP^{-1}$ の両辺を転置し、
+${}^t(P^{-1}) = ({}^tP)^{-1}$ を使う)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:diag-ex12}
+相異なる固有値 $\lambda_1 \neq \lambda_2$ に属する固有ベクトル
+$\vect{v}_1, \vect{v}_2$ が線形独立であることを、帰納法を使わずに
+直接証明せよ(ヒント:$c_1\vect{v}_1 + c_2\vect{v}_2 = \vect{0}$ の
+両辺に $A$ を掛けた式と、$\lambda_2$ 倍した式を見比べる。
+定理 \ref{thm:diag-distinct} の証明の「最初の一歩」を自分の手で
+再現する問題である)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:diag-ex1}}:固有値・固有ベクトルは
+問 \ref{q:eigen-ex1} で求めてある。並べて $P$ を作り、$AP = PD$ で検算。
+\item \textbf{問 \ref{q:diag-ex2}}:例題 \ref{rei:eigen-basic} の結果を
+使う。
+\item \textbf{問 \ref{q:diag-ex3}}:固有値がすべて異なれば即対角化可能。
+重複するときだけ固有空間の次元を数える。(3) はそもそも対角行列。
+\item \textbf{問 \ref{q:diag-ex4}}:$D$ の対角には「$P$ に並べた順」で
+固有値が入る(反例 \ref{hanrei:diag-order})。
+\item \textbf{問 \ref{q:diag-ex5}}:$3$ つの固有値が相異なるので
+対角化可能。固有ベクトルは問 \ref{q:eigen-ex5} のもの。
+\item \textbf{問 \ref{q:diag-ex6}}:固有値 $2$ の固有空間を掃き出して
+次元を数える。$1 + 1 < 3$ になるはず。
+\item \textbf{問 \ref{q:diag-ex7}}:$A = PDP^{-1}$。$2 \times 2$ の
+逆行列公式を使う。
+\item \textbf{問 \ref{q:diag-ex8}}:三角行列なので固有値は $a$ と $2$。
+$a = 2$ の場合だけ固有空間を調べる。
+\item \textbf{問 \ref{q:diag-ex9}}:固有値 $1, 0$ の固有ベクトルを
+列に並べる。$P_0^2 = QD^2Q^{-1}$ と $D^2 = D$ に注目
+(例題 \ref{rei:diag-power})。
+\item \textbf{問 \ref{q:diag-ex10}}:$A = PDP^{-1}$ とすると
+$A^k = PD^kP^{-1} = O$。$D^k$ の対角成分はどうなるか。
+\item \textbf{問 \ref{q:diag-ex11}}:転置は積の順序を逆にする
+(定理 \ref{thm:transpose})。$({}^tP)^{-1}D\,({}^tP)$ の形に整える。
+\item \textbf{問 \ref{q:diag-ex12}}:$A$ を掛けた式から $\lambda_2$ 倍した
+式を引くと $\vect{v}_2$ の項が消える。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{対角化の威力 ― 行列のべき乗と漸化式}\label{chap:power}
