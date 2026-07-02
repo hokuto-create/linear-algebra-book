@@ -559,33 +559,107 @@ $\vect{a}$ と $\vect{b}$ を入れ替えてもう一本作る。
 \chapter{正規直交基底とグラム・シュミットの直交化法}\label{chap:gs}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 正規直交基底の利点(座標が内積一発で求まる、線形独立性が自動)を
+証明つきで理解する。
+\item グラム・シュミットの直交化法を $\R^3$ の $3$ 本の基底に対して
+実行でき、なぜうまくいくのかを正射影の言葉で説明できるようになる。
+\item 直交補空間 $W^{\perp}$ と直交分解
+$\vect{v} = \vect{v}_W + \vect{v}_{\perp}$ を理解し、
+正射影と距離(点と部分空間の距離)を計算できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 「良い基底」を機械的に作る}
+
+第III部で見たとおり、基底は無数にあり、どれを選ぶかは自由である。
+だが計算の負担は基底によって大きく違う。一般の基底では、
+ベクトル $\vect{v}$ の座標を求めるだけで連立方程式を解く羽目になる
+(第III部の座標計算を思い出そう)。いっぽう標準基底なら座標は成分を
+読むだけだった。標準基底のこの快適さの正体は何か
+――\textbf{互いに直交する単位ベクトル}であること、それがすべてである。
+本章では、この快適さを備えた基底(正規直交基底)の利点を確かめ、
+どんな基底からでもそれを\textbf{機械的に}作り出す
+グラム・シュミットの直交化法を学ぶ。
+さらに、その副産物として「部分空間に届かない点から、
+部分空間内の最も近い点へ垂線を下ろす」正射影の理論が手に入る。
+これは第VII部の最小二乗法(データ分析の心臓部)の土台になる。
+
 \section{正規直交基底のありがたみ}
 
-\begin{teigi}[正規直交基底]
-基底 $\vect{u}_1, \dots, \vect{u}_n$ が、互いに直交し
+\begin{teigi}[正規直交基底]\label{def:gs-onb}
+ベクトルの組 $\vect{u}_1, \dots, \vect{u}_k$ が、互いに直交し
 ($i \neq j$ で $\langle \vect{u}_i, \vect{u}_j \rangle = 0$)、
 各ノルムが $1$($\|\vect{u}_i\| = 1$)であるとき、
+\textbf{正規直交系}という。正規直交系をなす基底を
 \textbf{正規直交基底}という。$\R^n$ の標準基底はその代表例である。
 \end{teigi}
 
-一般の基底では、ベクトル $\vect{v}$ の座標を求めるのに
-連立方程式を解く必要があった。正規直交基底なら、
-$\vect{v} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$ の両辺と
-$\vect{u}_i$ の内積をとるだけで、直交性により他の項が消え、
+正規直交系のありがたみは、まず\textbf{線形独立性がただで手に入る}
+ことに現れる。
+
+\begin{teiri}[正規直交系は線形独立]\label{thm:gs-indep}
+正規直交系 $\vect{u}_1, \dots, \vect{u}_k$ は線形独立である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$c_1\vect{u}_1 + \cdots + c_k\vect{u}_k = \vect{0}$ とする。
+両辺と $\vect{u}_j$ の内積をとると、双線形性より
 \[
-c_i = \langle \vect{v}, \vect{u}_i \rangle
+c_1\langle \vect{u}_1, \vect{u}_j \rangle + \cdots
++ c_k\langle \vect{u}_k, \vect{u}_j \rangle = 0
 \]
-と\textbf{座標が内積一発で求まる}。計算上も理論上も、
+で、直交性により左辺は $c_j\langle \vect{u}_j, \vect{u}_j \rangle = c_j$
+だけが生き残る($\|\vect{u}_j\| = 1$ を使った)。よって
+$c_j = 0$ がすべての $j$ で成り立ち、線形独立である。 $\blacksquare$
+
+したがって、$\R^n$ の中に $n$ 本の正規直交系があれば、本数だけで
+自動的に基底になる(定理 \ref{thm:dim-ncheck})。
+第二のありがたみが\textbf{座標計算}である。
+
+\begin{teiri}[座標は内積で求まる]\label{thm:gs-coord}
+$\vect{u}_1, \dots, \vect{u}_n$ を正規直交基底とすると、任意の
+$\vect{v}$ の展開 $\vect{v} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$ の
+係数(座標)は
+\[
+c_i = \langle \vect{v}, \vect{u}_i \rangle \qquad (i = 1, \dots, n)
+\]
+で与えられる。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+展開の両辺と $\vect{u}_i$ の内積をとると、定理 \ref{thm:gs-indep} の
+証明とまったく同じ理由で右辺は $c_i$ だけが残る。 $\blacksquare$
+
+一般の基底では連立方程式(掃き出し法)が必要だった座標計算が、
+\textbf{内積 $n$ 回で済む}。計算上も理論上も、
 基底は正規直交であるに越したことはない。
+
+\begin{rei}[座標の即読]\label{rei:gs-coordread}
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$ は $\R^2$ の正規直交基底である
+(直交と正規化を確かめよ)。$\vect{v} = \mat{4 \\ 2}$ の座標は
+\[
+c_1 = \langle \vect{v}, \vect{u}_1 \rangle = \frac{4 + 2}{\sqrt{2}} = 3\sqrt{2},
+\qquad
+c_2 = \langle \vect{v}, \vect{u}_2 \rangle = \frac{4 - 2}{\sqrt{2}} = \sqrt{2}.
+\]
+検算:$3\sqrt{2}\,\vect{u}_1 + \sqrt{2}\,\vect{u}_2
+= \mat{3 \\ 3} + \mat{1 \\ -1} = \mat{4 \\ 2}$。連立方程式は一度も
+解いていない。
+\end{rei}
 
 \section{グラム・シュミットの直交化法}
 
 幸い、どんな基底からでも正規直交基底を機械的に作れる。
 
-\begin{teiri}[グラム・シュミットの直交化法]
+\begin{teiri}[グラム・シュミットの直交化法]\label{thm:gs-main}
 線形独立な $\vect{a}_1, \dots, \vect{a}_k$ から、次の手順で
 正規直交系 $\vect{u}_1, \dots, \vect{u}_k$ が得られる
-(しかも各段階で張る空間は変わらない)。
+(しかも各段階で張る空間は変わらない:
+$\langle \vect{u}_1, \dots, \vect{u}_j \rangle
+= \langle \vect{a}_1, \dots, \vect{a}_j \rangle$)。
 \begin{enumerate}
 \item $\vect{b}_1 = \vect{a}_1$ とする。
 \item $\vect{b}_j = \vect{a}_j - \displaystyle\sum_{i=1}^{j-1}
@@ -603,7 +677,30 @@ $\dfrac{\langle \vect{a}, \vect{b} \rangle}{\langle \vect{b}, \vect{b} \rangle}\
 「新入りのベクトルから、既存メンバー方向の成分をすべて差し引けば、
 残りは全員と直交する」という、素朴だが完璧なアイデアである。
 
-\begin{rei}
+\noindent\textbf{(証明)}\quad
+$\vect{b}_1, \dots, \vect{b}_{j-1}$ が互いに直交している(帰納法の仮定)
+として、$\vect{b}_j$ が各 $\vect{b}_m$($m < j$)と直交することを
+確かめればよい。双線形性で展開すると
+\[
+\langle \vect{b}_j, \vect{b}_m \rangle
+= \langle \vect{a}_j, \vect{b}_m \rangle - \sum_{i=1}^{j-1}
+\frac{\langle \vect{a}_j, \vect{b}_i \rangle}{\langle \vect{b}_i, \vect{b}_i \rangle}
+\langle \vect{b}_i, \vect{b}_m \rangle
+= \langle \vect{a}_j, \vect{b}_m \rangle
+- \frac{\langle \vect{a}_j, \vect{b}_m \rangle}{\langle \vect{b}_m, \vect{b}_m \rangle}
+\langle \vect{b}_m, \vect{b}_m \rangle = 0
+\]
+(和のうち $i = m$ の項だけが残ることに帰納法の仮定を使った)。
+また、$\vect{b}_j$ の式を変形すると $\vect{a}_j$ は
+$\vect{b}_1, \dots, \vect{b}_j$ の線形結合、逆に $\vect{b}_j$ は
+$\vect{a}_1, \dots, \vect{a}_j$ の線形結合になっている(帰納的に
+$\vect{b}_i \in \langle \vect{a}_1, \dots, \vect{a}_i \rangle$)から、
+張る空間は各段階で変わらない。とくに、もし $\vect{b}_j = \vect{0}$ なら
+$\vect{a}_j$ が $\vect{a}_1, \dots, \vect{a}_{j-1}$ の線形結合となって
+線形独立の仮定に反するので、$\vect{b}_j \neq \vect{0}$ であり
+正規化(手順 3)が必ず実行できる。 $\blacksquare$
+
+\begin{rei}\label{rei:gs-worked}
 $\vect{a}_1 = \mat{1 \\ 1 \\ 0}$, $\vect{a}_2 = \mat{0 \\ 1 \\ 1}$ を直交化する。
 $\vect{b}_1 = \vect{a}_1$。
 $\langle \vect{a}_2, \vect{b}_1 \rangle = 1$,
@@ -620,6 +717,33 @@ $\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
 $\langle \vect{u}_1, \vect{u}_2 \rangle = 0$ を確かめてほしい。
 \end{rei}
 
+\begin{mondai}\label{q:gs}
+$\vect{a}_1 = \mat{1 \\ 0 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ に
+グラム・シュミットの直交化法を適用し、正規直交系を作れ。
+\end{mondai}
+
+\begin{itembox}[l]{深掘り:関数を直交化する ― ルジャンドル多項式}
+グラム・シュミットの直交化法の手順には「成分」が一度も登場しない。
+使うのは内積と引き算だけである。ということは、
+\textbf{関数の内積}(第 \ref{chap:inner} 章)をもつ多項式の空間でも
+そのまま実行できる。区間 $[-1, 1]$ 上の内積
+$\langle f, g \rangle = \int_{-1}^{1} f g\,dx$ で、
+基底 $1, x, x^2$ を直交化してみよう。
+$\vect{b}_1 = 1$。次に $\langle x, 1 \rangle = 0$(奇関数)だから
+$\vect{b}_2 = x$(最初から直交していた)。さらに
+$\langle x^2, 1 \rangle = \frac{2}{3}$, $\langle 1, 1 \rangle = 2$,
+$\langle x^2, x \rangle = 0$ より
+\[
+\vect{b}_3 = x^2 - \frac{2/3}{2} \cdot 1 - 0 \cdot x = x^2 - \frac{1}{3}.
+\]
+こうして得られる直交多項式列 $1,\ x,\ x^2 - \frac{1}{3},\ \dots$ は
+(定数倍を除いて)\textbf{ルジャンドル多項式}と呼ばれ、
+物理学(球対称なポテンシャルの展開)や数値積分(ガウス求積)で
+主役を務める。$19$ 世紀に個別に発見された特殊関数たちが、
+実は「多項式にグラム・シュミットを適用しただけ」という一つの操作で
+統一的に得られる――抽象化(内積の公理化)の配当である。
+\end{itembox}
+
 \section{直交補空間と正射影}
 
 部分空間 $W$ に対し、$W$ のすべてのベクトルと直交するベクトルの全体
@@ -627,13 +751,76 @@ $\langle \vect{u}_1, \vect{u}_2 \rangle = 0$ を確かめてほしい。
 W^{\perp} = \{\, \vect{v} \mid \text{すべての } \vect{w} \in W \text{ に対し }
 \langle \vect{v}, \vect{w} \rangle = 0 \,\}
 \]
-を $W$ の\textbf{直交補空間}という。任意の $\vect{v}$ は
+を $W$ の\textbf{直交補空間}という。
+
+\begin{teiri}[直交補空間の基本性質]\label{thm:gs-perpsub}
+$\R^n$ の部分空間 $W$ について、
+\begin{enumerate}
+\item $W^{\perp}$ は $\R^n$ の部分空間である。
+\item $W \cap W^{\perp} = \{\vect{0}\}$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $\vect{v}_1, \vect{v}_2 \in W^{\perp}$ とすると、任意の
+$\vect{w} \in W$ に対し双線形性より
+$\langle \vect{v}_1 + \vect{v}_2, \vect{w} \rangle
+= \langle \vect{v}_1, \vect{w} \rangle + \langle \vect{v}_2, \vect{w} \rangle
+= 0$、$\langle c\vect{v}_1, \vect{w} \rangle
+= c\langle \vect{v}_1, \vect{w} \rangle = 0$。
+$\vect{0}$ も明らかに属するから、部分空間の判定
+(第 \ref{chap:subspace} 章)により $W^{\perp}$ は部分空間である。
+(2) $\vect{x} \in W \cap W^{\perp}$ とすると、$\vect{x}$ は
+「$W$ のすべての元と直交する」元であると同時に自分自身が $W$ の元だから、
+$\langle \vect{x}, \vect{x} \rangle = 0$。正値性より
+$\vect{x} = \vect{0}$。 $\blacksquare$
+
+\begin{teiri}[直交分解]\label{thm:gs-decomp}
+$W$ を $\R^n$ の部分空間とすると、任意の $\vect{v} \in \R^n$ は
 \[
 \vect{v} = \underbrace{\vect{v}_W}_{\in W} +
 \underbrace{\vect{v}_{\perp}}_{\in W^{\perp}}
 \]
-の形に\textbf{ただ一通り}に分解され、$\vect{v}_W$ を $\vect{v}$ の
-$W$ への\textbf{正射影}という。
+の形に\textbf{ただ一通り}に分解できる。$\vect{v}_W$ を $\vect{v}$ の
+$W$ への\textbf{正射影}という。$W$ の正規直交基底
+$\vect{u}_1, \dots, \vect{u}_k$ を使えば
+\[
+\vect{v}_W = \langle \vect{v}, \vect{u}_1 \rangle \vect{u}_1 + \cdots
++ \langle \vect{v}, \vect{u}_k \rangle \vect{u}_k
+\]
+と計算できる。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{存在}:$W$ の基底をとりグラム・シュミットの直交化法で
+正規直交基底 $\vect{u}_1, \dots, \vect{u}_k$ にしておく。
+上の式で $\vect{v}_W$ を定め、$\vect{v}_{\perp} = \vect{v} - \vect{v}_W$
+とおく。$\vect{v}_W \in W$ は明らか。各 $\vect{u}_j$ との内積は
+\[
+\langle \vect{v}_{\perp}, \vect{u}_j \rangle
+= \langle \vect{v}, \vect{u}_j \rangle
+- \sum_{i=1}^{k} \langle \vect{v}, \vect{u}_i \rangle
+\langle \vect{u}_i, \vect{u}_j \rangle
+= \langle \vect{v}, \vect{u}_j \rangle - \langle \vect{v}, \vect{u}_j \rangle = 0
+\]
+だから、$\vect{v}_{\perp}$ は $W$ の基底のすべてと直交し、したがって
+その線形結合である $W$ のすべての元と直交する:
+$\vect{v}_{\perp} \in W^{\perp}$。
+\textbf{一意性}:$\vect{v} = \vect{w}_1 + \vect{h}_1 = \vect{w}_2 + \vect{h}_2$
+($\vect{w}_i \in W$, $\vect{h}_i \in W^{\perp}$)と二通りに書けたとすると、
+移項して
+\[
+\vect{w}_1 - \vect{w}_2 = \vect{h}_2 - \vect{h}_1.
+\]
+左辺は $W$ の元、右辺は $W^{\perp}$ の元だから、この共通のベクトルは
+$W \cap W^{\perp}$ に属し、定理 \ref{thm:gs-perpsub}(2) より $\vect{0}$。
+よって $\vect{w}_1 = \vect{w}_2$, $\vect{h}_1 = \vect{h}_2$ である。
+$\blacksquare$
+
+第 \ref{chap:subspace} 章の言葉でいえば、$\R^n$ は $W$ と $W^{\perp}$ の
+\textbf{直和}に分解される($W + W^{\perp} = \R^n$ かつ
+$W \cap W^{\perp} = \{\vect{0}\}$)。とくに次元を数えると
+$\dim W + \dim W^{\perp} = n$ が成り立つ(問 \ref{q:gs-ex10})。
 
 \begin{itembox}[l]{深掘り:正射影は「最良の近似」である}
 正射影 $\vect{v}_W$ には、計算を超えた意味がある:
@@ -654,10 +841,302 @@ $\vect{b}$ を $A$ の列が張る空間へ正射影した点なら必ず到達�
 それが「誤差最小の近似解」になる。第VII部で全面展開する。
 \end{itembox}
 
-\begin{mondai}\label{q:gs}
-$\vect{a}_1 = \mat{1 \\ 0 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ に
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[直交していない基底で座標公式を使ってはいけない]\label{hanrei:gs-nonorth}
+座標公式 $c_i = \langle \vect{v}, \vect{u}_i \rangle$
+(定理 \ref{thm:gs-coord})は\textbf{正規直交}基底専用である。
+$\R^2$ の基底 $\vect{a}_1 = \mat{1 \\ 0}$, $\vect{a}_2 = \mat{1 \\ 1}$
+(直交していない)と $\vect{v} = \mat{0 \\ 1}$ で試すと、公式もどきは
+\[
+\langle \vect{v}, \vect{a}_1 \rangle = 0, \qquad
+\langle \vect{v}, \vect{a}_2 \rangle = 1
+\]
+を返すが、$0 \cdot \vect{a}_1 + 1 \cdot \vect{a}_2 = \mat{1 \\ 1} \neq \vect{v}$
+で正しくない。正しい座標は $\vect{v} = -\vect{a}_1 + \vect{a}_2$、
+すなわち $(-1, 1)$ である。定理 \ref{thm:gs-coord} の証明を見返すと、
+「他の項が消える」ところで直交性を、「係数がそのまま残る」ところで
+ノルム $1$ を使っている。どちらが欠けても公式は崩れる。
+\end{hanrei}
+
+\begin{hanrei}[線形従属な組に直交化法を使うと零ベクトルが現れる]\label{hanrei:gs-dependent}
+グラム・シュミットの直交化法は\textbf{線形独立}な組が前提である。
+従属な組 $\vect{a}_1 = \mat{1 \\ 1}$, $\vect{a}_2 = \mat{2 \\ 2}$ に
+形式的に適用すると
+\[
+\vect{b}_2 = \vect{a}_2 -
+\frac{\langle \vect{a}_2, \vect{b}_1 \rangle}{\langle \vect{b}_1, \vect{b}_1 \rangle}
+\vect{b}_1 = \mat{2 \\ 2} - \frac{4}{2}\mat{1 \\ 1} = \vect{0}
+\]
+となり、正規化(零で割る)ができず手順が止まる。
+逆にこれは実用上の利点でもある:\textbf{直交化の途中で零ベクトルが
+出たら、もとの組は線形従属だった}と判定できる
+(定理 \ref{thm:gs-main} の証明の最後の段落の対偶)。
+\end{hanrei}
+
+\section{例題}
+
+直交化・座標計算・正射影の三点セットを練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(直交化)]\label{rei:gs-basic2d}
+$\vect{a}_1 = \mat{1 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 3}$ に
+グラム・シュミットの直交化法を適用せよ。\\
+\textbf{解.}\ $\vect{b}_1 = \vect{a}_1$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 1 + 3 = 4$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 3} - \frac{4}{2}\mat{1 \\ 1} = \mat{-1 \\ 1}.
+\]
+正規化して
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{-1 \\ 1}$。
+検算:$\langle \vect{u}_1, \vect{u}_2 \rangle = \frac{-1 + 1}{2} = 0$。
+\end{rei}
+
+\begin{rei}[例題・基本(座標計算)]\label{rei:gs-coordcalc}
+例題 \ref{rei:gs-basic2d} の正規直交基底
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{-1 \\ 1}$ に関する
+$\vect{v} = \mat{5 \\ 1}$ の座標を求めよ。\\
+\textbf{解.}\ 定理 \ref{thm:gs-coord} より
+\[
+c_1 = \langle \vect{v}, \vect{u}_1 \rangle = \frac{5 + 1}{\sqrt{2}} = 3\sqrt{2},
+\qquad
+c_2 = \langle \vect{v}, \vect{u}_2 \rangle = \frac{-5 + 1}{\sqrt{2}} = -2\sqrt{2}.
+\]
+検算:$3\sqrt{2}\,\vect{u}_1 - 2\sqrt{2}\,\vect{u}_2
+= \mat{3 \\ 3} + \mat{2 \\ -2} = \mat{5 \\ 1}$。
+\end{rei}
+
+\begin{rei}[例題・基本(直線への正射影)]\label{rei:gs-projline}
+$\vect{v} = \mat{3 \\ 1}$ の、直線 $W = \langle \mat{1 \\ 1} \rangle$ への
+正射影 $\vect{v}_W$ と、$\vect{v}$ から $W$ までの距離を求めよ。\\
+\textbf{解.}\ $\vect{a} = \mat{1 \\ 1}$ とすると
+\[
+\vect{v}_W = \frac{\langle \vect{v}, \vect{a} \rangle}{\langle \vect{a}, \vect{a} \rangle}
+\vect{a} = \frac{4}{2}\mat{1 \\ 1} = \mat{2 \\ 2}.
+\]
+残りは $\vect{v}_{\perp} = \vect{v} - \vect{v}_W = \mat{1 \\ -1}$ で、
+確かに $\langle \vect{v}_{\perp}, \vect{a} \rangle = 1 - 1 = 0$(直交)。
+距離は $\|\vect{v}_{\perp}\| = \sqrt{2}$ である。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 本の直交化)]\label{rei:gs-3vec}
+$\vect{a}_1 = \mat{1 \\ 1 \\ 0}$, $\vect{a}_2 = \mat{1 \\ 0 \\ 1}$,
+$\vect{a}_3 = \mat{0 \\ 1 \\ 1}$ を直交化して $\R^3$ の正規直交基底を作れ。\\
+\textbf{解.}\ $\vect{b}_1 = \vect{a}_1$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 1$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 0 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+= \mat{1/2 \\ -1/2 \\ 1}.
+\]
+次に $\langle \vect{a}_3, \vect{b}_1 \rangle = 1$,
+$\langle \vect{a}_3, \vect{b}_2 \rangle = -\frac{1}{2} + 1 = \frac{1}{2}$,
+$\langle \vect{b}_2, \vect{b}_2 \rangle = \frac{1}{4} + \frac{1}{4} + 1
+= \frac{3}{2}$ より
+\[
+\vect{b}_3 = \mat{0 \\ 1 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+- \frac{1/2}{3/2}\mat{1/2 \\ -1/2 \\ 1}
+= \mat{0 - 1/2 - 1/6 \\ 1 - 1/2 + 1/6 \\ 1 - 1/3}
+= \mat{-2/3 \\ 2/3 \\ 2/3}.
+\]
+正規化して
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ -1 \\ 2}, \qquad
+\vect{u}_3 = \frac{1}{\sqrt{3}}\mat{-1 \\ 1 \\ 1}.
+\]
+検算:$\langle \vect{u}_1, \vect{u}_3 \rangle = \frac{-1 + 1 + 0}{\sqrt{6}} = 0$、
+$\langle \vect{u}_2, \vect{u}_3 \rangle = \frac{-1 - 1 + 2}{\sqrt{18}} = 0$。
+$3$ 本の正規直交系だから、本数だけで $\R^3$ の基底になる
+(定理 \ref{thm:gs-indep} と \ref{thm:dim-ncheck})。
+\end{rei}
+
+\begin{rei}[例題・標準(直交補空間)]\label{rei:gs-perpcalc}
+$W = \langle \mat{1 \\ 2 \\ 1} \rangle \subseteq \R^3$ の直交補空間
+$W^{\perp}$ の基底を一組求めよ。\\
+\textbf{解.}\ $\vect{v} = \mat{x \\ y \\ z} \in W^{\perp}$ の条件は、
+生成元との直交
+\[
+x + 2y + z = 0
+\]
+だけである($W$ の一般の元は $\mat{1\\2\\1}$ のスカラー倍だから、
+生成元と直交すれば $W$ 全体と直交する)。これは同次連立 $1$ 次方程式で、
+自由変数 $y, z$ を使って解けば
+\[
+\vect{v} = y\mat{-2 \\ 1 \\ 0} + z\mat{-1 \\ 0 \\ 1}.
+\]
+よって基底は $\mat{-2 \\ 1 \\ 0}, \mat{-1 \\ 0 \\ 1}$(たとえば)。
+$\dim W + \dim W^{\perp} = 1 + 2 = 3$ になっている。
+直交補空間の計算は\textbf{同次方程式の解空間}の計算
+(第II部)そのものである。
+\end{rei}
+
+\begin{rei}[例題・標準(平面への正射影と距離)]\label{rei:gs-projplane}
+平面 $W = \{\, (x, y, z) \mid x + y + z = 0 \,\}$ への
+$\vect{v} = \mat{1 \\ 2 \\ 3}$ の正射影 $\vect{v}_W$ と、
+$\vect{v}$ から $W$ までの距離を求めよ。\\
+\textbf{解.}\ 平面に直接射影する代わりに、$W^{\perp}$ が
+法線方向 $\vect{n} = \mat{1 \\ 1 \\ 1}$ の直線であることを使う
+(直線への射影のほうが計算が軽い)。
+\[
+\vect{v}_{\perp} = \frac{\langle \vect{v}, \vect{n} \rangle}{\langle \vect{n}, \vect{n} \rangle}
+\vect{n} = \frac{6}{3}\mat{1 \\ 1 \\ 1} = \mat{2 \\ 2 \\ 2}, \qquad
+\vect{v}_W = \vect{v} - \vect{v}_{\perp} = \mat{-1 \\ 0 \\ 1}.
+\]
+検算:$\vect{v}_W$ の成分の和は $-1 + 0 + 1 = 0$ で確かに $W$ の元。
+距離は $\|\vect{v}_{\perp}\| = \sqrt{12} = 2\sqrt{3}$ である。
+分解の一意性(定理 \ref{thm:gs-decomp})のおかげで、
+「どちら側から射影しても同じ分解」にたどり着く。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{正規直交基底}(互いに直交・各ノルム $1$)では、
+線形独立性が自動で成り立ち(定理 \ref{thm:gs-indep})、座標が
+$c_i = \langle \vect{v}, \vect{u}_i \rangle$ と\textbf{内積一発}で求まる
+(定理 \ref{thm:gs-coord})。この公式は正規直交基底専用である
+(反例 \ref{hanrei:gs-nonorth})。
+\item \textbf{グラム・シュミットの直交化法}:新しいベクトルから、
+既存の方向への正射影(影)をすべて引き去り、最後に正規化する。
+どんな線形独立な組も正規直交系に変換でき、各段階で張る空間は変わらない
+(定理 \ref{thm:gs-main})。従属な組では途中で零ベクトルが現れる
+(反例 \ref{hanrei:gs-dependent})。
+\item 手順は内積だけでできるので、\textbf{関数の空間でも実行できる}
+(ルジャンドル多項式)。
+\item \textbf{直交補空間} $W^{\perp}$ は部分空間で、
+$W \cap W^{\perp} = \{\vect{0}\}$。任意のベクトルは
+$\vect{v} = \vect{v}_W + \vect{v}_{\perp}$ とただ一通りに\textbf{直交分解}
+される(定理 \ref{thm:gs-decomp})。$W^{\perp}$ の計算は
+同次連立方程式の解空間の計算に帰着する。
+\item 正射影 $\vect{v}_W$ は $W$ の中で $\vect{v}$ に\textbf{最も近い点}
+であり(深掘り)、第VII部の最小二乗法の土台になる。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:gs-ex1}
+$\vect{a}_1 = \mat{3 \\ 4}$, $\vect{a}_2 = \mat{1 \\ 0}$ に
+グラム・シュミットの直交化法を適用し、正規直交基底を作れ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:gs-ex2}
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$ が $\R^2$ の正規直交基底で
+あることを確かめ、$\vect{v} = \mat{3 \\ 1}$ の座標
+$c_1, c_2$ を内積で求めよ($c_1\vect{u}_1 + c_2\vect{u}_2 = \vect{v}$ の
+検算もすること)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:gs-ex3}
+$\vect{a}_1 = \mat{1 \\ 1 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ に
 グラム・シュミットの直交化法を適用し、正規直交系を作れ。
 \end{mondai}
+
+\begin{mondai}[基本]\label{q:gs-ex4}
+$\vect{v} = \mat{2 \\ 3}$ の、直線 $W = \langle \mat{1 \\ 1} \rangle$ への
+正射影を求め、$\vect{v}$ から $W$ までの距離を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex5}
+$\vect{a}_1 = \mat{1 \\ 2 \\ 2}$, $\vect{a}_2 = \mat{1 \\ 0 \\ 0}$,
+$\vect{a}_3 = \mat{0 \\ 1 \\ 0}$ を直交化して $\R^3$ の正規直交基底を作れ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex6}
+$W = \langle \mat{1 \\ 1 \\ 1} \rangle \subseteq \R^3$ の直交補空間
+$W^{\perp}$ の\textbf{正規直交}基底を一組求めよ
+(まず基底を求め、それを直交化する)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex7}
+平面 $W = \{\, (x, y, z) \mid x + y + z = 0 \,\}$ への
+$\vect{v} = \mat{3 \\ 0 \\ 0}$ の正射影 $\vect{v}_W$ と、
+$\vect{v}$ から $W$ までの距離を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex8}
+区間 $[0, 1]$ 上の内積 $\langle f, g \rangle = \int_0^1 f(x)g(x)\,dx$ で、
+$f_1(x) = 1$, $f_2(x) = x$ にグラム・シュミットの直交化法を適用し、
+正規直交系を作れ(区間が $[-1, 1]$ でないことに注意。
+$\langle x, 1 \rangle \neq 0$ になる)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:gs-ex9}
+単位ベクトル $\vect{u} = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$ への正射影を
+与える行列 $P = \vect{u}\,{}^t\vect{u}$ を求め、
+$P^2 = P$、${}^t\!P = P$ が成り立つことを確かめよ。
+また $P\mat{1 \\ 0}$ を計算し、図形的に解釈せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:gs-ex10}
+$W = \langle \mat{1 \\ 0 \\ 1}, \mat{0 \\ 1 \\ 1} \rangle \subseteq \R^3$
+について $W^{\perp}$ を求め、$\dim W + \dim W^{\perp} = 3$ を確かめよ。
+さらに、一般の部分空間 $W \subseteq \R^n$ で
+$\dim W + \dim W^{\perp} = n$ が成り立つ理由を、
+$W^{\perp}$ が「$\dim W$ 本の独立な同次 $1$ 次方程式の解空間」である
+ことから説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:gs-ex11}
+正規直交基底 $\vect{u}_1, \dots, \vect{u}_n$ に関する展開
+$\vect{v} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$ について、
+\[
+\|\vect{v}\|^2 = c_1^2 + c_2^2 + \cdots + c_n^2
+\]
+が成り立つことを証明せよ(\textbf{パーセバルの等式}。
+ピタゴラスの定理の $n$ 本版である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:gs-ex12}
+$W$ を $\R^n$ の部分空間とする。$W \subseteq (W^{\perp})^{\perp}$ が
+成り立つことを証明せよ。さらに、次元を比較して
+$W = (W^{\perp})^{\perp}$ であることを示せ
+(問 \ref{q:gs-ex10} の次元公式を使ってよい)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:gs-ex1}}:$\vect{b}_2 = \vect{a}_2 -
+\frac{\langle \vect{a}_2, \vect{b}_1 \rangle}{\langle \vect{b}_1, \vect{b}_1 \rangle}
+\vect{b}_1$ を計算してから両方を正規化する。
+\item \textbf{問 \ref{q:gs-ex2}}:直交性・ノルム・座標のすべてが
+内積の計算である。
+\item \textbf{問 \ref{q:gs-ex3}}:例題 \ref{rei:gs-basic2d} と同じ手順を
+$\R^3$ で行う。
+\item \textbf{問 \ref{q:gs-ex4}}:正射影の公式
+$\frac{\langle \vect{v}, \vect{a} \rangle}{\langle \vect{a}, \vect{a} \rangle}
+\vect{a}$。距離は残差のノルム。
+\item \textbf{問 \ref{q:gs-ex5}}:分数が出るが恐れず進める。
+各段階で直交を検算すると安心。
+\item \textbf{問 \ref{q:gs-ex6}}:$x + y + z = 0$ の解空間の基底を求め、
+$2$ 本をグラム・シュミットで直交化する。
+\item \textbf{問 \ref{q:gs-ex7}}:例題 \ref{rei:gs-projplane} のように、
+法線方向へ射影してから引き算する。
+\item \textbf{問 \ref{q:gs-ex8}}:$\langle x, 1 \rangle = \frac{1}{2}$,
+$\langle 1, 1 \rangle = 1$。$\vect{b}_2 = x - \frac{1}{2}$ のノルムは
+$\int_0^1 (x - \frac{1}{2})^2 dx = \frac{1}{12}$ から。
+\item \textbf{問 \ref{q:gs-ex9}}:$\vect{u}\,{}^t\vect{u}$ は
+$2 \times 1$ 行列と $1 \times 2$ 行列の積($2 \times 2$ 行列)。
+$P\vect{v} = \langle \vect{v}, \vect{u} \rangle \vect{u}$ になっている。
+\item \textbf{問 \ref{q:gs-ex10}}:$W^{\perp}$ は $2$ 本の直交条件
+(同次方程式)の解空間。一般論は「解空間の次元 $=$ 未知数 $-$ 階数」
+(第II部)。
+\item \textbf{問 \ref{q:gs-ex11}}:$\|\vect{v}\|^2 =
+\langle \sum c_i\vect{u}_i, \sum c_j\vect{u}_j \rangle$ を双線形性で展開し、
+生き残る項を数える。
+\item \textbf{問 \ref{q:gs-ex12}}:$\vect{w} \in W$ が $W^{\perp}$ の
+すべての元と直交することは、$W^{\perp}$ の定義そのものから出る。
+次元は問 \ref{q:gs-ex10} の公式を $2$ 回使う。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{直交行列}\label{chap:orth}

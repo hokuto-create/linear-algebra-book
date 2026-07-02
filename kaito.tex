@@ -5530,6 +5530,253 @@ $\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
 $\vect{u}_2 = \dfrac{1}{\sqrt{6}}\mat{1 \\ 2 \\ -1}$。
 
 \bigskip
+\noindent\textbf{問 \ref{q:gs-ex1}}\quad
+\textbf{方針}:影を引いてから正規化する。\\
+\textbf{解答}:$\vect{b}_1 = \mat{3 \\ 4}$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 3$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 25$ より
+\[
+\vect{b}_2 = \mat{1 \\ 0} - \frac{3}{25}\mat{3 \\ 4}
+= \mat{16/25 \\ -12/25} = \frac{4}{25}\mat{4 \\ -3}.
+\]
+正規化して($\|\vect{b}_1\| = 5$、$\vect{b}_2$ は $\mat{4 \\ -3}$ 方向で
+$\|\mat{4 \\ -3}\| = 5$)
+\[
+\vect{u}_1 = \frac{1}{5}\mat{3 \\ 4}, \qquad
+\vect{u}_2 = \frac{1}{5}\mat{4 \\ -3}.
+\]
+検算:$\langle \vect{u}_1, \vect{u}_2 \rangle = \dfrac{12 - 12}{25} = 0$。\\
+\textbf{よくあるミス}:$\vect{b}_2$ の分数を見て計算間違いを疑うこと。
+正規化では方向だけが問題なので、$\mat{16/25 \\ -12/25}$ を
+$\mat{4 \\ -3}$ 方向と読み替えてよい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex2}}\quad
+\textbf{方針}:直交性・ノルム・座標をすべて内積で確かめる。\\
+\textbf{解答}:$\langle \vect{u}_1, \vect{u}_2 \rangle = \dfrac{1 - 1}{2} = 0$、
+$\|\vect{u}_1\|^2 = \|\vect{u}_2\|^2 = \dfrac{1 + 1}{2} = 1$ より正規直交基底
+である。座標は定理 \ref{thm:gs-coord} より
+\[
+c_1 = \langle \vect{v}, \vect{u}_1 \rangle = \frac{3 + 1}{\sqrt{2}} = 2\sqrt{2},
+\qquad
+c_2 = \langle \vect{v}, \vect{u}_2 \rangle = \frac{3 - 1}{\sqrt{2}} = \sqrt{2}.
+\]
+検算:$2\sqrt{2}\,\vect{u}_1 + \sqrt{2}\,\vect{u}_2
+= \mat{2 \\ 2} + \mat{1 \\ -1} = \mat{3 \\ 1}$。\\
+\textbf{よくあるミス}:$\dfrac{4}{\sqrt{2}}$ を $2\sqrt{2}$ に直す
+根号の整理。分母の有理化を丁寧に。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex3}}\quad
+\textbf{方針}:$\R^3$ で同じ手順を実行する。\\
+\textbf{解答}:$\vect{b}_1 = \mat{1 \\ 1 \\ 1}$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 2$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 3$ より
+\[
+\vect{b}_2 = \mat{1 \\ 1 \\ 0} - \frac{2}{3}\mat{1 \\ 1 \\ 1}
+= \mat{1/3 \\ 1/3 \\ -2/3}.
+\]
+正規化して
+\[
+\vect{u}_1 = \frac{1}{\sqrt{3}}\mat{1 \\ 1 \\ 1}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ 1 \\ -2}.
+\]
+検算:$\langle \vect{u}_1, \vect{u}_2 \rangle
+= \dfrac{1 + 1 - 2}{\sqrt{18}} = 0$。\\
+\textbf{よくあるミス}:$\mat{1/3 \\ 1/3 \\ -2/3}$ のノルムを
+$\sqrt{6}$ とすること(正しくは $\frac{1}{3}\sqrt{1 + 1 + 4}
+= \frac{\sqrt{6}}{3}$。方向ベクトル $\mat{1\\1\\-2}$ で考えれば
+$\sqrt{6}$ で割るだけでよい)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex4}}\quad
+\textbf{方針}:直線への正射影の公式を使い、距離は残差のノルム。\\
+\textbf{解答}:$\vect{a} = \mat{1 \\ 1}$ とすると
+$\langle \vect{v}, \vect{a} \rangle = 5$,
+$\langle \vect{a}, \vect{a} \rangle = 2$ より
+\[
+\vect{v}_W = \frac{5}{2}\mat{1 \\ 1} = \mat{5/2 \\ 5/2}, \qquad
+\vect{v} - \vect{v}_W = \mat{-1/2 \\ 1/2}.
+\]
+距離は $\|\vect{v} - \vect{v}_W\| = \sqrt{\dfrac{1}{4} + \dfrac{1}{4}}
+= \dfrac{\sqrt{2}}{2}$。
+検算:$\langle \vect{v} - \vect{v}_W, \vect{a} \rangle
+= -\frac{1}{2} + \frac{1}{2} = 0$(残差は直線と直交)。\\
+\textbf{よくあるミス}:距離を $\|\vect{v}_W\|$ とすること。
+距離は「$\vect{v}$ から足 $\vect{v}_W$ まで」、すなわち残差のノルムである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex5}}\quad
+\textbf{方針}:$3$ 本を順に処理する。各段階で直交を検算する。\\
+\textbf{解答}:$\vect{b}_1 = \mat{1 \\ 2 \\ 2}$($\|\vect{b}_1\|^2 = 9$)。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 1$ より
+\[
+\vect{b}_2 = \mat{1 \\ 0 \\ 0} - \frac{1}{9}\mat{1 \\ 2 \\ 2}
+= \frac{1}{9}\mat{8 \\ -2 \\ -2}, \qquad
+\|\vect{b}_2\|^2 = \frac{64 + 4 + 4}{81} = \frac{8}{9}.
+\]
+$\langle \vect{a}_3, \vect{b}_1 \rangle = 2$、
+$\langle \vect{a}_3, \vect{b}_2 \rangle = -\dfrac{2}{9}$ より
+\[
+\vect{b}_3 = \mat{0 \\ 1 \\ 0} - \frac{2}{9}\mat{1 \\ 2 \\ 2}
++ \frac{2/9}{8/9} \cdot \frac{1}{9}\mat{8 \\ -2 \\ -2}
+= \mat{0 - 2/9 + 2/9 \\ 1 - 4/9 - 1/18 \\ 0 - 4/9 - 1/18}
+= \mat{0 \\ 1/2 \\ -1/2}.
+\]
+正規化して
+\[
+\vect{u}_1 = \frac{1}{3}\mat{1 \\ 2 \\ 2}, \qquad
+\vect{u}_2 = \frac{1}{3\sqrt{2}}\mat{4 \\ -1 \\ -1}, \qquad
+\vect{u}_3 = \frac{1}{\sqrt{2}}\mat{0 \\ 1 \\ -1}.
+\]
+検算:$\langle \vect{u}_2, \vect{u}_3 \rangle \propto 0 - 1 + 1 = 0$、
+$\langle \vect{u}_1, \vect{u}_3 \rangle \propto 0 + 2 - 2 = 0$。\\
+\textbf{よくあるミス}:第 $3$ 段階で $\vect{b}_2$ ではなく
+$\vect{a}_2$ への影を引くこと。引き去る方向は
+\emph{すでに直交化した} $\vect{b}_i$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex6}}\quad
+\textbf{方針}:$W^{\perp}$ は $x + y + z = 0$ の解空間。基底を求めて
+直交化する。\\
+\textbf{解答}:$W^{\perp} = \{\, (x, y, z) \mid x + y + z = 0 \,\}$ の基底として
+$\vect{a}_1 = \mat{-1 \\ 1 \\ 0}$, $\vect{a}_2 = \mat{-1 \\ 0 \\ 1}$ をとる。
+$\langle \vect{a}_2, \vect{a}_1 \rangle = 1$,
+$\langle \vect{a}_1, \vect{a}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{-1 \\ 0 \\ 1} - \frac{1}{2}\mat{-1 \\ 1 \\ 0}
+= \mat{-1/2 \\ -1/2 \\ 1}.
+\]
+正規化して
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{-1 \\ 1 \\ 0}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{-1 \\ -1 \\ 2}.
+\]
+(どちらも成分の和が $0$、すなわち $W^{\perp}$ の元であることを確認せよ。)\\
+\textbf{よくあるミス}:直交化を忘れて「解空間の基底」のまま答えること。
+$\vect{a}_1, \vect{a}_2$ は直交していない
+($\langle \vect{a}_1, \vect{a}_2 \rangle = 1 \neq 0$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex7}}\quad
+\textbf{方針}:法線方向 $\vect{n} = (1, 1, 1)$ へ射影してから引く。\\
+\textbf{解答}:$\langle \vect{v}, \vect{n} \rangle = 3$,
+$\langle \vect{n}, \vect{n} \rangle = 3$ より
+\[
+\vect{v}_{\perp} = \frac{3}{3}\mat{1 \\ 1 \\ 1} = \mat{1 \\ 1 \\ 1}, \qquad
+\vect{v}_W = \vect{v} - \vect{v}_{\perp} = \mat{2 \\ -1 \\ -1}.
+\]
+検算:$2 - 1 - 1 = 0$ で $\vect{v}_W \in W$。距離は
+$\|\vect{v}_{\perp}\| = \sqrt{3}$。\\
+\textbf{よくあるミス}:$\vect{v}_W$ と $\vect{v}_{\perp}$ の取り違え。
+「平面への正射影」は平面の中の点(成分の和が $0$)になるはずである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex8}}\quad
+\textbf{方針}:内積は $[0, 1]$ の積分。$\langle x, 1 \rangle \neq 0$ に注意。\\
+\textbf{解答}:$\|f_1\|^2 = \int_0^1 1\,dx = 1$ より $\vect{u}_1 = 1$。
+$\langle x, 1 \rangle = \int_0^1 x\,dx = \dfrac{1}{2}$ より
+\[
+\vect{b}_2 = x - \frac{1}{2}.
+\]
+そのノルムは
+\[
+\|\vect{b}_2\|^2 = \int_0^1 \left(x - \frac{1}{2}\right)^2 dx
+= \left[\frac{1}{3}\left(x - \frac{1}{2}\right)^3\right]_0^1
+= \frac{1}{24} + \frac{1}{24} = \frac{1}{12}
+\]
+だから、$\vect{u}_2 = \sqrt{12}\left(x - \dfrac{1}{2}\right)
+= \sqrt{3}\,(2x - 1)$。
+検算:$\langle \vect{u}_1, \vect{u}_2 \rangle
+\propto \int_0^1 (2x - 1)\,dx = 0$。\\
+\textbf{よくあるミス}:区間 $[-1, 1]$ の癖で $\langle x, 1 \rangle = 0$ と
+すること。区間が変われば「直交」も変わる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex9}}\quad
+\textbf{方針}:$\vect{u}\,{}^t\vect{u}$ は $2 \times 2$ 行列。性質は
+行列の計算で確かめる。\\
+\textbf{解答}:
+\[
+P = \vect{u}\,{}^t\vect{u}
+= \frac{1}{2}\mat{1 \\ 1}\mat{1 & 1} = \frac{1}{2}\mat{1 & 1 \\ 1 & 1}.
+\]
+$P^2 = \dfrac{1}{4}\mat{1 & 1 \\ 1 & 1}\mat{1 & 1 \\ 1 & 1}
+= \dfrac{1}{4}\mat{2 & 2 \\ 2 & 2} = P$、
+${}^t\!P = P$(成分が対称)。また
+\[
+P\mat{1 \\ 0} = \mat{1/2 \\ 1/2}.
+\]
+これは $\vect{e}_1$ を直線 $y = x$ に正射影した点である。
+$P^2 = P$ は「一度射影したら、もう一度射影しても動かない」ことの
+行列表現である。\\
+\textbf{よくあるミス}:$\vect{u}\,{}^t\vect{u}$(行列)と
+${}^t\vect{u}\,\vect{u}$(数 $= \|\vect{u}\|^2 = 1$)の取り違え。
+並べる順序で型がまったく変わる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex10}}\quad
+\textbf{方針}:$W^{\perp}$ は $2$ 本の直交条件の解空間。一般論は
+「未知数 $n$ 本、独立な方程式 $\dim W$ 本」。\\
+\textbf{解答}:$\vect{v} = (x, y, z) \in W^{\perp}$ の条件は
+\[
+x + z = 0, \qquad y + z = 0
+\]
+(生成元それぞれとの直交)。解くと $x = -z$, $y = -z$ で
+$W^{\perp} = \langle \mat{1 \\ 1 \\ -1} \rangle$(たとえば $z = -1$)。
+よって $\dim W + \dim W^{\perp} = 2 + 1 = 3$。
+一般に、$W$ の基底 $\vect{w}_1, \dots, \vect{w}_k$ をとると、
+$W^{\perp}$ は連立方程式
+$\langle \vect{w}_i, \vect{v} \rangle = 0$($i = 1, \dots, k$)の解空間
+である。係数行列は $\vect{w}_i$ を行に並べた $k \times n$ 行列で、
+行が線形独立だから階数は $k$。第II部の解の自由度(次元 $=$ 未知数 $-$
+階数)より $\dim W^{\perp} = n - k = n - \dim W$ である。\\
+\textbf{よくあるミス}:直交条件を生成元 $2$ 本ではなく
+「$W$ の全部の元」と立てようとして手が止まること。
+生成元と直交すれば線形結合とも直交する(双線形性)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex11}}\quad
+\textbf{方針}:$\|\vect{v}\|^2$ を双線形性で展開し、
+正規直交性で生き残る項を数える。\\
+\textbf{解答}:
+\[
+\|\vect{v}\|^2 = \Bigl\langle \sum_{i=1}^{n} c_i\vect{u}_i,\
+\sum_{j=1}^{n} c_j\vect{u}_j \Bigr\rangle
+= \sum_{i=1}^{n}\sum_{j=1}^{n} c_ic_j
+\langle \vect{u}_i, \vect{u}_j \rangle.
+\]
+正規直交性より $\langle \vect{u}_i, \vect{u}_j \rangle$ は
+$i = j$ のとき $1$、$i \neq j$ のとき $0$ だから、生き残るのは
+$i = j$ の項だけで
+\[
+\|\vect{v}\|^2 = c_1^2 + c_2^2 + \cdots + c_n^2.
+\]
+(標準基底なら「ノルムの $2$ 乗 $=$ 成分の $2$ 乗和」という定義に戻る。
+任意の正規直交基底で同じ式が成り立つのがこの等式の主張である。)\\
+\textbf{よくあるミス}:展開で $2c_ic_j$ 型の交差項を書き忘れること。
+交差項はすべて直交性で消える、というのが証明の核心である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:gs-ex12}}\quad
+\textbf{方針}:包含は定義の読み替え、等号は次元の比較。\\
+\textbf{解答}:$\vect{w} \in W$ とする。$(W^{\perp})^{\perp}$ の元である
+とは「$W^{\perp}$ のすべての元と直交する」ことだが、
+任意の $\vect{h} \in W^{\perp}$ は定義により $W$ のすべての元と直交する
+ので、とくに $\langle \vect{w}, \vect{h} \rangle = 0$ である。よって
+$\vect{w} \in (W^{\perp})^{\perp}$、すなわち
+$W \subseteq (W^{\perp})^{\perp}$。
+次に問 \ref{q:gs-ex10} の公式を $2$ 回使うと
+\[
+\dim (W^{\perp})^{\perp} = n - \dim W^{\perp} = n - (n - \dim W) = \dim W.
+\]
+部分空間の包含で次元が等しければ両者は一致する
+(定理 \ref{thm:dim-sub})から、$W = (W^{\perp})^{\perp}$ である。\\
+\textbf{よくあるミス}:「明らかに等しい」と包含だけで済ませること。
+包含 $\subseteq$ は定義から出るが、逆向きの包含には次元の
+議論(または直交分解)が必要である。
+
+\bigskip
 \noindent\textbf{問 \ref{q:orthm}}\quad
 　(1)
 \[
