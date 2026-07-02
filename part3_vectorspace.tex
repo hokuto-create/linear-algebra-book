@@ -2181,6 +2181,39 @@ $1$ 次以下。像は何次以下になるか。
 \chapter{表現行列と基底の取り替え}\label{chap:repmat}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 基底を選ぶことで、抽象的な線形写像を\textbf{表現行列}という
+具体的な行列に翻訳できるようになる(「第 $j$ 列は
+$f(\vect{e}_j)$ の座標」)。
+\item 基底を取り替えたとき、座標が $\vect{c} = P\vect{c}'$、表現行列が
+$A' = P^{-1}AP$ と変わることを、導出込みで理解する。
+\item \textbf{相似}な行列は「同じ変換の別の座標表示」であることを理解し、
+行列式・トレースなどの\textbf{相似不変量}を、相似でないことの判定に
+使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 抽象と計算をつなぐ辞書}
+
+第III部で私たちは、多項式や数列までベクトルとみなし、微分や差分まで
+線形写像とみなす抽象の高みに登った。だが計算の道具は、あいかわらず
+第I・II部の行列と掃き出し法である。この二つの世界をつなぐ辞書が本章の
+主題、\textbf{表現行列}である。
+
+辞書の原理はすでに揃っている。第 \ref{chap:basis} 章で、基底を選べば
+どんな $n$ 次元空間のベクトルも座標 $(c_1, \dots, c_n)$ で表せることを見た
+(同型 $V \cong \R^n$)。第 \ref{chap:linmap} 章で、線形写像は基底の
+行き先だけで決まることを見た(定理 \ref{thm:linmap-basis})。
+ならば、\textbf{基底の行き先を座標で書いて並べれば}、写像の全情報が
+$1$ 枚の行列に収まるはずである。
+
+ただし、翻訳には代償が伴う。基底の選び方は自由だから、
+\textbf{同じ写像が基底ごとに違う行列で表される}。
+この「翻訳のゆらぎ」を制御する法則が基底変換の公式 $A' = P^{-1}AP$ であり、
+ゆらぎに影響されない量(不変量)を探す視点が、第IV部の固有値理論へと
+つながっていく。
+
 \section{線形写像を行列で書く}
 
 抽象的な線形写像も、基底を選んで座標で見れば、結局は行列になる。
@@ -2196,9 +2229,25 @@ f(\vect{e}_j) = a_{1j}\vect{e}_1 + a_{2j}\vect{e}_2 + \cdots + a_{nj}\vect{e}_n
 \textbf{第 $j$ 列には $f(\vect{e}_j)$ の座標が入る}と覚える。
 \end{teigi}
 
-座標の言葉では、$\vect{v}$ の座標を $\vect{c}$ とすると
-$f(\vect{v})$ の座標は $A\vect{c}$ になる。
+\begin{teiri}[表現行列は座標の掛け算になる]\label{thm:repmat-coord}
+$\vect{v} \in V$ の座標を $\vect{c} = (c_1, \dots, c_n)$ とすると、
+$f(\vect{v})$ の座標は $A\vect{c}$ である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v} = c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ に $f$ を施すと、
+線形性(定理 \ref{thm:linmap-basic}(3))より
+\[
+f(\vect{v}) = \sum_{j=1}^n c_j\,f(\vect{e}_j)
+= \sum_{j=1}^n c_j \sum_{i=1}^n a_{ij}\vect{e}_i
+= \sum_{i=1}^n \Bigl( \sum_{j=1}^n a_{ij}c_j \Bigr) \vect{e}_i.
+\]
+$\vect{e}_i$ の係数 $\sum_j a_{ij}c_j$ は、ちょうど $A\vect{c}$ の
+第 $i$ 成分である。 $\blacksquare$
+
 抽象的な写像の計算が、行列の掛け算に完全に翻訳される。
+$V = \R^n$ で標準基底をとれば、表現行列は第I部の
+「線形変換を定める行列」(定理 \ref{thm:lin-is-matrix})そのものである。
 
 \begin{rei}[微分の表現行列]
 $D : \R[x]_2 \to \R[x]_2$ を基底 $1, x, x^2$ で表す。
@@ -2220,42 +2269,100 @@ $A \neq O$ なのに $A^3 = O$ となる行列(\textbf{べき零行列})は、
 第VI部のジョルダン標準形で主役を演じる。
 \end{rei}
 
+\begin{teiri}[合成の表現行列は行列の積]\label{thm:repmat-comp}
+同じ基底に関する $f$ の表現行列を $A$、$g$ の表現行列を $B$ とすると、
+合成 $g \circ f$ の表現行列は積 $BA$ である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v}$ の座標を $\vect{c}$ とすると、定理 \ref{thm:repmat-coord} より
+$f(\vect{v})$ の座標は $A\vect{c}$、さらに $g$ を施した
+$g(f(\vect{v}))$ の座標は $B(A\vect{c}) = (BA)\vect{c}$ である。
+座標の一意性より、$g \circ f$ の表現行列は $BA$ である。 $\blacksquare$
+
+第 \ref{chap:matmul} 章で「行列の積は写像の合成を表すように定義した」
+ことを思い出そう。あの定義が、多項式や数列の空間の上の写像にまで、
+そのまま通用するのである。たとえば「$2$ 回微分」の表現行列は $A^2$ で
+計算できる(章末問題 \ref{q:repmat-ex9})。
+
 \section{基底を取り替えると行列はどう変わるか}
 
 同じ線形写像でも、基底を取り替えれば表現行列は変わる。
-新基底 $\vect{e}'_1, \dots, \vect{e}'_n$ を旧基底で展開した係数を
-列に並べた行列 $P$(\textbf{基底変換行列}、必ず正則)を使うと、
-新旧の座標は $\vect{c} = P\vect{c}'$ で結ばれ、表現行列は
+その変わり方を正確に求めよう。
 
-\begin{teiri}[表現行列の変換則]
-旧基底での表現行列を $A$、新基底での表現行列を $A'$ とすると
+\begin{teigi}[基底変換行列]\label{def:changebasis}
+$V$ の旧基底 $\vect{e}_1, \dots, \vect{e}_n$ と
+新基底 $\vect{e}'_1, \dots, \vect{e}'_n$ に対し、各新基底ベクトルを
+旧基底で展開して
+\[
+\vect{e}'_j = p_{1j}\vect{e}_1 + p_{2j}\vect{e}_2 + \cdots + p_{nj}\vect{e}_n
+\]
+と書いたときの係数を並べた行列 $P = (p_{ij})$ を\textbf{基底変換行列}という
+(\textbf{第 $j$ 列には $\vect{e}'_j$ の旧座標が入る})。
+$V = \R^n$ で旧基底が標準基底なら、$P$ は新基底のベクトルを
+そのまま列に並べた行列である。
+\end{teigi}
+
+\begin{teiri}[座標の変換則]\label{thm:coordchange}
+基底変換行列 $P$ は正則であり、ベクトル $\vect{v}$ の
+旧座標 $\vect{c}$ と新座標 $\vect{c}'$ は
+\[
+\vect{c} = P\vect{c}', \qquad \vect{c}' = P^{-1}\vect{c}
+\]
+で結ばれる。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v} = \sum_j c'_j \vect{e}'_j$ に $\vect{e}'_j$ の展開を代入すると
+\[
+\vect{v} = \sum_j c'_j \sum_i p_{ij}\vect{e}_i
+= \sum_i \Bigl( \sum_j p_{ij}c'_j \Bigr) \vect{e}_i
+\]
+となり、旧座標の一意性から $c_i = \sum_j p_{ij}c'_j$、すなわち
+$\vect{c} = P\vect{c}'$ である。
+正則性:逆向きに、旧基底を新基底で展開した行列を $Q$ とすると、
+同じ議論で $\vect{c}' = Q\vect{c}$。合わせると
+$\vect{c} = PQ\vect{c}$ がすべての $\vect{c} \in \R^n$ で成り立つから
+$PQ = E$。よって $P$ は正則で($Q = P^{-1}$)、
+$\vect{c}' = P^{-1}\vect{c}$ である。 $\blacksquare$
+
+\begin{chui}[向きに注意]
+$P$ の列に入っているのは\textbf{新}基底の旧座標なのに、
+座標の変換は $\vect{c} = P\vect{c}'$(新座標に $P$ を掛けると
+\textbf{旧}座標に戻る)と、向きが逆に見える。
+「$P$ は新しい住所を古い住所に翻訳する行列」と覚えるとよい。
+新座標がほしければ $P^{-1}$ を掛ける。
+\end{chui}
+
+\begin{teiri}[表現行列の変換則]\label{thm:repmat-change}
+線形写像 $f : V \to V$ の旧基底での表現行列を $A$、
+新基底での表現行列を $A'$ とすると
 \[
 A' = P^{-1} A P.
 \]
 \end{teiri}
 
-$A' = P^{-1}AP$ の関係にある二つの行列は\textbf{相似}であるという。
+\noindent\textbf{(証明)}\quad
+$\vect{v}$ の新座標を $\vect{c}'$ とする。$f(\vect{v})$ の新座標を
+二通りの経路で計算する。まず旧座標に翻訳すると $\vect{c} = P\vect{c}'$
+(定理 \ref{thm:coordchange})。旧基底での表現行列 $A$ により、
+$f(\vect{v})$ の旧座標は $AP\vect{c}'$(定理 \ref{thm:repmat-coord})。
+これを新座標に翻訳し直すと $P^{-1}AP\vect{c}'$ である。
+一方、新基底での表現行列 $A'$ の定義から、$f(\vect{v})$ の新座標は
+$A'\vect{c}'$ でもある。すべての $\vect{c}'$ で
+$A'\vect{c}' = P^{-1}AP\vect{c}'$ が成り立つから、
+$A' = P^{-1}AP$ である。 $\blacksquare$
+
+「新座標 $\to$($P$ で)旧座標 $\to$($A$ で)写像を実行 $\to$
+($P^{-1}$ で)新座標に戻る」という三段構えが、式 $P^{-1}AP$ の
+右から左への読み方である。
+
+\begin{teigi}[相似]
+正則行列 $P$ により $B = P^{-1}AP$ と書けるとき、
+$A$ と $B$ は\textbf{相似}であるという。
+\end{teigi}
+
 相似な行列は「同じ変換を別の座標系から見たもの」にすぎない。
-
-\begin{itembox}[l]{深掘り:座標は人間の都合、変換は実在 ― そして不変量}
-回転や微分という\textbf{変換そのもの}は、人間が座標をどう引くかに
-関係なく存在する。座標と表現行列は、それを記述するための
-\textbf{観測者の都合}である。だとすれば、相似で変わらない量
-($= $ どの座標系から見ても同じ量)こそが、変換の本当の性質を表すはずである。
-実際、
-\[
-\det(P^{-1}AP) = \det P^{-1} \det A \det P = \det A
-\]
-より\textbf{行列式は相似不変}である(拡大率が座標の取り方によらないのは当然だ)。
-対角成分の和 $\mathrm{tr}\,A = a_{11} + \cdots + a_{nn}$(\textbf{トレース})も
-相似不変であることが知られている。階数も、そして第IV部で学ぶ
-\textbf{固有値}も相似不変である。
-
-逆に問おう。座標の取り方は自由なのだから、
-\textbf{表現行列が最も簡単になる基底}を選べばよいのではないか?
-最良の場合、表現行列は対角行列になる――これが\textbf{対角化}であり、
-第IV部の主題である。第III部の抽象論は、この問いを立てるための準備だった。
-\end{itembox}
 
 \begin{mondai}\label{q:repmat}
 $\R^2$ の線形変換 $f$ を標準基底に関する表現行列
@@ -2264,3 +2371,351 @@ $A = \mat{3 & 1 \\ 1 & 3}$ で定める。
 に関する表現行列 $A' = P^{-1}AP$ を計算せよ
 ($P$ は新基底を列に並べた行列)。結果が対角行列になることを確かめよ。
 \end{mondai}
+
+\section{相似不変量 ― 座標によらない量}
+
+相似な行列は同じ変換の別表示だから、\textbf{相似で変わらない量}こそが
+変換そのものの性質を表す。代表が行列式とトレースである。
+行列式については、積の公式(定理 \ref{thm:det-prod})から直ちに
+\[
+\det(P^{-1}AP) = \det P^{-1} \det A \det P
+= \frac{1}{\det P}\,\det A\,\det P = \det A
+\]
+と分かる。トレース(対角成分の和
+$\mathrm{tr}\,A = a_{11} + \cdots + a_{nn}$)についても証明しよう。
+
+\begin{teiri}[トレースの相似不変性]\label{thm:trace-similar}
+\begin{enumerate}
+\item 任意の $n$ 次正方行列 $A, B$ について
+$\mathrm{tr}(AB) = \mathrm{tr}(BA)$。
+\item 相似な行列のトレースは等しい:
+$\mathrm{tr}(P^{-1}AP) = \mathrm{tr}\,A$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) 積の定義から $(AB)_{ii} = \sum_k a_{ik}b_{ki}$ なので
+\[
+\mathrm{tr}(AB) = \sum_{i=1}^n \sum_{k=1}^n a_{ik}b_{ki}, \qquad
+\mathrm{tr}(BA) = \sum_{k=1}^n \sum_{i=1}^n b_{ki}a_{ik}.
+\]
+どちらも「すべての添字の組 $(i, k)$ にわたる $a_{ik}b_{ki}$ の総和」で、
+足す順序が違うだけだから等しい。
+
+(2) (1) で $A$ の代わりに $P^{-1}A$、$B$ の代わりに $P$ をとると
+\[
+\mathrm{tr}(P^{-1}AP) = \mathrm{tr}\bigl((P^{-1}A)P\bigr)
+= \mathrm{tr}\bigl(P(P^{-1}A)\bigr) = \mathrm{tr}\,A. \qquad\blacksquare
+\]
+
+$AB \neq BA$ なのに $\mathrm{tr}(AB) = \mathrm{tr}(BA)$ は必ず成り立つ
+――トレースは行列の非可換性を「ならして」しまう不思議な量である。
+行列式・トレース・階数はどれも相似不変であり、しかも第IV部で学ぶ
+\textbf{固有値}から作られる量であることが分かってくる
+(行列式は固有値の積、トレースは固有値の和)。
+
+\begin{itembox}[l]{深掘り:座標は人間の都合、変換は実在 ― そして不変量}
+回転や微分という\textbf{変換そのもの}は、人間が座標をどう引くかに
+関係なく存在する。座標と表現行列は、それを記述するための
+\textbf{観測者の都合}である。だとすれば、相似で変わらない量
+($= $ どの座標系から見ても同じ量)こそが、変換の本当の性質を表すはずである。
+行列式(拡大率)とトレースの相似不変性は本文で示した。
+階数も、そして第IV部で学ぶ\textbf{固有値}も相似不変である。
+
+逆に問おう。座標の取り方は自由なのだから、
+\textbf{表現行列が最も簡単になる基底}を選べばよいのではないか?
+最良の場合、表現行列は対角行列になる――これが\textbf{対角化}であり、
+第IV部の主題である。第III部の抽象論は、この問いを立てるための準備だった。
+問 \ref{q:repmat} は、その最初の実演である。
+\end{itembox}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[表現行列は基底の順序にも依存する]\label{hanrei:repmat-order}
+「基底が同じ集合なら表現行列も同じ」ではない。
+\textbf{基底は順序込み}で指定するものである。
+微分 $D : \R[x]_2 \to \R[x]_2$ を、順序を逆にした基底
+$x^2,\ x,\ 1$ で表してみると、
+$D(x^2) = 2x$(座標 $(0, 2, 0)$)、$D(x) = 1$(座標 $(0, 0, 1)$)、
+$D(1) = 0$ より
+\[
+A' = \mat{0 & 0 & 0 \\ 2 & 0 & 0 \\ 0 & 1 & 0}
+\]
+となり、基底 $1, x, x^2$ での表現行列(上三角)とは別物(下三角)になる。
+もちろん両者は相似で、トレース($0$)も行列式($0$)も一致する。
+\end{hanrei}
+
+\begin{hanrei}[不変量が一致しても相似とは限らない]\label{hanrei:repmat-invariant}
+相似なら行列式・トレースは一致するが、\textbf{逆は成り立たない}。
+\[
+A = \mat{2 & 0 \\ 0 & 2} = 2E, \qquad B = \mat{2 & 1 \\ 0 & 2}
+\]
+は $\mathrm{tr} = 4$、$\det = 4$ と両不変量が一致する。
+しかし相似ではない:どんな正則行列 $P$ に対しても
+\[
+P^{-1}(2E)P = 2\,P^{-1}EP = 2E \neq B
+\]
+だから、$2E$ と相似な行列は $2E$ 自身しかない。
+不変量は「相似で\textbf{ない}ことの証明」には使えるが
+(値が違えば即座に非相似)、「相似で\textbf{ある}ことの証明」には
+一般に不十分である。相似の完全な判定は第VI部のジョルダン標準形で与えられる。
+\end{hanrei}
+
+\section{例題}
+
+表現行列の作成・利用と、基底変換の計算を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(標準基底に関する表現行列)]\label{rei:repmat-std}
+線形変換 $f : \R^2 \to \R^2$, $f(x, y) = (x + 2y,\ 3y)$ の
+標準基底に関する表現行列を求めよ。\\
+\textbf{解.}\ 基底ベクトルの行き先を計算して列に並べる。
+\[
+f\mat{1 \\ 0} = \mat{1 \\ 0}, \qquad f\mat{0 \\ 1} = \mat{2 \\ 3}
+\]
+より、表現行列は $A = \mat{1 & 2 \\ 0 & 3}$ である。
+検算:$A\mat{x \\ y} = \mat{x + 2y \\ 3y}$ で定義と一致する。
+\end{rei}
+
+\begin{rei}[例題・基本(うまい基底なら対角になる)]\label{rei:repmat-mirror}
+鏡映 $f : \R^2 \to \R^2$, $f(x, y) = (y, x)$(直線 $y = x$ に関する
+折り返し)の表現行列を、
+(i) 標準基底、(ii) 基底 $\vect{e}'_1 = \mat{1 \\ 1}$,
+$\vect{e}'_2 = \mat{1 \\ -1}$ のそれぞれについて求めよ。\\
+\textbf{解.}\ (i) $f(\vect{e}_1) = \mat{0 \\ 1}$,
+$f(\vect{e}_2) = \mat{1 \\ 0}$ を列に並べて
+$A = \mat{0 & 1 \\ 1 & 0}$。
+
+(ii) 行き先を\textbf{新基底で}展開する。
+$f(\vect{e}'_1) = \mat{1 \\ 1} = 1 \cdot \vect{e}'_1 + 0 \cdot \vect{e}'_2$、
+$f(\vect{e}'_2) = \mat{-1 \\ 1} = 0 \cdot \vect{e}'_1 + (-1)\vect{e}'_2$
+より
+\[
+A' = \mat{1 & 0 \\ 0 & -1}.
+\]
+鏡映の「本性」――鏡の向き($y = x$ 方向)は不動、垂直方向は反転――が、
+基底をうまく選ぶと対角行列としてむき出しになる。
+$\mathrm{tr}$ は $0$、$\det$ は $-1$ で、(i) と一致していることも確認できる。
+\end{rei}
+
+\begin{rei}[例題・基本(座標の変換)]\label{rei:repmat-coordchg}
+$\R^2$ の新基底 $\vect{e}'_1 = \mat{1 \\ 1}$,
+$\vect{e}'_2 = \mat{1 \\ -1}$ について基底変換行列 $P$ を書き、
+$\vect{v} = \mat{4 \\ 2}$ の新座標を求めよ。\\
+\textbf{解.}\ 旧基底は標準基底だから、$P$ は新基底を列に並べて
+$P = \mat{1 & 1 \\ 1 & -1}$。新座標は
+$\vect{c}' = P^{-1}\vect{v}$(定理 \ref{thm:coordchange})である。
+$\det P = -2$ より
+$P^{-1} = \dfrac{1}{-2}\mat{-1 & -1 \\ -1 & 1}
+= \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$、
+\[
+\vect{c}' = \frac{1}{2}\mat{1 & 1 \\ 1 & -1}\mat{4 \\ 2}
+= \frac{1}{2}\mat{6 \\ 2} = \mat{3 \\ 1}.
+\]
+検算:$3\mat{1 \\ 1} + 1\mat{1 \\ -1} = \mat{4 \\ 2}$。
+\end{rei}
+
+\begin{rei}[例題・標準(変換則の実演)]\label{rei:repmat-change-ex}
+標準基底に関する表現行列が $A = \mat{2 & 1 \\ 1 & 2}$ の線形変換 $f$ を、
+基底 $\vect{e}'_1 = \mat{1 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ -1}$ で
+表せ($P^{-1}AP$ の計算と、行き先の直接展開の両方で求めて一致を確かめよ)。\\
+\textbf{解.}\ \textbf{方法1($P^{-1}AP$)}:
+$P = \mat{1 & 1 \\ 1 & -1}$,
+$P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$(例題 \ref{rei:repmat-coordchg})。
+\[
+AP = \mat{2 & 1 \\ 1 & 2}\mat{1 & 1 \\ 1 & -1} = \mat{3 & 1 \\ 3 & -1},
+\qquad
+A' = P^{-1}(AP) = \frac{1}{2}\mat{1 & 1 \\ 1 & -1}\mat{3 & 1 \\ 3 & -1}
+= \mat{3 & 0 \\ 0 & 1}.
+\]
+\textbf{方法2(直接展開)}:
+$A\vect{e}'_1 = \mat{3 \\ 3} = 3\vect{e}'_1$、
+$A\vect{e}'_2 = \mat{1 \\ -1} = 1 \cdot \vect{e}'_2$ だから、
+係数を列に並べて $A' = \mat{3 & 0 \\ 0 & 1}$。両方法が一致した。
+$\vect{e}'_1$ 方向に $3$ 倍、$\vect{e}'_2$ 方向に $1$ 倍
+――この基底は $f$ の「軸」を捉えている(第IV部の固有ベクトルである)。
+\end{rei}
+
+\begin{rei}[例題・標準(多項式空間での基底取り替え)]\label{rei:repmat-poly}
+微分 $D : \R[x]_2 \to \R[x]_2$ の、基底
+$1,\ 1 + x,\ (1 + x)^2$(問 \ref{q:basis1}(2))に関する表現行列を求めよ。\\
+\textbf{解.}\ 各基底ベクトルの行き先を、\textbf{同じ基底で}展開する。
+\[
+D(1) = 0, \qquad
+D(1 + x) = 1, \qquad
+D\bigl((1 + x)^2\bigr) = 2(1 + x).
+\]
+座標はそれぞれ $(0,0,0)$, $(1,0,0)$, $(0,2,0)$ だから
+\[
+A' = \mat{0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0}.
+\]
+これは基底 $1, x, x^2$ での表現行列とまったく同じである。
+$1 + x$ は「$x$ を平行移動した変数」であり、微分は平行移動と交換する
+($p(x + 1)$ の微分は $p'(x + 1)$)ため、行列が変わらないのである。
+\textbf{基底を替えても行列が変わらないことも、変わることもある}
+――どう変わるかを統制するのが変換則 $A' = P^{-1}AP$ である。
+\end{rei}
+
+\begin{rei}[例題・標準(相似でないことの証明)]\label{rei:repmat-notsim}
+次の各組の行列が相似で\textbf{ない}ことを示せ。
+\[
+(1)\ \mat{1 & 2 \\ 2 & 1} \text{ と } \mat{1 & 1 \\ 1 & 1} \qquad
+(2)\ \mat{0 & 1 \\ -1 & 0} \text{ と } \mat{1 & 0 \\ 0 & -1}
+\]
+\textbf{解.}\ 相似なら行列式もトレースも一致するはずである(対偶を使う)。\\
+　(1) 行列式は $1 - 4 = -3$ と $1 - 1 = 0$ で異なる。よって相似でない。\\
+　(2) 行列式はどちらも $1$ と $-1$ ……ではなく、
+左は $0 - (-1) = 1$、右は $-1$ で異なる。よって相似でない
+(トレースはどちらも $0$ で一致するので、トレースだけでは判定できない
+ことにも注意)。
+幾何的にいえば、左は $90^\circ$ 回転(向きを保つ、$\det = 1$)、
+右は鏡映(向きを裏返す、$\det = -1$)であり、
+座標の取り替えでは互いにうつり合えない変換である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{表現行列}:基底を選び、$f(\vect{e}_j)$ の座標を第 $j$ 列に
+並べた行列。$\vect{v}$ の座標が $\vect{c}$ なら $f(\vect{v})$ の座標は
+$A\vect{c}$(定理 \ref{thm:repmat-coord})。合成は積 $BA$ に対応する
+(定理 \ref{thm:repmat-comp})。
+\item \textbf{基底変換行列} $P$:新基底の旧座標を列に並べた行列(正則)。
+座標は $\vect{c} = P\vect{c}'$、$\vect{c}' = P^{-1}\vect{c}$ で移り合う
+(「$P$ は新住所を旧住所に翻訳する」)。
+\item \textbf{表現行列の変換則}:$A' = P^{-1}AP$。この関係にある行列を
+\textbf{相似}といい、相似な行列は同じ変換の別の座標表示である。
+\item 行列式・トレースは\textbf{相似不変量}
+($\mathrm{tr}(AB) = \mathrm{tr}(BA)$ から従う。
+定理 \ref{thm:trace-similar})。不変量が違えば相似でないと判定できるが、
+一致しても相似とは限らない(反例 \ref{hanrei:repmat-invariant})。
+\item うまい基底を選ぶと表現行列は劇的に簡単になる(対角になる)ことがある。
+その体系的な方法=対角化が第IV部の主題である。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:repmat-ex1}
+線形変換 $f : \R^2 \to \R^2$, $f(x, y) = (2x - y,\ x + 3y)$ の
+標準基底に関する表現行列を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:repmat-ex2}
+微分 $D : \R[x]_3 \to \R[x]_3$ の基底 $1, x, x^2, x^3$ に関する
+表現行列 $A$ を求めよ。また $p(x) = 1 + x + x^2 + x^3$ の座標に
+$A$ を掛けることで $p'(x)$ を計算し、直接微分した結果と一致することを
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:repmat-ex3}
+$\R^2$ の基底 $\vect{e}'_1 = \mat{2 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ 1}$
+について基底変換行列 $P$ と $P^{-1}$ を求め、
+$\vect{v} = \mat{1 \\ 4}$ の新座標を計算せよ
+(問 \ref{q:dim-ex2} の結果と一致するはずである)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:repmat-ex4}
+恒等写像 $\mathrm{id} : V \to V$($\vect{v} \mapsto \vect{v}$)の
+表現行列は、どの基底に関しても単位行列 $E$ であることを示せ。
+また、スカラー倍写像 $\vect{v} \mapsto 3\vect{v}$ についてはどうか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex5}
+標準基底に関する表現行列が $A = \mat{1 & 2 \\ 0 & 3}$ の線形変換を、
+基底 $\vect{e}'_1 = \mat{1 \\ 0}$, $\vect{e}'_2 = \mat{1 \\ 1}$ で表した
+表現行列 $A'$ を、
+(i) $P^{-1}AP$ の計算、(ii) $A\vect{e}'_j$ を新基底で展開する方法、
+の両方で求め、一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex6}
+微分 $D : \R[x]_2 \to \R[x]_2$ の、基底
+$1,\ x,\ \dfrac{x^2}{2}$ に関する表現行列を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex7}
+写像 $f : \R[x]_1 \to \R[x]_1$ を $f(p)(x) = p(2x + 1)$ で定める
+($p$ に $2x + 1$ を代入した多項式を対応させる)。\\
+　(1) $f$ が線形写像であることを示せ。\\
+　(2) 基底 $1, x$ に関する表現行列 $A$ を求めよ。\\
+　(3) $p(x) = 3 + 4x$ に対し、座標に $A$ を掛けて $f(p)$ を求め、
+直接代入した結果と一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex8}
+次の各組の行列が相似でないことを、相似不変量を用いて示せ。
+\[
+(1)\ \mat{1 & 1 \\ 0 & 1} \text{ と } \mat{1 & 0 \\ 2 & 2} \qquad
+(2)\ \mat{2 & 0 \\ 0 & 3} \text{ と } \mat{2 & 0 \\ 0 & -3}
+\]
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:repmat-ex9}
+微分 $D : \R[x]_2 \to \R[x]_2$ の基底 $1, x, x^2$ に関する表現行列を
+$A$ とする。$A^2$ と $A^3$ を計算し、それぞれが
+「$2$ 回微分」「$3$ 回微分」の表現行列になっていること
+(定理 \ref{thm:repmat-comp})を、$D^2(x^2)$, $D^3(x^2)$ などの
+直接計算で確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:repmat-ex10}
+$90^\circ$ 回転の標準基底に関する表現行列は
+$A = \mat{0 & -1 \\ 1 & 0}$ である。基底
+$\vect{e}'_1 = \mat{1 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ -1}$ に関する
+表現行列 $A' = P^{-1}AP$ を計算せよ。$A'$ は対角行列になるか。
+(実は、どんな実基底を選んでも回転の表現行列は対角にならない。
+その理由は第 \ref{chap:diag} 章の深掘りで明かされる。)
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:repmat-ex11}
+線形写像 $f : V \to V$ の、ある基底に関する表現行列を $A$ とする。
+次を証明せよ。\\
+　(1) $f$ が同型写像ならば $A$ は正則であり、$f^{-1}$ の表現行列は
+$A^{-1}$ である。\\
+　(2) 逆に $A$ が正則ならば $f$ は同型写像である。
+(ヒント:定理 \ref{thm:repmat-coord} と、座標写像が同型であること
+(定理 \ref{thm:iso-rn})を使う。)
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:repmat-ex12}
+行列の相似は\textbf{同値関係}であること、すなわち次を証明せよ。\\
+　(1) $A$ は $A$ 自身と相似(反射律)。\\
+　(2) $A$ が $B$ と相似ならば、$B$ は $A$ と相似(対称律)。\\
+　(3) $A$ が $B$ と相似、$B$ が $C$ と相似ならば、$A$ は $C$ と相似
+(推移律)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:repmat-ex1}}:$f(\vect{e}_1)$, $f(\vect{e}_2)$ を
+計算して列に並べる。
+\item \textbf{問 \ref{q:repmat-ex2}}:$D(x^k) = kx^{k-1}$ の座標を
+第 $k+1$ 列に入れる。$4 \times 4$ になる。
+\item \textbf{問 \ref{q:repmat-ex3}}:$P$ は新基底を列に並べる。
+$2 \times 2$ の逆行列公式で $P^{-1}$。新座標は $P^{-1}\vect{v}$。
+\item \textbf{問 \ref{q:repmat-ex4}}:$\mathrm{id}(\vect{e}_j) = \vect{e}_j$
+の座標はどうなるかを考える。
+\item \textbf{問 \ref{q:repmat-ex5}}:方法 (ii) では
+$A\vect{e}'_j = c_1\vect{e}'_1 + c_2\vect{e}'_2$ の $c_1, c_2$ を
+連立方程式で求める。
+\item \textbf{問 \ref{q:repmat-ex6}}:$D(x^2/2) = x$ に注意。
+できあがる行列は例題 \ref{rei:repmat-poly} のものと見比べよ。
+\item \textbf{問 \ref{q:repmat-ex7}}:$f(1)$ と $f(x)$ を計算して
+列に並べる。$1$ の行き先も忘れずに。
+\item \textbf{問 \ref{q:repmat-ex8}}:トレースと行列式を計算して比べる。
+どちらか一方でも違えば相似でない。
+\item \textbf{問 \ref{q:repmat-ex9}}:行列の積を計算し、
+「$k$ 回微分の表現行列」と読み比べる。$A^3 = O$ になる。
+\item \textbf{問 \ref{q:repmat-ex10}}:例題 \ref{rei:repmat-change-ex} と
+同じ手順。結果のトレースと行列式が $A$ と一致することも確かめよ。
+\item \textbf{問 \ref{q:repmat-ex11}}:座標写像 $\varphi$ を使うと
+$f$ と「$A$ を掛ける写像」が $\varphi$ を介して対応する。
+合成 $f \circ f^{-1} = \mathrm{id}$ の表現行列を考える。
+\item \textbf{問 \ref{q:repmat-ex12}}:(1) は $P = E$。(2) は
+$Q = P^{-1}$ とおく。(3) は二つの変換行列の積を作る。
+\end{itemize}
+}
