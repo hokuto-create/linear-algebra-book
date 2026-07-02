@@ -1637,12 +1637,49 @@ $S_\theta^2$ は加法定理($\cos^2 + \sin^2 = 1$)で $E$ になる。
 \chapter{対称行列のスペクトル分解}\label{chap:spectral}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 実対称行列の固有値がすべて実数であること、相異なる固有値の
+固有ベクトルが直交することを、\textbf{証明つきで}理解する。
+\item スペクトル定理(対称行列は直交行列で対角化できる)の主張と
+証明の骨格を理解し、$2$ 次・$3$ 次の対称行列の\textbf{直交対角化}を
+(固有値が重複する場合も含めて)実行できるようになる。
+\item スペクトル分解 $A = \sum_i \lambda_i P_i$ を計算でき、
+射影行列 $P_i$ の性質($P_i^2 = P_i$ など)を使ってべき乗などに
+応用できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 対角化の「完成形」}
+
+第IV部の対角化には二つの気がかりが残っていた。
+第一に、\textbf{対角化できない行列がある}こと(固有ベクトル不足)。
+第二に、対角化できても基底変換の行列 $P$ は斜めに歪んだ基底で、
+$P^{-1}$ の計算も面倒なこと。
+本章の主役である\textbf{対称行列}(${}^t\!A = A$)の世界では、
+この両方の心配が同時に消える。対称行列は\textbf{必ず}対角化でき、
+しかも変換行列として\textbf{直交行列}(前章)が選べるので、
+逆行列は転置するだけでよい。
+これほど都合のよい行列が「たまたまの例外」でないことは、
+第 \ref{chap:spectral} 章末の深掘りで見るとおりである
+――ヘッセ行列・分散共分散行列など、応用に現れる行列は
+驚くほど頻繁に対称なのだ。本章の定理は、第V部のクライマックスであると
+同時に、次章(二次形式)と第VII部(特異値分解)の土台になる。
+
 \section{対称行列の固有値・固有ベクトルの奇跡}
 
 ${}^t\!A = A$ を満たす行列を\textbf{対称行列}という。
 対称行列の固有値理論は、一般の行列では望めない完璧さをもつ。
+鍵は、\textbf{内積を行列の左右に渡せる}ことである:任意の
+$\vect{x}, \vect{y} \in \R^n$ に対して
+\[
+\langle A\vect{x}, \vect{y} \rangle = {}^t(A\vect{x})\,\vect{y}
+= {}^t\vect{x}\,{}^t\!A\,\vect{y} = {}^t\vect{x}\,A\vect{y}
+= \langle \vect{x}, A\vect{y} \rangle
+\]
+(${}^t\!A = A$ を使った)。この一行が本章のすべての源泉である。
 
-\begin{teiri}[対称行列の基本性質]
+\begin{teiri}[対称行列の基本性質]\label{thm:spec-basic}
 実対称行列 $A$ について、
 \begin{enumerate}
 \item 固有値はすべて\textbf{実数}である。
@@ -1650,20 +1687,58 @@ ${}^t\!A = A$ を満たす行列を\textbf{対称行列}という。
 \end{enumerate}
 \end{teiri}
 
-性質 2 の証明は美しい。$A\vect{u} = \lambda\vect{u}$,
+\noindent\textbf{(証明)}\quad
+(2) から示す。$A\vect{u} = \lambda\vect{u}$,
 $A\vect{v} = \mu\vect{v}$($\lambda \neq \mu$)とすると、
-対称性 ${}^t\!A = A$ により
+内積の受け渡しにより
 \[
 \lambda \langle \vect{u}, \vect{v} \rangle
 = \langle A\vect{u}, \vect{v} \rangle
-= {}^t\vect{u}\,{}^t\!A\,\vect{v}
 = \langle \vect{u}, A\vect{v} \rangle
 = \mu \langle \vect{u}, \vect{v} \rangle
 \]
-となり、$\lambda \neq \mu$ から $\langle \vect{u}, \vect{v} \rangle = 0$。
-\textbf{内積を行列の左右に渡せる}ことが対称行列の本質である。
+となり、$(\lambda - \mu)\langle \vect{u}, \vect{v} \rangle = 0$。
+$\lambda \neq \mu$ から $\langle \vect{u}, \vect{v} \rangle = 0$ である。
 
-\begin{teiri}[実対称行列のスペクトル定理]
+(1) 固有方程式は(第 \ref{chap:eigen} 章の深掘りで触れたとおり)
+複素数の範囲では必ず解をもつ。そこで $\lambda$ を複素数の固有値、
+$\vect{v} \neq \vect{0}$ を複素成分の固有ベクトルとし、
+$\lambda$ が実は実数であることを示す。
+複素数 $z = p + qi$ の共役を $\bar{z} = p - qi$ と書き
+(高校で学んだ共役複素数)、ベクトル・行列の共役は成分ごとにとる。
+このとき $\bar{z}z = p^2 + q^2 \ge 0$ であり、$0$ になるのは $z = 0$
+のときに限る。さて、$1 \times 1$ 行列(数)
+\[
+s = {}^t\bar{\vect{v}}\,A\,\vect{v}
+\]
+を二通りに計算する。まず $A\vect{v} = \lambda\vect{v}$ を使うと
+\[
+s = {}^t\bar{\vect{v}}\,(\lambda\vect{v})
+= \lambda\,{}^t\bar{\vect{v}}\,\vect{v}
+= \lambda \sum_{i=1}^{n} \bar{v}_i v_i.
+\]
+次に、$A$ が実行列であることから、固有の式
+$A\vect{v} = \lambda\vect{v}$ の全成分の共役をとると
+$A\bar{\vect{v}} = \bar{\lambda}\bar{\vect{v}}$ が成り立つ。
+これと ${}^t\!A = A$ を使うと
+\[
+s = ({}^t\bar{\vect{v}}\,{}^t\!A)\,\vect{v}
+= {}^t(A\bar{\vect{v}})\,\vect{v}
+= {}^t(\bar{\lambda}\bar{\vect{v}})\,\vect{v}
+= \bar{\lambda} \sum_{i=1}^{n} \bar{v}_i v_i.
+\]
+$\sum \bar{v}_iv_i$ は各成分の絶対値の $2$ 乗の和で、
+$\vect{v} \neq \vect{0}$ より正である。よって二つの表示を比べて
+$\lambda = \bar{\lambda}$、すなわち $\lambda$ は実数である。
+$\blacksquare$
+
+固有値が実数なのだから、固有ベクトルも(実数の連立方程式
+$(A - \lambda E)\vect{x} = \vect{0}$ の解として)実ベクトルにとれる。
+「対称行列に虚数の出る幕はない」――これが第一の奇跡である。
+
+\section{スペクトル定理}
+
+\begin{teiri}[実対称行列のスペクトル定理]\label{thm:spec-main}
 実対称行列 $A$ は、\textbf{直交行列} $P$ によって対角化できる:
 \[
 {}^t\!P A P = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n}.
@@ -1672,13 +1747,60 @@ $A\vect{v} = \mu\vect{v}$($\lambda \neq \mu$)とすると、
 固有値が重複していても、対角化に失敗することはない。
 \end{teiri}
 
+\noindent\textbf{(証明:$2$ 次の場合の完全な証明)}\quad
+定理 \ref{thm:spec-basic}(1) より実数の固有値 $\lambda_1$ が存在するから、
+対応する固有ベクトルを正規化して単位ベクトル $\vect{u}_1$ をとる。
+平面内で $\vect{u}_1$ と直交する単位ベクトル $\vect{u}_2$ をとる
+($\vect{u}_1$ を $90^\circ$ 回せばよい)。このとき
+\[
+\langle A\vect{u}_2, \vect{u}_1 \rangle
+= \langle \vect{u}_2, A\vect{u}_1 \rangle
+= \lambda_1 \langle \vect{u}_2, \vect{u}_1 \rangle = 0
+\]
+(内積の受け渡しを使った)。すなわち $A\vect{u}_2$ は $\vect{u}_1$ と
+直交するが、平面で $\vect{u}_1$ と直交するベクトルは $\vect{u}_2$ の
+スカラー倍しかないから、$A\vect{u}_2 = \mu\vect{u}_2$ と書ける
+――つまり $\vect{u}_2$ も自動的に固有ベクトルである。
+$P = (\vect{u}_1\ \vect{u}_2)$ は正規直交基底を並べた行列だから
+直交行列で、${}^t\!PAP = \mat{\lambda_1 & 0 \\ 0 & \mu}$ となる。
+
+\noindent\textbf{(一般次数:帰納法の骨格)}\quad
+$n$ 次でも方針は同じである。実固有値 $\lambda_1$ と単位固有ベクトル
+$\vect{u}_1$ をとり、直交補空間 $W = \langle \vect{u}_1 \rangle^{\perp}$
+(次元 $n - 1$)を考える。上とまったく同じ計算で、
+$\vect{w} \in W$ ならば $A\vect{w} \in W$
+($\langle A\vect{w}, \vect{u}_1 \rangle = \langle \vect{w}, A\vect{u}_1 \rangle
+= \lambda_1\langle \vect{w}, \vect{u}_1 \rangle = 0$)、
+すなわち\textbf{$A$ は $W$ を $W$ の中に写す}。そこで $A$ を $W$ 上の
+変換とみなすと、これも対称性を保つ($W$ の正規直交基底に関する
+表現行列がまた対称行列になる)ので、次元が $1$ 小さい $W$ に
+帰納法の仮定が使え、$W$ の中に固有ベクトルからなる正規直交基底
+$\vect{u}_2, \dots, \vect{u}_n$ がとれる。先頭に $\vect{u}_1$ を
+加えれば $\R^n$ の固有ベクトルからなる正規直交基底が完成する。
+(表現行列が対称になることの丁寧な検証は進んだ教科書に譲るが、
+「固有ベクトルを一本立てるたびに、その直交補空間へ問題が縮小する」
+という骨格をつかんでほしい。) $\blacksquare$
+
 第IV部では「対角化できない行列がある」ことに悩まされたが、
 対称行列の世界ではその心配が消える。しかも基底変換は直交行列、
 つまり\textbf{回転(と鏡映)だけ}で済む。
 変換 $A$ は「直交する $n$ 本の軸に沿って、それぞれ $\lambda_i$ 倍に
 伸縮するだけ」という、考えうる最も素直な姿に分解される。
 
-\begin{rei}
+\subsection*{直交対角化の手順}
+
+\begin{enumerate}
+\item 固有方程式を解いて固有値を求める(すべて実数になるはずである)。
+\item 各固有値の固有空間の基底を求める(掃き出し法)。
+\item 固有値が重複している場合は、その固有空間の\textbf{中で}
+グラム・シュミットの直交化法を実行する。相異なる固有値の固有空間
+どうしは定理 \ref{thm:spec-basic}(2) により\textbf{自動的に直交する}
+ので、何もしなくてよい。
+\item 得られた正規直交基底を列に並べて $P$ とすれば、
+${}^t\!PAP$ が対角行列になる(対角成分は列の順の固有値)。
+\end{enumerate}
+
+\begin{rei}\label{rei:spec-2x2}
 $A = \mat{2 & 1 \\ 1 & 2}$。固有値は $3, 1$、固有ベクトルは
 $\mat{1 \\ 1}$, $\mat{1 \\ -1}$(確かに直交している)。正規化して並べた
 \[
@@ -1687,13 +1809,63 @@ P = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}
 は直交行列で、${}^t\!PAP = \mat{3 & 0 \\ 0 & 1}$ となる。
 \end{rei}
 
-スペクトル定理は和の形にも書ける。固有値 $\lambda_i$ の固有空間への
-正射影行列を $P_i$ とすると
+\section{スペクトル分解 ― 行列を射影の重ね合わせに}
+
+スペクトル定理は和の形にも書ける。
+
+\begin{teiri}[スペクトル分解]\label{thm:spec-decomp}
+実対称行列 $A$ の相異なる固有値を $\lambda_1, \dots, \lambda_k$、
+固有値 $\lambda_i$ の固有空間への正射影行列を $P_i$ とすると:
+\begin{enumerate}
+\item $A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_k P_k$
+(\textbf{スペクトル分解})。
+\item $P_1 + P_2 + \cdots + P_k = E$。
+\item $P_i^2 = P_i$、${}^t\!P_i = P_i$、$P_iP_j = O$($i \neq j$)。
+\end{enumerate}
+ここで $P_i$ は、固有空間の正規直交基底 $\vect{u}$ たちを使って
+$P_i = \sum \vect{u}\,{}^t\vect{u}$ と書ける(和は固有値 $\lambda_i$ に
+属する基底ベクトルにわたる)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+スペクトル定理の正規直交基底 $\vect{u}_1, \dots, \vect{u}_n$
+(固有値 $\mu_1, \dots, \mu_n$、重複を許す)をとる。
+任意の $\vect{v}$ は $\vect{v} = \sum_j \langle \vect{v}, \vect{u}_j \rangle
+\vect{u}_j$ と展開でき(定理 \ref{thm:gs-coord})、
+$\vect{u}_j\,{}^t\vect{u}_j\,\vect{v}
+= \vect{u}_j (\,{}^t\vect{u}_j \vect{v}\,)
+= \langle \vect{v}, \vect{u}_j \rangle \vect{u}_j$ だから
 \[
-A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_k P_k
+\Bigl(\sum_{j=1}^{n} \vect{u}_j\,{}^t\vect{u}_j\Bigr)\vect{v} = \vect{v},
+\qquad\text{すなわち}\qquad
+\sum_{j=1}^{n} \vect{u}_j\,{}^t\vect{u}_j = E
 \]
-(\textbf{スペクトル分解})。「行列 = 固有値 × 射影 の重ね合わせ」という
-この見方は、量子力学(観測値 = 固有値、観測 = 射影)の数学的骨格そのものである。
+(これを固有値ごとにまとめれば (2))。また
+\[
+A\vect{v} = \sum_j \langle \vect{v}, \vect{u}_j \rangle A\vect{u}_j
+= \sum_j \mu_j \langle \vect{v}, \vect{u}_j \rangle \vect{u}_j
+= \Bigl(\sum_j \mu_j\,\vect{u}_j\,{}^t\vect{u}_j\Bigr)\vect{v}
+\]
+がすべての $\vect{v}$ で成り立つから
+$A = \sum_j \mu_j \vect{u}_j\,{}^t\vect{u}_j$。同じ固有値の項を
+まとめれば (1) を得る。(3) は正規直交性から:たとえば
+$(\vect{u}_a\,{}^t\vect{u}_a)(\vect{u}_b\,{}^t\vect{u}_b)
+= \vect{u}_a(\,{}^t\vect{u}_a\vect{u}_b\,){}^t\vect{u}_b
+= \langle \vect{u}_a, \vect{u}_b \rangle\,\vect{u}_a\,{}^t\vect{u}_b$
+は $a = b$ なら $\vect{u}_a\,{}^t\vect{u}_a$、$a \neq b$ なら $O$ になる。
+これを固有値ごとの和に適用すれば $P_i^2 = P_i$ と $P_iP_j = O$ が出る。
+${}^t(\vect{u}\,{}^t\vect{u}) = \vect{u}\,{}^t\vect{u}$ から
+${}^t\!P_i = P_i$ も分かる。 $\blacksquare$
+
+「行列 = 固有値 × 射影 の重ね合わせ」というこの見方は、
+量子力学(観測値 = 固有値、観測 = 射影)の数学的骨格そのものである。
+計算上の利点もある:性質 (3) のおかげで
+\[
+A^m = \lambda_1^m P_1 + \cdots + \lambda_k^m P_k
+\]
+と、\textbf{べき乗が固有値のべき乗だけで書ける}
+(展開すると交差項 $P_iP_j$ がすべて消えるからである。
+例題 \ref{rei:spec-power} で使う)。
 
 \begin{itembox}[l]{深掘り:なぜ対称行列はこれほど頻繁に現れるのか}
 対称行列は、応用数学の主要な舞台ほぼすべてに現れる。
@@ -1716,6 +1888,303 @@ $P_1, P_2$ を求め、スペクトル分解 $A = 3P_1 + 1 \cdot P_2$ が
 成り立つことを確かめよ。
 (ヒント:単位固有ベクトル $\vect{u}$ への正射影行列は $\vect{u}\,{}^t\vect{u}$。)
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[対称でない行列では固有ベクトルは直交しない]\label{hanrei:spec-nonsym}
+定理 \ref{thm:spec-basic}(2) の直交性は対称行列の特権である。
+非対称な
+\[
+B = \mat{1 & 1 \\ 0 & 2}
+\]
+は相異なる固有値 $1, 2$ をもち対角化可能だが、固有ベクトルは
+$\lambda = 1$ に $\mat{1 \\ 0}$、$\lambda = 2$ に $\mat{1 \\ 1}$ で、
+\[
+\Bigl\langle \mat{1 \\ 0}, \mat{1 \\ 1} \Bigr\rangle = 1 \neq 0.
+\]
+直交していない。「相異なる固有値の固有ベクトルは\textbf{線形独立}」
+(定理 \ref{thm:diag-distinct})は一般の行列で成り立つが、
+「\textbf{直交}」まで言えるのは対称性のご褒美である。
+\end{hanrei}
+
+\begin{hanrei}[対角化可能でも「直交行列で」対角化できるとは限らない]\label{hanrei:spec-notdiag}
+反例 \ref{hanrei:spec-nonsym} の $B$ は対角化可能である
+(固有値がすべて異なるから。定理 \ref{thm:diag-ndistinct})。
+では直交行列 $Q$ で ${}^t Q B Q = D$ とできるだろうか。
+もしできたとすると $B = QD\,{}^t Q$ と書け、その転置は
+\[
+{}^t\!B = {}^t({}^t Q)\,{}^t\!D\,{}^t Q = QD\,{}^t Q = B
+\]
+($D$ は対角行列なので ${}^t\!D = D$)となり、$B$ が対称行列で
+なければならない。しかし $B$ は対称でないから矛盾である。
+すなわち\textbf{直交行列で対角化できるのは対称行列だけ}であり
+(スペクトル定理のちょうど逆向きの主張。問 \ref{q:spec-ex11})、
+「対角化可能」と「直交対角化可能」は別の概念である。
+\end{hanrei}
+
+\section{例題}
+
+直交対角化(重複固有値の場合を含む)とスペクトル分解を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本($2$ 次の直交対角化)]\label{rei:spec-basic2}
+$A = \mat{3 & 1 \\ 1 & 3}$ を直交行列で対角化せよ。\\
+\textbf{解.}\ 固有方程式は $(\lambda - 3)^2 - 1 = 0$ より
+$\lambda = 4, 2$。固有ベクトルは、$\lambda = 4$:
+$(A - 4E)\vect{x} = \vect{0}$ すなわち $-x + y = 0$ から $\mat{1 \\ 1}$、
+$\lambda = 2$:$x + y = 0$ から $\mat{1 \\ -1}$。直交していることを
+確認し($1 - 1 = 0$)、正規化して並べる:
+\[
+P = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}, \qquad
+{}^t\!PAP = \mat{4 & 0 \\ 0 & 2}.
+\]
+検算:$A\mat{1 \\ 1} = \mat{4 \\ 4}$、$A\mat{1 \\ -1} = \mat{2 \\ -2}$。
+\end{rei}
+
+\begin{rei}[例題・基本(直交性の検証)]\label{rei:spec-orthcheck}
+$A = \mat{4 & 2 \\ 2 & 1}$ の固有値と固有ベクトルを求め、
+固有ベクトルが直交していることを確かめよ。\\
+\textbf{解.}\ 固有方程式は
+$\lambda^2 - 5\lambda + (4 - 4) = \lambda(\lambda - 5) = 0$ より
+$\lambda = 0, 5$($0$ が固有値、すなわち $A$ は正則でない。
+$\det A = 0$ とも整合)。固有ベクトルは、$\lambda = 0$:
+$4x + 2y = 0$ から $\mat{1 \\ -2}$、$\lambda = 5$:
+$-x + 2y = 0$ から $\mat{2 \\ 1}$。内積は
+\[
+\Bigl\langle \mat{1 \\ -2}, \mat{2 \\ 1} \Bigr\rangle = 2 - 2 = 0
+\]
+で、定理 \ref{thm:spec-basic}(2) のとおり直交している。
+\end{rei}
+
+\begin{rei}[例題・基本(スペクトル分解)]\label{rei:spec-decomp-ex}
+例題 \ref{rei:spec-basic2} の $A = \mat{3 & 1 \\ 1 & 3}$ の
+スペクトル分解を求めよ。\\
+\textbf{解.}\ 単位固有ベクトルは
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$($\lambda = 4$)、
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$($\lambda = 2$)。
+正射影行列は
+\[
+P_1 = \vect{u}_1\,{}^t\vect{u}_1 = \frac{1}{2}\mat{1 & 1 \\ 1 & 1}, \qquad
+P_2 = \vect{u}_2\,{}^t\vect{u}_2 = \frac{1}{2}\mat{1 & -1 \\ -1 & 1}.
+\]
+よって $A = 4P_1 + 2P_2$。検算:
+\[
+4P_1 + 2P_2 = \frac{1}{2}\mat{4 + 2 & 4 - 2 \\ 4 - 2 & 4 + 2}
+= \mat{3 & 1 \\ 1 & 3} = A.
+\]
+$P_1 + P_2 = E$、$P_1P_2 = O$ も成分計算ですぐ確かめられる
+(定理 \ref{thm:spec-decomp})。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次の直交対角化)]\label{rei:spec-3x3}
+$A = \mat{5 & 0 & 0 \\ 0 & 1 & 2 \\ 0 & 2 & 1}$ を直交行列で対角化せよ。\\
+\textbf{解.}\ ブロックの形から、固有方程式は
+$(5 - \lambda)\{(1 - \lambda)^2 - 4\} = 0$、すなわち
+$\lambda = 5, 3, -1$。固有ベクトルは
+\[
+\lambda = 5:\ \mat{1 \\ 0 \\ 0}, \qquad
+\lambda = 3:\ \mat{0 \\ 1 \\ 1}, \qquad
+\lambda = -1:\ \mat{0 \\ 1 \\ -1}
+\]
+($\lambda = 3$ は $-2y + 2z = 0$、$\lambda = -1$ は $2y + 2z = 0$
+から)。三本とも互いに直交している(相異なる固有値だから当然。
+定理 \ref{thm:spec-basic}(2))。正規化して
+\[
+P = \mat{1 & 0 & 0 \\ 0 & 1/\sqrt{2} & 1/\sqrt{2} \\ 0 & 1/\sqrt{2} & -1/\sqrt{2}},
+\qquad
+{}^t\!PAP = \mat{5 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & -1}.
+\]
+\end{rei}
+
+\begin{rei}[例題・標準(重複固有値とグラム・シュミット)]\label{rei:spec-repeated}
+$A = \mat{2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2}$ を直交行列で対角化せよ。\\
+\textbf{解.}\ 固有方程式を解くと(行の和がすべて $4$ であることから
+$\lambda = 4$ が見つかり、残りは因数分解で)
+$\lambda = 4, 1, 1$:固有値 $1$ が重複する。
+$\lambda = 4$:$\mat{1 \\ 1 \\ 1}$。
+$\lambda = 1$:$(A - E)\vect{x} = \vect{0}$ は $3$ 本とも
+$x + y + z = 0$ で、固有空間は平面(次元 $2$)。基底として
+$\vect{a}_1 = \mat{1 \\ -1 \\ 0}$, $\vect{a}_2 = \mat{1 \\ 0 \\ -1}$ を
+とれるが、\textbf{この $2$ 本は直交していない}ので、固有空間の中で
+グラム・シュミットの直交化法を実行する(手順 3)。
+$\langle \vect{a}_2, \vect{a}_1 \rangle = 1$,
+$\langle \vect{a}_1, \vect{a}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 0 \\ -1} - \frac{1}{2}\mat{1 \\ -1 \\ 0}
+= \mat{1/2 \\ 1/2 \\ -1}.
+\]
+正規化してすべて並べると
+\[
+P = \mat{1/\sqrt{3} & 1/\sqrt{2} & 1/\sqrt{6} \\
+1/\sqrt{3} & -1/\sqrt{2} & 1/\sqrt{6} \\
+1/\sqrt{3} & 0 & -2/\sqrt{6}}, \qquad
+{}^t\!PAP = \mat{4 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1}.
+\]
+検算:$A\mat{1 \\ 1 \\ 1} = \mat{4 \\ 4 \\ 4}$、
+$A\mat{1 \\ -1 \\ 0} = \mat{1 \\ -1 \\ 0}$、
+$A\mat{1 \\ 1 \\ -2} = \mat{1 \\ 1 \\ -2}$。
+\textbf{重複固有値でも対角化は失敗しない}――固有空間の次元が
+ちゃんと重複度ぶんあり(スペクトル定理の保証)、その中を直交化
+すればよいだけである。
+\end{rei}
+
+\begin{rei}[例題・標準(スペクトル分解でべき乗)]\label{rei:spec-power}
+例題 \ref{rei:spec-decomp-ex} の分解 $A = 4P_1 + 2P_2$ を使って
+$A^n$($n \ge 1$)を求めよ。\\
+\textbf{解.}\ $P_1^2 = P_1$, $P_2^2 = P_2$, $P_1P_2 = P_2P_1 = O$
+(定理 \ref{thm:spec-decomp})より、展開の交差項がすべて消えて
+\[
+A^n = (4P_1 + 2P_2)^n = 4^nP_1 + 2^nP_2
+= \frac{1}{2}\mat{4^n + 2^n & 4^n - 2^n \\ 4^n - 2^n & 4^n + 2^n}.
+\]
+検算:$n = 1$ で $A$ に戻る。$n = 2$ では公式から
+$\frac{1}{2}\mat{20 & 12 \\ 12 & 20} = \mat{10 & 6 \\ 6 & 10}$、
+直接計算でも $A^2 = \mat{9 + 1 & 3 + 3 \\ 3 + 3 & 1 + 9}
+= \mat{10 & 6 \\ 6 & 10}$ で一致する。
+第 \ref{chap:power} 章の $P D^n P^{-1}$ 方式と同じ結果を与えるが、
+射影の言葉では「各固有方向の成分が別々に $\lambda^n$ 倍される」
+という描像がいっそう鮮明になる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item 対称行列の本質は\textbf{内積の受け渡し}
+$\langle A\vect{x}, \vect{y} \rangle = \langle \vect{x}, A\vect{y} \rangle$。
+ここから、固有値がすべて\textbf{実数}であること、相異なる固有値の
+固有ベクトルが\textbf{直交}することが従う(定理 \ref{thm:spec-basic})。
+\item \textbf{スペクトル定理}:実対称行列は直交行列で対角化できる
+(定理 \ref{thm:spec-main})。固有値が重複していても失敗しない。
+証明の骨格は「固有ベクトルを一本立てるたびに直交補空間へ縮小する」
+帰納法である。
+\item 直交対角化の手順:固有値 → 各固有空間の基底 →
+\textbf{重複固有値の固有空間内だけ}グラム・シュミット →
+正規直交基底を列に並べて $P$。相異なる固有値の固有空間は自動的に直交する。
+\item \textbf{スペクトル分解} $A = \sum_i \lambda_iP_i$
+($P_i$ は固有空間への正射影、$\sum P_i = E$, $P_i^2 = P_i$,
+$P_iP_j = O$)。べき乗は $A^m = \sum \lambda_i^mP_i$ と即座に求まる。
+\item 直交性・直交対角化可能性は対称行列の\textbf{特権}である:
+非対称なら固有ベクトルは直交せず(反例 \ref{hanrei:spec-nonsym})、
+直交行列で対角化できる行列は対称行列に限る
+(反例 \ref{hanrei:spec-notdiag})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:spec-ex1}
+$A = \mat{1 & 2 \\ 2 & 1}$ を直交行列で対角化せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:spec-ex2}
+$A = \mat{5 & 2 \\ 2 & 2}$ の固有値と固有ベクトルを求め、
+固有ベクトルが直交することを確かめてから、直交行列で対角化せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:spec-ex3}
+問 \ref{q:spec-ex1} の $A = \mat{1 & 2 \\ 2 & 1}$ について
+スペクトル分解 $A = \lambda_1P_1 + \lambda_2P_2$ を求め、
+$P_1 + P_2 = E$ と $P_1P_2 = O$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:spec-ex4}
+$B = \mat{1 & 1 \\ 0 & 2}$(反例 \ref{hanrei:spec-nonsym})について、
+固有値 $1, 2$ の固有ベクトルを実際に求め、直交して\textbf{いない}ことを
+内積の計算で確かめよ。また、この事実が定理 \ref{thm:spec-basic}(2) と
+矛盾しない理由を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex5}
+$A = \mat{2 & 1 & 0 \\ 1 & 2 & 0 \\ 0 & 0 & 5}$ を直交行列で対角化せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex6}
+$A = \mat{0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0}$ を直交行列で対角化せよ
+(固有値の一つは $2$ である。重複固有値の固有空間では
+グラム・シュミットの直交化法を使うこと)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex7}
+問 \ref{q:spec-ex3} のスペクトル分解を使って、
+$A = \mat{1 & 2 \\ 2 & 1}$ の $A^n$ を求めよ($n = 2$ で直接計算と
+一致することを確かめること)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex8}
+実対称行列 $A$ の固有値を $\lambda_1, \dots, \lambda_n$(重複を許す)
+とするとき、成分の $2$ 乗和について
+\[
+\sum_{i,j} a_{ij}^2 = \mathrm{tr}(A^2) = \lambda_1^2 + \cdots + \lambda_n^2
+\]
+が成り立つことを示せ(ヒント:${}^t\!A = A$ より
+$\mathrm{tr}({}^t\!AA) = \mathrm{tr}(A^2)$。後半はトレースの相似不変性
+(定理 \ref{thm:trace-similar})を使う)。
+$A = \mat{1 & 2 \\ 2 & 1}$ で数値的に確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:spec-ex9}
+$A = \mat{2 & 1 \\ 1 & 2}$(固有値 $3, 1$)について、
+スペクトル分解を使って「$2$ 乗すると $A$ になる対称行列」
+$B = \sqrt{3}\,P_1 + P_2$ を構成し、$B^2 = A$ を
+射影行列の性質($P_i^2 = P_i$, $P_1P_2 = O$)から証明せよ。
+$B$ の成分も求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:spec-ex10}
+対称行列 $A$ が $A^2 = A$ を満たすとする($O$ でも $E$ でもないとする)。\\
+　(1) $A$ の固有値は $0$ と $1$ に限ることを示せ。\\
+　(2) スペクトル分解を使って、$A$ が固有値 $1$ の固有空間への
+\textbf{正射影行列}にほかならないことを示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:spec-ex11}
+直交行列 $P$ と対角行列 $D$ によって $A = PD\,{}^t\!P$ と書ける行列は
+対称行列であることを証明せよ(スペクトル定理の逆。あわせて
+「直交行列で対角化できる $\iff$ 対称行列」が完成する)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:spec-ex12}
+実対称行列 $A$ について、$\mathrm{Ker}\,A$ と $\mathrm{Im}\,A$ が
+直交する($\vect{x} \in \mathrm{Ker}\,A$ と
+$\vect{y} \in \mathrm{Im}\,A$ はつねに
+$\langle \vect{x}, \vect{y} \rangle = 0$)ことを証明せよ。
+さらに次元定理(定理 \ref{thm:dimension})を使って、
+$\R^n$ が $\mathrm{Ker}\,A$ と $\mathrm{Im}\,A$ の直和になることを示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:spec-ex1}}:固有値 $3, -1$。固有ベクトルを
+正規化して並べる。
+\item \textbf{問 \ref{q:spec-ex2}}:固有方程式は
+$\lambda^2 - 7\lambda + 6 = 0$。
+\item \textbf{問 \ref{q:spec-ex3}}:$P_i = \vect{u}_i\,{}^t\vect{u}_i$
+(単位固有ベクトルから作る)。
+\item \textbf{問 \ref{q:spec-ex4}}:上三角行列なので固有値は対角成分。
+定理の仮定(対称性)を $B$ は満たしていない。
+\item \textbf{問 \ref{q:spec-ex5}}:ブロックに分けて考える。
+$2 \times 2$ ブロックは例題 \ref{rei:spec-2x2} と同じ。
+\item \textbf{問 \ref{q:spec-ex6}}:$\lambda = 2, -1, -1$。
+$\lambda = -1$ の固有空間は平面 $x + y + z = 0$ で、
+例題 \ref{rei:spec-repeated} と同じ直交化になる。
+\item \textbf{問 \ref{q:spec-ex7}}:$A^n = 3^nP_1 + (-1)^nP_2$。
+$(-1)^n$ の符号に注意。
+\item \textbf{問 \ref{q:spec-ex8}}:$\mathrm{tr}({}^t\!AA)$ の対角成分が
+「各列のノルムの $2$ 乗」であることを確かめる。
+$A^2 = PD^2\,{}^t\!P$ は $D^2$ と相似。
+\item \textbf{問 \ref{q:spec-ex9}}:$B^2 = 3P_1^2 + 2\sqrt{3}P_1P_2 + P_2^2$
+を性質 (3) で整理する。
+\item \textbf{問 \ref{q:spec-ex10}}:(1) は例題 \ref{rei:ch-proj-eigen}
+と同じ論法。(2) はスペクトル分解 $A = 0 \cdot P_0 + 1 \cdot P_1 = P_1$。
+\item \textbf{問 \ref{q:spec-ex11}}:${}^t\!A$ を転置の計算法則で展開する。
+${}^t\!D = D$ がポイント。
+\item \textbf{問 \ref{q:spec-ex12}}:$\vect{y} = A\vect{z}$ と書いて
+内積の受け渡し。直和は「共通部分が $\{\vect{0}\}$」+「次元の和が $n$」。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{二次形式}\label{chap:quadform}

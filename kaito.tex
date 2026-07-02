@@ -6011,6 +6011,249 @@ P_2 = \vect{u}_2\,{}^t\vect{u}_2 = \frac{1}{2}\mat{1 & -1 \\ -1 & 1}.
 ($P_1 + P_2 = E$、$P_1 P_2 = O$ も確かめてみてほしい。)
 
 \bigskip
+\noindent\textbf{問 \ref{q:spec-ex1}}\quad
+\textbf{方針}:固有値・固有ベクトルを求め、直交を確認してから
+正規化して並べる。\\
+\textbf{解答}:固有方程式は $(\lambda - 1)^2 - 4 = 0$ より
+$\lambda = 3, -1$。固有ベクトルは、$\lambda = 3$:$-2x + 2y = 0$ から
+$\mat{1 \\ 1}$、$\lambda = -1$:$2x + 2y = 0$ から $\mat{1 \\ -1}$。
+内積は $1 - 1 = 0$ で直交。正規化して
+\[
+P = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}, \qquad
+{}^t\!PAP = \mat{3 & 0 \\ 0 & -1}.
+\]
+検算:$A\mat{1 \\ 1} = \mat{3 \\ 3}$,
+$A\mat{1 \\ -1} = \mat{-1 \\ 1} = -\mat{1 \\ -1}$。\\
+\textbf{よくあるミス}:固有値の対応順と $P$ の列の順の食い違い。
+$D$ の対角成分は\emph{列に並べた順}の固有値である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex2}}\quad
+\textbf{方針}:固有方程式 $\lambda^2 - 7\lambda + 6 = 0$ を解いてから、
+同じ手順を踏む。\\
+\textbf{解答}:$\mathrm{tr} = 7$, $\det = 10 - 4 = 6$ より固有方程式は
+$\lambda^2 - 7\lambda + 6 = (\lambda - 1)(\lambda - 6) = 0$、
+固有値は $1, 6$。固有ベクトルは、$\lambda = 6$:$-x + 2y = 0$ から
+$\mat{2 \\ 1}$、$\lambda = 1$:$4x + 2y = 0$ から $\mat{1 \\ -2}$。
+内積は $2 - 2 = 0$ で直交している(定理 \ref{thm:spec-basic}(2))。
+正規化して
+\[
+P = \frac{1}{\sqrt{5}}\mat{2 & 1 \\ 1 & -2}, \qquad
+{}^t\!PAP = \mat{6 & 0 \\ 0 & 1}.
+\]
+\textbf{よくあるミス}:$\|\mat{2 \\ 1}\| = 3$ とすること
+(正しくは $\sqrt{5}$)。$2$ 乗和の平方根を丁寧に。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex3}}\quad
+\textbf{方針}:単位固有ベクトルから $P_i = \vect{u}_i\,{}^t\vect{u}_i$ を
+作る。\\
+\textbf{解答}:問 \ref{q:spec-ex1} より
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$($\lambda = 3$)、
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$($\lambda = -1$)。
+\[
+P_1 = \frac{1}{2}\mat{1 & 1 \\ 1 & 1}, \qquad
+P_2 = \frac{1}{2}\mat{1 & -1 \\ -1 & 1},
+\]
+であり、
+\[
+3P_1 - P_2 = \frac{1}{2}\mat{3 - 1 & 3 + 1 \\ 3 + 1 & 3 - 1}
+= \mat{1 & 2 \\ 2 & 1} = A.
+\]
+また $P_1 + P_2 = \dfrac{1}{2}\mat{2 & 0 \\ 0 & 2} = E$、
+\[
+P_1P_2 = \frac{1}{4}\mat{1 & 1 \\ 1 & 1}\mat{1 & -1 \\ -1 & 1}
+= \frac{1}{4}\mat{0 & 0 \\ 0 & 0} = O.
+\]
+\textbf{よくあるミス}:$\lambda = -1$ の項の符号を落として
+$3P_1 + P_2$ とすること。スペクトル分解の係数は固有値そのもの
+(負でもそのまま)である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex4}}\quad
+\textbf{方針}:上三角行列なので固有値は対角成分。固有ベクトルを求めて
+内積を計算する。\\
+\textbf{解答}:$\lambda = 1$:$(B - E)\vect{x} = \vect{0}$ は
+$y = 0$ となり固有ベクトルは $\mat{1 \\ 0}$。
+$\lambda = 2$:$(B - 2E)\vect{x} = \vect{0}$ は $-x + y = 0$ となり
+$\mat{1 \\ 1}$。内積は
+\[
+\Bigl\langle \mat{1 \\ 0}, \mat{1 \\ 1} \Bigr\rangle = 1 \neq 0
+\]
+で直交していない。定理 \ref{thm:spec-basic}(2) は\textbf{対称行列}に
+ついての主張であり、$B$ は ${}^t\!B \neq B$(非対称)なので
+仮定を満たさず、矛盾ではない。\\
+\textbf{よくあるミス}:「相異なる固有値なら直交」と覚えること。
+一般の行列で保証されるのは\emph{線形独立}まで
+(定理 \ref{thm:diag-distinct})で、直交は対称行列の特権である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex5}}\quad
+\textbf{方針}:ブロックごとに固有値・固有ベクトルを求める。\\
+\textbf{解答}:左上の $2 \times 2$ ブロック $\mat{2 & 1 \\ 1 & 2}$ の
+固有値は $3, 1$(例題 \ref{rei:spec-2x2})、第 $3$ 軸は固有値 $5$。
+固有ベクトルは
+\[
+\lambda = 1:\ \mat{1 \\ -1 \\ 0}, \qquad
+\lambda = 3:\ \mat{1 \\ 1 \\ 0}, \qquad
+\lambda = 5:\ \mat{0 \\ 0 \\ 1}.
+\]
+互いに直交している。正規化して
+\[
+P = \mat{1/\sqrt{2} & 1/\sqrt{2} & 0 \\ -1/\sqrt{2} & 1/\sqrt{2} & 0 \\
+0 & 0 & 1}, \qquad
+{}^t\!PAP = \mat{1 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 5}.
+\]
+\textbf{よくあるミス}:第 $3$ 行・第 $3$ 列が分離していることを
+見落として $3$ 次の固有方程式を真正面から解き始めること。
+ブロック構造は計算量を大幅に減らす。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex6}}\quad
+\textbf{方針}:$\lambda = 2, -1, -1$。重複固有値の固有空間内で
+グラム・シュミットを実行する。\\
+\textbf{解答}:行の和がすべて $2$ なので
+$A\mat{1\\1\\1} = 2\mat{1\\1\\1}$、$\lambda = 2$ の固有ベクトルは
+$\mat{1 \\ 1 \\ 1}$。固有多項式は
+$(\lambda - 2)(\lambda + 1)^2 = 0$ となり残りは $\lambda = -1$(重複度 $2$)。
+$(A + E)\vect{x} = \vect{0}$ は $3$ 本とも $x + y + z = 0$ で、
+固有空間は平面。基底 $\mat{1 \\ -1 \\ 0}, \mat{1 \\ 0 \\ -1}$ を
+直交化すると(例題 \ref{rei:spec-repeated} と同じ計算)
+$\mat{1 \\ -1 \\ 0}$ と $\mat{1/2 \\ 1/2 \\ -1}$。正規化して
+\[
+P = \mat{1/\sqrt{3} & 1/\sqrt{2} & 1/\sqrt{6} \\
+1/\sqrt{3} & -1/\sqrt{2} & 1/\sqrt{6} \\
+1/\sqrt{3} & 0 & -2/\sqrt{6}}, \qquad
+{}^t\!PAP = \mat{2 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & -1}.
+\]
+検算:$A\mat{1 \\ -1 \\ 0} = \mat{-1 \\ 1 \\ 0}$、
+$A\mat{1 \\ 1 \\ -2} = \mat{-1 \\ -1 \\ 2}$(どちらも $-1$ 倍)。\\
+\textbf{よくあるミス}:$\lambda = -1$ の固有空間の $2$ 本を
+直交化せずに並べること。$P$ が直交行列であるためには
+\emph{同じ固有空間の中}の直交化が必須である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex7}}\quad
+\textbf{方針}:$A^n = \lambda_1^nP_1 + \lambda_2^nP_2$。\\
+\textbf{解答}:問 \ref{q:spec-ex3} の分解 $A = 3P_1 - P_2$ と
+射影の性質(定理 \ref{thm:spec-decomp}(3))より
+\[
+A^n = 3^nP_1 + (-1)^nP_2
+= \frac{1}{2}\mat{3^n + (-1)^n & 3^n - (-1)^n \\ 3^n - (-1)^n & 3^n + (-1)^n}.
+\]
+検算($n = 2$):公式から $\dfrac{1}{2}\mat{10 & 8 \\ 8 & 10}
+= \mat{5 & 4 \\ 4 & 5}$。直接計算でも
+$A^2 = \mat{1 + 4 & 2 + 2 \\ 2 + 2 & 4 + 1} = \mat{5 & 4 \\ 4 & 5}$ で一致。\\
+\textbf{よくあるミス}:$(-1)^n$ を $-1$ のまま書くこと。
+偶数乗では $+1$ に変わる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex8}}\quad
+\textbf{方針}:$\mathrm{tr}({}^t\!AA)$ の対角成分が各列のノルムの
+$2$ 乗であることと、$A^2$ が $D^2$ と相似であることをつなぐ。\\
+\textbf{解答}:${}^t\!AA$ の $(j, j)$ 成分は「$A$ の第 $j$ 列と第 $j$ 列の
+内積」、すなわち $\sum_i a_{ij}^2$ である。よって
+\[
+\mathrm{tr}({}^t\!AA) = \sum_j \sum_i a_{ij}^2 = \sum_{i,j} a_{ij}^2.
+\]
+$A$ は対称だから ${}^t\!AA = A^2$、すなわち左辺は $\mathrm{tr}(A^2)$。
+また ${}^t\!PAP = D$ とすると
+$A^2 = (PD\,{}^t\!P)(PD\,{}^t\!P) = PD^2\,{}^t\!P$ で $A^2$ は $D^2$ と
+相似だから、トレースの相似不変性(定理 \ref{thm:trace-similar})より
+\[
+\mathrm{tr}(A^2) = \mathrm{tr}(D^2) = \lambda_1^2 + \cdots + \lambda_n^2.
+\]
+数値検算:$A = \mat{1 & 2 \\ 2 & 1}$ では
+$\sum a_{ij}^2 = 1 + 4 + 4 + 1 = 10$、固有値 $3, -1$ の $2$ 乗和も
+$9 + 1 = 10$ で一致する。\\
+\textbf{よくあるミス}:一般の(非対称)行列でも
+$\mathrm{tr}(A^2) = \sum a_{ij}^2$ と思うこと。
+非対称では ${}^t\!AA \neq A^2$ であり、この等式は崩れる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex9}}\quad
+\textbf{方針}:$B^2$ を展開し、$P_i^2 = P_i$、$P_1P_2 = O$ で整理する。\\
+\textbf{解答}:問 \ref{q:spec} より
+$P_1 = \dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$,
+$P_2 = \dfrac{1}{2}\mat{1 & -1 \\ -1 & 1}$。
+$B = \sqrt{3}P_1 + P_2$ とおくと
+\[
+B^2 = 3P_1^2 + \sqrt{3}(P_1P_2 + P_2P_1) + P_2^2
+= 3P_1 + O + P_2 = A
+\]
+(スペクトル分解 $A = 3P_1 + P_2$ を使った)。成分では
+\[
+B = \frac{1}{2}\mat{\sqrt{3} + 1 & \sqrt{3} - 1 \\ \sqrt{3} - 1 & \sqrt{3} + 1}.
+\]
+$B$ は対称行列で、固有値 $\sqrt{3}, 1$ はどちらも正である
+(「正定値行列の平方根」。次章の言葉でいえば $A$ も $B$ も正定値)。\\
+\textbf{よくあるミス}:$\sqrt{A}$ を「成分ごとの平方根」とすること。
+成分ごとの $\sqrt{2}, 1$ を並べた行列を $2$ 乗しても $A$ には戻らない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex10}}\quad
+\textbf{方針}:(1) 固有ベクトルの式に $A^2 = A$ を当てる。
+(2) スペクトル分解の係数を見る。\\
+\textbf{解答}:
+　(1) $A\vect{v} = \lambda\vect{v}$($\vect{v} \neq \vect{0}$)とすると
+$\lambda\vect{v} = A\vect{v} = A^2\vect{v} = \lambda^2\vect{v}$ より
+$(\lambda^2 - \lambda)\vect{v} = \vect{0}$、よって
+$\lambda(\lambda - 1) = 0$、すなわち $\lambda = 0$ または $1$
+(例題 \ref{rei:ch-proj-eigen} と同じ論法)。$A \neq O, E$ だから
+$0$ と $1$ の両方が実際に固有値になる。\\
+　(2) スペクトル分解は、固有値 $0, 1$ の固有空間への正射影行列
+$P_0, P_1$ を使って
+\[
+A = 0 \cdot P_0 + 1 \cdot P_1 = P_1.
+\]
+すなわち $A$ 自身が固有値 $1$ の固有空間への正射影行列である。
+「対称かつ $A^2 = A$」は正射影の行列による特徴づけになっている
+(問 \ref{q:gs-ex9} の $P$ もこの形だった)。\\
+\textbf{よくあるミス}:(2) で $P_0$ の項を書き忘れて論理が飛ぶこと。
+「$0$ 倍だから消える」ことを明示するのが答案の作法である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex11}}\quad
+\textbf{方針}:${}^t\!A$ を転置の計算法則で展開する。\\
+\textbf{解答}:$A = PD\,{}^t\!P$ とすると、転置の法則
+(${}^t(XY) = {}^tY\,{}^tX$ を $2$ 回)より
+\[
+{}^t\!A = {}^t({}^t\!P)\,{}^t\!D\,{}^t\!P = P\,D\,{}^t\!P = A
+\]
+(${}^t({}^t\!P) = P$ と、対角行列が ${}^t\!D = D$ を満たすことを使った)。
+よって $A$ は対称行列である。スペクトル定理(定理 \ref{thm:spec-main})と
+合わせて「直交行列で対角化できる $\iff$ 対称行列」という
+完全な特徴づけが得られた。\\
+\textbf{よくあるミス}:${}^t(PD\,{}^t\!P)$ の展開で因子の順序を
+保ったまま転置すること。転置は\emph{順序を逆に}して各因子に付く。
+
+\bigskip
+\noindent\textbf{問 \ref{q:spec-ex12}}\quad
+\textbf{方針}:$\mathrm{Im}$ の元を $A\vect{z}$ と書き、内積を受け渡す。
+直和は「共通部分ゼロ $+$ 次元の勘定」。\\
+\textbf{解答}:$\vect{x} \in \mathrm{Ker}\,A$($A\vect{x} = \vect{0}$)と
+$\vect{y} = A\vect{z} \in \mathrm{Im}\,A$ に対して
+\[
+\langle \vect{x}, \vect{y} \rangle = \langle \vect{x}, A\vect{z} \rangle
+= \langle A\vect{x}, \vect{z} \rangle = \langle \vect{0}, \vect{z} \rangle = 0
+\]
+(対称性による内積の受け渡し)。よって
+$\mathrm{Ker}\,A \perp \mathrm{Im}\,A$ である。
+とくに $\vect{x} \in \mathrm{Ker}\,A \cap \mathrm{Im}\,A$ なら
+$\langle \vect{x}, \vect{x} \rangle = 0$ より $\vect{x} = \vect{0}$、
+すなわち共通部分は $\{\vect{0}\}$。次元定理(定理 \ref{thm:dimension})
+より $\dim \mathrm{Ker}\,A + \dim \mathrm{Im}\,A = n$ だから、
+和空間の次元は
+$\dim(\mathrm{Ker}\,A) + \dim(\mathrm{Im}\,A) - 0 = n$ となり、
+$\mathrm{Ker}\,A + \mathrm{Im}\,A = \R^n$。共通部分が零なので
+これは直和である。\\
+\textbf{よくあるミス}:一般の行列で同じ主張をすること。
+非対称行列では $\mathrm{Ker}$ と $\mathrm{Im}$ は直交するとは限らず、
+共通の零でないベクトルをもつことさえある
+(例:$A = \mat{0 & 1 \\ 0 & 0}$ では
+$\mathrm{Ker}\,A = \mathrm{Im}\,A = \langle \vect{e}_1 \rangle$)。
+
+\bigskip
 \noindent\textbf{問 \ref{q:quad}}\quad
 　(1) 行列は $\mat{2 & 1 \\ 1 & 2}$。首座小行列式は
 $2 > 0$ と $\det = 4 - 1 = 3 > 0$。よって正定値。\\
