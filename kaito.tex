@@ -4988,15 +4988,258 @@ $\det(A^k) = \det(D^k) = (\lambda_1 \cdots \lambda_n)^k = (\det A)^k$
 
 \bigskip
 \noindent\textbf{問 \ref{q:ch}}\quad
+\textbf{方針}:(1) は $A^2$ を計算して代入。(2) は式を $A$ でくくる。\\
+\textbf{解答}:
 　(1) $A^2 = \mat{9 & 16 \\ 8 & 17}$ であり、
 \[
 A^2 - 4A - 5E = \mat{9 - 4 - 5 & 16 - 16 \\ 8 - 8 & 17 - 12 - 5} = O.
 \]
-　(2) $A^2 - 4A = 5E$ の両辺に $A^{-1}$ を掛けて整理すると
+　(2) $A^2 - 4A = 5E$ より $A(A - 4E) = 5E$、すなわち
 \[
 A^{-1} = \frac{1}{5}(A - 4E) = \frac{1}{5}\mat{-3 & 4 \\ 2 & -1}.
 \]
-(第I部の $2$ 次逆行列公式で検算できる。)
+(第I部の $2$ 次逆行列公式で検算できる。)\\
+\textbf{よくあるミス}:(2) で「両辺を $A$ で割る」と書くこと。
+行列に割り算はなく、「$A^{-1}$ を掛ける」または「$A$ でくくって
+逆行列の定義と見比べる」が正しい言い方である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex1}}\quad
+\textbf{方針}:$\mathrm{tr}\,A$ と $\det A$ から式を立てて検証する。\\
+\textbf{解答}:$\mathrm{tr}\,A = 5$, $\det A = 4 - 6 = -2$ だから、
+主張される式は $A^2 - 5A - 2E = O$ である。実際
+\[
+A^2 = \mat{7 & 10 \\ 15 & 22}, \qquad
+A^2 - 5A - 2E
+= \mat{7 - 5 - 2 & 10 - 10 \\ 15 - 15 & 22 - 20 - 2} = O.
+\]
+\textbf{よくあるミス}:$\det A$ の符号($-2$)の扱い。
+式は $A^2 - (\mathrm{tr}\,A)A + (\det A)E$ なので、
+$\det A < 0$ なら「$-2E$ を足す」=「$2E$ を引く」になる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex2}}\quad
+\textbf{方針}:$A^2 - 5A = 2E$ を $A$ でくくる。\\
+\textbf{解答}:問 \ref{q:ch-ex1} の式から $A(A - 5E) = 2E$、よって
+\[
+A^{-1} = \frac{1}{2}(A - 5E)
+= \frac{1}{2}\mat{-4 & 2 \\ 3 & -1}
+= \mat{-2 & 1 \\ 3/2 & -1/2}.
+\]
+検算:逆行列公式(定理 \ref{thm:inv2x2})でも
+$A^{-1} = \dfrac{1}{-2}\mat{4 & -2 \\ -3 & 1}$ となり一致する。\\
+\textbf{よくあるミス}:$\dfrac{1}{\det A}$ と
+$\dfrac{1}{2}$($= \dfrac{1}{-\det A}$)の混同。
+移項の途中式を丁寧に書けば防げる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex3}}\quad
+\textbf{方針}:$A^2 = 3A - 2E$ を繰り返し使って次数を下げる。\\
+\textbf{解答}:$\mathrm{tr}\,A = 3$, $\det A = 2$ より $A^2 = 3A - 2E$。
+\[
+A^3 = A \cdot A^2 = A(3A - 2E) = 3A^2 - 2A = 3(3A - 2E) - 2A = 7A - 6E.
+\]
+成分では
+\[
+A^3 = 7\mat{1 & 2 \\ 0 & 2} - 6E = \mat{1 & 14 \\ 0 & 8}.
+\]
+検算:直接計算でも $A^2 = \mat{1 & 6 \\ 0 & 4}$,
+$A^3 = \mat{1 & 14 \\ 0 & 8}$ で一致する
+(三角行列なので対角成分が $1^3, 2^3$ になっていることも確認できる)。\\
+\textbf{よくあるミス}:$A^3 = 3A^2 - 2A$ の段階で止めてしまうこと。
+もう一度 $A^2 = 3A - 2E$ を代入して $A$ と $E$ だけの式にする。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex4}}\quad
+\textbf{方針}:次数の低い候補から「$A$ を代入して $O$ になるか」を試す。\\
+\textbf{解答}:
+　(1) $E - 1 \cdot E = O$ だから $m_E = \lambda - 1$($1$ 次が最小)。\\
+　(2) $O$ はそれ自身が零行列なので $m_O = \lambda$
+($O - 0 \cdot E = O$)。\\
+　(3) 固有値は $1$ のみ。$A - E = \mat{0 & 1 \\ 0 & 0} \neq O$ だから
+$\lambda - 1$ では消えず、$m_A = (\lambda - 1)^2$
+(ケーリー・ハミルトンより $(A - E)^2 = O$)。\\
+　(4) 固有値は $2, 3$。最小多項式は両方を根にもつ必要があるから
+(定理 \ref{thm:minpoly-basic}(2))、$m_A = (\lambda - 2)(\lambda - 3)$
+(実際 $(A - 2E)(A - 3E) = \mat{0 & 0 \\ 0 & 1}\mat{-1 & 0 \\ 0 & 0} = O$)。\\
+\textbf{よくあるミス}:(1)(2) で $m$ を $2$ 次(固有多項式)と答えること。
+最小多項式は固有多項式より低い次数になりうる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex5}}\quad
+\textbf{方針}:$\lambda^{10}$ の余りを $a\lambda + b$ とおき、
+固有値 $1, 3$ を代入する。\\
+\textbf{解答}:$\varphi_A(\lambda) = (\lambda - 1)(\lambda - 3)$
+(例題 \ref{rei:ch-verify})。
+$\lambda^{10} = q(\lambda)\varphi_A(\lambda) + a\lambda + b$ に
+$\lambda = 1, 3$ を代入して
+\[
+1 = a + b, \qquad 3^{10} = 59049 = 3a + b.
+\]
+辺々引いて $2a = 59048$、$a = 29524$, $b = 1 - 29524 = -29523$。
+定理 \ref{thm:ch-remainder} より
+\[
+A^{10} = 29524\,A - 29523\,E
+= \mat{29525 & 29524 \\ 29524 & 29525}.
+\]
+検算:問 \ref{q:power-ex1} の公式で
+$\dfrac{3^{10} + 1}{2} = 29525$, $\dfrac{3^{10} - 1}{2} = 29524$ と
+一致する。\\
+\textbf{よくあるミス}:余りを定数 $1$ 個とおくこと。
+$2$ 次式で割った余りは $1$ 次以下なので未知数は $2$ 個($a, b$)、
+固有値 $2$ 個の代入でちょうど決まる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex6}}\quad
+\textbf{方針}:三角行列の固有値は対角成分。積は左から順に計算する。\\
+\textbf{解答}:$A$ は上三角だから固有値は $1, 2, 3$ で、
+$\varphi_A(\lambda) = (\lambda - 1)(\lambda - 2)(\lambda - 3)$ である
+(定理 \ref{thm:eigen-tri})。
+\[
+A - E = \mat{0 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 2}, \quad
+A - 2E = \mat{-1 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}, \quad
+A - 3E = \mat{-2 & 1 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 0}.
+\]
+まず左の二つの積:
+\[
+(A - E)(A - 2E) = \mat{0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 2}.
+\]
+これに $A - 3E$ を掛けると、第 $3$ 行 $(0, 0, 2)$ と $A - 3E$ の
+第 $3$ 列 $(0, 0, 0)$ の組合せしか残らず、
+\[
+(A - E)(A - 2E)(A - 3E) = O.
+\]
+確かにケーリー・ハミルトンの定理が成り立っている。\\
+\textbf{よくあるミス}:$3$ つの行列の積を一度に計算しようとすること。
+二つずつ、左から(または右から)順に掛ける。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex7}}\quad
+\textbf{方針}:固有値は $2$ のみ。候補 $(\lambda - 2)^k$($k = 1, 2, 3$)を
+低い次数から試す。\\
+\textbf{解答}:$A$ は三角行列で固有値は $2$ のみ
+($\varphi_A = (\lambda - 2)^3$)。
+\[
+A - 2E = \mat{0 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0} \neq O
+\]
+だから $m_A \neq \lambda - 2$。次に
+\[
+(A - 2E)^2 = \mat{0 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0}^2 = O
+\]
+(第 $2$ 行と第 $3$ 列の組合せがすべて $0$)なので
+$m_A = (\lambda - 2)^2$ である。重根をもつから、
+定理 \ref{thm:minpoly-diag} により対角化不可能である。\\
+\textbf{よくあるミス}:$m_A = \varphi_A = (\lambda - 2)^3$ と
+即断すること。$2$ 乗で消えるかどうかを実際に計算して確かめる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex8}}\quad
+\textbf{方針}:$\mathrm{tr}\,R = 0$, $\det R = 1$ からケーリー・ハミルトン。\\
+\textbf{解答}:$\mathrm{tr}\,R = 0$, $\det R = 1$ より
+$R^2 - 0 \cdot R + 1 \cdot E = O$、すなわち $R^2 = -E$ である。よって
+\[
+R^4 = (R^2)^2 = (-E)^2 = E, \qquad
+R^{100} = (R^4)^{25} = E^{25} = E.
+\]
+幾何的解釈:$R^2 = -E$ は「$90^\circ$ を $2$ 回 $= 180^\circ$ 回転
+$=$ 原点対称」、$R^4 = E$ は「$4$ 回で $360^\circ$、元どおり」、
+$R^{100}$ は「$100 \times 90^\circ = 25$ 周でちょうど元どおり」である。\\
+\textbf{よくあるミス}:$R^2 = -E$ の右辺を数の $-1$ と書くこと。
+行列の等式なので $-E$(単位行列の $-1$ 倍)である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex9}}\quad
+\textbf{方針}:(1) $A$ を消す $2$ 次式が分かっているので、
+最小多項式はその約数。$1$ 次の候補を仮定すると矛盾が出る。\\
+\textbf{解答}:
+　(1) 仮定より $f(\lambda) = \lambda^2 - 5\lambda + 6
+= (\lambda - 2)(\lambda - 3)$ が $f(A) = O$ を満たすから、
+定理 \ref{thm:minpoly-basic}(1) により $m_A \mid (\lambda - 2)(\lambda - 3)$。
+候補は $\lambda - 2$, $\lambda - 3$, $(\lambda - 2)(\lambda - 3)$ の三つ。
+もし $m_A = \lambda - 2$ なら $A - 2E = O$、すなわち $A = 2E$ となり
+仮定に反する。$m_A = \lambda - 3$ も同様に $A = 3E$ となり反する。
+よって $m_A = (\lambda - 2)(\lambda - 3)$ である。\\
+　(2) 最小多項式の根は固有値と一致する(定理 \ref{thm:minpoly-basic}(2))
+から、$A$ は固有値 $2$ と $3$ を両方もつ。$2$ 次正方行列が相異なる
+$2$ つの固有値をもつので、定理 \ref{thm:diag-ndistinct} により
+対角化可能である($P^{-1}AP = \mathrm{diag}(2, 3)$ とできる)。\\
+\textbf{よくあるミス}:(2) で「$m_A$ が重根をもたないから対角化可能」
+とだけ書くこと。それでもよいが、本書では定理 \ref{thm:minpoly-diag} の
+その向きの証明を第VI部に先送りしているため、$2$ 次なら
+「相異なる固有値 $2$ 個」で完結に証明できる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex10}}\quad
+\textbf{方針}:$A^{n+1} = A \cdot A^n$ に $A^n = a_nA + b_nE$ を代入し、
+$A^2$ をケーリー・ハミルトンで下げる。\\
+\textbf{解答}:
+　(1) $A^{n+1} = A(a_nA + b_nE) = a_nA^2 + b_nA$ に
+$A^2 = (\mathrm{tr}\,A)A - (\det A)E$ を代入すると
+\[
+A^{n+1} = a_n\bigl((\mathrm{tr}\,A)A - (\det A)E\bigr) + b_nA
+= \bigl((\mathrm{tr}\,A)a_n + b_n\bigr)A - (\det A)\,a_n\,E.
+\]
+$A^{n+1} = a_{n+1}A + b_{n+1}E$ と見比べて
+$a_{n+1} = (\mathrm{tr}\,A)a_n + b_n$,
+$b_{n+1} = -(\det A)a_n$ を得る
+($A$ と $E$ による表し方の一意性は、$A$ が $E$ の定数倍でない限り
+$\{A, E\}$ が独立なことから従う)。\\
+　(2) $\mathrm{tr}\,A = 4$, $\det A = 3$, $a_1 = 1$, $b_1 = 0$ から
+\[
+a_2 = 4 \cdot 1 + 0 = 4, \quad b_2 = -3 \cdot 1 = -3, \qquad
+a_3 = 4 \cdot 4 - 3 = 13, \quad b_3 = -3 \cdot 4 = -12.
+\]
+$A^2 = 4A - 3E$、$A^3 = 13A - 12E$ となり、
+例題 \ref{rei:ch-lower} と一致する。\\
+\textbf{よくあるミス}:$b_{n+1}$ の符号($-\det A$ 倍)を忘れること。
+$n = 2$ の値をケーリー・ハミルトンの式と直接見比べて検算する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex11}}\quad
+\textbf{方針}:差 $m_1 - m_2$ を考える。最高次が打ち消し合い、
+次数最小性と衝突する。\\
+\textbf{解答}:$m_1, m_2$ をともに「$A$ を消す次数最小のモニック多項式」
+とする。次数最小性から $\deg m_1 = \deg m_2$($= k$ とおく)である。
+差 $d = m_1 - m_2$ を考えると、
+\[
+d(A) = m_1(A) - m_2(A) = O - O = O
+\]
+であり、$m_1, m_2$ はどちらもモニック($\lambda^k$ の係数が $1$)
+だから、$d$ では $\lambda^k$ の項が打ち消されて $\deg d < k$ となる。
+もし $d$ が零多項式でなければ、$d$ をその最高次係数で割って
+モニックにした多項式は、「$A$ を消す、次数 $k$ 未満のモニック多項式」
+になり、$k$ の最小性に矛盾する。よって $d = 0$、
+すなわち $m_1 = m_2$ である。\\
+\textbf{よくあるミス}:「差も $A$ を消す」ことを言わずに
+次数だけ論じること。$d(A) = O$ と $\deg d < k$ の両方がそろって
+初めて矛盾が出る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:ch-ex12}}\quad
+\textbf{方針}:(1) は定数項を分離して $A \cdot q(A) = E$ の形を作る。
+(2) は $m_A = \lambda h(\lambda)$ と分解し、$h(A) \neq O$ を使う。\\
+\textbf{解答}:$m_A(\lambda) = \lambda^k + c_{k-1}\lambda^{k-1} + \cdots
++ c_1\lambda + c_0$ とおく($c_0 = m_A(0)$)。\\
+　(1) $c_0 \neq 0$ とする。$m_A(A) = O$ から定数項を移項すると
+\[
+A\bigl(A^{k-1} + c_{k-1}A^{k-2} + \cdots + c_1E\bigr) = -c_0 E,
+\]
+すなわち $q(A) = -\dfrac{1}{c_0}\bigl(A^{k-1} + c_{k-1}A^{k-2} + \cdots
++ c_1E\bigr)$ とおけば $A\,q(A) = E$。$A$ のべきどうしは交換できるから
+$q(A)\,A = E$ も成り立ち、$A$ は正則で $A^{-1} = q(A)$、
+しかもこれは $A$ の多項式である。\\
+　(2) $c_0 = 0$ とすると $m_A(\lambda) = \lambda\,h(\lambda)$
+($\deg h = k - 1$)と書ける。$\deg h < \deg m_A$ だから、
+最小性により $h(A) \neq O$。よって $h(A)\vect{w} \neq \vect{0}$ となる
+ベクトル $\vect{w}$ が存在する。$\vect{v} = h(A)\vect{w}$ とおくと
+$\vect{v} \neq \vect{0}$ で
+\[
+A\vect{v} = A\,h(A)\vect{w} = m_A(A)\vect{w} = \vect{0}.
+\]
+すなわち $0$ が $A$ の固有値であり、定理 \ref{thm:eigen-zero} により
+$A$ は正則でない。\\
+\textbf{よくあるミス}:(2) で「$h(A) \neq O$」の根拠を書かないこと。
+最小多項式の\emph{次数最小性}がここで効いている。
 
 \section*{第V部}
 

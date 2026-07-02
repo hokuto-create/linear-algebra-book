@@ -1565,9 +1565,39 @@ $q = -\alpha^2$ を代入して両辺を比べる。(2) は $n = 0, 1$ の値で
 \chapter{ケーリー・ハミルトンの定理と最小多項式}\label{chap:ch}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item ケーリー・ハミルトンの定理($\varphi_A(A) = O$)を、$2$ 次の場合の
+完全な証明と対角化可能な場合の証明とともに理解する。
+\item 定理を使って、高いべき乗の「べき下げ」(余りの方法)と、
+逆行列の多項式表示を実行できるようになる。
+\item \textbf{最小多項式}の基本性質($A$ を消す多項式をすべて割り切る、
+根は固有値と一致する)を証明つきで理解し、具体的な行列の最小多項式を
+計算して対角化可能性の判定に使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 行列は自分の固有方程式を満たす}
+
+第IV部の締めくくりに、固有多項式にまつわる美しい定理を紹介する。
+固有多項式 $\varphi_A(\lambda)$ は「数 $\lambda$ を入れる」ための
+多項式だった。ところが、そこに\textbf{行列 $A$ 自身を代入する}と、
+驚くべきことに必ず零行列になる。$2$ 次の場合に試すと
+\[
+A = \mat{1 & 2 \\ 3 & 4}, \qquad
+\varphi_A(\lambda) = \lambda^2 - 5\lambda - 2, \qquad
+A^2 - 5A - 2E = \mat{7 & 10 \\ 15 & 22} - \mat{5 & 10 \\ 15 & 20}
+- \mat{2 & 0 \\ 0 & 2} = O.
+\]
+偶然ではない。この事実(ケーリー・ハミルトンの定理)は、
+$A^2$ 以上のべきを $A$ と $E$ の線形結合に「たたみ込む」道具であり、
+対角化できない行列にも通用する。さらに、「$A$ を消す最小の多項式」を
+考えることで、対角化可能性の最も洗練された判定法(最小多項式)へと
+つながっていく。
+
 \section{ケーリー・ハミルトンの定理}
 
-\begin{teiri}[ケーリー・ハミルトン]
+\begin{teiri}[ケーリー・ハミルトン]\label{thm:ch-main}
 $A$ の固有多項式 $\varphi_A(\lambda)$ に $A$ 自身を代入すると零行列になる:
 \[
 \varphi_A(A) = O.
@@ -1578,18 +1608,89 @@ A^2 - (\mathrm{tr}\,A)\,A + (\det A)\,E = O.
 \]
 \end{teiri}
 
+\noindent\textbf{(証明:$2$ 次の場合)}\quad
+$A = \mat{a & b \\ c & d}$ とすると
+\[
+A^2 = \mat{a^2 + bc & b(a + d) \\ c(a + d) & d^2 + bc}, \qquad
+(\mathrm{tr}\,A)A = (a + d)\mat{a & b \\ c & d}
+= \mat{a^2 + ad & b(a + d) \\ c(a + d) & ad + d^2}.
+\]
+辺々引くと非対角成分が消えて
+\[
+A^2 - (\mathrm{tr}\,A)A = \mat{bc - ad & 0 \\ 0 & bc - ad}
+= -(ad - bc)E = -(\det A)E,
+\]
+移項すれば $A^2 - (\mathrm{tr}\,A)A + (\det A)E = O$ である。 $\blacksquare$
+
+\noindent\textbf{(証明:対角化可能な場合の一般次数)}\quad
+$A = PDP^{-1}$($D = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$)と
+対角化されているとする。一般に、多項式
+$f(\lambda) = c_k\lambda^k + \cdots + c_1\lambda + c_0$ に対して
+$A^j = PD^jP^{-1}$(定理 \ref{thm:power-formula})だから
+\[
+f(A) = c_k PD^kP^{-1} + \cdots + c_1 PDP^{-1} + c_0 PEP^{-1}
+= P\,f(D)\,P^{-1}
+\]
+であり、$f(D) = \mathrm{diag}\bigl(f(\lambda_1), \dots, f(\lambda_n)\bigr)$
+である。$f = \varphi_A$ とすると、各 $\lambda_i$ は固有方程式の解だから
+$\varphi_A(\lambda_i) = 0$、よって $\varphi_A(D) = O$ となり
+\[
+\varphi_A(A) = P\,\varphi_A(D)\,P^{-1} = P\,O\,P^{-1} = O. \qquad\blacksquare
+\]
+
+対角化できない行列を含む完全な証明は余因子行列を使う(深掘り参照)。
 高校数学IIIや旧課程で「ハミルトン・ケーリーの定理」として
 $2$ 次の場合に触れた読者もいるだろう。一般の $n$ 次で成り立つ。
+
+\section{効用 ― べき下げと逆行列}
 
 この定理の効用は、\textbf{$A$ の高いべきを低いべきで表せる}ことである。
 $2$ 次なら $A^2 = (\mathrm{tr}\,A)A - (\det A)E$ を繰り返し使えば、
 $A^n$ はつねに $\alpha A + \beta E$ の形に落ちる
 (対角化できない行列にも使える点が強み)。
-また $\det A \neq 0$ なら、上式を変形して
+繰り返しを一気に済ませるのが、次の\textbf{余りの方法}である。
+
+\begin{teiri}[余りによるべき計算]\label{thm:ch-remainder}
+多項式 $f(\lambda)$ を固有多項式 $\varphi_A(\lambda)$ で割った余りを
+$r(\lambda)$ とすると($f = q\,\varphi_A + r$、
+$\deg r < n$)、
+\[
+f(A) = r(A).
+\]
+とくに $f(\lambda) = \lambda^N$ とすれば、$A^N$ は次数 $n - 1$ 以下の
+$A$ の多項式で書ける。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$f(\lambda) = q(\lambda)\varphi_A(\lambda) + r(\lambda)$ は
+$\lambda$ の多項式としての等式だから、両辺の $\lambda^k$ を $A^k$ で
+置き換えた行列の等式も成り立つ($A$ のべきどうしの積は順序を
+気にしなくてよいので、数の場合とまったく同じに展開できる)。
+ケーリー・ハミルトンの定理 \ref{thm:ch-main} より
+$\varphi_A(A) = O$ だから
+\[
+f(A) = q(A)\,\varphi_A(A) + r(A) = q(A)\,O + r(A) = r(A). \qquad\blacksquare
+\]
+
+余り $r$ の係数は、割り算を実行しなくても、
+\textbf{固有値を代入する}ことで求まる:$\varphi_A(\lambda_i) = 0$ だから
+$f(\lambda_i) = r(\lambda_i)$ が各固有値で成り立ち、これが $r$ の係数の
+連立方程式になる(例題 \ref{rei:ch-power100})。
+
+また $\det A \neq 0$ なら、$2$ 次のケーリー・ハミルトンの式を変形して
 \[
 A^{-1} = \frac{1}{\det A}\bigl((\mathrm{tr}\,A)E - A\bigr)
 \]
-と、逆行列まで $A$ の多項式で書ける。
+と、\textbf{逆行列まで $A$ の多項式で書ける}
+($A\bigl((\mathrm{tr}\,A)E - A\bigr) = (\mathrm{tr}\,A)A - A^2
+= (\det A)E$ による)。
+
+\begin{mondai}\label{q:ch}
+$A = \mat{1 & 4 \\ 2 & 3}$(問 \ref{q:eigen} の行列)について、\\
+　(1) ケーリー・ハミルトンの定理が成り立つこと($A^2 - 4A - 5E = O$)を
+直接計算で確かめよ。\\
+　(2) この式を用いて $A^{-1}$ を $A$ と $E$ の線形結合で表せ。
+\end{mondai}
 
 \begin{itembox}[l]{深掘り:有名な「一行の誤証明」}
 $\varphi_A(\lambda) = \det(\lambda E - A)$ に $\lambda = A$ を代入すれば
@@ -1604,7 +1705,7 @@ $\det(\lambda E - A)$ の $\lambda$ は「数を入れる箱」として展開�
 多項式であって、行列を入れてよい場所ではない
 ($\lambda E - A$ の $\lambda E$ に $A$ を「掛ける」のか「代入する」のかが
 曖昧になる)。正しい証明は余因子行列を巧みに使う
-(あるいは「対角化可能な行列では明らか+極限論法」による)。
+(あるいは「対角化可能な行列では本文のとおり+極限論法」による)。
 \textbf{記号の見かけに引きずられず、式の型(スカラーか、行列か、多項式か)を
 確認する}――この習慣は、数学のあらゆる場面で誤りからあなたを守る。
 \end{itembox}
@@ -1616,20 +1717,69 @@ $\varphi_A(A) = O$ により、「$A$ を代入すると消える多項式」は
 
 \begin{teigi}[最小多項式]
 $m(A) = O$ を満たす多項式のうち、次数最小で最高次係数 $1$ のものを
-$A$ の\textbf{最小多項式}といい、$m_A(\lambda)$ と書く。
+$A$ の\textbf{最小多項式}といい、$m_A(\lambda)$ と書く
+(そのようなものがただ一つであることは問 \ref{q:ch-ex11} で証明する)。
 \end{teigi}
 
-最小多項式は固有多項式を割り切り、しかも固有多項式と同じ根
-(固有値)をすべてもつことが知られている。違いは\textbf{重複度だけ}である。
-そして、対角化可能性の最も洗練された判定法が次である。
-
-\begin{teiri}[最小多項式による判定]
-$A$ が対角化可能 $\iff$ $m_A(\lambda)$ が重根をもたない。
+\begin{teiri}[最小多項式の基本性質]\label{thm:minpoly-basic}
+\begin{enumerate}
+\item $f(A) = O$ を満たす多項式 $f$ は、すべて $m_A$ で割り切れる。
+とくに、固有多項式は最小多項式で割り切れる($m_A \mid \varphi_A$)。
+\item $m_A(\lambda) = 0$ の解は、$A$ の固有値と過不足なく一致する。
+\end{enumerate}
 \end{teiri}
 
-\begin{rei}
+\noindent\textbf{(証明)}\quad
+(1) $f$ を $m_A$ で割って $f = q\,m_A + r$($\deg r < \deg m_A$)とする。
+行列を代入すると(定理 \ref{thm:ch-remainder} の証明と同じ理屈で)
+\[
+O = f(A) = q(A)\,m_A(A) + r(A) = r(A).
+\]
+もし $r$ が零多項式でなければ、「$A$ を消す、$m_A$ より次数の低い多項式」
+が存在することになり、$m_A$ の次数最小性に矛盾する。よって $r = 0$、
+すなわち $m_A \mid f$ である。$\varphi_A(A) = O$
+(ケーリー・ハミルトン)だから、とくに $m_A \mid \varphi_A$。
+
+(2) まず、固有値はすべて $m_A$ の根であることを示す。
+$\lambda$ を固有値、$\vect{v} \neq \vect{0}$ を固有ベクトルとすると、
+$A^k\vect{v} = \lambda^k\vect{v}$(問 \ref{q:eigen-ex8} の繰り返し)より、
+どんな多項式 $f$ でも $f(A)\vect{v} = f(\lambda)\vect{v}$ が成り立つ。
+$f = m_A$ とすると
+\[
+\vect{0} = m_A(A)\vect{v} = m_A(\lambda)\vect{v}
+\]
+で、$\vect{v} \neq \vect{0}$ だから $m_A(\lambda) = 0$。
+逆に、$m_A$ の根は、$m_A \mid \varphi_A$ により $\varphi_A$ の根、
+すなわち固有値である。 $\blacksquare$
+
+つまり、固有多項式と最小多項式は\textbf{同じ根をもち、
+違いは重複度だけ}である。
+そして、対角化可能性の最も洗練された判定法が次である。
+
+\begin{teiri}[最小多項式による判定]\label{thm:minpoly-diag}
+$A$ が対角化可能 $\iff$ $m_A(\lambda)$ が重根をもたない
+(すなわち、相異なる固有値を $\lambda_1, \dots, \lambda_k$ として
+$m_A(\lambda) = (\lambda - \lambda_1)\cdots(\lambda - \lambda_k)$)。
+\end{teiri}
+
+\noindent\textbf{(証明:$\Rightarrow$ の向き)}\quad
+$A = PDP^{-1}$ と対角化されているとし、相異なる固有値を
+$\lambda_1, \dots, \lambda_k$ とする。
+$g(\lambda) = (\lambda - \lambda_1)\cdots(\lambda - \lambda_k)$ とおくと、
+$g(A) = P\,g(D)\,P^{-1}$ であり、$g(D)$ は対角成分が
+$g(\lambda_i) = 0$ の対角行列、すなわち $O$。よって $g(A) = O$ である。
+性質 \ref{thm:minpoly-basic}(1) より $m_A \mid g$ で、
+一方 (2) より $m_A$ は $\lambda_1, \dots, \lambda_k$ をすべて根にもつから
+$\deg m_A \ge k = \deg g$。あわせて $m_A = g$ となり、重根をもたない。
+
+逆向き($m_A$ が重根をもたなければ対角化可能)も成り立つが、
+証明には固有空間への分解の理論が要るので、第VI部で
+ジョルダン標準形とともに完成させる。 $\blacksquare$
+
+\begin{rei}\label{rei:ch-minpoly}
 $A = \mat{1 & 1 \\ 0 & 1}$ の固有多項式は $(\lambda - 1)^2$。
-最小多項式の候補は $\lambda - 1$ と $(\lambda - 1)^2$ だが、
+最小多項式の候補は、$\varphi_A$ の約数で固有値 $1$ を根にもつ
+$\lambda - 1$ と $(\lambda - 1)^2$ だが(定理 \ref{thm:minpoly-basic})、
 $A - E \neq O$ なので $m_A(\lambda) = (\lambda - 1)^2$。重根をもつから
 対角化不可能――第 \ref{chap:diag} 章の結論と一致する。
 一方 $E = \mat{1 & 0 \\ 0 & 1}$ も固有多項式は $(\lambda - 1)^2$ だが、
@@ -1639,9 +1789,301 @@ $m_E(\lambda) = \lambda - 1$ で重根なし(そもそも対角行列)。
 ジョルダン標準形を分類する鍵になる。
 \end{rei}
 
-\begin{mondai}\label{q:ch}
-$A = \mat{1 & 4 \\ 2 & 3}$(問 \ref{q:eigen} の行列)について、\\
-　(1) ケーリー・ハミルトンの定理が成り立つこと($A^2 - 4A - 5E = O$)を
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$A^2 = O$ でも $A = O$ とは限らない]\label{hanrei:ch-nilpotent}
+数の世界の「$x^2 = 0$ ならば $x = 0$」は、行列では通用しない。
+\[
+A = \mat{0 & 1 \\ 0 & 0}
+\]
+は $A \neq O$ なのに $A^2 = O$ である
+(固有多項式は $\lambda^2$ で、ケーリー・ハミルトンの主張どおり
+$A^2 = O$ になっている、ともいえる)。
+この $A$ の最小多項式は $\lambda^2$(重根)で、
+問 \ref{q:diag-ex10} で見たとおり、この種の行列
+(\textbf{べき零行列})は決して対角化できない。
+零因子(反例 \ref{hanrei:zerodiv})と同様、
+「数の常識」を行列に持ち込むときは検証が要る。
+\end{hanrei}
+
+\begin{hanrei}[$A$ を消す多項式が固有多項式とは限らない]\label{hanrei:ch-annihilator}
+「$f(A) = O$ ならば $f$ は固有多項式(の定数倍)だろう」は誤りである。
+$E$($2$ 次)の固有多項式は $(\lambda - 1)^2$ だが、
+より次数の低い $f(\lambda) = \lambda - 1$ がすでに $f(E) = E - E = O$ を
+満たす。正しい関係は定理 \ref{thm:minpoly-basic} のとおり
+「$A$ を消す多項式は\textbf{最小多項式の倍数}」であり、
+固有多項式はその一例にすぎない。
+ケーリー・ハミルトンの定理は「$\varphi_A$ は $A$ を消す」と
+述べているだけで、「$\varphi_A$ が最小である」とは述べていない。
+\end{hanrei}
+
+\section{例題}
+
+ケーリー・ハミルトンの検証・活用と、最小多項式の計算を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(定理の検証)]\label{rei:ch-verify}
+$A = \mat{2 & 1 \\ 1 & 2}$ についてケーリー・ハミルトンの定理の式を書き、
 直接計算で確かめよ。\\
-　(2) この式を用いて $A^{-1}$ を $A$ と $E$ の線形結合で表せ。
+\textbf{解.}\ $\mathrm{tr}\,A = 4$, $\det A = 3$ より、主張される式は
+$A^2 - 4A + 3E = O$ である。実際
+\[
+A^2 = \mat{5 & 4 \\ 4 & 5}, \qquad
+A^2 - 4A + 3E = \mat{5 - 8 + 3 & 4 - 4 \\ 4 - 4 & 5 - 8 + 3} = O.
+\]
+固有値 $3, 1$(例題 \ref{rei:eigen-basic})を使えば
+$\varphi_A(\lambda) = (\lambda - 3)(\lambda - 1) = \lambda^2 - 4\lambda + 3$
+とも書け、同じ式である。
+\end{rei}
+
+\begin{rei}[例題・基本(逆行列の計算)]\label{rei:ch-inverse}
+例題 \ref{rei:ch-verify} の式を使って
+$A = \mat{2 & 1 \\ 1 & 2}$ の逆行列を求めよ。\\
+\textbf{解.}\ $A^2 - 4A + 3E = O$ を移項して $A^2 - 4A = -3E$、
+$A$ でくくると $A(A - 4E) = -3E$、すなわち
+\[
+A \cdot \frac{1}{3}(4E - A) = E.
+\]
+よって
+\[
+A^{-1} = \frac{1}{3}(4E - A) = \frac{1}{3}\mat{2 & -1 \\ -1 & 2}.
+\]
+検算:$A \cdot \dfrac{1}{3}\mat{2 & -1 \\ -1 & 2}
+= \dfrac{1}{3}\mat{4 - 1 & -2 + 2 \\ 2 - 2 & -1 + 4} = E$。
+$2$ 次の逆行列公式(定理 \ref{thm:inv2x2})とも一致する。
+\end{rei}
+
+\begin{rei}[例題・基本(べき下げ)]\label{rei:ch-lower}
+$A = \mat{2 & 1 \\ 1 & 2}$ の $A^3$ を、$\alpha A + \beta E$ の形に
+表してから計算せよ。\\
+\textbf{解.}\ $A^2 = 4A - 3E$(例題 \ref{rei:ch-verify})を繰り返し使う。
+\[
+A^3 = A \cdot A^2 = A(4A - 3E) = 4A^2 - 3A = 4(4A - 3E) - 3A = 13A - 12E.
+\]
+成分で書けば
+\[
+A^3 = 13\mat{2 & 1 \\ 1 & 2} - 12E = \mat{14 & 13 \\ 13 & 14}.
+\]
+検算:$A^3 = A \cdot A^2 = \mat{2 & 1 \\ 1 & 2}\mat{5 & 4 \\ 4 & 5}
+= \mat{14 & 13 \\ 13 & 14}$ で一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(余りの方法で $A^{100}$)]\label{rei:ch-power100}
+$A = \mat{3 & -2 \\ 1 & 0}$ の $A^{100}$ を求めよ。\\
+\textbf{解.}\ $\varphi_A(\lambda) = \lambda^2 - 3\lambda + 2
+= (\lambda - 1)(\lambda - 2)$(固有値 $1, 2$)。
+$\lambda^{100}$ を $\varphi_A$ で割った余りを $a\lambda + b$ とおくと
+\[
+\lambda^{100} = q(\lambda)(\lambda - 1)(\lambda - 2) + a\lambda + b.
+\]
+$\lambda = 1$ を代入すると $1 = a + b$、$\lambda = 2$ を代入すると
+$2^{100} = 2a + b$。解いて $a = 2^{100} - 1$, $b = 2 - 2^{100}$。
+定理 \ref{thm:ch-remainder} より
+\[
+A^{100} = (2^{100} - 1)A + (2 - 2^{100})E
+= \mat{2^{101} - 1 & -2^{101} + 2 \\ 2^{100} - 1 & -2^{100} + 2}.
+\]
+検算:同じ手順を $N = 1$ で行うと $a = 1$, $b = 0$ で $A^1 = A$ となり
+つじつまが合う。対角化を経由してもよいが、余りの方法は
+$P^{-1}$ の計算が不要なぶん速い。
+\end{rei}
+
+\begin{rei}[例題・標準(最小多項式の計算)]\label{rei:ch-minpoly-3x3}
+次の行列の最小多項式を求め、対角化可能性を判定せよ。
+\[
+A = \mat{2 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3}, \qquad
+B = \mat{2 & 1 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3}
+\]
+\textbf{解.}\ どちらも固有多項式は $(\lambda - 2)^2(\lambda - 3)$ である。
+最小多項式は、固有値 $2, 3$ を根にもつ $\varphi$ の約数だから、候補は
+$(\lambda - 2)(\lambda - 3)$ と $(\lambda - 2)^2(\lambda - 3)$ の二つ
+(定理 \ref{thm:minpoly-basic})。
+
+$A$:$(A - 2E)(A - 3E)$ を計算すると、対角行列どうしの積で
+\[
+\mat{0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}\mat{-1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 0}
+= O.
+\]
+よって $m_A = (\lambda - 2)(\lambda - 3)$:重根なしで、
+$A$ は対角化可能(実際すでに対角行列)。
+
+$B$:同じ積を計算すると
+\[
+(B - 2E)(B - 3E)
+= \mat{0 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}
+\mat{-1 & 1 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 0}
+= \mat{0 & -1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0} \neq O.
+\]
+よって $m_B = (\lambda - 2)^2(\lambda - 3)$:重根をもつので、
+$B$ は対角化不可能である(固有値 $2$ の固有空間を掃き出して
+次元 $1 < 2$ を確かめても同じ結論になる)。
+\textbf{固有多項式が同じでも、最小多項式が二つの行列を見分けた}。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$A^2 = A$ の固有値)]\label{rei:ch-proj-eigen}
+$A^2 = A$ を満たす行列(射影)の固有値は、$0$ または $1$ に限ることを
+示せ。\\
+\textbf{解.}\ $\lambda$ を固有値、$\vect{v} \neq \vect{0}$ を
+固有ベクトルとすると、
+\[
+\lambda\vect{v} = A\vect{v} = A^2\vect{v} = \lambda^2\vect{v}
+\]
+(最初の等号は定義、最後は問 \ref{q:eigen-ex8}(1))。よって
+$(\lambda^2 - \lambda)\vect{v} = \vect{0}$ で、$\vect{v} \neq \vect{0}$
+だから $\lambda^2 - \lambda = 0$、すなわち $\lambda = 0$ または $1$ である。
+最小多項式の言葉でいえば、$f(\lambda) = \lambda^2 - \lambda$ が
+$f(A) = O$ を満たすから $m_A \mid \lambda(\lambda - 1)$ であり、
+固有値($= m_A$ の根)は $\{0, 1\}$ に含まれる、と言い直せる。
+例題 \ref{rei:eigen-proj} の射影行列(固有値 $1, 0$)と整合している。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{ケーリー・ハミルトンの定理}:$\varphi_A(A) = O$。
+$2$ 次なら $A^2 - (\mathrm{tr}\,A)A + (\det A)E = O$(直接計算で証明)。
+対角化可能なら $f(A) = P f(D) P^{-1}$ からただちに従う。
+\item 効用は\textbf{べき下げ}:$f$ を $\varphi_A$ で割った余りが $r$ なら
+$f(A) = r(A)$(定理 \ref{thm:ch-remainder})。余りの係数は固有値の代入で
+求まる。$\det A \neq 0$ なら\textbf{逆行列も $A$ の多項式}で書ける。
+\item 「$\lambda = A$ を $\det(\lambda E - A)$ に代入」する一行の議論は
+誤り(型が違う)。式の型を確認する習慣をもつこと。
+\item \textbf{最小多項式} $m_A$:$A$ を消す最小次数のモニック多項式。
+$A$ を消す多項式はすべて $m_A$ の倍数で、とくに
+$m_A \mid \varphi_A$。$m_A$ の根は固有値と一致し、
+違いは重複度だけ(定理 \ref{thm:minpoly-basic})。
+\item $A$ が対角化可能 $\iff$ $m_A$ が重根をもたない
+(定理 \ref{thm:minpoly-diag})。固有多項式が同じでも最小多項式は
+異なりうる($E$ とせん断行列)。この道具は第VI部のジョルダン標準形で
+主役になる。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:ch-ex1}
+$A = \mat{1 & 2 \\ 3 & 4}$ についてケーリー・ハミルトンの式を書き、
+直接計算で確かめよ。
 \end{mondai}
+
+\begin{mondai}[基本]\label{q:ch-ex2}
+問 \ref{q:ch-ex1} の式を使って、$A = \mat{1 & 2 \\ 3 & 4}$ の逆行列を
+$A$ と $E$ の線形結合として求めよ($2$ 次の逆行列公式で検算すること)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ch-ex3}
+$A = \mat{1 & 2 \\ 0 & 2}$ について、ケーリー・ハミルトンの式を利用して
+$A^3$ を $\alpha A + \beta E$ の形に表し、成分を計算せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ch-ex4}
+次の行列の最小多項式を求めよ。
+\[
+(1)\ E = \mat{1 & 0 \\ 0 & 1} \qquad
+(2)\ O = \mat{0 & 0 \\ 0 & 0} \qquad
+(3)\ \mat{1 & 1 \\ 0 & 1} \qquad
+(4)\ \mat{2 & 0 \\ 0 & 3}
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex5}
+$A = \mat{2 & 1 \\ 1 & 2}$ の $A^{10}$ を、余りの方法
+(例題 \ref{rei:ch-power100})で求めよ
+(結果は問 \ref{q:power-ex1} の $A^n$ の公式に $n = 10$ を代入したものと
+一致するはずである)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex6}
+$A = \mat{1 & 1 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3}$ について、
+固有多項式が $(\lambda - 1)(\lambda - 2)(\lambda - 3)$ であることを
+確かめ、$(A - E)(A - 2E)(A - 3E) = O$ を直接計算で検証せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex7}
+$A = \mat{2 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 2}$ の最小多項式を求め、
+対角化可能性を判定せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex8}
+$90^\circ$ 回転行列 $R = \mat{0 & -1 \\ 1 & 0}$ について、
+ケーリー・ハミルトンの定理から $R^2 = -E$ を導き、
+それを使って $R^4$ と $R^{100}$ を求めよ。
+結果を回転の幾何(何度回るか)で解釈せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:ch-ex9}
+$A^2 = 5A - 6E$ を満たす $2$ 次正方行列 $A$ で、$A \neq 2E$ かつ
+$A \neq 3E$ であるものを考える。\\
+　(1) $A$ の最小多項式が $(\lambda - 2)(\lambda - 3)$ であることを示せ。\\
+　(2) $A$ は固有値 $2$ と $3$ を\textbf{両方}もち、対角化可能である
+ことを示せ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:ch-ex10}
+$2$ 次正方行列 $A$ について、$A^n = a_n A + b_n E$ と表したときの
+係数 $a_n, b_n$($n \ge 1$、$a_1 = 1, b_1 = 0$)を考える。\\
+　(1) ケーリー・ハミルトンの式を使って、漸化式
+\[
+a_{n+1} = (\mathrm{tr}\,A)\,a_n + b_n, \qquad
+b_{n+1} = -(\det A)\,a_n
+\]
+を導け。\\
+　(2) $A = \mat{2 & 1 \\ 1 & 2}$($\mathrm{tr} = 4$, $\det = 3$)について
+$a_2, b_2, a_3, b_3$ を計算し、例題 \ref{rei:ch-lower} の
+$A^3 = 13A - 12E$ と一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:ch-ex11}
+最小多項式はただ一つであることを証明せよ。すなわち、$m_1, m_2$ が
+ともに「$A$ を消す、次数最小のモニック多項式」ならば
+$m_1 = m_2$ であることを示せ
+(ヒント:差 $m_1 - m_2$ を考える。これも $A$ を消すが、
+最高次の項が打ち消し合って次数が下がる)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:ch-ex12}
+最小多項式の定数項に注目して、次を証明せよ。\\
+　(1) $m_A(0) \neq 0$ ならば $A$ は正則であり、$A^{-1}$ は $A$ の
+多項式で書ける。\\
+　(2) 逆に $m_A(0) = 0$ ならば $A$ は正則でない
+(ヒント:$m_A(\lambda) = \lambda\,h(\lambda)$ と書ける。
+$h(A) \neq O$ だから $h(A)\vect{w} \neq \vect{0}$ となる $\vect{w}$ があり、
+$\vect{v} = h(A)\vect{w}$ に $A$ を掛けるとどうなるか)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:ch-ex1}}:$\mathrm{tr}\,A$ と $\det A$ から式を
+立て、$A^2$ を計算して代入する。
+\item \textbf{問 \ref{q:ch-ex2}}:$A^2 - (\mathrm{tr})A = (\det)E$ の形に
+移項し、$A$ でくくる。
+\item \textbf{問 \ref{q:ch-ex3}}:$A^2 = 3A - 2E$ を繰り返し使う
+(例題 \ref{rei:ch-lower} と同じ手順)。
+\item \textbf{問 \ref{q:ch-ex4}}:候補は固有多項式の約数のうち、
+すべての固有値を根にもつもの。次数の低い候補から
+「$A$ を代入して $O$ になるか」を試す。
+\item \textbf{問 \ref{q:ch-ex5}}:$\lambda^{10}$ の余りを $a\lambda + b$
+とおき、$\lambda = 1, 3$ を代入して $a, b$ を決める。
+\item \textbf{問 \ref{q:ch-ex6}}:三角行列なので固有値は対角成分。
+積は左の二つから順に計算する。
+\item \textbf{問 \ref{q:ch-ex7}}:候補は $(\lambda - 2)$,
+$(\lambda - 2)^2$, $(\lambda - 2)^3$。低い次数から試す。
+\item \textbf{問 \ref{q:ch-ex8}}:$\mathrm{tr}\,R = 0$, $\det R = 1$。
+$R^{100} = (R^4)^{25}$。
+\item \textbf{問 \ref{q:ch-ex9}}:(1) 候補は $\lambda - 2$,
+$\lambda - 3$, $(\lambda - 2)(\lambda - 3)$。前の二つを仮定すると
+$A = 2E$ や $A = 3E$ になってしまう。(2) は
+定理 \ref{thm:minpoly-basic}(2) と \ref{thm:minpoly-diag}。
+\item \textbf{問 \ref{q:ch-ex10}}:$A^{n+1} = A \cdot A^n$ に
+$A^n = a_nA + b_nE$ を代入し、$A^2$ をケーリー・ハミルトンで下げる。
+\item \textbf{問 \ref{q:ch-ex11}}:$m_1 - m_2$ が零多項式でなければ、
+定数倍してモニックにでき、次数最小性に矛盾する。
+\item \textbf{問 \ref{q:ch-ex12}}:(1) $m_A(\lambda) = \lambda^k + \cdots
++ c_1\lambda + c_0$($c_0 \neq 0$)から $A(\cdots) = -c_0 E$ の形を作る。
+(2) $A\vect{v} = m_A(A)\vect{w} = \vect{0}$ かつ $\vect{v} \neq \vect{0}$
+なら、$A$ は非正則(定理 \ref{thm:eigen-zero})。
+\end{itemize}
+}
