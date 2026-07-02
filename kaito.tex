@@ -5788,6 +5788,213 @@ $W \subseteq (W^{\perp})^{\perp}$。
 　(2) ${}^t(PQ)(PQ) = {}^tQ\,{}^tP\,P\,Q = {}^tQ\,E\,Q = {}^tQ\,Q = E$。
 
 \bigskip
+\noindent\textbf{問 \ref{q:orth-ex1}}\quad
+\textbf{方針}:列のノルム $3$ 本と内積 $3$ 組を確かめる。逆行列は転置。\\
+\textbf{解答}:列は $\dfrac{1}{3}\mat{1 \\ 2 \\ 2}$,
+$\dfrac{1}{3}\mat{2 \\ 1 \\ -2}$, $\dfrac{1}{3}\mat{2 \\ -2 \\ 1}$。
+ノルムの $2$ 乗はいずれも $\dfrac{1 + 4 + 4}{9} = 1$。内積は
+\[
+\frac{2 + 2 - 4}{9} = 0, \qquad \frac{2 - 4 + 2}{9} = 0, \qquad
+\frac{4 - 2 - 2}{9} = 0.
+\]
+よって列が正規直交基底をなし、$A$ は直交行列(定理 \ref{thm:orth-column})。
+逆行列は
+\[
+A^{-1} = {}^t\!A = \frac{1}{3}\mat{1 & 2 & 2 \\ 2 & 1 & -2 \\ 2 & -2 & 1}.
+\]
+(この $A$ はたまたま対称なので ${}^t\!A = A$、すなわち $A^{-1} = A$、
+$A^2 = E$ である。)\\
+\textbf{よくあるミス}:内積の確認を $1$ 組で済ませること。
+$3$ 次では $3$ 組すべての確認が必要である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex2}}\quad
+\textbf{方針}:列のノルムと直交性を順に見る。\\
+\textbf{解答}:(a) 列 $\mat{1 \\ 1}$ のノルムは $\sqrt{2} \neq 1$ なので
+直交行列で\textbf{ない}(列どうしは直交しているが、正規でない。
+反例 \ref{hanrei:orth-notnormal} と同型の誤り)。
+(b) 列のノルムは $\frac{1}{\sqrt{2}}\sqrt{1 + 1} = 1$、内積は
+$\frac{-1 + 1}{2} = 0$。直交行列で\textbf{ある}($45^\circ$ 回転)。
+(c) 第 $2$ 列 $\mat{1 \\ 1}$ のノルムが $\sqrt{2} \neq 1$、また列どうしの
+内積も $1 \neq 0$ なので直交行列で\textbf{ない}
+(反例 \ref{hanrei:orth-det} のせん断行列)。\\
+\textbf{よくあるミス}:(a) を「列が直交するから直交行列」とすること。
+ノルム $1$(正規)まで要る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex3}}\quad
+\textbf{方針}:$P\vect{x}, P\vect{y}$ を計算して定義どおり比べる。\\
+\textbf{解答}:
+\[
+P\vect{x} = \frac{1}{5}\mat{4 - 3 \\ 3 + 4} = \mat{1/5 \\ 7/5}, \qquad
+P\vect{y} = \frac{1}{5}\mat{4 \\ 3}.
+\]
+$\|P\vect{x}\|^2 = \dfrac{1 + 49}{25} = 2 = \|\vect{x}\|^2$ より
+$\|P\vect{x}\| = \|\vect{x}\| = \sqrt{2}$。また
+\[
+\langle P\vect{x}, P\vect{y} \rangle = \frac{4 + 21}{25} = 1
+= \langle \vect{x}, \vect{y} \rangle.
+\]
+\textbf{よくあるミス}:$\|P\vect{x}\|$ と $\|\vect{x}\|$ を比べる前に
+四捨五入してしまうこと。分数のまま厳密に比べる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex4}}\quad
+\textbf{方針}:$2$ 本との直交条件を連立して解き、正規化する。\\
+\textbf{解答}:$\vect{p}_3 = \mat{x \\ y \\ z}$ とおくと、直交条件は
+\[
+x + z = 0 \quad (\vect{p}_1 \text{ と}), \qquad y = 0 \quad (\vect{p}_2 \text{ と}).
+\]
+よって $\vect{p}_3 \propto \mat{1 \\ 0 \\ -1}$。正規化して
+\[
+\vect{p}_3 = \pm\frac{1}{\sqrt{2}}\mat{1 \\ 0 \\ -1}
+\]
+($\pm$ どちらでもよい)。\\
+\textbf{よくあるミス}:正規化を忘れること。直交条件を満たすだけでは
+第 $3$ 列にできない(ノルム $1$ が要る)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex5}}\quad
+\textbf{方針}:行列式の符号で分類し、回転角は第 $1$ 列、鏡映軸は
+固有値 $1$ の固有ベクトルから求める。\\
+\textbf{解答}:$P$:$\det P = \dfrac{1 + 1}{2} = 1$ なので\textbf{回転}。
+第 $1$ 列 $\mat{\cos\theta \\ \sin\theta}
+= \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$ より $\theta = 45^\circ$ の回転である。
+$Q$:$\det Q = -1$ なので\textbf{鏡映}。固有値 $1$ の固有ベクトルは
+$(Q - E)\vect{v} = \vect{0}$、すなわち $-x + y = 0$ より
+$\vect{v} = \mat{1 \\ 1}$。鏡映軸は直線 $y = x$ である。
+検算:$Q\mat{1 \\ 1} = \mat{1 \\ 1}$、
+$Q\mat{1 \\ -1} = \mat{-1 \\ 1} = -\mat{1 \\ -1}$。\\
+\textbf{よくあるミス}:$Q$ を「成分の入れ替えだから回転」とすること。
+行列式が $-1$ なら必ず鏡映である(定理 \ref{thm:orth-2x2})。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex6}}\quad
+\textbf{方針}:積を計算し、回転行列 $R_\theta$ の形と見比べる。\\
+\textbf{解答}:
+\[
+S_2 S_1 = \mat{0 & 1 \\ 1 & 0}\mat{1 & 0 \\ 0 & -1}
+= \mat{0 & -1 \\ 1 & 0}, \qquad
+S_1 S_2 = \mat{1 & 0 \\ 0 & -1}\mat{0 & 1 \\ 1 & 0}
+= \mat{0 & 1 \\ -1 & 0}.
+\]
+$S_2 S_1$ は $\cos\theta = 0$, $\sin\theta = 1$、すなわち
+$90^\circ$ の\textbf{回転}。$S_1 S_2$ は $\cos\theta = 0$,
+$\sin\theta = -1$、すなわち $-90^\circ$($270^\circ$)の\textbf{回転}である。
+鏡映を $2$ 枚合成すると回転になり($\det = (-1) \times (-1) = 1$ とも
+整合する)、合成の順序で回転の向きが逆になる。\\
+\textbf{よくあるミス}:$S_2 S_1$ を「まず $S_2$、次に $S_1$」と読むこと。
+ベクトルに近い右側の $S_1$ が先に作用する(第 \ref{chap:matmul} 章)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex7}}\quad
+\textbf{方針}:列が標準基底の並べ替えであることを見る。\\
+\textbf{解答}:
+　(1) $P$ の列は $\vect{e}_2, \vect{e}_3, \vect{e}_1$ であり、
+標準基底の並べ替えだから正規直交基底をなす。よって直交行列である。\\
+　(2) $P\vect{e}_1 = \vect{e}_2$(第 $1$ 列)、$P\vect{e}_2 = \vect{e}_3$、
+$P\vect{e}_3 = \vect{e}_1$。すなわち $P$ は
+$\vect{e}_1 \to \vect{e}_2 \to \vect{e}_3 \to \vect{e}_1$ と
+$3$ つの軸を巡回させる。$3$ 回施すと各 $\vect{e}_i$ が一周して戻るから
+$P^3\vect{e}_i = \vect{e}_i$($i = 1, 2, 3$)、基底での値が一致するので
+$P^3 = E$ である。\\
+\textbf{よくあるミス}:$P\vect{e}_1$ を第 $1$ \emph{行}と読むこと。
+$P\vect{e}_i$ は $P$ の第 $i$ \emph{列}である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex8}}\quad
+\textbf{方針}:列の正規直交性を確かめ、行列式は第 $3$ 行(または第 $3$ 列)で
+余因子展開する。\\
+\textbf{解答}:列は
+$\mat{\cos\theta \\ \sin\theta \\ 0}, \mat{-\sin\theta \\ \cos\theta \\ 0},
+\mat{0 \\ 0 \\ 1}$。ノルムはそれぞれ
+$\sqrt{\cos^2\theta + \sin^2\theta} = 1$, 同じく $1$, $1$。内積は
+$-\cos\theta\sin\theta + \sin\theta\cos\theta = 0$ と、
+第 $3$ 列とは $0$(第 $3$ 成分しかない)で、すべて直交。
+よって $R$ は直交行列である。行列式は第 $3$ 行で余因子展開して
+\[
+\det R = 1 \cdot \det\mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}
+= \cos^2\theta + \sin^2\theta = 1.
+\]
+($\det = 1$:$3$ 次元の回転も「向きを保つ」変換である。)\\
+\textbf{よくあるミス}:$3$ 次だからと身構えて掃き出しを始めること。
+ブロックの形を活かせば $2$ 次の計算に落ちる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex9}}\quad
+\textbf{方針}:列の正規直交性を第 $1$ 列 → 第 $2$ 列の順に使う。\\
+\textbf{解答}:$P = \mat{a & b \\ 0 & d}$ とおく。第 $1$ 列のノルムが
+$1$ だから $a^2 = 1$、すなわち $a = \pm 1$。第 $1$ 列と第 $2$ 列の直交から
+\[
+ab + 0 \cdot d = ab = 0
+\]
+で、$a \neq 0$ より $b = 0$。第 $2$ 列のノルムが $1$ だから
+$b^2 + d^2 = d^2 = 1$、すなわち $d = \pm 1$。よって
+$P = \mat{\pm 1 & 0 \\ 0 & \pm 1}$(複号任意)に限る。
+逆にこれらが直交行列であることは明らかである。\\
+\textbf{よくあるミス}:「上三角の直交行列」を回転行列の特別な場合と
+思い込むこと。実際には $\theta = 0^\circ, 180^\circ$ と鏡映の
+組み合わせに相当する $4$ つの行列しかない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex10}}\quad
+\textbf{方針}:固有方程式の判別式 $\ge 0$ が実固有値の存在条件。\\
+\textbf{解答}:$R_\theta$ の固有多項式は
+$\mathrm{tr} = 2\cos\theta$, $\det = 1$ より
+\[
+\lambda^2 - 2\cos\theta\,\lambda + 1 = 0.
+\]
+判別式は $4\cos^2\theta - 4 = 4(\cos^2\theta - 1) \le 0$ で、
+実固有値が存在する($\ge 0$)のは $\cos\theta = \pm 1$、すなわち
+$\theta = 0^\circ$ または $\theta = 180^\circ$ のときに限る。
+$\theta = 0^\circ$ のとき $R = E$ で固有値は $1$(重解)、
+$\theta = 180^\circ$ のとき $R = -E$ で固有値は $-1$(重解)。
+(それ以外の回転は実数の固有ベクトルをもたない
+――回すとどの方向も向きを変えるから当然である。
+第 \ref{chap:eigen} 章の深掘りを参照。)\\
+\textbf{よくあるミス}:判別式を $\cos^2\theta - 1 > 0$ と置くこと。
+$\cos^2\theta \le 1$ だから、等号の場合しか実固有値はない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex11}}\quad
+\textbf{方針}:${}^t({}^t\!P)\,{}^t\!P$ を ${}^t\!P = P^{-1}$ を使って
+評価する。\\
+\textbf{解答}:${}^t({}^t\!P) = P$(転置の転置は元どおり)だから
+\[
+{}^t({}^t\!P)\,{}^t\!P = P\,{}^t\!P = P\,P^{-1} = E
+\]
+(${}^t\!P = P^{-1}$ を使った)。よって ${}^t\!P$ は直交行列の定義を
+満たす。定理 \ref{thm:orth-column} を ${}^t\!P$ に適用すると、
+「${}^t\!P$ の列が正規直交基底をなす」が、${}^t\!P$ の列とは
+$P$ の\textbf{行}(を縦に立てたもの)にほかならない。
+よって直交行列の行ベクトルたちも正規直交基底をなす。\\
+\textbf{よくあるミス}:「列で成り立つから行でも明らか」と
+飛ばすこと。行の主張は ${}^t\!P$ が直交行列であることを
+経由して初めて出てくる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:orth-ex12}}\quad
+\textbf{方針}:転置と $2$ 乗をそれぞれ計算する。\\
+\textbf{解答}:転置すると
+\[
+{}^t S_\theta = \mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}
+= S_\theta
+\]
+で対称行列である。$2$ 乗は
+\[
+S_\theta^2 = \mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}
+\mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}
+= \mat{\cos^2\theta + \sin^2\theta & 0 \\ 0 & \sin^2\theta + \cos^2\theta} = E.
+\]
+$2$ 回折り返すと元に戻る、という鏡映の幾何がそのまま式になっている
+(なお $S_\theta^2 = E$ と ${}^tS_\theta = S_\theta$ から
+${}^tS_\theta S_\theta = E$ が再確認でき、直交行列であることとも
+つじつまが合う)。\\
+\textbf{よくあるミス}:非対角成分の計算
+$\cos\theta\sin\theta - \sin\theta\cos\theta = 0$ の符号。
+機械的に成分計算すれば消える。
+
+\bigskip
 \noindent\textbf{問 \ref{q:spec}}\quad
 単位固有ベクトルは
 $\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,

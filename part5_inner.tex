@@ -1142,40 +1142,496 @@ $P\vect{v} = \langle \vect{v}, \vect{u} \rangle \vect{u}$ になっている。
 \chapter{直交行列}\label{chap:orth}
 % =====================================================
 
-\begin{teigi}[直交行列]
+\begin{goal}
+\begin{itemize}
+\item 直交行列の定義(${}^t\!P P = E$)と、「列が正規直交基底をなす」
+「内積・長さを保つ」という二つの特徴づけを、証明つきで理解する。
+\item 与えられた行列が直交行列かどうかを判定でき、
+$2$ 次の直交行列を\textbf{回転か鏡映か}に分類できるようになる。
+\item $\det P = \pm 1$、積・逆も直交行列、実固有値は $\pm 1$ といった
+基本性質を導けるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 形を保つ変換を行列で捉える}
+
+前章で「良い基底 $=$ 正規直交基底」だと分かった。では、
+正規直交基底を\textbf{列に並べた行列}はどんな性質をもつだろうか。
+第I部以来、「列にベクトルを並べた行列」は基底の取り替えや
+線形変換の記述で繰り返し主役になってきた
+(定理 \ref{thm:coordchange})。正規直交基底を並べた行列には、
+それにふさわしい特別な名前と、際立った性質
+――\textbf{図形を変形させない}――がある。
+回転や鏡映がその代表例で、コンピュータグラフィックスからロボットの
+姿勢制御、そして次章の対称行列の対角化まで、この行列は至るところに現れる。
+
+\section{定義と第一の特徴づけ ― 列が正規直交基底}
+
+\begin{teigi}[直交行列]\label{def:orth}
 ${}^t\!P\,P = E$、すなわち ${}^t\!P = P^{-1}$ を満たす正方行列 $P$ を
 \textbf{直交行列}という。
 \end{teigi}
 
-定義の式 ${}^t\!P P = E$ を成分で読むと、
-「$P$ の列ベクトルたちが正規直交系をなす」ことと同値である。
-つまり\textbf{直交行列とは、正規直交基底を列に並べた行列}である
-(逆行列が転置で求まるのはそのご褒美である)。
+逆行列がわざわざ計算しなくても\textbf{転置するだけ}で手に入る
+――定義からしてすでに便利だが、この式の本当の意味は
+成分を読むと見えてくる。
 
-\begin{teiri}[直交行列の性質]
-$P$ を直交行列とすると、
+\begin{teiri}[直交行列 $=$ 正規直交基底を列に並べた行列]\label{thm:orth-column}
+$n$ 次正方行列 $P$ について、次は同値である。
 \begin{enumerate}
-\item 内積を保つ:$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$。
-したがって長さと角度を保つ。
-\item $\det P = \pm 1$。
-\item 直交行列の積、逆行列も直交行列である。
+\item $P$ は直交行列である(${}^t\!P P = E$)。
+\item $P$ の列ベクトル $\vect{p}_1, \dots, \vect{p}_n$ は
+$\R^n$ の正規直交基底をなす。
 \end{enumerate}
 \end{teiri}
 
-性質 1 は $\langle P\vect{x}, P\vect{y} \rangle = {}^t\vect{x}\,{}^t\!P P\,\vect{y}
-= {}^t\vect{x}\,\vect{y}$ から、性質 2 は
-${}^t\!PP = E$ の行列式をとり $(\det P)^2 = 1$ から従う。
+\noindent\textbf{(証明)}\quad
+積 ${}^t\!P P$ の $(i, j)$ 成分を計算する。${}^t\!P$ の第 $i$ 行は
+$P$ の第 $i$ 列 $\vect{p}_i$ を横に倒したものだから、
+積の定義(行 $\times$ 列)より
+\[
+({}^t\!P P)_{ij} = {}^t\vect{p}_i\,\vect{p}_j
+= \langle \vect{p}_i, \vect{p}_j \rangle.
+\]
+すなわち ${}^t\!P P$ は「列どうしの内積を並べた表」である。
+これが $E$ に等しいとは、対角成分について
+$\langle \vect{p}_i, \vect{p}_i \rangle = 1$(各列のノルムが $1$)、
+非対角成分について $\langle \vect{p}_i, \vect{p}_j \rangle = 0$
+($i \neq j$、列どうしが直交)ということで、
+これは列たちが正規直交系をなすことにほかならない。
+$n$ 本の正規直交系は自動的に $\R^n$ の基底になる
+(定理 \ref{thm:gs-indep})。 $\blacksquare$
 
-長さと角度を保つ変換とは、図形を\textbf{変形させない}変換である。
-平面($2$ 次)の直交行列は、回転($\det = 1$)と鏡映($\det = -1$)で
-すべて尽くされることが知られている。第I部に登場した回転行列 $R_\theta$ が
-直交行列であることは、列の正規直交性からすぐ確かめられる。
+つまり\textbf{直交行列とは、正規直交基底を列に並べた行列}である
+(逆行列が転置で求まるのはそのご褒美である)。
+前章のグラム・シュミットの直交化法は、
+「直交行列を製造する機械」だったと言い直せる。
+
+\begin{rei}[回転行列と置換行列]\label{rei:orth-examples}
+回転行列 $R_\theta = \mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}$
+の列は $\mat{\cos\theta \\ \sin\theta}$, $\mat{-\sin\theta \\ \cos\theta}$。
+どちらもノルム $1$($\cos^2\theta + \sin^2\theta = 1$)で、内積は
+$-\cos\theta\sin\theta + \sin\theta\cos\theta = 0$。よって直交行列である。
+また、標準基底を並べ替えた行列(\textbf{置換行列})、たとえば
+$\mat{0 & 1 \\ 1 & 0}$ も、列が標準基底そのもの(順序が違うだけ)
+なので直交行列である。
+\end{rei}
+
+\section{第二の特徴づけ ― 内積と長さを保つ}
+
+\begin{teiri}[直交行列の保存性質]\label{thm:orth-preserve}
+$n$ 次正方行列 $P$ について、次の三つは同値である。
+\begin{enumerate}
+\item $P$ は直交行列である。
+\item $P$ は内積を保つ:すべての $\vect{x}, \vect{y}$ で
+$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$。
+\item $P$ は長さを保つ:すべての $\vect{x}$ で
+$\|P\vect{x}\| = \|\vect{x}\|$。
+\end{enumerate}
+したがって直交行列は、長さと角度、すなわち\textbf{図形の形を変えない}。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1)$\Rightarrow$(2):内積を ${}^t\vect{a}\,\vect{b}$ の形で書き、
+転置の性質 ${}^t(AB) = {}^t\!B\,{}^t\!A$(定理 \ref{thm:transpose})を使うと
+\[
+\langle P\vect{x}, P\vect{y} \rangle = {}^t(P\vect{x})\,(P\vect{y})
+= {}^t\vect{x}\,{}^t\!P P\,\vect{y}
+= {}^t\vect{x}\,E\,\vect{y} = \langle \vect{x}, \vect{y} \rangle.
+\]
+(2)$\Rightarrow$(3):$\vect{y} = \vect{x}$ とおけば
+$\|P\vect{x}\|^2 = \|\vect{x}\|^2$。
+(3)$\Rightarrow$(2):長さの情報だけから内積が復元できることを使う。
+双線形性で展開すると
+\[
+\|\vect{x} + \vect{y}\|^2 = \|\vect{x}\|^2 + 2\langle \vect{x}, \vect{y} \rangle
++ \|\vect{y}\|^2,
+\qquad\text{すなわち}\qquad
+\langle \vect{x}, \vect{y} \rangle = \frac{1}{2}\bigl(
+\|\vect{x} + \vect{y}\|^2 - \|\vect{x}\|^2 - \|\vect{y}\|^2 \bigr)
+\]
+(\textbf{偏極恒等式})。$P$ が長さを保てば、右辺の三つのノルムはすべて
+($P(\vect{x} + \vect{y}) = P\vect{x} + P\vect{y}$ に注意して)
+変換後も変わらないから、左辺の内積も変わらない。
+(2)$\Rightarrow$(1):(2) を標準基底に適用すると
+$\langle P\vect{e}_i, P\vect{e}_j \rangle = \langle \vect{e}_i, \vect{e}_j \rangle$。
+$P\vect{e}_i$ は $P$ の第 $i$ 列だから、これは「列たちが正規直交系」
+を意味し、定理 \ref{thm:orth-column} より $P$ は直交行列である。
+$\blacksquare$
+
+「長さを保ちさえすれば、角度も自動的に保たれる」という
+(3)$\Rightarrow$(2) は少し驚く結果である。長さの中に内積の情報が
+丸ごと入っている(偏極恒等式)ことがその種明かしである。
+
+\begin{teiri}[直交行列の基本性質]\label{thm:orth-props}
+$P, Q$ を $n$ 次直交行列とすると、
+\begin{enumerate}
+\item $\det P = \pm 1$。
+\item 積 $PQ$ も直交行列である。
+\item 逆行列 $P^{-1}$($= {}^t\!P$)も直交行列である。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) ${}^t\!P P = E$ の両辺の行列式をとる。
+$\det {}^t\!P = \det P$(定理 \ref{thm:det-rules})と積の行列式
+(定理 \ref{thm:det-mult})より $(\det P)^2 = 1$、
+よって $\det P = \pm 1$。
+(2) ${}^t(PQ)\,(PQ) = {}^t Q\,{}^t\!P\,P\,Q = {}^t Q\,E\,Q = E$。
+(3) ${}^t(P^{-1})\,P^{-1} = {}^t({}^t\!P)\,{}^t\!P = P\,{}^t\!P$。
+ここで ${}^t\!P = P^{-1}$ だから $P\,{}^t\!P = P P^{-1} = E$ となり、
+$P^{-1}$ も直交行列である。 $\blacksquare$
+
+$\det P = \pm 1$ は、直交行列が\textbf{体積を変えない}
+(拡大率 $|\det| = 1$。第 \ref{chap:det} 章)ことを意味する。
+形も大きさも変えないのだから当然といえば当然である。
+逆は成り立たない――$\det = \pm 1$ でも直交行列とは限らない
+(反例 \ref{hanrei:orth-det})。
 
 \begin{mondai}\label{q:orthm}
 　(1) 回転行列 $R_\theta$ が直交行列であることを ${}^t R_\theta R_\theta = E$ の
 計算で確かめよ。\\
 　(2) 直交行列 $P, Q$ の積 $PQ$ が直交行列であることを示せ。
 \end{mondai}
+
+\section{$2$ 次の直交行列の完全分類 ― 回転と鏡映}
+
+平面の直交行列は、実は\textbf{完全に}リストアップできる。
+
+\begin{teiri}[$2$ 次直交行列の分類]\label{thm:orth-2x2}
+$2$ 次の直交行列は、ある角 $\theta$ を用いて次のいずれかの形に書ける。
+\[
+\text{(i)}\ R_\theta = \mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}
+\ (\det = 1:\textbf{回転}), \qquad
+\text{(ii)}\ S_\theta = \mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}
+\ (\det = -1:\textbf{鏡映}).
+\]
+(ii) は、$x$ 軸から角 $\theta/2$ の方向の直線に関する折り返しである。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$P$ の第 $1$ 列 $\vect{p}_1 = \mat{a \\ b}$ はノルム $1$、すなわち
+$a^2 + b^2 = 1$ だから、単位円上の点として
+$a = \cos\theta$, $b = \sin\theta$ と書ける。
+第 $2$ 列 $\vect{p}_2$ は「$\vect{p}_1$ と直交する単位ベクトル」だが、
+平面ではそのようなベクトルは $\vect{p}_1$ を $90^\circ$ 回した
+$\mat{-\sin\theta \\ \cos\theta}$ か、その逆向き
+$\mat{\sin\theta \\ -\cos\theta}$ の\textbf{二つしかない}
+(直交する方向が直線 $1$ 本分しかなく、その直線上の単位ベクトルは
+$2$ つだから)。前者が (i)(行列式は
+$\cos^2\theta + \sin^2\theta = 1$)、後者が (ii)(行列式は
+$-\cos^2\theta - \sin^2\theta = -1$)である。
+(ii) が鏡映であることは、加法定理から
+$S_\theta$ が方向ベクトル
+$\vect{u} = \mat{\cos(\theta/2) \\ \sin(\theta/2)}$ を動かさず
+($S_\theta \vect{u} = \vect{u}$。実際、第 $1$ 成分は
+$\cos\theta\cos\frac{\theta}{2} + \sin\theta\sin\frac{\theta}{2}
+= \cos\frac{\theta}{2}$、第 $2$ 成分は
+$\sin\theta\cos\frac{\theta}{2} - \cos\theta\sin\frac{\theta}{2}
+= \sin\frac{\theta}{2}$)、
+それと直交する方向を $-1$ 倍に反転することから分かる
+(問 \ref{q:orth-ex12} で $S_\theta^2 = E$ も確かめる)。 $\blacksquare$
+
+判定の実用は簡単で、\textbf{直交行列と分かったら行列式を見る}:
+$\det = 1$ なら回転(回転角は第 $1$ 列から読める)、
+$\det = -1$ なら鏡映(鏡映軸は固有値 $1$ の固有ベクトルの方向)である。
+
+\begin{itembox}[l]{深掘り:直交行列は計算機の味方である}
+直交行列の「長さを保つ」性質は、数値計算で決定的に重要になる。
+計算機の小数計算には必ず丸め誤差が混じるが、ベクトル $\vect{x}$ に
+誤差 $\vect{e}$ が乗った $\vect{x} + \vect{e}$ に直交行列を掛けても
+\[
+P(\vect{x} + \vect{e}) = P\vect{x} + P\vect{e}, \qquad
+\|P\vect{e}\| = \|\vect{e}\|
+\]
+と、\textbf{誤差はまったく増幅されない}。一般の行列では誤差が
+何倍にも拡大されうる(その拡大率を測る数学が第VII部の特異値である)
+のと対照的で、だから数値線形代数のアルゴリズムは、
+可能なかぎり直交行列による変換だけで組み立てられる
+(第VII部のQR分解、第IX部の数値固有値計算)。
+また、$3$ 次元の回転行列はコンピュータグラフィックスやロボットの
+姿勢表現の標準言語である。物体を回しても形が歪まないのは
+「変換行列が直交行列だから」にほかならない。
+なお、直交行列の全体は積と逆について閉じている
+(定理 \ref{thm:orth-props})。このような集まりを数学では\textbf{群}と
+呼び、直交行列のなす群(直交群)は「対称性」を記述する
+現代数学・物理学の基本語彙になっている。
+\end{itembox}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$\det = \pm 1$ でも直交行列とは限らない]\label{hanrei:orth-det}
+定理 \ref{thm:orth-props}(1) の逆は成り立たない。せん断行列
+\[
+A = \mat{1 & 1 \\ 0 & 1}
+\]
+は $\det A = 1$ だが、
+${}^t\!A A = \mat{1 & 1 \\ 1 & 2} \neq E$ なので直交行列ではない。
+実際、長さを保たない:$\|A\vect{e}_2\| = \|(1, 1)\| = \sqrt{2} \neq 1
+= \|\vect{e}_2\|$。「面積を保つ($\det = \pm 1$)」と
+「形を保つ(直交行列)」は別の概念であり、後者のほうが強い。
+\end{hanrei}
+
+\begin{hanrei}[列が直交するだけでは足りない]\label{hanrei:orth-notnormal}
+\[
+B = \mat{2 & 0 \\ 0 & 3}
+\]
+の列 $\mat{2 \\ 0}, \mat{0 \\ 3}$ は互いに直交するが、ノルムが
+$1$ でないので
+\[
+{}^t\!B B = \mat{4 & 0 \\ 0 & 9} \neq E
+\]
+となり、$B$ は直交行列ではない(各軸で別々の倍率に伸ばす変換だから、
+形を保たないのは当然である)。「直交行列」という名前は紛らわしいが、
+条件は\textbf{列が直交}ではなく\textbf{列が正規直交}
+(直交かつノルム $1$)である。名前に引きずられないこと。
+\end{hanrei}
+
+\section{例題}
+
+判定・計算・分類の練習をする。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(判定と逆行列)]\label{rei:orth-check}
+$A = \dfrac{1}{3}\mat{2 & -1 & 2 \\ 2 & 2 & -1 \\ -1 & 2 & 2}$ が
+直交行列であることを確かめ、$A^{-1}$ を求めよ。\\
+\textbf{解.}\ 列は $\dfrac{1}{3}\mat{2 \\ 2 \\ -1}$,
+$\dfrac{1}{3}\mat{-1 \\ 2 \\ 2}$, $\dfrac{1}{3}\mat{2 \\ -1 \\ 2}$。
+各ノルムの $2$ 乗は $\dfrac{4 + 4 + 1}{9} = 1$。列どうしの内積は
+\[
+\frac{-2 + 4 - 2}{9} = 0, \qquad \frac{4 - 2 - 2}{9} = 0, \qquad
+\frac{-2 - 2 + 4}{9} = 0.
+\]
+列が正規直交基底をなすから、定理 \ref{thm:orth-column} より直交行列である。
+よって逆行列は転置で
+\[
+A^{-1} = {}^t\!A = \frac{1}{3}\mat{2 & 2 & -1 \\ -1 & 2 & 2 \\ 2 & -1 & 2}.
+\]
+掃き出し法も余因子も使わずに逆行列が出た。
+\end{rei}
+
+\begin{rei}[例題・基本(保存性質の確認)]\label{rei:orth-preserve-ex}
+$P = \dfrac{1}{5}\mat{3 & -4 \\ 4 & 3}$ と
+$\vect{x} = \mat{1 \\ 2}$, $\vect{y} = \mat{2 \\ 0}$ について、
+$\|P\vect{x}\| = \|\vect{x}\|$ と
+$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$ を
+数値で確かめよ。\\
+\textbf{解.}\ $P\vect{x} = \dfrac{1}{5}\mat{3 - 8 \\ 4 + 6} = \mat{-1 \\ 2}$,
+$P\vect{y} = \dfrac{1}{5}\mat{6 \\ 8}$。
+\[
+\|P\vect{x}\| = \sqrt{1 + 4} = \sqrt{5} = \|\vect{x}\|, \qquad
+\langle P\vect{x}, P\vect{y} \rangle = -\frac{6}{5} + \frac{16}{5} = 2
+= \langle \vect{x}, \vect{y} \rangle.
+\]
+($P$ の列のノルムが $\frac{1}{5}\sqrt{9 + 16} = 1$ であることも
+確認しておこう。$P$ は $\cos\theta = \frac{3}{5}$ の回転行列である。)
+\end{rei}
+
+\begin{rei}[例題・基本(第 $3$ 列の補完)]\label{rei:orth-complete}
+$\vect{p}_1 = \dfrac{1}{3}\mat{2 \\ 2 \\ 1}$,
+$\vect{p}_2 = \dfrac{1}{3}\mat{-2 \\ 1 \\ 2}$ を最初の $2$ 列とする
+$3$ 次の直交行列を作るには、第 $3$ 列 $\vect{p}_3$ を何にすればよいか。\\
+\textbf{解.}\ 条件は「$\vect{p}_1, \vect{p}_2$ の両方と直交する単位ベクトル」。
+$\vect{p}_3 = \mat{x \\ y \\ z}$ とおくと(分母 $3$ は共通なので略して)
+\[
+2x + 2y + z = 0, \qquad -2x + y + 2z = 0.
+\]
+辺々加えると $3y + 3z = 0$ より $z = -y$。第 $1$ 式に戻すと
+$2x + 2y - y = 0$ より $x = -\dfrac{y}{2}$。$y = -2$ ととれば
+$(x, y, z) = (1, -2, 2)$、ノルムは $3$。よって
+\[
+\vect{p}_3 = \pm\frac{1}{3}\mat{1 \\ -2 \\ 2}
+\]
+($\pm$ のどちらでもよい。符号で $\det = \pm 1$ が切り替わる)。
+検算:$\langle \vect{p}_3, \vect{p}_1 \rangle \propto 2 - 4 + 2 = 0$、
+$\langle \vect{p}_3, \vect{p}_2 \rangle \propto -2 - 2 + 4 = 0$。
+\end{rei}
+
+\begin{rei}[例題・標準(回転の判定)]\label{rei:orth-rotation}
+$P = \dfrac{1}{2}\mat{1 & -\sqrt{3} \\ \sqrt{3} & 1}$ は直交行列か。
+直交行列なら、回転か鏡映かを判定し、回転ならその角を求めよ。\\
+\textbf{解.}\ 列のノルムは $\dfrac{1}{2}\sqrt{1 + 3} = 1$、列どうしの内積は
+$\dfrac{-\sqrt{3} + \sqrt{3}}{4} = 0$ で直交行列である。行列式は
+\[
+\det P = \frac{1 \cdot 1 - (-\sqrt{3})\sqrt{3}}{4} = \frac{1 + 3}{4} = 1
+\]
+だから\textbf{回転}(定理 \ref{thm:orth-2x2})。第 $1$ 列
+$\mat{\cos\theta \\ \sin\theta} = \mat{1/2 \\ \sqrt{3}/2}$ より
+$\theta = 60^\circ$ の回転である。
+\end{rei}
+
+\begin{rei}[例題・標準(鏡映の判定と軸)]\label{rei:orth-reflection}
+$P = \dfrac{1}{5}\mat{3 & 4 \\ 4 & -3}$ は直交行列であることを確かめ、
+回転か鏡映かを判定し、鏡映ならその軸(折り返しの直線)を求めよ。\\
+\textbf{解.}\ 列のノルムは $\dfrac{1}{5}\sqrt{9 + 16} = 1$、内積は
+$\dfrac{12 - 12}{25} = 0$ で直交行列。行列式は
+$\dfrac{-9 - 16}{25} = -1$ だから\textbf{鏡映}である。
+鏡映軸は「動かない方向」、すなわち固有値 $1$ の固有ベクトルの方向である。
+$(P - E)\vect{v} = \vect{0}$ を解くと
+\[
+P - E = \frac{1}{5}\mat{3 - 5 & 4 \\ 4 & -3 - 5}
+= \frac{1}{5}\mat{-2 & 4 \\ 4 & -8}
+\]
+より $-2x + 4y = 0$、すなわち $x = 2y$。よって軸は
+$\vect{v} = \mat{2 \\ 1}$ 方向の直線 $y = \dfrac{x}{2}$ である。
+検算:$P\mat{2 \\ 1} = \dfrac{1}{5}\mat{6 + 4 \\ 8 - 3} = \mat{2 \\ 1}$
+(動かない)。また軸と直交する $\mat{1 \\ -2}$ は
+$P\mat{1 \\ -2} = \dfrac{1}{5}\mat{3 - 8 \\ 4 + 6} = \mat{-1 \\ 2}
+= -\mat{1 \\ -2}$ と反転される。確かに折り返しである。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:実固有値は $\pm 1$)]\label{rei:orth-eigen}
+直交行列 $P$ の実固有値は $1$ か $-1$ に限ることを示せ。\\
+\textbf{解.}\ $\lambda$ を実固有値、$\vect{v} \neq \vect{0}$ を対応する
+固有ベクトルとする。$P$ は長さを保つ(定理 \ref{thm:orth-preserve})から
+\[
+\|\vect{v}\| = \|P\vect{v}\| = \|\lambda\vect{v}\| = |\lambda|\,\|\vect{v}\|.
+\]
+$\|\vect{v}\| \neq 0$ で割って $|\lambda| = 1$、実数だから
+$\lambda = \pm 1$ である。
+(回転行列 $R_\theta$($0 < \theta < 180^\circ$)のように実固有値を
+\textbf{もたない}直交行列もある。第 \ref{chap:eigen} 章の深掘りで見た
+とおり、複素数の世界では固有値 $\cos\theta \pm i\sin\theta$ をもち、
+その絶対値はやはり $1$ である。)
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{直交行列}は ${}^t\!P P = E$(${}^t\!P = P^{-1}$)を満たす
+正方行列であり、\textbf{正規直交基底を列に並べた行列}にほかならない
+(定理 \ref{thm:orth-column})。
+\item 直交行列は\textbf{内積と長さを保ち}、逆に長さを保つ行列は
+直交行列である(定理 \ref{thm:orth-preserve}、偏極恒等式)。
+図形の形を変えない変換の行列表現である。
+\item $\det P = \pm 1$、積と逆も直交行列、実固有値は $\pm 1$ に限る。
+ただし $\det = \pm 1$ だけでは直交行列といえない
+(反例 \ref{hanrei:orth-det})し、列の直交だけでも足りない
+(反例 \ref{hanrei:orth-notnormal}:\textbf{正規}直交が必要)。
+\item $2$ 次の直交行列は\textbf{回転}($\det = 1$)と\textbf{鏡映}
+($\det = -1$)で尽くされる(定理 \ref{thm:orth-2x2})。
+鏡映軸は固有値 $1$ の固有ベクトルの方向である。
+\item 長さを保つ性質ゆえ、直交行列による変換は\textbf{数値誤差を
+増幅しない}。数値線形代数(第VII部・第IX部)の主役である。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:orth-ex1}
+$A = \dfrac{1}{3}\mat{1 & 2 & 2 \\ 2 & 1 & -2 \\ 2 & -2 & 1}$ が
+直交行列であることを列の正規直交性で確かめ、$A^{-1}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:orth-ex2}
+次の行列のうち直交行列はどれか。直交行列でないものは理由を述べよ。
+\[
+\text{(a)}\ \mat{1 & 1 \\ 1 & -1} \qquad
+\text{(b)}\ \frac{1}{\sqrt{2}}\mat{1 & -1 \\ 1 & 1} \qquad
+\text{(c)}\ \mat{1 & 1 \\ 0 & 1}
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:orth-ex3}
+$P = \dfrac{1}{5}\mat{4 & -3 \\ 3 & 4}$ と $\vect{x} = \mat{1 \\ 1}$,
+$\vect{y} = \mat{1 \\ 0}$ について、$\|P\vect{x}\| = \|\vect{x}\|$ と
+$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$ を
+数値で確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:orth-ex4}
+$\vect{p}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
+$\vect{p}_2 = \mat{0 \\ 1 \\ 0}$ を最初の $2$ 列とする $3$ 次の直交行列を
+作るための第 $3$ 列 $\vect{p}_3$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex5}
+次の直交行列を回転か鏡映かに分類し、回転なら回転角を、
+鏡映なら鏡映軸を求めよ。
+\[
+P = \frac{1}{\sqrt{2}}\mat{1 & -1 \\ 1 & 1}, \qquad
+Q = \mat{0 & 1 \\ 1 & 0}
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex6}
+$x$ 軸に関する鏡映 $S_1 = \mat{1 & 0 \\ 0 & -1}$ と、
+直線 $y = x$ に関する鏡映 $S_2 = \mat{0 & 1 \\ 1 & 0}$ について、
+合成 $S_2 S_1$ と $S_1 S_2$ をそれぞれ計算し、どんな変換になるか
+(回転か鏡映か、回転ならその角)を答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex7}
+置換行列 $P = \mat{0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0}$ について、\\
+　(1) $P$ が直交行列であることを確かめよ。\\
+　(2) $P$ が標準基底 $\vect{e}_1, \vect{e}_2, \vect{e}_3$ を
+どう動かすかを調べ、$P^3 = E$ となる理由を説明せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex8}
+$z$ 軸まわりの回転行列
+$R = \mat{\cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1}$
+が直交行列であることを確かめ、$\det R$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:orth-ex9}
+上三角行列かつ直交行列である $2$ 次正方行列は、
+対角成分が $\pm 1$ の対角行列
+$\mat{\pm 1 & 0 \\ 0 & \pm 1}$ に限ることを示せ
+(ヒント:$P = \mat{a & b \\ 0 & d}$ とおき、列の正規直交性を
+第 $1$ 列 → 第 $2$ 列の順に使う)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:orth-ex10}
+回転行列 $R_\theta$($0^\circ \le \theta < 360^\circ$)が実固有値を
+もつのは $\theta = 0^\circ$ と $\theta = 180^\circ$ のときに限ることを、
+固有方程式の判別式から示せ。それぞれの場合の固有値も求めよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:orth-ex11}
+$P$ を直交行列とする。${}^t\!P$ も直交行列であることを示し、
+そこから「直交行列の\textbf{行}ベクトルたちも正規直交基底をなす」
+ことを導け。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:orth-ex12}
+$\det = -1$ の $2$ 次直交行列
+$S_\theta = \mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}$
+について、$S_\theta$ が対称行列であることと、
+$S_\theta^2 = E$($2$ 回折り返すと元に戻る)を示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:orth-ex1}}:$3$ 本の列のノルムと $3$ 組の内積を
+確かめる。逆行列は転置。
+\item \textbf{問 \ref{q:orth-ex2}}:列のノルムが $1$ か、列どうしが
+直交かを順に見る。
+\item \textbf{問 \ref{q:orth-ex3}}:$P\vect{x}, P\vect{y}$ を計算して
+定義どおり比べる。
+\item \textbf{問 \ref{q:orth-ex4}}:$2$ 本との直交条件(連立方程式)を
+解き、正規化する。例題 \ref{rei:orth-complete} と同じ手順。
+\item \textbf{問 \ref{q:orth-ex5}}:行列式の符号で分類。回転角は
+第 $1$ 列、鏡映軸は固有値 $1$ の固有ベクトル。
+\item \textbf{問 \ref{q:orth-ex6}}:積を計算し、
+定理 \ref{thm:orth-2x2} の形と見比べる。順序で結果が変わる。
+\item \textbf{問 \ref{q:orth-ex7}}:列が標準基底の並べ替えである。
+$P\vect{e}_i$ を追うと巡回が見える。
+\item \textbf{問 \ref{q:orth-ex8}}:列の正規直交性は $2$ 次の場合の
+計算に $z$ 成分が加わるだけ。行列式は余因子展開。
+\item \textbf{問 \ref{q:orth-ex9}}:第 $1$ 列のノルム $1$ から
+$a = \pm 1$。第 $1$ 列と第 $2$ 列の直交から $b = 0$。
+\item \textbf{問 \ref{q:orth-ex10}}:固有方程式は
+$\lambda^2 - 2\cos\theta\,\lambda + 1 = 0$。判別式 $\ge 0$ を解く。
+\item \textbf{問 \ref{q:orth-ex11}}:${}^t({}^t\!P)\,{}^t\!P = P\,{}^t\!P$
+を ${}^t\!P = P^{-1}$ で評価する。${}^t\!P$ の列は $P$ の行である。
+\item \textbf{問 \ref{q:orth-ex12}}:対称性は転置して見比べるだけ。
+$S_\theta^2$ は加法定理($\cos^2 + \sin^2 = 1$)で $E$ になる。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{対称行列のスペクトル分解}\label{chap:spectral}
