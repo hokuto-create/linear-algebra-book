@@ -4244,13 +4244,242 @@ $PQ$ は正則行列の積で正則だから、$A$ と $C$ は相似である。
 \section*{第IV部}
 
 \noindent\textbf{問 \ref{q:eigen}}\quad
+\textbf{方針}:固有方程式を解き、各固有値で同次方程式を掃き出す。
+最後に和と積で検算する。\\
+\textbf{解答}:
 $\varphi_A(\lambda) = (\lambda - 1)(\lambda - 3) - 8 = \lambda^2 - 4\lambda - 5
 = (\lambda - 5)(\lambda + 1)$。固有値は $5, -1$。
 $\lambda = 5$:$(5E - A)\vect{v} = \mat{4 & -4 \\ -2 & 2}\vect{v} = \vect{0}$
-より $\vect{v} = t\mat{1 \\ 1}$。
+より $\vect{v} = t\mat{1 \\ 1}$($t \neq 0$)。
 $\lambda = -1$:$\mat{-2 & -4 \\ -2 & -4}\vect{v} = \vect{0}$ より
 $\vect{v} = t\mat{2 \\ -1}$($t \neq 0$)。
-和は $5 + (-1) = 4 = \mathrm{tr}\,A$、積は $5 \cdot (-1) = -5 = \det A$。
+和は $5 + (-1) = 4 = \mathrm{tr}\,A$、積は $5 \cdot (-1) = -5 = \det A$ で
+一致する。\\
+\textbf{よくあるミス}:$\det(\lambda E - A)$ の非対角成分の符号
+($-4$, $-2$)を落とすこと。$\lambda E - A$ では $A$ の全成分の符号が
+反転する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex1}}\quad
+\textbf{方針}:固有方程式 $\to$ 掃き出し $\to$ 和と積で検算。\\
+\textbf{解答}:$\varphi_A(\lambda) = (\lambda - 5)(\lambda - 3) - 8
+= \lambda^2 - 8\lambda + 7 = (\lambda - 1)(\lambda - 7)$ より
+固有値は $1, 7$。
+$\lambda = 1$:$(E - A)\vect{v} = \mat{-4 & -4 \\ -2 & -2}\vect{v} = \vect{0}$
+より $x + y = 0$、$\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
+$\lambda = 7$:$(7E - A)\vect{v} = \mat{2 & -4 \\ -2 & 4}\vect{v} = \vect{0}$
+より $x = 2y$、$\vect{v} = t\mat{2 \\ 1}$($t \neq 0$)。
+検算:$A\mat{2 \\ 1} = \mat{14 \\ 7} = 7\mat{2 \\ 1}$。
+和 $1 + 7 = 8 = \mathrm{tr}\,A$、積 $1 \cdot 7 = 7 = \det A = 15 - 8$。\\
+\textbf{よくあるミス}:固有方程式の定数項を $\det A$ と別に計算して
+しまい不一致に気づかないこと。「和=トレース・積=行列式」の検算を
+習慣化する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex2}}\quad
+\textbf{方針}:固有値は対角成分(定理 \ref{thm:eigen-tri})。
+固有ベクトルは各固有値で同次方程式を解く。\\
+\textbf{解答}:固有値は対角成分の $2$ と $5$。
+$\lambda = 2$:$(2E - A)\vect{v} = \mat{0 & -3 \\ 0 & -3}\vect{v} = \vect{0}$
+より $y = 0$、$\vect{v} = t\mat{1 \\ 0}$。
+$\lambda = 5$:$(5E - A)\vect{v} = \mat{3 & -3 \\ 0 & 0}\vect{v} = \vect{0}$
+より $x = y$、$\vect{v} = t\mat{1 \\ 1}$
+(検算:$A\mat{1 \\ 1} = \mat{5 \\ 5}$)。\\
+\textbf{よくあるミス}:「三角行列だから固有ベクトルは標準基底」と
+すること。$\lambda = 5$ の固有ベクトルは $\mat{0 \\ 1}$ ではない
+(例題 \ref{rei:eigen-tri} と同じ注意)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex3}}\quad
+\textbf{方針}:$A$ を掛けて、もとのベクトルの定数倍になるかを見る。\\
+\textbf{解答}:
+$A\vect{v}_1 = \mat{3 \\ 5}$ は $\mat{1 \\ 1}$ の定数倍でないので、
+$\vect{v}_1$ は固有ベクトルでない。
+$A\vect{v}_2 = \mat{2 + 6 \\ 6 + 6} = \mat{8 \\ 12} = 4\mat{2 \\ 3}$ より、
+$\vect{v}_2$ は固有値 $4$ の固有ベクトルである。
+$A\vect{v}_3 = \mat{1 - 2 \\ 3 - 2} = \mat{-1 \\ 1} = -\mat{1 \\ -1}$ より、
+$\vect{v}_3$ は固有値 $-1$ の固有ベクトルである。\\
+\textbf{よくあるミス}:判定のために固有方程式から解き直すこと。
+「掛けて比べる」だけで済む(なお $4 + (-1) = 3 = \mathrm{tr}\,A$ とも
+整合し、固有値はこの二つで全部と分かる)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex4}}\quad
+\textbf{方針}:標準基底ベクトルに $A$ を掛けてみる。\\
+\textbf{解答}:$A\vect{e}_1 = \mat{2 \\ 0} = 2\vect{e}_1$、
+$A\vect{e}_2 = \mat{0 \\ -1} = -\vect{e}_2$ だから、固有値は $2$ と $-1$、
+固有空間は $W_2 = \langle \vect{e}_1 \rangle$,
+$W_{-1} = \langle \vect{e}_2 \rangle$ である。
+一般に対角行列 $\mathrm{diag}(a_1, \dots, a_n)$ では
+$A\vect{e}_i = a_i \vect{e}_i$ が成り立つから、固有値は対角成分
+$a_1, \dots, a_n$ であり、標準基底ベクトルがそれぞれの固有ベクトルになる。
+\textbf{「対角行列=標準基底がすべて固有ベクトルの行列」}である。\\
+\textbf{よくあるミス}:特になし。この見方(対角行列は固有ベクトルの
+標準形)が次章の対角化の出発点になる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex5}}\quad
+\textbf{方針}:第 $1$ 列で余因子展開すると因数分解された固有多項式が
+得られる。\\
+\textbf{解答}:
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - 2 & -1 & -1 \\ 0 & \lambda - 1 & 0 \\
+0 & -1 & \lambda - 3}
+= (\lambda - 2)\bigl\{(\lambda - 1)(\lambda - 3) - 0\bigr\}
+= (\lambda - 2)(\lambda - 1)(\lambda - 3)
+\]
+より固有値は $2, 1, 3$(検算:和 $6 = \mathrm{tr}\,A = 2 + 1 + 3$)。
+
+$\lambda = 2$:$\mat{0 & -1 & -1 \\ 0 & 1 & 0 \\ 0 & -1 & -1}\vect{v} = \vect{0}$
+より $y = 0$, $z = 0$($x$ 自由)。基底 $\mat{1 \\ 0 \\ 0}$。
+
+$\lambda = 1$:$\mat{-1 & -1 & -1 \\ 0 & 0 & 0 \\ 0 & -1 & -2}\vect{v} = \vect{0}$
+より $y = -2z$, $x = -y - z = z$。基底 $\mat{1 \\ -2 \\ 1}$
+(検算:$A\mat{1 \\ -2 \\ 1} = \mat{2 - 2 + 1 \\ -2 \\ -2 + 3}
+= \mat{1 \\ -2 \\ 1}$)。
+
+$\lambda = 3$:$\mat{1 & -1 & -1 \\ 0 & 2 & 0 \\ 0 & -1 & 0}\vect{v} = \vect{0}$
+より $y = 0$, $x = z$。基底 $\mat{1 \\ 0 \\ 1}$
+(検算:$A\mat{1 \\ 0 \\ 1} = \mat{3 \\ 0 \\ 3}$)。\\
+\textbf{よくあるミス}:$3$ 次の固有多項式を展開しきってから
+因数分解をやり直すこと。余因子展開の段階で因数分解された形を保つのが
+楽で安全である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex6}}\quad
+\textbf{方針}:固有方程式の判別式を見る。\\
+\textbf{解答}:$\varphi_R(\lambda) = \lambda^2 - (\mathrm{tr}\,R)\lambda
++ \det R = \lambda^2 - 0 \cdot \lambda + 1 = \lambda^2 + 1$。
+$\lambda^2 = -1$ を満たす実数は存在しないから、実数の固有値はない。
+幾何的な理由:$90^\circ$ 回転は平面のすべての方向を回してしまうので、
+「向きを変えない方向」が存在しないからである。\\
+\textbf{よくあるミス}:「固有値が存在しない=何かが間違っている」と
+考えること。実数の範囲では存在しないだけで、複素数まで広げれば
+$\lambda = \pm i$ が固有値になる(第 \ref{chap:diag} 章の深掘り)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex7}}\quad
+\textbf{方針}:$\det A = 0$ と定理 \ref{thm:eigen-zero} を結びつける。\\
+\textbf{解答}:
+　(1) $\det A = 1 \cdot 4 - 2 \cdot 2 = 0$。よって $A$ は正則でなく、
+定理 \ref{thm:eigen-zero} により $0$ が固有値である。\\
+　(2) $\varphi_A(\lambda) = (\lambda - 1)(\lambda - 4) - 4
+= \lambda^2 - 5\lambda = \lambda(\lambda - 5)$ より固有値は $0, 5$。
+$\lambda = 0$:$A\vect{v} = \vect{0}$ すなわち $x + 2y = 0$ より
+$\vect{v} = t\mat{-2 \\ 1}$($t \neq 0$)。
+$\lambda = 5$:$(5E - A)\vect{v} = \mat{4 & -2 \\ -2 & 1}\vect{v} = \vect{0}$
+より $y = 2x$、$\vect{v} = t\mat{1 \\ 2}$
+(検算:$A\mat{1 \\ 2} = \mat{5 \\ 10} = 5\mat{1 \\ 2}$)。\\
+　(3) 固有値 $0$ の固有空間は
+$W_0 = \mathrm{Ker}\,A = \{\vect{x} \mid A\vect{x} = \vect{0}\}$、
+すなわち\textbf{同次方程式 $A\vect{x} = \vect{0}$ の解空間}である。\\
+\textbf{よくあるミス}:固有値 $0$ を「固有値なし」と混同すること。
+$0$ は立派な固有値であり、その固有空間が解空間である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex8}}\quad
+\textbf{方針}:定義の式に $A$ や $A^{-1}$ を掛けて変形する。\\
+\textbf{解答}:
+　(1) $A^2\vect{v} = A(A\vect{v}) = A(\lambda\vect{v})
+= \lambda\,A\vect{v} = \lambda \cdot \lambda\vect{v} = \lambda^2\vect{v}$。
+$\vect{v} \neq \vect{0}$ だから、$\vect{v}$ は $A^2$ の固有値
+$\lambda^2$ の固有ベクトルである。\\
+　(2) もし $\lambda = 0$ なら $A\vect{v} = \vect{0}$($\vect{v} \neq
+\vect{0}$)となり、$A$ が正則であることに矛盾(正則なら
+$\vect{v} = A^{-1}\vect{0} = \vect{0}$)。よって $\lambda \neq 0$。
+$A\vect{v} = \lambda\vect{v}$ の両辺に左から $A^{-1}$ を掛けると
+$\vect{v} = \lambda A^{-1}\vect{v}$、すなわち
+$A^{-1}\vect{v} = \dfrac{1}{\lambda}\vect{v}$。\\
+　(3) $A$ の固有値は $3, 1$(例題 \ref{rei:eigen-basic})だから、
+$A^2$ の固有値は $9, 1$ と予言できる。実際
+\[
+A^2 = \mat{5 & 4 \\ 4 & 5}, \qquad
+\varphi_{A^2}(\lambda) = (\lambda - 5)^2 - 16 = (\lambda - 9)(\lambda - 1)
+\]
+で固有値は $9, 1$ である。\\
+\textbf{よくあるミス}:(2) で $\lambda \neq 0$ の確認を飛ばして
+$\dfrac{1}{\lambda}$ を書くこと。分母が $0$ でない根拠(正則性)を
+先に述べる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex9}}\quad
+\textbf{方針}:(2) は $A\mat{1 \\ \lambda}$ を計算し、固有方程式で
+書き換える。\\
+\textbf{解答}:
+　(1) $\varphi_A(\lambda) = \lambda(\lambda - 1) - 1 = \lambda^2 - \lambda - 1$。
+解の公式より $\lambda = \dfrac{1 \pm \sqrt{5}}{2}$、すなわち
+$\varphi = \dfrac{1 + \sqrt{5}}{2}$ と $\psi = \dfrac{1 - \sqrt{5}}{2}$。\\
+　(2) $\lambda$ を固有値($\lambda^2 = \lambda + 1$)とすると
+\[
+A\mat{1 \\ \lambda} = \mat{0 \cdot 1 + 1 \cdot \lambda \\ 1 + \lambda}
+= \mat{\lambda \\ \lambda^2} = \lambda\mat{1 \\ \lambda}.
+\]
+よって $\mat{1 \\ \lambda}$ は固有値 $\lambda$ の固有ベクトルである。\\
+\textbf{よくあるミス}:(2) で $1 + \lambda$ を $\lambda^2$ に
+書き換えるところを見落とし、「定数倍にならない」と誤判定すること。
+固有方程式そのものが検算に使われている。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex10}}\quad
+\textbf{方針}:トレースと行列式から固有方程式を作る
+(定理 \ref{thm:eigen-trdet2})。\\
+\textbf{解答}:$\mathrm{tr}\,S = \cos 2\theta - \cos 2\theta = 0$、
+$\det S = -\cos^2 2\theta - \sin^2 2\theta = -1$ だから、固有方程式は
+\[
+\lambda^2 - 0 \cdot \lambda + (-1) = \lambda^2 - 1 = 0,
+\]
+よって固有値は $\theta$ によらず $1$ と $-1$ である。
+幾何的には、鏡映の軸(直線 $y = x\tan\theta$)上のベクトルは折り返しで
+動かない(固有値 $1$)、軸に垂直なベクトルは反対向きになる
+(固有値 $-1$)。たとえば $\theta = 30^\circ$ では
+$S = \mat{1/2 & \sqrt{3}/2 \\ \sqrt{3}/2 & -1/2}$ で、軸方向
+$\vect{v} = \mat{\sqrt{3}/2 \\ 1/2}$ に対し
+$S\vect{v} = \mat{\sqrt{3}/4 + \sqrt{3}/4 \\ 3/4 - 1/4} = \vect{v}$ と
+確かめられる。\\
+\textbf{よくあるミス}:$\det S$ の計算で
+$-\cos^2 2\theta - \sin^2 2\theta$ を $-\cos 4\theta$ などと
+変形し損ねること。$-(\cos^2 + \sin^2) = -1$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex11}}\quad
+\textbf{方針}:$\lambda E - {}^t\!A$ を一つの行列の転置として書く。\\
+\textbf{解答}:単位行列は転置で変わらない(${}^tE = E$)から
+\[
+\lambda E - {}^t\!A = \lambda\,{}^tE - {}^t\!A = {}^t(\lambda E - A).
+\]
+転置しても行列式は変わらない(定理 \ref{thm:det-props})ので
+\[
+\varphi_{{}^t\!A}(\lambda) = \det\bigl({}^t(\lambda E - A)\bigr)
+= \det(\lambda E - A) = \varphi_A(\lambda).
+\]
+固有多項式が一致するから、その根である固有値も一致する。\\
+\textbf{よくあるミス}:「固有ベクトルも一致する」と言い足すこと。
+固有値は一致するが、固有ベクトルは一般に異なる
+(たとえば例題 \ref{rei:eigen-tri} の $A$ と ${}^t\!A$ で確かめてみよ)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:eigen-ex12}}\quad
+\textbf{方針}:(1) は $\lambda E = P^{-1}(\lambda E)P$ を使って
+くくり出す。(2) は $B(P^{-1}\vect{v})$ を直接計算する。\\
+\textbf{解答}:
+　(1) $\lambda E - B = \lambda E - P^{-1}AP
+= P^{-1}(\lambda E)P - P^{-1}AP = P^{-1}(\lambda E - A)P$ だから、
+行列式の積公式より
+\[
+\varphi_B(\lambda) = \det P^{-1} \cdot \det(\lambda E - A) \cdot \det P
+= \frac{1}{\det P}\,\varphi_A(\lambda)\,\det P = \varphi_A(\lambda).
+\]
+　(2) $A\vect{v} = \lambda\vect{v}$ とすると
+\[
+B(P^{-1}\vect{v}) = P^{-1}AP\,P^{-1}\vect{v} = P^{-1}A\vect{v}
+= P^{-1}(\lambda\vect{v}) = \lambda\,(P^{-1}\vect{v}).
+\]
+また $P^{-1}\vect{v} \neq \vect{0}$ である(もし $\vect{0}$ なら
+両辺に $P$ を掛けて $\vect{v} = \vect{0}$ となり矛盾)。よって
+$P^{-1}\vect{v}$ は $B$ の固有値 $\lambda$ の固有ベクトルである。\\
+\textbf{よくあるミス}:(2) で $P\vect{v}$ を答えること。
+座標の変換則 $\vect{c}' = P^{-1}\vect{c}$(第 \ref{chap:repmat} 章)に
+合わせて、新しい座標系での固有ベクトルは $P^{-1}\vect{v}$ になる。
 
 \bigskip
 \noindent\textbf{問 \ref{q:diag}}\quad

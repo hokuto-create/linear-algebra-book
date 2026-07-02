@@ -7,7 +7,18 @@
 \chapter{固有値と固有ベクトル}\label{chap:eigen}
 % =====================================================
 
-\section{変換が「向きを変えない」方向}
+\begin{goal}
+\begin{itemize}
+\item 固有値・固有ベクトルの定義を、「変換が向きを変えない特別な方向」
+という幾何的意味とともに理解する。
+\item 固有多項式 $\det(\lambda E - A) = 0$ を解いて固有値を、
+同次方程式を掃き出して固有ベクトル(固有空間)を、確実に計算できるようになる。
+\item 固有値と正則性・三角行列・トレース・行列式の関係を使いこなし、
+「固有値は座標によらない変換そのものの属性」であることを説明できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 変換が「向きを変えない」方向}
 
 第III部の最後の問 \ref{q:repmat} で、不思議な実験をした。
 変換 $A = \mat{3 & 1 \\ 1 & 3}$ を、基底
@@ -36,11 +47,15 @@ $\lambda$ を $A$ の\textbf{固有値}、$\vect{v}$ を
 固有値 $\lambda$ に属する\textbf{固有ベクトル}という。
 \end{teigi}
 
+\begin{chui}[$\vect{v} \neq \vect{0}$ と $\lambda = 0$]
 $\vect{v} \neq \vect{0}$ の条件は本質的である
 ($\vect{v} = \vect{0}$ ならどんな $\lambda$ でも式が成り立ってしまい、
-何の情報もない)。一方、固有値 $\lambda = 0$ は許される:
-$A\vect{v} = \vect{0}$ となる $\vect{v} \neq \vect{0}$ の存在、
-すなわち「$A$ が正則でない」ことを意味する。
+何の情報もない)。一方、\textbf{固有値} $\lambda = 0$ は許される:
+$A\vect{v} = \vect{0}$ となる $\vect{v} \neq \vect{0}$ の存在を意味し、
+後述の定理 \ref{thm:eigen-zero} のとおり「$A$ が正則でない」ことと同値になる。
+「固有\textbf{ベクトル}は零を除外、固有\textbf{値}は零でもよい」と
+区別して覚えること。
+\end{chui}
 
 \section{固有値の求め方 ― 固有方程式}
 
@@ -48,12 +63,26 @@ $A\vect{v} = \vect{0}$ となる $\vect{v} \neq \vect{0}$ の存在、
 \[
 (\lambda E - A)\vect{v} = \vect{0}, \qquad \vect{v} \neq \vect{0}
 \]
-となる。これは「同次方程式が非自明な解をもつ」条件であり、
-第II部の正則性同値定理によって
+となる。これは「同次方程式が非自明な解をもつ」条件である。
+
+\begin{teiri}[固有値の特徴づけ]\label{thm:eigen-char}
+$\lambda$ が $A$ の固有値であることと、
 \[
 \det(\lambda E - A) = 0
 \]
-と同値である。左辺は $\lambda$ の $n$ 次多項式になる。
+は同値である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\lambda$ が固有値
+$\iff$ $(\lambda E - A)\vect{v} = \vect{0}$ が非自明な解 $\vect{v} \neq \vect{0}$
+をもつ
+$\iff$ $\lambda E - A$ が正則でない
+(正則なら解は $\vect{v} = \vect{0}$ のみ、正則でなければ自由度が $1$ 以上)
+$\iff$ $\det(\lambda E - A) = 0$
+(第II部の定理 \ref{thm:det-nonzero})。 $\blacksquare$
+
+左辺 $\det(\lambda E - A)$ は $\lambda$ の $n$ 次多項式になる。
 
 \begin{teigi}[固有多項式]
 $\varphi_A(\lambda) = \det(\lambda E - A)$ を $A$ の\textbf{固有多項式}、
@@ -87,6 +116,71 @@ $\lambda = 2$ のとき同様に $\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
 冒頭の「特別な方向」が、計算で再発見された。
 \end{rei}
 
+\begin{chui}[検算のすすめ]
+固有ベクトルを求めたら、必ず $A\vect{v} = \lambda\vect{v}$ に戻して
+検算すること。上の例なら
+$A\mat{1 \\ 1} = \mat{4 \\ 4} = 4\mat{1 \\ 1}$ と、一行で確かめられる。
+また $(\lambda E - A)\vect{v} = \vect{0}$ を解いたとき
+\textbf{解が $\vect{v} = \vect{0}$ しか出なかったら、
+固有値の計算が間違っている}(固有値なら非自明解が必ずあるはず)。
+掃き出しの途中で行が全部消えることが、むしろ正しさの証拠である。
+\end{chui}
+
+\section{固有値がすぐ分かる行列}
+
+\begin{teiri}[$0$ が固有値 $\iff$ 正則でない]\label{thm:eigen-zero}
+$0$ が $A$ の固有値であることと、$A$ が正則でないことは同値である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+定理 \ref{thm:eigen-char} で $\lambda = 0$ とすると、
+$0$ が固有値 $\iff \det(0 \cdot E - A) = \det(-A) = (-1)^n \det A = 0
+\iff \det A = 0 \iff A$ は正則でない
+(定理 \ref{thm:det-nonzero})。 $\blacksquare$
+
+\begin{teiri}[三角行列の固有値]\label{thm:eigen-tri}
+上三角行列(下三角行列・対角行列も同様)の固有値は、
+対角成分そのものである。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$A$ が上三角なら $\lambda E - A$ も上三角で、その対角成分は
+$\lambda - a_{11}, \dots, \lambda - a_{nn}$ である。三角行列の行列式は
+対角成分の積だから(定理 \ref{thm:det-tri})
+\[
+\varphi_A(\lambda) = (\lambda - a_{11})(\lambda - a_{22})\cdots(\lambda - a_{nn}).
+\]
+この根は $a_{11}, \dots, a_{nn}$ である。 $\blacksquare$
+
+ただし、\textbf{固有ベクトルまで自明とは限らない}
+(標準基底とは限らない。例題 \ref{rei:eigen-tri} で確かめる)。
+
+\begin{teiri}[トレース・行列式と固有値($2$ 次)]\label{thm:eigen-trdet2}
+$2$ 次正方行列 $A = \mat{a & b \\ c & d}$ の固有多項式は
+\[
+\varphi_A(\lambda) = \lambda^2 - (\mathrm{tr}\,A)\,\lambda + \det A
+\]
+であり、固有値 $\lambda_1, \lambda_2$(重解も込めて)について
+\[
+\lambda_1 + \lambda_2 = \mathrm{tr}\,A, \qquad
+\lambda_1 \lambda_2 = \det A
+\]
+が成り立つ。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - a & -b \\ -c & \lambda - d}
+= (\lambda - a)(\lambda - d) - bc
+= \lambda^2 - (a + d)\lambda + (ad - bc)
+\]
+で前半が従う。後半は $2$ 次方程式の解と係数の関係
+($\varphi_A(\lambda) = (\lambda - \lambda_1)(\lambda - \lambda_2)$ を
+展開して係数を比べる)である。 $\blacksquare$
+
+固有値を求めたら「和がトレース、積が行列式」で検算する習慣を
+つけるとよい。同じ関係は $n$ 次でも成り立つ(深掘り参照)。
+
 \section{固有空間}
 
 固有値 $\lambda$ に属する固有ベクトル全体に $\vect{0}$ を付け加えた集合
@@ -94,9 +188,13 @@ $\lambda = 2$ のとき同様に $\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
 W_\lambda = \{\, \vect{v} \mid A\vect{v} = \lambda\vect{v} \,\}
 = \mathrm{Ker}(\lambda E - A)
 \]
-は、同次方程式の解空間だから\textbf{部分空間}になる。
+は、同次方程式の解空間だから\textbf{部分空間}になる
+(第 \ref{chap:linmap} 章の言葉でいえば、線形写像
+$\vect{x} \mapsto (\lambda E - A)\vect{x}$ の核である)。
 これを固有値 $\lambda$ の\textbf{固有空間}という。
 固有ベクトルは $1$ 本ではなく、空間ごと存在するのである。
+固有空間の次元 $\dim W_\lambda$ は、自由度定理により
+$n - \mathrm{rank}(\lambda E - A)$ で計算できる。
 
 \begin{itembox}[l]{深掘り:固有値は「変換そのもの」の属性である}
 第III部の深掘りで、相似な行列($A' = P^{-1}AP$)は同じ変換を
@@ -108,7 +206,7 @@ W_\lambda = \{\, \vect{v} \mid A\vect{v} = \lambda\vect{v} \,\}
 よって\textbf{固有値は相似不変}、すなわち座標の取り方によらない
 「変換そのものの属性」である。さらに、固有多項式を
 $\varphi_A(\lambda) = (\lambda - \lambda_1)\cdots(\lambda - \lambda_n)$ と
-因数分解して係数を比較すると($n = 2$ で確かめよ)、
+因数分解して係数を比較すると(定理 \ref{thm:eigen-trdet2} は $n = 2$ の場合)、
 \[
 \lambda_1 + \cdots + \lambda_n = \mathrm{tr}\,A,
 \qquad
@@ -125,6 +223,319 @@ $A = \mat{1 & 4 \\ 2 & 3}$ の固有値と、各固有値に属する固有ベ�
 また、固有値の和と積がそれぞれ $\mathrm{tr}\,A$、$\det A$ に
 一致することを確かめよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[固有ベクトルの和は固有ベクトルとは限らない]\label{hanrei:eigen-sum}
+「固有ベクトルどうしを足しても固有ベクトル」ではない。
+$A = \mat{1 & 0 \\ 0 & 2}$ の固有ベクトル
+$\vect{e}_1 = \mat{1 \\ 0}$(固有値 $1$)と
+$\vect{e}_2 = \mat{0 \\ 1}$(固有値 $2$)の和
+$\vect{v} = \mat{1 \\ 1}$ は、
+\[
+A\vect{v} = \mat{1 \\ 2}
+\]
+となり、$\vect{v}$ のどんな定数倍でもない。よって固有ベクトルでない。
+和が固有ベクトルに留まるのは、\textbf{同じ固有値}に属する
+固有ベクトルどうし(=同じ固有空間の中)だけである。
+「固有ベクトル全体」は部分空間にならず、固有空間ごとに分かれて
+部分空間をなす、と整理しておこう。
+\end{hanrei}
+
+\begin{hanrei}[固有値は足し算・掛け算と相性が悪い]\label{hanrei:eigen-add}
+「$A + B$ の固有値は $A$ の固有値と $B$ の固有値の和」は誤りである。
+\[
+A = \mat{0 & 1 \\ 0 & 0}, \qquad B = \mat{0 & 0 \\ 1 & 0}
+\]
+はどちらも固有多項式 $\lambda^2$ をもち、固有値は $0$ のみ。
+しかし $A + B = \mat{0 & 1 \\ 1 & 0}$ の固有多項式は
+$\lambda^2 - 1$ で、固有値は $\pm 1$ である($0 + 0$ ではない)。
+積 $AB = \mat{1 & 0 \\ 0 & 0}$ の固有値も $1, 0$ で、
+「固有値の積($0 \cdot 0 = 0$)」からは説明できない。
+固有値は行列の和・積とは(一般には)連動しない。
+連動するのは\textbf{同じ $A$ のべき}である:$A\vect{v} = \lambda\vect{v}$
+ならば $A^2\vect{v} = \lambda^2\vect{v}$(問 \ref{q:eigen-ex8})。
+\end{hanrei}
+
+\section{例題}
+
+固有値・固有ベクトルの計算と検証、そして性質の証明を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(固有値と固有ベクトルの計算)]\label{rei:eigen-basic}
+$A = \mat{2 & 1 \\ 1 & 2}$ の固有値と固有ベクトルを求めよ。\\
+\textbf{解.}\ 固有多項式は
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - 2 & -1 \\ -1 & \lambda - 2}
+= (\lambda - 2)^2 - 1 = (\lambda - 3)(\lambda - 1)
+\]
+より固有値は $\lambda = 3, 1$
+(検算:和 $3 + 1 = 4 = \mathrm{tr}\,A$、積 $3 \cdot 1 = 3 = \det A$)。
+
+$\lambda = 3$:$(3E - A)\vect{v} = \mat{1 & -1 \\ -1 & 1}\vect{v} = \vect{0}$
+より $x = y$、$\vect{v} = t\mat{1 \\ 1}$($t \neq 0$)。
+
+$\lambda = 1$:$(E - A)\vect{v} = \mat{-1 & -1 \\ -1 & -1}\vect{v} = \vect{0}$
+より $x + y = 0$、$\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
+
+例題 \ref{rei:repmat-change-ex} で「この基底なら表現行列が
+$\mathrm{diag}(3, 1)$ になる」と観察した、その基底が再登場した。
+\end{rei}
+
+\begin{rei}[例題・基本(三角行列)]\label{rei:eigen-tri}
+上三角行列 $A = \mat{3 & 1 \\ 0 & 2}$ の固有値と固有ベクトルを求めよ。\\
+\textbf{解.}\ 定理 \ref{thm:eigen-tri} より、固有値は対角成分の
+$\lambda = 3, 2$ である(固有方程式
+$(\lambda - 3)(\lambda - 2) = 0$ を解いても同じ)。
+
+$\lambda = 3$:$(3E - A)\vect{v} = \mat{0 & -1 \\ 0 & 1}\vect{v} = \vect{0}$
+より $y = 0$、$\vect{v} = t\mat{1 \\ 0}$。
+
+$\lambda = 2$:$(2E - A)\vect{v} = \mat{-1 & -1 \\ 0 & 0}\vect{v} = \vect{0}$
+より $x + y = 0$、$\vect{v} = t\mat{1 \\ -1}$。
+
+固有値は対角成分から即座に読めたが、固有ベクトルの一方
+$\mat{1 \\ -1}$ は標準基底ベクトルではない。
+\textbf{「三角行列だから固有ベクトルも自明」ではない}点に注意。
+\end{rei}
+
+\begin{rei}[例題・基本(固有ベクトルかどうかの判定)]\label{rei:eigen-check}
+$A = \mat{1 & 2 \\ 3 & 2}$ について、
+$\vect{v}_1 = \mat{1 \\ 1}$, $\vect{v}_2 = \mat{2 \\ 3}$ は
+$A$ の固有ベクトルか。固有ベクトルであれば固有値を答えよ。\\
+\textbf{解.}\ 定義に従い、$A$ を掛けて定数倍になるかを見る。
+\[
+A\vect{v}_1 = \mat{1 + 2 \\ 3 + 2} = \mat{3 \\ 5}
+\]
+は $\mat{1 \\ 1}$ の定数倍ではない($3 \neq 5$)ので、
+$\vect{v}_1$ は固有ベクトルで\textbf{ない}。
+\[
+A\vect{v}_2 = \mat{2 + 6 \\ 6 + 6} = \mat{8 \\ 12} = 4\mat{2 \\ 3}
+\]
+より、$\vect{v}_2$ は固有値 $4$ に属する固有ベクトルで\textbf{ある}。
+判定に固有方程式は不要である――掛けてみればよい。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次行列)]\label{rei:eigen-3x3}
+$A = \mat{1 & 0 & 2 \\ 0 & 3 & 0 \\ 2 & 0 & 1}$ の固有値と、
+各固有空間の基底を求めよ。\\
+\textbf{解.}\ 固有多項式を第 $2$ 行で余因子展開すると
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - 1 & 0 & -2 \\ 0 & \lambda - 3 & 0 \\
+-2 & 0 & \lambda - 1}
+= (\lambda - 3)\bigl\{(\lambda - 1)^2 - 4\bigr\}
+= (\lambda - 3)^2(\lambda + 1).
+\]
+固有値は $\lambda = 3$(重解)と $\lambda = -1$
+(検算:和 $3 + 3 - 1 = 5 = \mathrm{tr}\,A$)。
+
+$\lambda = 3$:$(3E - A)\vect{v} = \mat{2 & 0 & -2 \\ 0 & 0 & 0 \\
+-2 & 0 & 2}\vect{v} = \vect{0}$ は $x = z$($y$ は自由)を与えるから、
+\[
+W_3 = \left\{ s\mat{1 \\ 0 \\ 1} + t\mat{0 \\ 1 \\ 0} \right\}
+\]
+で、基底は $\mat{1 \\ 0 \\ 1}, \mat{0 \\ 1 \\ 0}$($2$ 次元)。
+
+$\lambda = -1$:$(-E - A)\vect{v} = \mat{-2 & 0 & -2 \\ 0 & -4 & 0 \\
+-2 & 0 & -2}\vect{v} = \vect{0}$ は $x = -z$, $y = 0$ を与えるから、
+基底は $\mat{1 \\ 0 \\ -1}$($1$ 次元)。
+
+重解の固有値 $3$ に対して固有空間が $2$ 次元ある
+――この「重複度どうしの一致」が次章の対角化可能性の鍵になる。
+\end{rei}
+
+\begin{rei}[例題・標準(固有値 $0$ と正則性)]\label{rei:eigen-zero-ex}
+$A = \mat{2 & 6 \\ 1 & 3}$ の固有値と固有ベクトルを求め、
+$0$ が固有値であることと $\det A = 0$ の関係を確かめよ。\\
+\textbf{解.}\ $\varphi_A(\lambda) = (\lambda - 2)(\lambda - 3) - 6
+= \lambda^2 - 5\lambda = \lambda(\lambda - 5)$ より固有値は
+$\lambda = 0, 5$。
+
+$\lambda = 0$:$A\vect{v} = \vect{0}$、すなわち $x + 3y = 0$
+($2$ 行は比例)より $\vect{v} = t\mat{-3 \\ 1}$。
+
+$\lambda = 5$:$(5E - A)\vect{v} = \mat{3 & -6 \\ -1 & 2}\vect{v} = \vect{0}$
+より $x = 2y$、$\vect{v} = t\mat{2 \\ 1}$
+(検算:$A\mat{2 \\ 1} = \mat{10 \\ 5} = 5\mat{2 \\ 1}$)。
+
+実際 $\det A = 6 - 6 = 0$ で $A$ は正則でなく、
+定理 \ref{thm:eigen-zero} のとおり $0$ が固有値になっている。
+固有値 $0$ の固有空間 $W_0 = \mathrm{Ker}\,A$ は、
+同次方程式 $A\vect{x} = \vect{0}$ の解空間そのものである。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:射影の固有値)]\label{rei:eigen-proj}
+$P = \dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$ は、直線 $y = x$ への正射影
+(各点から直線に下ろした垂線の足へうつす変換)を表す。
+$P$ の固有値と固有ベクトルを求め、幾何的に解釈せよ。\\
+\textbf{解.}\ $\varphi_P(\lambda) = \left(\lambda - \dfrac{1}{2}\right)^2
+- \dfrac{1}{4} = \lambda^2 - \lambda = \lambda(\lambda - 1)$ より
+固有値は $\lambda = 1, 0$。
+
+$\lambda = 1$:$\vect{v} = t\mat{1 \\ 1}$
+(検算:$P\mat{1 \\ 1} = \mat{1 \\ 1}$)。
+直線 $y = x$ 上の点は射影で\textbf{動かない}(固有値 $1$)。
+
+$\lambda = 0$:$\vect{v} = t\mat{1 \\ -1}$
+(検算:$P\mat{1 \\ -1} = \vect{0}$)。
+直線に垂直な方向は射影で\textbf{つぶれる}(固有値 $0$)。
+
+「動かない方向」と「つぶれる方向」という射影の幾何的本性が、
+固有値 $1$ と $0$ にそのまま現れている。なお $P^2 = P$
+(2度射影しても同じ)であり、固有値も $1^2 = 1$, $0^2 = 0$ と
+つじつまが合っている。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{固有ベクトル}=変換で向きを変えない($\lambda$ 倍される
+だけの)零でないベクトル。\textbf{固有値} $\lambda$ は $0$ でもよく、
+$0$ が固有値 $\iff A$ が正則でない(定理 \ref{thm:eigen-zero})。
+\item 固有値は\textbf{固有方程式} $\det(\lambda E - A) = 0$ の解
+(定理 \ref{thm:eigen-char})、固有ベクトルは同次方程式
+$(\lambda E - A)\vect{v} = \vect{0}$ の非自明解。
+求めたら $A\vect{v} = \lambda\vect{v}$ で検算する。
+\item 三角行列の固有値は対角成分(定理 \ref{thm:eigen-tri})。
+ただし固有ベクトルは別途計算が要る。
+\item 固有値の\textbf{和はトレース、積は行列式}
+(定理 \ref{thm:eigen-trdet2}、$n$ 次でも成立)。検算に活用できる。
+\item 固有値 $\lambda$ の\textbf{固有空間}
+$W_\lambda = \mathrm{Ker}(\lambda E - A)$ は部分空間で、
+次元は $n - \mathrm{rank}(\lambda E - A)$。
+異なる固有値の固有ベクトルどうしの和は固有ベクトルにならない
+(反例 \ref{hanrei:eigen-sum})。
+\item 固有多項式は相似不変。固有値は座標の取り方によらない
+\textbf{変換そのものの属性}である。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:eigen-ex1}
+$A = \mat{5 & 4 \\ 2 & 3}$ の固有値と、各固有値に属する固有ベクトルを
+求めよ。また固有値の和と積を $\mathrm{tr}\,A$, $\det A$ と見比べよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:eigen-ex2}
+上三角行列 $A = \mat{2 & 3 \\ 0 & 5}$ の固有値を対角成分から読み取り、
+各固有値の固有ベクトルを求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:eigen-ex3}
+$A = \mat{1 & 2 \\ 3 & 2}$ について、次のベクトルが $A$ の固有ベクトル
+かどうかを判定し、固有ベクトルの場合は固有値を答えよ。
+\[
+\vect{v}_1 = \mat{1 \\ 1}, \qquad
+\vect{v}_2 = \mat{2 \\ 3}, \qquad
+\vect{v}_3 = \mat{1 \\ -1}
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:eigen-ex4}
+対角行列 $A = \mat{2 & 0 \\ 0 & -1}$ の固有値と固有空間を求めよ。
+一般に、対角行列 $\mathrm{diag}(a_1, \dots, a_n)$ の固有値と、
+標準基底の関係を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex5}
+$A = \mat{2 & 1 & 1 \\ 0 & 1 & 0 \\ 0 & 1 & 3}$ の固有値と、
+各固有空間の基底を求めよ(上三角に近い形なので、固有多項式は
+第 $1$ 列での余因子展開が速い)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex6}
+$90^\circ$ 回転行列 $R = \mat{0 & -1 \\ 1 & 0}$ には実数の固有値が
+存在しないことを、固有方程式を用いて示せ。
+また、その事実の幾何的な理由を一行で述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex7}
+$A = \mat{1 & 2 \\ 2 & 4}$ について、次に答えよ。\\
+　(1) $\det A$ を計算し、$0$ が固有値であることを予言せよ。\\
+　(2) 固有値と固有ベクトルをすべて求めよ。\\
+　(3) 固有値 $0$ の固有空間は、第II部で学んだどの空間と一致するか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex8}
+$A\vect{v} = \lambda\vect{v}$($\vect{v} \neq \vect{0}$)のとき、
+次を示せ。\\
+　(1) $A^2\vect{v} = \lambda^2\vect{v}$(したがって $\vect{v}$ は
+$A^2$ の固有値 $\lambda^2$ の固有ベクトル)。\\
+　(2) $A$ が正則ならば $\lambda \neq 0$ であり、
+$A^{-1}\vect{v} = \dfrac{1}{\lambda}\vect{v}$。\\
+　(3) 例題 \ref{rei:eigen-basic} の $A = \mat{2 & 1 \\ 1 & 2}$ について、
+$A^2$ の固有値を計算なしで予言し、$A^2$ を実際に計算して確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:eigen-ex9}
+$A = \mat{0 & 1 \\ 1 & 1}$ について、次に答えよ。\\
+　(1) 固有値 $\varphi = \dfrac{1 + \sqrt{5}}{2}$,
+$\psi = \dfrac{1 - \sqrt{5}}{2}$ を固有方程式から求めよ。\\
+　(2) 各固有値 $\lambda$ に対し、$\mat{1 \\ \lambda}$ が固有ベクトルに
+なることを、$\lambda^2 = \lambda + 1$ を用いて確かめよ。
+(この行列は第 \ref{chap:power} 章でフィボナッチ数列の解析に使われる。)
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:eigen-ex10}
+鏡映(直線 $y = x \tan\theta$ に関する折り返し)を表す行列
+$S = \mat{\cos 2\theta & \sin 2\theta \\ \sin 2\theta & -\cos 2\theta}$
+について、固有値が $\theta$ によらず $1$ と $-1$ であることを
+固有方程式から示せ。また、それぞれの固有ベクトルの方向を
+幾何的に説明せよ(計算では $\theta = 30^\circ$ など特定の場合を
+確かめればよい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:eigen-ex11}
+$A$ と転置行列 ${}^t\!A$ の固有多項式が一致する(したがって固有値も
+一致する)ことを証明せよ
+(ヒント:$\lambda E - {}^t\!A = {}^t(\lambda E - A)$ と、
+転置で行列式が変わらないこと(定理 \ref{thm:det-props})を使う)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:eigen-ex12}
+$B = P^{-1}AP$ とする($P$ は正則)。次を証明せよ。\\
+　(1) $A$ と $B$ の固有多項式は一致する。\\
+　(2) $\vect{v}$ が $A$ の固有値 $\lambda$ の固有ベクトルならば、
+$P^{-1}\vect{v}$ は $B$ の固有値 $\lambda$ の固有ベクトルである。
+(相似=座標変換で、固有値は不変、固有ベクトルは座標が変わるだけ。)
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:eigen-ex1}}:固有方程式を解き、各固有値で
+$(\lambda E - A)\vect{v} = \vect{0}$ を掃き出す。和と積で検算。
+\item \textbf{問 \ref{q:eigen-ex2}}:固有値は定理 \ref{thm:eigen-tri}。
+固有ベクトルは各固有値で同次方程式を解く。
+\item \textbf{問 \ref{q:eigen-ex3}}:$A$ を掛けて、結果がもとの
+ベクトルの定数倍かどうかを見るだけでよい。
+\item \textbf{問 \ref{q:eigen-ex4}}:$A\vect{e}_1$, $A\vect{e}_2$ を
+計算してみる。
+\item \textbf{問 \ref{q:eigen-ex5}}:第 $1$ 列で余因子展開すると
+固有多項式が $(\lambda - 2)(\lambda - 1)(\lambda - 3)$ と
+因数分解された形で得られる。固有ベクトルは各固有値で掃き出す。
+\item \textbf{問 \ref{q:eigen-ex6}}:判別式が負になることを見る。
+幾何的には「すべての方向が回されてしまう」。
+\item \textbf{問 \ref{q:eigen-ex7}}:(3) $W_0 = \mathrm{Ker}\,A$ は
+同次方程式の解空間である。
+\item \textbf{問 \ref{q:eigen-ex8}}:(1) は $A$ を $2$ 回掛ける。
+(2) は両辺に $A^{-1}$ を掛ける($\lambda = 0$ だと $A\vect{v} = \vect{0}$
+で正則性に矛盾)。
+\item \textbf{問 \ref{q:eigen-ex9}}:(2) は
+$A\mat{1 \\ \lambda} = \mat{\lambda \\ 1 + \lambda}$ を計算し、
+$1 + \lambda = \lambda^2$ で書き換える。
+\item \textbf{問 \ref{q:eigen-ex10}}:$\mathrm{tr}\,S = 0$,
+$\det S = -\cos^2 2\theta - \sin^2 2\theta = -1$ から固有方程式は
+$\lambda^2 - 1 = 0$。鏡の上の方向は不動、垂直方向は反転。
+\item \textbf{問 \ref{q:eigen-ex11}}:単位行列は転置しても変わらない。
+\item \textbf{問 \ref{q:eigen-ex12}}:(1) は深掘りの計算をなぞる。
+(2) は $B(P^{-1}\vect{v})$ を定義どおり計算する。
+$P^{-1}\vect{v} \neq \vect{0}$ の確認も忘れずに。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{対角化}\label{chap:diag}
