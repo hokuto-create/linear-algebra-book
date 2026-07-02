@@ -1084,26 +1084,63 @@ $A^k = PD^kP^{-1} = O$。$D^k$ の対角成分はどうなるか。
 \chapter{対角化の威力 ― 行列のべき乗と漸化式}\label{chap:power}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 公式 $A^n = PD^nP^{-1}$ を使って、対角化可能な行列のべき乗を
+閉じた式で計算できるようになる。
+\item $3$ 項間漸化式を行列の反復に翻訳し、特性方程式の解(=固有値)から
+一般項を「等比数列の線形結合」として求められるようになる。
+その方法の正当性を、次元の議論で説明できるようになる。
+\item 「長期的な振る舞いは絶対値最大の固有値が支配する」という原理を、
+フィボナッチ数列や極限をもつ数列で使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 対角化は何の役に立つのか}
+
+前章で対角化の理論を整えた。本章はその\textbf{報酬}を受け取る章である。
+行列 $A$ を何度も掛ける――状態を毎期更新する人口モデル、
+毎項更新する漸化式、後に学ぶ微分方程式――という場面では、
+$A^n$ が主役になる。しかし $A^{100}$ を愚直に $100$ 回掛けるのは
+絶望的である。対角化はこの計算を一撃で終わらせ、しかも
+「$n \to \infty$ で何が起きるか」という\textbf{構造の理解}まで与えてくれる。
+高校で天下りに教わった漸化式の「特性方程式」の正体も、ここで明かされる。
+
 \section{$A^n$ の計算}
 
 対角化の最初の報酬は、行列のべき乗が一瞬で計算できることである。
-$P^{-1}AP = D$(対角行列)とすると $A = PDP^{-1}$ であり、
+
+\begin{teiri}[べき乗の公式]\label{thm:power-formula}
+$P^{-1}AP = D = \mathrm{diag}(\lambda_1, \dots, \lambda_k)$ と
+対角化されているとき、任意の正の整数 $n$ に対して
 \[
-A^n = (PDP^{-1})(PDP^{-1})\cdots(PDP^{-1}) = P D^n P^{-1}.
+A^n = P D^n P^{-1}, \qquad
+D^n = \mat{\lambda_1^n & & \\ & \ddots & \\ & & \lambda_k^n}.
 \]
-途中の $P^{-1}P$ がすべて消えるからである。そして対角行列のべき乗は
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$A = PDP^{-1}$ より
 \[
-D^n = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_k}^{\,n}
-= \mat{\lambda_1^n & & \\ & \ddots & \\ & & \lambda_k^n}
+A^n = (PDP^{-1})(PDP^{-1})\cdots(PDP^{-1}) = P D^n P^{-1}
 \]
-と、対角成分を $n$ 乗するだけである。
+――途中の $P^{-1}P$ がすべて消える(例題 \ref{rei:diag-power} で
+$n = 2$ の場合を確かめた。一般には $n$ についての帰納法)。
+対角行列のべきが対角成分のべきになることは、積の定義から直ちに分かる。
+$\blacksquare$
+
 $A^{100}$ を $100$ 回掛け算する必要はない。
 \textbf{よい座標系に移って計算し、最後に元の座標系に戻す}
-――$PDP^{-1}$ の三段構えは、この戦略の式形である。
+――$PD^nP^{-1}$ の三段構えは、この戦略の式形である。
+
+\begin{mondai}\label{q:power}
+問 \ref{q:eigen} の $A = \mat{1 & 4 \\ 2 & 3}$ について、
+対角化を用いて $A^n$ を求めよ。
+\end{mondai}
 
 \section{フィボナッチ数列 ― 本書の伏線を回収する}
 
-\begin{rei}[ビネの公式]
+\begin{rei}[ビネの公式]\label{rei:power-binet}
 フィボナッチ数列 $F_0 = 0$, $F_1 = 1$, $F_{n+2} = F_{n+1} + F_n$ を考える。
 隣り合う $2$ 項を束ねたベクトル $\vect{x}_n = \mat{F_{n+1} \\ F_n}$ を作ると、
 漸化式は
@@ -1118,8 +1155,22 @@ $\vect{x}_n = A^n \vect{x}_0$ であり、問題は $A^n$ の計算に帰着し�
 \varphi = \frac{1 + \sqrt{5}}{2}, \qquad \psi = \frac{1 - \sqrt{5}}{2}
 \]
 (黄金比とその相棒)。固有ベクトルは $\vect{v}_\lambda = \mat{\lambda \\ 1}$
-と取れる(確かめよ)。相異なる $2$ つの固有値をもつので対角化可能で、
-$A^n = PD^nP^{-1}$ を計算して成分を取り出すと(計算は各自):
+と取れる(問 \ref{q:eigen-ex9} で確かめた)。相異なる $2$ つの固有値を
+もつので対角化可能で、
+\[
+P = \mat{\varphi & \psi \\ 1 & 1}, \qquad
+P^{-1} = \frac{1}{\varphi - \psi}\mat{1 & -\psi \\ -1 & \varphi}
+= \frac{1}{\sqrt{5}}\mat{1 & -\psi \\ -1 & \varphi}
+\]
+($\varphi - \psi = \sqrt{5}$、$2 \times 2$ の逆行列公式)。
+$\vect{x}_0 = \mat{1 \\ 0}$ だから
+\[
+P^{-1}\vect{x}_0 = \frac{1}{\sqrt{5}}\mat{1 \\ -1}, \qquad
+D^n P^{-1}\vect{x}_0 = \frac{1}{\sqrt{5}}\mat{\varphi^n \\ -\psi^n}, \qquad
+\vect{x}_n = P\,\Bigl(D^n P^{-1}\vect{x}_0\Bigr)
+= \frac{1}{\sqrt{5}}\mat{\varphi^{n+1} - \psi^{n+1} \\ \varphi^n - \psi^n}.
+\]
+第 $2$ 成分が $F_n$ だから
 \[
 F_n = \frac{\varphi^n - \psi^n}{\sqrt{5}}.
 \]
@@ -1155,25 +1206,360 @@ $V$ 上の線形変換であり、等比数列はその固有ベクトルであ�
 ($e^{\lambda t}$ が微分の固有ベクトルとして)再現される。
 \end{itembox}
 
-\section{一般の線形漸化式}
+\section{$3$ 項間漸化式の一般解}
 
-フィボナッチの方法は一般化できる。$k$ 項間漸化式
-$a_{n+k} = c_{k-1}a_{n+k-1} + \cdots + c_0 a_n$ は、
-連続する $k$ 項を束ねることで $k$ 次正方行列(\textbf{同伴行列})の反復になり、
-その固有方程式は特性方程式 $\lambda^k = c_{k-1}\lambda^{k-1} + \cdots + c_0$
-に一致する。固有値がすべて異なれば、一般項は等比数列の線形結合で書ける。
-(特性方程式が重解をもつ場合は対角化できず、$n\lambda^n$ 型の項が現れる。
-その理由はジョルダン標準形で完全に説明される。)
+フィボナッチで使った方法は、そのまま定理の形にまとめられる。
 
-\begin{mondai}\label{q:power}
-問 \ref{q:eigen} の $A = \mat{1 & 4 \\ 2 & 3}$ について、
-対角化を用いて $A^n$ を求めよ。
-\end{mondai}
+\begin{teiri}[$3$ 項間漸化式の一般項]\label{thm:power-rec}
+漸化式
+\[
+a_{n+2} = p\,a_{n+1} + q\,a_n \qquad (q \neq 0)
+\]
+を満たす数列全体 $W$ は $2$ 次元のベクトル空間である。
+\textbf{特性方程式} $\lambda^2 = p\lambda + q$ が相異なる $2$ 解
+$\alpha, \beta$ をもつならば、等比数列 $(\alpha^n)$, $(\beta^n)$ が
+$W$ の基底になり、したがって一般項は
+\[
+a_n = c_1 \alpha^n + c_2 \beta^n
+\]
+の形にただ一通りに書ける($c_1, c_2$ は初期条件 $a_0, a_1$ から決まる)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$W$ がベクトル空間になることは問 \ref{q:vs-ex6} と同様
+(和とスカラー倍が同じ漸化式を保つ)。
+$\dim W = 2$ であることは問 \ref{q:basis2} と同様である:
+数列は最初の $2$ 項で完全に決まるから、
+「$a_0 = 1, a_1 = 0$ で始まる解」と「$a_0 = 0, a_1 = 1$ で始まる解」の
+$2$ 本が基底になる。
+
+次に、$\alpha$ は特性方程式の解だから $\alpha^2 = p\alpha + q$。
+両辺に $\alpha^n$ を掛ければ
+$\alpha^{n+2} = p\,\alpha^{n+1} + q\,\alpha^n$、
+すなわち等比数列 $(\alpha^n)$ は漸化式を満たし $W$ に属する。
+$(\beta^n)$ も同様である。
+
+独立性:$c_1\alpha^n + c_2\beta^n = 0$(すべての $n$)とすると、
+$n = 0, 1$ で
+\[
+c_1 + c_2 = 0, \qquad c_1\alpha + c_2\beta = 0.
+\]
+第 $1$ 式から $c_2 = -c_1$、第 $2$ 式に代入して
+$c_1(\alpha - \beta) = 0$。$\alpha \neq \beta$ より $c_1 = 0$、
+よって $c_2 = 0$ である。
+
+$2$ 次元空間 $W$ の独立な $2$ 本だから、
+定理 \ref{thm:dim-ncheck}(1) により基底である。 $\blacksquare$
+
+行列の言葉でいえば、$\vect{x}_n = \mat{a_{n+1} \\ a_n}$ と束ねると
+$\vect{x}_{n+1} = A\vect{x}_n$、$A = \mat{p & q \\ 1 & 0}$
+(\textbf{同伴行列})であり、その固有多項式は
+\[
+\det\mat{\lambda - p & -q \\ -1 & \lambda}
+= \lambda(\lambda - p) - q = \lambda^2 - p\lambda - q
+\]
+――ちょうど特性方程式になる。\textbf{特性方程式とは同伴行列の
+固有方程式}であり、等比数列の底 $\alpha, \beta$ とは固有値のことだった。
 
 \begin{mondai}\label{q:rec}
 漸化式 $a_{n+2} = a_{n+1} + 2a_n$, $a_0 = 1$, $a_1 = 1$ の一般項を、
 等比数列の線形結合として求めよ。
 \end{mondai}
+
+一般の $k$ 項間漸化式
+$a_{n+k} = c_{k-1}a_{n+k-1} + \cdots + c_0 a_n$ も、
+連続する $k$ 項を束ねることで $k$ 次の同伴行列の反復になり、
+その固有方程式は特性方程式 $\lambda^k = c_{k-1}\lambda^{k-1} + \cdots + c_0$
+に一致する。固有値がすべて異なれば、一般項は等比数列の線形結合で書ける。
+特性方程式が重解をもつ場合は $n\lambda^n$ 型の項が現れる
+(問 \ref{q:power-ex11}。行列の側では対角化不可能になっており、
+完全な説明は第VI部のジョルダン標準形で与えられる)。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[「成分ごとの $n$ 乗」は $A^n$ ではない]\label{hanrei:power-entrywise}
+$A^n$ を「各成分を $n$ 乗した行列」と混同してはならない。
+$A = \mat{1 & 1 \\ 1 & 1}$ では
+\[
+A^2 = \mat{2 & 2 \\ 2 & 2}
+\]
+であって、成分ごとの $2$ 乗 $\mat{1 & 1 \\ 1 & 1}$ とは別物である。
+成分ごとの $n$ 乗が正しいのは\textbf{対角行列だけ}であり、
+だからこそ「対角化してからべき乗し、元に戻す」
+$A^n = PD^nP^{-1}$ に価値がある。
+\end{hanrei}
+
+\begin{hanrei}[特性方程式が重解のときは等比数列だけでは足りない]\label{hanrei:power-double}
+漸化式 $a_{n+2} = 2a_{n+1} - a_n$ の特性方程式は
+$\lambda^2 - 2\lambda + 1 = (\lambda - 1)^2$ で、解は $\lambda = 1$ のみ
+(重解)。等比数列の解は定数数列 $(1, 1, 1, \dots)$ とその定数倍しか
+得られず、$1$ 次元分にしかならない。ところが解空間は $2$ 次元であり
+(例題 \ref{rei:dim-seq})、たとえば $a_n = n$(等差数列)は
+この漸化式の解なのに、どんな等比数列の線形結合でも書けない。
+足りない $1$ 本が $n \cdot 1^n = n$ 型の解である
+(一般の重解の場合は問 \ref{q:power-ex11})。
+行列の側では、同伴行列 $\mat{2 & -1 \\ 1 & 0}$ が対角化不可能に
+なっている――「重解=対角化の失敗=等比数列の不足」は同じ現象の
+三つの顔である。
+\end{hanrei}
+
+\section{例題}
+
+$A^n$ の計算と漸化式への応用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(三角行列のべき乗)]\label{rei:power-tri}
+$A = \mat{1 & 2 \\ 0 & 3}$ の $A^n$ を求めよ。\\
+\textbf{解.}\ 固有値は対角成分の $1, 3$。固有ベクトルは
+$\lambda = 1$ で $\mat{1 \\ 0}$、$\lambda = 3$ で $\mat{1 \\ 1}$
+(問 \ref{q:repmat-ex5} で対角化済み)。
+$P = \mat{1 & 1 \\ 0 & 1}$, $P^{-1} = \mat{1 & -1 \\ 0 & 1}$,
+$D = \mat{1 & 0 \\ 0 & 3}$ として
+\[
+A^n = PD^nP^{-1}
+= \mat{1 & 1 \\ 0 & 1}\mat{1 & 0 \\ 0 & 3^n}\mat{1 & -1 \\ 0 & 1}
+= \mat{1 & 3^n \\ 0 & 3^n}\mat{1 & -1 \\ 0 & 1}
+= \mat{1 & 3^n - 1 \\ 0 & 3^n}.
+\]
+検算:$n = 1$ で $\mat{1 & 2 \\ 0 & 3} = A$、
+$n = 2$ で $\mat{1 & 8 \\ 0 & 9}$ は直接計算の
+$A^2 = \mat{1 & 8 \\ 0 & 9}$ と一致する。
+\end{rei}
+
+\begin{rei}[例題・基本(対称行列のべき乗)]\label{rei:power-sym}
+$A = \mat{2 & 1 \\ 1 & 2}$ の $A^n$ を求めよ。\\
+\textbf{解.}\ 問 \ref{q:diag-ex2} より
+$P = \mat{1 & 1 \\ 1 & -1}$, $D = \mat{3 & 0 \\ 0 & 1}$,
+$P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$。よって
+\[
+A^n = \mat{1 & 1 \\ 1 & -1}\mat{3^n & 0 \\ 0 & 1}
+\cdot\frac{1}{2}\mat{1 & 1 \\ 1 & -1}
+= \frac{1}{2}\mat{3^n & 1 \\ 3^n & -1}\mat{1 & 1 \\ 1 & -1}
+= \frac{1}{2}\mat{3^n + 1 & 3^n - 1 \\ 3^n - 1 & 3^n + 1}.
+\]
+検算:$n = 1$ で $\dfrac{1}{2}\mat{4 & 2 \\ 2 & 4} = A$。
+また $\mathrm{tr}\,A^n = 3^n + 1$ は「固有値の $n$ 乗の和」に
+一致している(例題 \ref{rei:power-trace})。
+\end{rei}
+
+\begin{rei}[例題・基本(漸化式を解く)]\label{rei:power-rec-ex}
+漸化式 $a_{n+2} = 5a_{n+1} - 6a_n$, $a_0 = 0$, $a_1 = 5$ の一般項を求めよ。\\
+\textbf{解.}\ 特性方程式は $\lambda^2 = 5\lambda - 6$、すなわち
+$(\lambda - 2)(\lambda - 3) = 0$ で $\lambda = 2, 3$(相異なる)。
+定理 \ref{thm:power-rec} により $a_n = c_1 2^n + c_2 3^n$ とおける。
+初期条件から
+\[
+c_1 + c_2 = 0, \qquad 2c_1 + 3c_2 = 5
+\]
+を解いて $c_2 = 5$, $c_1 = -5$。よって
+\[
+a_n = 5\,(3^n - 2^n).
+\]
+検算:$a_2 = 5a_1 - 6a_0 = 25$、公式でも $5(9 - 4) = 25$ で一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(連立漸化式)]\label{rei:power-system}
+数列 $a_n, b_n$ が
+\[
+a_{n+1} = 3a_n + b_n, \qquad b_{n+1} = a_n + 3b_n, \qquad
+a_0 = 1,\ b_0 = 0
+\]
+を満たすとき、$a_n, b_n$ を求めよ。\\
+\textbf{解.}\ $\vect{x}_n = \mat{a_n \\ b_n}$ とおくと
+$\vect{x}_{n+1} = A\vect{x}_n$、$A = \mat{3 & 1 \\ 1 & 3}$ だから
+$\vect{x}_n = A^n\vect{x}_0$。$A$ は問 \ref{q:repmat} で対角化済み
+($P = \mat{1 & 1 \\ 1 & -1}$, $D = \mathrm{diag}(4, 2)$)なので、
+例題 \ref{rei:power-sym} と同じ計算で
+\[
+A^n = \frac{1}{2}\mat{4^n + 2^n & 4^n - 2^n \\ 4^n - 2^n & 4^n + 2^n}.
+\]
+$\vect{x}_0 = \mat{1 \\ 0}$ を掛けて第 $1$ 列を読み、
+\[
+a_n = \frac{4^n + 2^n}{2}, \qquad b_n = \frac{4^n - 2^n}{2}.
+\]
+検算:$n = 1$ で $a_1 = 3, b_1 = 1$ となり、
+$a_1 = 3a_0 + b_0 = 3$, $b_1 = a_0 + 3b_0 = 1$ と一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(極限をもつ数列)]\label{rei:power-limit}
+「前の $2$ 項の平均を次の項とする」数列
+$a_{n+2} = \dfrac{a_{n+1} + a_n}{2}$, $a_0 = 0$, $a_1 = 1$ について、
+一般項と極限 $\displaystyle\lim_{n\to\infty} a_n$ を求めよ。\\
+\textbf{解.}\ 特性方程式は $2\lambda^2 = \lambda + 1$、すなわち
+$(2\lambda + 1)(\lambda - 1) = 0$ で
+$\lambda = 1, -\dfrac{1}{2}$。よって
+$a_n = c_1 \cdot 1^n + c_2\left(-\dfrac{1}{2}\right)^n$ とおけて、
+初期条件 $c_1 + c_2 = 0$,
+$c_1 - \dfrac{c_2}{2} = 1$ から $c_1 = \dfrac{2}{3}$,
+$c_2 = -\dfrac{2}{3}$。
+\[
+a_n = \frac{2}{3}\left\{1 - \left(-\frac{1}{2}\right)^n\right\},
+\qquad
+\lim_{n\to\infty} a_n = \frac{2}{3}
+\]
+($\left|-\dfrac{1}{2}\right| < 1$ なので第 $2$ 項は $0$ に消える)。
+検算:$a_2 = \dfrac{1 + 0}{2} = \dfrac{1}{2}$、公式でも
+$\dfrac{2}{3}\left(1 - \dfrac{1}{4}\right) = \dfrac{1}{2}$。
+絶対値最大の固有値 $1$ が極限を支配し、もう一方の固有値
+$-\dfrac{1}{2}$ は「減衰する振動」として消えていく
+――固有値が数列の運命を完全に語っている。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:トレースと固有値のべき)]\label{rei:power-trace}
+$2$ 次正方行列 $A$ が相異なる固有値 $\lambda_1, \lambda_2$ をもつとき、
+\[
+\mathrm{tr}(A^n) = \lambda_1^n + \lambda_2^n
+\]
+を示せ。\\
+\textbf{解.}\ $A$ は対角化可能(定理 \ref{thm:diag-ndistinct})で、
+$A^n = PD^nP^{-1}$($D = \mathrm{diag}(\lambda_1, \lambda_2)$)。
+トレースは相似で不変だから(定理 \ref{thm:trace-similar})
+\[
+\mathrm{tr}(A^n) = \mathrm{tr}(PD^nP^{-1}) = \mathrm{tr}(D^n)
+= \lambda_1^n + \lambda_2^n.
+\]
+たとえば $A = \mat{2 & 1 \\ 1 & 2}$(固有値 $3, 1$)なら
+$\mathrm{tr}(A^{100}) = 3^{100} + 1$ と、$A^{100}$ を計算せずに分かる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{$A^n = PD^nP^{-1}$}(定理 \ref{thm:power-formula})。
+対角行列は成分ごとに $n$ 乗できるから、対角化さえ済めばべき乗は一撃である
+(成分ごとの $n$ 乗が許されるのは対角行列だけ:
+反例 \ref{hanrei:power-entrywise})。検算は $n = 1$ の代入で。
+\item $3$ 項間漸化式は同伴行列の反復であり、高校の\textbf{特性方程式}の
+正体は同伴行列の固有方程式である。相異なる $2$ 解 $\alpha, \beta$ を
+もてば、一般項は $a_n = c_1\alpha^n + c_2\beta^n$
+(定理 \ref{thm:power-rec}:等比数列 $2$ 本が $2$ 次元解空間の基底)。
+\item 重解の場合は等比数列だけでは足りず、$n\lambda^n$ 型の解が加わる
+(反例 \ref{hanrei:power-double})。行列の側では対角化の失敗に対応する。
+\item \textbf{長期的な振る舞いは絶対値最大の固有値が支配する}。
+フィボナッチの隣接比が黄金比に収束するのも、平均化の数列が
+$\dfrac{2}{3}$ に収束するのも、この原理の現れである。
+\item $\mathrm{tr}(A^n) = \lambda_1^n + \cdots + \lambda_k^n$ など、
+べき乗の不変量は固有値だけで計算できる。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:power-ex1}
+$A = \mat{1 & 2 \\ 2 & 1}$(例題 \ref{rei:diag-basic} で対角化済み)の
+$A^n$ を求めよ。$n = 1$ を代入して検算すること。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:power-ex2}
+$A = \mat{2 & 1 \\ 0 & 3}$ を対角化し、$A^n$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:power-ex3}
+漸化式 $a_{n+2} = a_{n+1} + 6a_n$, $a_0 = 0$, $a_1 = 5$ の一般項を
+求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:power-ex4}
+漸化式 $a_{n+2} = 2a_{n+1} + 3a_n$, $a_0 = 1$, $a_1 = 1$ の一般項を
+求めよ。$a_2$ を漸化式と公式の両方で計算して検算すること。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex5}
+$A = \mat{1 & 0 & 2 \\ 0 & 3 & 0 \\ 2 & 0 & 1}$
+(例題 \ref{rei:diag-3x3} で対角化済み)の $A^n$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex6}
+数列 $a_n, b_n$ が
+\[
+a_{n+1} = a_n + 2b_n, \qquad b_{n+1} = 2a_n + b_n, \qquad
+a_0 = 1,\ b_0 = 0
+\]
+を満たすとき、$a_n, b_n$ を求めよ
+(問 \ref{q:power-ex1} の結果が使える)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex7}
+漸化式 $a_{n+2} = \dfrac{1}{3}a_{n+1} + \dfrac{2}{3}a_n$,
+$a_0 = 0$, $a_1 = 5$ について、一般項と極限
+$\displaystyle\lim_{n\to\infty} a_n$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex8}
+$A = \mat{2 & 1 \\ 1 & 2}$ について、$\mathrm{tr}(A^{10})$ と
+$\det(A^{10})$ を、$A^{10}$ そのものを計算せずに求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:power-ex9}
+リュカ数列 $L_0 = 2$, $L_1 = 1$, $L_{n+2} = L_{n+1} + L_n$
+(フィボナッチと同じ漸化式で初期値だけ違う数列)について、次を示せ。\\
+　(1) $L_n = \varphi^n + \psi^n$
+($\varphi, \psi$ は例 \ref{rei:power-binet} の黄金比とその相棒)。\\
+　(2) $L_n = \mathrm{tr}(A^n)$($A = \mat{1 & 1 \\ 1 & 0}$ は
+フィボナッチの行列)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:power-ex10}
+$A = \dfrac{1}{3}\mat{1 & 1 \\ 1 & 1}$ について、次に答えよ。\\
+　(1) $A$ の固有値を求めよ。\\
+　(2) $A^n$ を求め、$n \to \infty$ で $A^n$ の各成分が $0$ に
+収束することを確かめよ。\\
+　(3) 対角化可能な行列について「すべての固有値の絶対値が $1$ より
+小さければ $A^n$ の各成分は $0$ に収束する」ことを、
+$A^n = PD^nP^{-1}$ から説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:power-ex11}
+特性方程式 $\lambda^2 = p\lambda + q$ が重解 $\alpha \neq 0$ をもつとする
+(このとき $p = 2\alpha$, $q = -\alpha^2$ である)。次を証明せよ。\\
+　(1) 数列 $(n\alpha^n)$ は漸化式 $a_{n+2} = p\,a_{n+1} + q\,a_n$ を
+満たす。\\
+　(2) $(\alpha^n)$ と $(n\alpha^n)$ は線形独立であり、したがって
+解空間の基底をなす(一般項は $a_n = (c_1 + c_2 n)\alpha^n$ の形になる)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:power-ex12}
+$A$ は対角化可能で、固有値が $\lambda_1, \dots, \lambda_n$
+(重複を込めて)であるとする。任意の正の整数 $k$ について次を示せ。\\
+　(1) $A^k$ の固有値は $\lambda_1^k, \dots, \lambda_n^k$ である。\\
+　(2) $\mathrm{tr}(A^k) = \lambda_1^k + \cdots + \lambda_n^k$、
+$\det(A^k) = (\lambda_1 \cdots \lambda_n)^k = (\det A)^k$。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:power-ex1}}:$P, D$ は例題 \ref{rei:diag-basic}。
+$PD^nP^{-1}$ を右から順に計算する。
+\item \textbf{問 \ref{q:power-ex2}}:三角行列なので固有値は対角成分。
+固有ベクトルを求めて例題 \ref{rei:power-tri} の手順で。
+\item \textbf{問 \ref{q:power-ex3}}:特性方程式
+$\lambda^2 = \lambda + 6$ を解き、初期条件で係数を決める。
+\item \textbf{問 \ref{q:power-ex4}}:同様。$\lambda = 3, -1$ になる。
+\item \textbf{問 \ref{q:power-ex5}}:$A^n = PD^nP^{-1}$。$P^{-1}$ は
+例題 \ref{rei:diag-3x3} の $P$ から掃き出しで求める
+(ブロック構造に注目すると楽)。
+\item \textbf{問 \ref{q:power-ex6}}:$\vect{x}_n = A^n\vect{x}_0$ の形に
+書き、$A^n$ に問 \ref{q:power-ex1} を使う。
+\item \textbf{問 \ref{q:power-ex7}}:特性方程式
+$3\lambda^2 = \lambda + 2$ を解く($\lambda = 1$ が解の一つ)。
+極限は絶対値最大の固有値 $1$ の項だけが生き残る。
+\item \textbf{問 \ref{q:power-ex8}}:例題 \ref{rei:power-trace} と、
+$\det(A^{10}) = (\det A)^{10}$(行列式の積公式)。
+\item \textbf{問 \ref{q:power-ex9}}:(1) は $c_1\varphi^n + c_2\psi^n$ に
+初期条件を入れる($\varphi + \psi = 1$ に注意)。
+(2) は例題 \ref{rei:power-trace}。
+\item \textbf{問 \ref{q:power-ex10}}:$A = \dfrac{2}{3} P_0$
+($P_0$ は例題 \ref{rei:eigen-proj} の射影行列)という見方もできる。
+\item \textbf{問 \ref{q:power-ex11}}:(1) は $p = 2\alpha$,
+$q = -\alpha^2$ を代入して両辺を比べる。(2) は $n = 0, 1$ の値で
+係数を決める。
+\item \textbf{問 \ref{q:power-ex12}}:$A^k = PD^kP^{-1}$ に、
+固有多項式の相似不変性・トレースと行列式の相似不変性を適用する。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{ケーリー・ハミルトンの定理と最小多項式}\label{chap:ch}

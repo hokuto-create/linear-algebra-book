@@ -4723,7 +4723,9 @@ $c_1 = 0$ と結論すること。「零でないベクトルのスカラー倍�
 
 \bigskip
 \noindent\textbf{問 \ref{q:power}}\quad
-問 \ref{q:eigen} より $P = \mat{1 & 2 \\ 1 & -1}$,
+\textbf{方針}:問 \ref{q:eigen} の対角化を使い、$A^n = PD^nP^{-1}$ を
+右から順に計算する。\\
+\textbf{解答}:問 \ref{q:eigen} より $P = \mat{1 & 2 \\ 1 & -1}$,
 $D = \mat{5 & 0 \\ 0 & -1}$, $P^{-1} = \dfrac{1}{3}\mat{1 & 2 \\ 1 & -1}$。
 \[
 A^n = P D^n P^{-1}
@@ -4731,11 +4733,16 @@ A^n = P D^n P^{-1}
 = \frac{1}{3}\mat{5^n + 2(-1)^n & 2 \cdot 5^n - 2(-1)^n \\
 5^n - (-1)^n & 2 \cdot 5^n + (-1)^n}.
 \]
-($n = 1$ を代入すると $A$ に戻ることを確認せよ。)
+($n = 1$ を代入すると $A$ に戻ることが確認できる。)\\
+\textbf{よくあるミス}:$(-1)^n$ を $-1$ と書いてしまうこと。
+負の固有値のべきは偶奇で符号が変わる。
 
 \bigskip
 \noindent\textbf{問 \ref{q:rec}}\quad
-特性方程式 $\lambda^2 = \lambda + 2$ すなわち
+\textbf{方針}:特性方程式の $2$ 解を求め、
+$a_n = c_1\alpha^n + c_2\beta^n$ の係数を初期条件で決める
+(定理 \ref{thm:power-rec})。\\
+\textbf{解答}:特性方程式 $\lambda^2 = \lambda + 2$ すなわち
 $(\lambda - 2)(\lambda + 1) = 0$ より、一般項は
 $a_n = c_1 \cdot 2^n + c_2 \cdot (-1)^n$ の形。
 初期条件 $c_1 + c_2 = 1$, $2c_1 - c_2 = 1$ より
@@ -4743,7 +4750,241 @@ $c_1 = \dfrac{2}{3}$, $c_2 = \dfrac{1}{3}$。よって
 \[
 a_n = \frac{2^{n+1} + (-1)^n}{3}.
 \]
-($a_2 = 3$ を漸化式と公式の両方で確かめよ。)
+検算:$a_2 = a_1 + 2a_0 = 3$、公式でも $\dfrac{8 + 1}{3} = 3$ で一致。\\
+\textbf{よくあるミス}:初期条件の連立を解き間違えること。
+$n = 0, 1, 2$ の値を公式に代入する検算で防げる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex1}}\quad
+\textbf{方針}:例題 \ref{rei:diag-basic} の $P, D$ で
+$A^n = PD^nP^{-1}$。\\
+\textbf{解答}:$P = \mat{1 & 1 \\ 1 & -1}$, $D = \mat{3 & 0 \\ 0 & -1}$,
+$P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$ より
+\[
+A^n = \frac{1}{2}\mat{1 & 1 \\ 1 & -1}\mat{3^n & 0 \\ 0 & (-1)^n}
+\mat{1 & 1 \\ 1 & -1}
+= \frac{1}{2}\mat{3^n + (-1)^n & 3^n - (-1)^n \\
+3^n - (-1)^n & 3^n + (-1)^n}.
+\]
+検算:$n = 1$ で $\dfrac{1}{2}\mat{2 & 4 \\ 4 & 2} = \mat{1 & 2 \\ 2 & 1} = A$。\\
+\textbf{よくあるミス}:$P^{-1}$ の $\dfrac{1}{2}$ を落とすこと。
+$n = 1$ の検算で必ず発覚する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex2}}\quad
+\textbf{方針}:三角行列なので固有値は $2, 3$。固有ベクトルを求めて
+対角化し、べき乗する。\\
+\textbf{解答}:$\lambda = 2$:$\mat{0 & -1 \\ 0 & -1}\vect{v} = \vect{0}$
+より $\vect{v} = t\mat{1 \\ 0}$。
+$\lambda = 3$:$\mat{1 & -1 \\ 0 & 0}\vect{v} = \vect{0}$ より
+$\vect{v} = t\mat{1 \\ 1}$。よって
+$P = \mat{1 & 1 \\ 0 & 1}$, $D = \mat{2 & 0 \\ 0 & 3}$,
+$P^{-1} = \mat{1 & -1 \\ 0 & 1}$ で
+\[
+A^n = \mat{1 & 1 \\ 0 & 1}\mat{2^n & 0 \\ 0 & 3^n}\mat{1 & -1 \\ 0 & 1}
+= \mat{2^n & 3^n \\ 0 & 3^n}\mat{1 & -1 \\ 0 & 1}
+= \mat{2^n & 3^n - 2^n \\ 0 & 3^n}.
+\]
+検算:$n = 1$ で $\mat{2 & 1 \\ 0 & 3} = A$。\\
+\textbf{よくあるミス}:$A^n$ も三角行列になるはず、という構造の確認を
+怠ること(対角成分が $2^n, 3^n$ になるのは定理 \ref{thm:eigen-tri} とも
+整合する)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex3}}\quad
+\textbf{方針}:特性方程式を解き、初期条件で係数を決める。\\
+\textbf{解答}:特性方程式 $\lambda^2 = \lambda + 6$ すなわち
+$(\lambda - 3)(\lambda + 2) = 0$ より $\lambda = 3, -2$。
+$a_n = c_1 3^n + c_2 (-2)^n$ とおくと、初期条件から
+$c_1 + c_2 = 0$, $3c_1 - 2c_2 = 5$。解いて $c_1 = 1$, $c_2 = -1$。よって
+\[
+a_n = 3^n - (-2)^n.
+\]
+検算:$a_2 = a_1 + 6a_0 = 5$、公式でも $9 - 4 = 5$。\\
+\textbf{よくあるミス}:$(-2)^n$ を $-2^n$ と書くこと。
+括弧の位置で意味がまったく変わる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex4}}\quad
+\textbf{方針}:特性方程式 $\lambda^2 = 2\lambda + 3$ を解く。\\
+\textbf{解答}:$(\lambda - 3)(\lambda + 1) = 0$ より $\lambda = 3, -1$。
+$a_n = c_1 3^n + c_2 (-1)^n$ とおくと、初期条件から
+$c_1 + c_2 = 1$, $3c_1 - c_2 = 1$。辺々足して $4c_1 = 2$、
+$c_1 = \dfrac{1}{2}$, $c_2 = \dfrac{1}{2}$。よって
+\[
+a_n = \frac{3^n + (-1)^n}{2}.
+\]
+検算:$a_2 = 2a_1 + 3a_0 = 5$、公式でも $\dfrac{9 + 1}{2} = 5$ で一致。\\
+\textbf{よくあるミス}:一般項が分数を含むことを見て誤りと思うこと。
+分子の $3^n + (-1)^n$ はつねに偶数なので、$a_n$ はちゃんと整数になる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex5}}\quad
+\textbf{方針}:例題 \ref{rei:diag-3x3} の $P$, $D$ を使う。
+$P^{-1}$ はブロック構造から求まる。\\
+\textbf{解答}:$P = \mat{1 & 0 & 1 \\ 0 & 1 & 0 \\ 1 & 0 & -1}$,
+$D = \mathrm{diag}(3, 3, -1)$ について、
+$P^{-1} = \mat{1/2 & 0 & 1/2 \\ 0 & 1 & 0 \\ 1/2 & 0 & -1/2}$
+($PP^{-1} = E$ を直接確かめられる)。
+\[
+PD^n = \mat{3^n & 0 & (-1)^n \\ 0 & 3^n & 0 \\ 3^n & 0 & -(-1)^n},
+\qquad
+A^n = PD^nP^{-1} = \mat{\dfrac{3^n + (-1)^n}{2} & 0 & \dfrac{3^n - (-1)^n}{2} \\
+0 & 3^n & 0 \\
+\dfrac{3^n - (-1)^n}{2} & 0 & \dfrac{3^n + (-1)^n}{2}}.
+\]
+検算:$n = 1$ で $\dfrac{3 - 1}{2} = 1$, $\dfrac{3 + 1}{2} = 2$ となり
+$A$ に戻る。\\
+\textbf{よくあるミス}:$D$ の対角の並び($3, 3, -1$)と $P$ の列の
+対応を崩すこと。第 $3$ 列だけが固有値 $-1$ の固有ベクトルである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex6}}\quad
+\textbf{方針}:ベクトルに束ねて $\vect{x}_n = A^n\vect{x}_0$。
+$A^n$ は問 \ref{q:power-ex1}。\\
+\textbf{解答}:$\vect{x}_n = \mat{a_n \\ b_n}$ とおくと
+$\vect{x}_{n+1} = \mat{1 & 2 \\ 2 & 1}\vect{x}_n$ だから、
+問 \ref{q:power-ex1} の $A^n$ に $\vect{x}_0 = \mat{1 \\ 0}$ を掛けて
+(第 $1$ 列を読んで)
+\[
+a_n = \frac{3^n + (-1)^n}{2}, \qquad b_n = \frac{3^n - (-1)^n}{2}.
+\]
+検算:$n = 1$ で $a_1 = 1 = a_0 + 2b_0$、$b_1 = 2 = 2a_0 + b_0$。\\
+\textbf{よくあるミス}:$A^n\vect{x}_0$ で第 $1$ 行を読むこと。
+$\vect{x}_0 = \vect{e}_1$ を掛けると取り出されるのは第 $1$ \emph{列}である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex7}}\quad
+\textbf{方針}:特性方程式 $3\lambda^2 = \lambda + 2$ を解く。
+極限では絶対値最大の固有値の項だけが残る。\\
+\textbf{解答}:$3\lambda^2 - \lambda - 2 = (3\lambda + 2)(\lambda - 1) = 0$
+より $\lambda = 1, -\dfrac{2}{3}$。
+$a_n = c_1 + c_2\left(-\dfrac{2}{3}\right)^n$ とおくと、初期条件から
+$c_1 + c_2 = 0$, $c_1 - \dfrac{2}{3}c_2 = 5$。解いて
+$c_1 = 3$, $c_2 = -3$。よって
+\[
+a_n = 3\left\{1 - \left(-\frac{2}{3}\right)^n\right\}, \qquad
+\lim_{n\to\infty} a_n = 3
+\]
+($\left|-\dfrac{2}{3}\right| < 1$ より第 $2$ 項は消える)。
+検算:$a_2 = \dfrac{1}{3} \cdot 5 + \dfrac{2}{3} \cdot 0 = \dfrac{5}{3}$、
+公式でも $3\left(1 - \dfrac{4}{9}\right) = \dfrac{5}{3}$。\\
+\textbf{よくあるミス}:特性方程式を $\lambda^2 = \dfrac{1}{3}\lambda +
+\dfrac{2}{3}$ のまま解の公式で解いて分数計算を誤ること。
+分母を払ってから因数分解するとよい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex8}}\quad
+\textbf{方針}:トレースは固有値のべきの和(例題 \ref{rei:power-trace})、
+行列式は積公式で。\\
+\textbf{解答}:$A$ の固有値は $3, 1$(例題 \ref{rei:eigen-basic})だから
+\[
+\mathrm{tr}(A^{10}) = 3^{10} + 1^{10} = 59049 + 1 = 59050.
+\]
+また行列式の積公式(定理 \ref{thm:det-prod})より
+\[
+\det(A^{10}) = (\det A)^{10} = 3^{10} = 59049.
+\]
+($\det A = 4 - 1 = 3$。固有値の積 $3 \cdot 1 = 3$ とも一致。)\\
+\textbf{よくあるミス}:$\mathrm{tr}(A^{10})$ を $(\mathrm{tr}\,A)^{10}$ と
+すること。トレースは積と交換しない($4^{10}$ ではない)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex9}}\quad
+\textbf{方針}:(1) は $c_1\varphi^n + c_2\psi^n$ に初期条件を入れる。
+$\varphi + \psi = 1$(解と係数の関係)が効く。\\
+\textbf{解答}:
+　(1) リュカ数列はフィボナッチと同じ漸化式を満たすから、
+定理 \ref{thm:power-rec} により $L_n = c_1\varphi^n + c_2\psi^n$ と書ける。
+初期条件は $c_1 + c_2 = L_0 = 2$、$c_1\varphi + c_2\psi = L_1 = 1$。
+$c_1 = c_2 = 1$ とすると、第 $1$ 式は $2$、第 $2$ 式は
+$\varphi + \psi = 1$(特性方程式 $\lambda^2 - \lambda - 1 = 0$ の
+解と係数の関係)でどちらも成立する。係数は初期条件から一意に決まるから
+\[
+L_n = \varphi^n + \psi^n.
+\]
+(検算:$L_2 = L_1 + L_0 = 3$。
+$\varphi^2 + \psi^2 = (\varphi + \psi)^2 - 2\varphi\psi = 1 + 2 = 3$。)\\
+　(2) $A = \mat{1 & 1 \\ 1 & 0}$ の固有値は $\varphi, \psi$
+(例 \ref{rei:power-binet})で相異なるから、
+例題 \ref{rei:power-trace} により
+$\mathrm{tr}(A^n) = \varphi^n + \psi^n = L_n$ である。\\
+\textbf{よくあるミス}:(1) で $\varphi, \psi$ の値
+$\dfrac{1 \pm \sqrt{5}}{2}$ を代入して計算すること。
+解と係数の関係($\varphi + \psi = 1$, $\varphi\psi = -1$)を使えば
+無理数の計算はほとんど要らない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex10}}\quad
+\textbf{方針}:$A = \dfrac{2}{3}P_0$($P_0$ は射影行列)と見るか、
+直接対角化する。\\
+\textbf{解答}:
+　(1) $B = \mat{1 & 1 \\ 1 & 1}$ の固有値は
+$\varphi_B(\lambda) = (\lambda - 1)^2 - 1 = \lambda(\lambda - 2)$ より
+$0, 2$。よって $A = \dfrac{1}{3}B$ の固有値は
+$0$ と $\dfrac{2}{3}$ である
+($B\vect{v} = \mu\vect{v}$ なら $A\vect{v} = \dfrac{\mu}{3}\vect{v}$)。\\
+　(2) 固有ベクトルは $\lambda = \dfrac{2}{3}$ で $\mat{1 \\ 1}$、
+$\lambda = 0$ で $\mat{1 \\ -1}$。
+$Q = \mat{1 & 1 \\ 1 & -1}$ とすると
+\[
+A^n = Q\mat{(2/3)^n & 0 \\ 0 & 0}Q^{-1}
+= \left(\frac{2}{3}\right)^n \cdot \frac{1}{2}\mat{1 & 1 \\ 1 & 1}.
+\]
+(検算:$n = 1$ で $\dfrac{2}{3} \cdot \dfrac{1}{2} = \dfrac{1}{3}$ となり
+$A$ に一致。)$\left(\dfrac{2}{3}\right)^n \to 0$ だから、
+$A^n$ の各成分は $0$ に収束する。\\
+　(3) $A^n = PD^nP^{-1}$ の各成分は、$D^n$ の対角成分
+$\lambda_i^n$ の(P と $P^{-1}$ の成分を係数とする)線形結合である。
+すべての $|\lambda_i| < 1$ なら $\lambda_i^n \to 0$ だから、
+その線形結合である各成分も $0$ に収束する。\\
+\textbf{よくあるミス}:(3) で「成分が $1$ より小さければ収束」と
+すること。収束を決めるのは成分の大きさではなく\emph{固有値}の大きさである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex11}}\quad
+\textbf{方針}:(1) は $p = 2\alpha$, $q = -\alpha^2$ を代入して
+両辺を比較する。(2) は $n = 0, 1$ の値で係数を決め、
+$2$ 次元空間の独立な $2$ 本は基底(定理 \ref{thm:dim-ncheck})。\\
+\textbf{解答}:
+　(1) $a_n = n\alpha^n$ に対して右辺を計算すると
+\[
+p\,(n+1)\alpha^{n+1} + q\,n\alpha^n
+= 2\alpha(n+1)\alpha^{n+1} - \alpha^2 \cdot n\alpha^n
+= \bigl(2(n+1) - n\bigr)\alpha^{n+2} = (n+2)\alpha^{n+2}
+\]
+となり、左辺 $a_{n+2} = (n+2)\alpha^{n+2}$ と一致する。
+よって $(n\alpha^n)$ は漸化式を満たす。\\
+　(2) $c_1\alpha^n + c_2 n\alpha^n = 0$(すべての $n$)とする。
+$n = 0$ で $c_1 = 0$。$n = 1$ で $c_2\alpha = 0$ となり、
+$\alpha \neq 0$ より $c_2 = 0$。よって独立である。
+解空間は $2$ 次元(定理 \ref{thm:power-rec} の前半)だから、
+独立な $2$ 本 $(\alpha^n)$, $(n\alpha^n)$ は基底をなし
+(定理 \ref{thm:dim-ncheck})、一般項は
+$a_n = (c_1 + c_2 n)\alpha^n$ の形になる。\\
+\textbf{よくあるミス}:(1) で $p, q$ を一般のまま計算して迷子になること。
+重解の条件($p = 2\alpha$, $q = -\alpha^2$、すなわち
+$\lambda^2 - p\lambda - q = (\lambda - \alpha)^2$)を先に使う。
+
+\bigskip
+\noindent\textbf{問 \ref{q:power-ex12}}\quad
+\textbf{方針}:$A^k = PD^kP^{-1}$ と、固有多項式・トレース・行列式の
+相似不変性を組み合わせる。\\
+\textbf{解答}:$A = PDP^{-1}$($D = \mathrm{diag}(\lambda_1, \dots,
+\lambda_n)$)とする。
+　(1) $A^k = PD^kP^{-1}$ より $A^k$ は対角行列
+$D^k = \mathrm{diag}(\lambda_1^k, \dots, \lambda_n^k)$ と相似である。
+相似な行列の固有多項式は一致し(問 \ref{q:eigen-ex12})、対角行列の
+固有値は対角成分(定理 \ref{thm:eigen-tri})だから、$A^k$ の固有値は
+$\lambda_1^k, \dots, \lambda_n^k$ である。\\
+　(2) トレースの相似不変性(定理 \ref{thm:trace-similar})より
+$\mathrm{tr}(A^k) = \mathrm{tr}(D^k) = \lambda_1^k + \cdots + \lambda_n^k$。
+行列式は相似不変(かつ積公式)だから
+$\det(A^k) = \det(D^k) = (\lambda_1 \cdots \lambda_n)^k = (\det A)^k$
+(最後の等号は $\det A = \det D = \lambda_1 \cdots \lambda_n$ による)。\\
+\textbf{よくあるミス}:(1) を「明らか」と済ませること。
+「相似な行列は固有値が等しい」+「対角行列の固有値は対角成分」という
+二段階の根拠を明示する。
 
 \bigskip
 \noindent\textbf{問 \ref{q:ch}}\quad
