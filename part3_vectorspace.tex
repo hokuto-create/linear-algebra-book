@@ -444,10 +444,43 @@ $\vect{v} = 1\vect{v} = \left(\dfrac{1}{a}\cdot a\right)\vect{v}$ から出発�
 \chapter{部分空間と生成}\label{chap:subspace}
 % =====================================================
 
-\section{部分空間}
+\begin{goal}
+\begin{itemize}
+\item 部分空間の定義(和とスカラー倍で閉じた部分集合)を述べ、
+与えられた集合が部分空間かどうかを、根拠を挙げて判定・証明できるようになる。
+\item 部分空間から新しい部分空間を作る二つの方法――\textbf{共通部分}と
+\textbf{和空間}――を使えるようになり、和集合ではだめな理由を
+反例で説明できるようになる。
+\item ベクトルの組が\textbf{生成する(張る)}部分空間を理解し、
+「このベクトルは張られた空間に入るか」「この組は空間全体を張るか」を
+掃き出し法・行列式の計算で判定できるようになる。
+\end{itemize}
+\end{goal}
 
-第II部で、同次方程式の解集合が「和とスカラー倍について閉じている」
-ことを見た。この性質を一般化する。
+\section{動機 ― 大きな空間の中の「閉じた世界」}
+
+前章で、行列・多項式・関数・数列と、思いがけない集合たちが
+ベクトル空間になることを見た。ここで前章の問を振り返ると、
+共通のパターンに気づく。偶関数全体(問 \ref{q:vs-ex7})は
+関数空間 $C(\R)$ の一部、漸化式を満たす数列全体
+(問 \ref{q:vs-ex6}・問 \ref{q:fib})は数列空間の一部、
+対称行列全体(問 \ref{q:vs-ex9})は行列空間の一部だった。
+そしてどの場合も、$8$ つの公理を一から確かめてはいない。
+実際に確かめたのは、\textbf{和とスカラー倍でその集合の外に出ないこと}
+――たったこれだけだった。
+
+同じ現象は第II部にもあった。同次方程式 $A\vect{x} = \vect{0}$ の解全体は、
+「解の和も解、解のスカラー倍も解」(定理 \ref{thm:homog-closed})という
+意味で閉じた $\R^n$ の部分集合である。
+
+本章はこのパターンに\textbf{部分空間}という名前を与え、
+「なぜ閉じていることの確認だけで、公理が全部ついてくるのか」を
+はっきりさせる。さらに、部分空間どうしを組み合わせる方法
+(共通部分・和空間)と、指定したベクトルたちから部分空間を作る方法
+(生成)を整備する。次章の主役「基底と次元」が住んでいるのは、
+ほとんどの場合、この部分空間たちの世界である。
+
+\section{部分空間 ― 定義と判定法}
 
 \begin{teigi}[部分空間]
 ベクトル空間 $V$ の空でない部分集合 $W$ が、
@@ -458,11 +491,48 @@ $\vect{v} = 1\vect{v} = \left(\dfrac{1}{a}\cdot a\right)\vect{v}$ から出発�
 を満たすとき、$W$ を $V$ の\textbf{部分空間}という。
 \end{teigi}
 
-部分空間は、$V$ の演算をそのまま使って、それ自身ベクトル空間になる
-(公理の大部分は $V$ から自動的に遺伝する)。
-なお、条件 2 で $c = 0$ とすれば、部分空間は必ず $\vect{0}$ を含むことが分かる。
-\textbf{原点を含まない集合は部分空間になりえない}――これは
-部分空間でないことを見抜く最速の判定法である。
+条件 1・2 を合わせて「$W$ は和とスカラー倍について\textbf{閉じている}」
+という。定義には $8$ つの公理が一つも現れないが、次の定理のとおり、
+閉じてさえいれば公理はすべて「親」の $V$ から無料でついてくる。
+
+\begin{teiri}[部分空間はそれ自身ベクトル空間である]\label{thm:sub-inherit}
+$W$ を $V$ の部分空間とすると、次が成り立つ。
+\begin{enumerate}
+\item $\vect{0} \in W$。
+\item $\vect{u} \in W$ ならば $-\vect{u} \in W$。
+\item $W$ は、$V$ の和とスカラー倍(を $W$ に制限したもの)によって、
+それ自身ベクトル空間になる。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $W$ は空でないから、あるベクトル $\vect{u} \in W$ が取れる。
+条件2を $c = 0$ で使うと $0\vect{u} \in W$、そして
+定理 \ref{thm:vs-basic}(2) より $0\vect{u} = \vect{0}$。
+よって $\vect{0} \in W$ である。
+
+(2) 条件2を $c = -1$ で使うと $(-1)\vect{u} \in W$、
+定理 \ref{thm:vs-basic}(3) より $(-1)\vect{u} = -\vect{u}$ である。
+
+(3) まず条件 1・2 により、和とスカラー倍は結果が $W$ からはみ出さない、
+$W$ の中で完結した演算になっている。公理のうち
+1, 2, 5, 6, 7, 8 は「$V$ の\textbf{すべての}ベクトルについて成り立つ等式」
+だから、$W$ のベクトルに限っても当然成り立つ($V$ から遺伝する)。
+残るは「存在」を主張する公理 3・4 だが、公理3の零ベクトルは (1) で、
+公理4の逆ベクトルは (2) で、どちらも $W$ の中に確保できた。 $\blacksquare$
+
+\begin{chui}[判定の実際]\label{chui:sub-check}
+与えられた集合 $W$ が部分空間かどうかは、次の順に調べるのが速い。
+\begin{enumerate}
+\item まず $\vect{0} \in W$ か。含まなければその時点で部分空間ではない
+(定理 \ref{thm:sub-inherit}(1) の対偶)。
+\textbf{原点を含まない集合は部分空間になりえない}。
+\item $\vect{0} \in W$ なら、和とスカラー倍の閉性を\textbf{文字を使って}
+確かめる(具体的な数値で一例を確かめただけでは証明にならない)。
+\end{enumerate}
+ただし $\vect{0} \in W$ は\textbf{必要条件にすぎない}。
+原点を含んでいても閉じていない集合はある(例題 \ref{rei:sub-curve})。
+\end{chui}
 
 \begin{rei}
 \begin{itemize}
@@ -476,23 +546,15 @@ $\vect{v} = 1\vect{v} = \left(\dfrac{1}{a}\cdot a\right)\vect{v}$ から出発�
 \end{itemize}
 \end{rei}
 
-\section{生成 ― ベクトルたちが張る空間}
-
-\begin{teigi}[生成される部分空間]
-$\vect{a}_1, \dots, \vect{a}_k \in V$ の線形結合全体の集合
-\[
-\langle \vect{a}_1, \dots, \vect{a}_k \rangle
-= \{\, c_1\vect{a}_1 + \cdots + c_k\vect{a}_k \mid c_1, \dots, c_k \in \R \,\}
-\]
-は $V$ の部分空間になる。これを $\vect{a}_1, \dots, \vect{a}_k$ が
-\textbf{生成する}(または\textbf{張る})部分空間という。
-\end{teigi}
-
-幾何的には、$1$ 本のベクトルが張るのは直線、
-独立な $2$ 本が張るのは平面である。
-「$\vect{b}$ が $\vect{a}_1, \dots, \vect{a}_k$ の線形結合で書けるか」という
-第I部以来の問いは、「$\vect{b} \in \langle \vect{a}_1, \dots, \vect{a}_k \rangle$ か」
-と言い換えられる。
+\begin{rei}[自明な部分空間]
+どんなベクトル空間 $V$ にも、零ベクトルだけの集合 $\{\vect{0}\}$ と
+$V$ 自身という二つの部分空間が必ずある。実際
+$\vect{0} + \vect{0} = \vect{0}$、$c\vect{0} = \vect{0}$
+(例題 \ref{rei:czero})だから $\{\vect{0}\}$ は閉じており、
+$V$ 自身が閉じているのは定義そのものである。
+$\{\vect{0}\}$ は最小の、$V$ は最大の部分空間であり、
+他のすべての部分空間はこの両極のあいだにある。
+\end{rei}
 
 \begin{mondai}\label{q:subsp}
 次の $\R^3$ の部分集合のうち、部分空間であるものをすべて選び、
@@ -504,14 +566,522 @@ W_3 = \{\, (x, y, z) \mid x \ge 0 \,\}
 \]
 \end{mondai}
 
+\section{反例 ― 破れ方はひととおりではない}
+
+\begin{hanrei}[和集合は部分空間とは限らない]\label{hanrei:sub-union}
+$\R^2$ の $x$ 軸 $L_1 = \{(x, 0) \mid x \in \R\}$ と
+$y$ 軸 $L_2 = \{(0, y) \mid y \in \R\}$ は、どちらも部分空間である。
+しかし和集合 $L_1 \cup L_2$(両軸を合わせた「十字」)は部分空間ではない。
+スカラー倍では閉じている(軸上の点を何倍しても同じ軸の上)のに、
+\textbf{和で閉じていない}:
+\[
+(1, 0) + (0, 1) = (1, 1) \notin L_1 \cup L_2.
+\]
+部分空間どうしを単純に「合併」しても部分空間にはならないのである。
+合併の正しい代役は、本章で後述する\textbf{和空間}である。
+\end{hanrei}
+
+\begin{hanrei}[和で閉じてもスカラー倍で破れる]\label{hanrei:sub-lattice}
+座標がともに整数である点の全体(格子)
+\[
+\mathbb{Z}^2 = \{\, (m, n) \mid m, n \text{ は整数} \,\}
+\]
+は、原点を含み、和についても閉じている(整数どうしの和は整数)。
+しかしスカラー倍では閉じていない:
+\[
+\frac{1}{2}\,(1, 0) = \left(\frac{1}{2},\ 0\right) \notin \mathbb{Z}^2.
+\]
+前章の反例 \ref{ex:halfplane}(上半平面)は $-1$ 倍で破れ、
+反例 \ref{hanrei:sub-union} は和で破れ、この例は $\frac{1}{2}$ 倍で破れる。
+破れる場所は集合ごとに違うから、条件 1・2 は\textbf{両方とも}
+確認しなければならない。
+\end{hanrei}
+
+\section{共通部分と和空間}
+
+部分空間が二つあるとき、そこから新しい部分空間を作る操作を二つ用意する。
+
+\begin{teiri}[共通部分は部分空間]\label{thm:sub-cap}
+$W_1, W_2$ が $V$ の部分空間ならば、共通部分 $W_1 \cap W_2$ も
+$V$ の部分空間である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{0}$ は $W_1$ にも $W_2$ にも属するから、$W_1 \cap W_2$ は空でない。
+$\vect{u}, \vect{v} \in W_1 \cap W_2$ とすると、
+$\vect{u}, \vect{v} \in W_1$ で $W_1$ は閉じているから
+$\vect{u} + \vect{v} \in W_1$。同様に $\vect{u} + \vect{v} \in W_2$。
+よって $\vect{u} + \vect{v} \in W_1 \cap W_2$ である。
+スカラー倍についてもまったく同様に、$c\vect{u}$ は $W_1$ と $W_2$ の
+両方に属する。 $\blacksquare$
+
+\begin{rei}[二つの平面の共通部分]\label{rei:sub-cap}
+$\R^3$ の二つの部分空間(原点を通る平面)
+\[
+W_1 = \{\, (x, y, z) \mid x + y + z = 0 \,\}, \qquad
+W_2 = \{\, (x, y, z) \mid x - y + z = 0 \,\}
+\]
+の共通部分を求めよう。両方の式を連立し、辺々引くと $2y = 0$、
+すなわち $y = 0$。このとき残る条件は $x + z = 0$ だから
+\[
+W_1 \cap W_2 = \{\, t\,(1,\ 0,\ -1) \mid t \in \R \,\}
+\]
+――原点を通る直線である(検算:$(1, 0, -1)$ は
+$1 + 0 - 1 = 0$、$1 - 0 - 1 = 0$ を確かに満たす)。
+「共通部分を求める」ことは「条件式を連立して解く」ことにほかならず、
+計算は第II部の掃き出し法の世界に帰着する。
+\end{rei}
+
+反例 \ref{hanrei:sub-union} で見たとおり、和集合 $W_1 \cup W_2$ は
+部分空間になるとは限らない。「$W_1$ と $W_2$ の両方を含む部分空間」が
+ほしければ、和集合の代わりに次を使う。
+
+\begin{teigi}[和空間]\label{def:sub-sum}
+$V$ の部分空間 $W_1, W_2$ に対して
+\[
+W_1 + W_2 = \{\, \vect{w}_1 + \vect{w}_2 \mid
+\vect{w}_1 \in W_1,\ \vect{w}_2 \in W_2 \,\}
+\]
+を $W_1$ と $W_2$ の\textbf{和空間}という。
+\end{teigi}
+
+\begin{teiri}[和空間は部分空間]\label{thm:sub-sum}
+$W_1 + W_2$ は $V$ の部分空間であり、しかも
+$W_1 \cup W_2$ を含む部分空間の中で\textbf{最小}のものである
+(すなわち、$W_1 \cup W_2$ を含むどんな部分空間 $W$ も
+$W_1 + W_2$ を丸ごと含む)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+閉性:$\vect{w}_1 + \vect{w}_2$ と $\vect{w}'_1 + \vect{w}'_2$
+($\vect{w}_i, \vect{w}'_i \in W_i$)の和は、公理1・2で並べ替えて
+\[
+(\vect{w}_1 + \vect{w}'_1) + (\vect{w}_2 + \vect{w}'_2)
+\]
+と書け、各 $W_i$ の閉性より第 $1$ 項は $W_1$ に、第 $2$ 項は $W_2$ に
+属するから、これは再び $W_1 + W_2$ の元である。スカラー倍も
+$c(\vect{w}_1 + \vect{w}_2) = c\vect{w}_1 + c\vect{w}_2 \in W_1 + W_2$。
+また $\vect{0} = \vect{0} + \vect{0} \in W_1 + W_2$ で空でない。
+なお $\vect{w}_1 = \vect{w}_1 + \vect{0}$ と書けば
+$W_1 \subseteq W_1 + W_2$ が分かり、$W_2$ についても同様である。
+
+最小性:$W$ を $W_1 \cup W_2$ を含む部分空間とする。任意の
+$\vect{w}_1 + \vect{w}_2 \in W_1 + W_2$ について、
+$\vect{w}_1, \vect{w}_2 \in W$ であり、$W$ は和で閉じているから
+$\vect{w}_1 + \vect{w}_2 \in W$。よって $W_1 + W_2 \subseteq W$ である。
+$\blacksquare$
+
+\begin{rei}
+$\R^2$ で $L_1 = x$ 軸、$L_2 = y$ 軸とすると、
+$(x, y) = (x, 0) + (0, y)$ よりすべての点が両軸の元の和で書けるから
+$L_1 + L_2 = \R^2$ である。反例 \ref{hanrei:sub-union} の「十字」
+$L_1 \cup L_2$ を含む最小の部分空間は、平面全体だったのである。
+\end{rei}
+
+\section{生成 ― 指定したベクトルから最小の部分空間を作る}
+
+部分空間のもう一つの作り方は、「このベクトルたちを含む空間がほしい」
+という要望から出発するものである。含むべきベクトルを決めたら、
+閉性を保つために必要なもの(それらの線形結合)をすべて追加する
+――それが生成である。
+
+\begin{teigi}[生成される部分空間]
+$\vect{a}_1, \dots, \vect{a}_k \in V$ の線形結合全体の集合
+\[
+\langle \vect{a}_1, \dots, \vect{a}_k \rangle
+= \{\, c_1\vect{a}_1 + \cdots + c_k\vect{a}_k \mid c_1, \dots, c_k \in \R \,\}
+\]
+は $V$ の部分空間になる。これを $\vect{a}_1, \dots, \vect{a}_k$ が
+\textbf{生成する}(または\textbf{張る})部分空間という。
+\end{teigi}
+
+\begin{teiri}[生成された部分空間の最小性]\label{thm:span-min}
+$\langle \vect{a}_1, \dots, \vect{a}_k \rangle$ は
+$\vect{a}_1, \dots, \vect{a}_k$ をすべて含む $V$ の部分空間であり、
+しかもそのような部分空間の中で\textbf{最小}のものである。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+線形結合どうしの和は
+\[
+(c_1\vect{a}_1 + \cdots + c_k\vect{a}_k)
++ (d_1\vect{a}_1 + \cdots + d_k\vect{a}_k)
+= (c_1 + d_1)\vect{a}_1 + \cdots + (c_k + d_k)\vect{a}_k
+\]
+と再び線形結合になり(公理1・2・6による並べ替え)、スカラー倍も
+$c(c_1\vect{a}_1 + \cdots + c_k\vect{a}_k)
+= (cc_1)\vect{a}_1 + \cdots + (cc_k)\vect{a}_k$ と線形結合になる。
+係数をすべて $0$ にすれば $\vect{0}$ も入っているから、部分空間である。
+各 $\vect{a}_i$ は「第 $i$ 係数だけ $1$、他は $0$」の線形結合だから
+$\langle \vect{a}_1, \dots, \vect{a}_k \rangle$ に属する。
+
+最小性:$W$ を $\vect{a}_1, \dots, \vect{a}_k$ をすべて含む部分空間とする。
+$W$ はスカラー倍で閉じるから $c_i\vect{a}_i \in W$、和で閉じるから
+それらを順に足した $c_1\vect{a}_1 + \cdots + c_k\vect{a}_k$ も $W$ に属する。
+よって $\langle \vect{a}_1, \dots, \vect{a}_k \rangle \subseteq W$ である。
+$\blacksquare$
+
+幾何的には、$1$ 本のベクトルが張るのは直線、
+独立な $2$ 本が張るのは平面である。
+「$\vect{b}$ が $\vect{a}_1, \dots, \vect{a}_k$ の線形結合で書けるか」という
+第I部以来の問いは、「$\vect{b} \in \langle \vect{a}_1, \dots, \vect{a}_k \rangle$ か」
+と言い換えられる。
+
+\subsection*{生成の問いは掃き出し法に帰着する}
+
+$V = \R^n$ のときは、この言い換えのおかげで、生成に関する問いが
+すべて第I・II部の計算に落ちる。
+$\vect{a}_1, \dots, \vect{a}_k$ を列に並べた $n \times k$ 行列を
+$A = (\vect{a}_1 \ \cdots \ \vect{a}_k)$ とすると、
+$c_1\vect{a}_1 + \cdots + c_k\vect{a}_k = A\vect{c}$ だから:
+\begin{itemize}
+\item $\vect{b} \in \langle \vect{a}_1, \dots, \vect{a}_k \rangle$
+$\iff$ 連立方程式 $A\vect{c} = \vect{b}$ が解をもつ
+$\iff$ $\mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b})$
+(定理 \ref{thm:solvable})。
+\item $\langle \vect{a}_1, \dots, \vect{a}_k \rangle = \R^n$
+$\iff$ どんな $\vect{b}$ に対しても $A\vect{c} = \vect{b}$ が解をもつ
+$\iff$ $\mathrm{rank}\,A = n$。特に $k = n$ のときは
+$\det A \neq 0$ と同値である(定理 \ref{thm:reg-rank})。
+\end{itemize}
+抽象的に見えた「生成」の問いが、掃き出し法と行列式という
+手計算に帰着する。例題で練習しよう。
+
+\begin{itembox}[l]{深掘り:解の集合ふたたび ― 部分空間と平行移動}
+第II部の解の構造定理(定理 \ref{thm:structure})を、部分空間の言葉で
+読み直してみよう。同次方程式 $A\vect{x} = \vect{0}$ の解全体 $W$ は
+$\R^n$ の部分空間である。一方、非同次方程式 $A\vect{x} = \vect{b}$
+($\vect{b} \neq \vect{0}$)の解全体は、一つの解 $\vect{x}_0$ を使って
+\[
+\vect{x}_0 + W = \{\, \vect{x}_0 + \vect{w} \mid \vect{w} \in W \,\}
+\]
+と書ける。これは\textbf{部分空間 $W$ を $\vect{x}_0$ だけ平行移動した集合}
+である。原点を含まないから部分空間ではないが、でたらめな集合でもない
+――形は $W$ のまま、位置だけずれている。このような集合を
+\textbf{アフィン部分空間}と呼ぶ。問 \ref{q:vs-ex3} の直線
+$L_2$($y = 2x + 1$)も、部分空間 $y = 2x$ を $(0, 1)$ だけずらした
+アフィン部分空間である。
+
+「線形の世界では、まず原点を通る部分空間を理解し、原点を通らないものは
+\textbf{部分空間+平行移動}として処理する」――この二段構えは、
+微分方程式の一般解(斉次解+特殊解)から第VII部の最小二乗法まで、
+繰り返し現れる線形代数の基本戦略である。
+\end{itembox}
+
+\section{例題}
+
+部分空間の判定(肯定・否定)と、生成に関する計算を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(部分空間であることの証明)]\label{rei:sub-plane}
+$W = \{\, (x, y, z) \in \R^3 \mid 2x - y + 3z = 0 \,\}$ が
+$\R^3$ の部分空間であることを示せ。\\
+\textbf{解.}\ まず $2 \cdot 0 - 0 + 3 \cdot 0 = 0$ より $\vect{0} \in W$
+(特に $W$ は空でない)。
+$\vect{u} = (x_1, y_1, z_1)$, $\vect{v} = (x_2, y_2, z_2) \in W$ とすると
+\[
+2(x_1 + x_2) - (y_1 + y_2) + 3(z_1 + z_2)
+= (2x_1 - y_1 + 3z_1) + (2x_2 - y_2 + 3z_2) = 0 + 0 = 0
+\]
+より $\vect{u} + \vect{v} \in W$。スカラー倍も
+\[
+2(cx_1) - (cy_1) + 3(cz_1) = c(2x_1 - y_1 + 3z_1) = c \cdot 0 = 0
+\]
+より $c\vect{u} \in W$。よって $W$ は部分空間である
+(幾何的には原点を通る平面。同次方程式
+$(2\ {-1}\ 3)\,\vect{x} = 0$ の解空間と見ることもできる)。
+\end{rei}
+
+\begin{rei}[例題・基本(部分空間でないことの証明)]\label{rei:sub-curve}
+次の $\R^2$ の部分集合が部分空間で\textbf{ない}ことを示せ。
+\[
+A_1 = \{\, (x, y) \mid x + y = 2 \,\}, \qquad
+A_2 = \{\, (x, y) \mid y = x^2 \,\}
+\]
+\textbf{解.}\ $A_1$:原点は $0 + 0 = 0 \neq 2$ より $A_1$ に属さない。
+原点を含まない集合は部分空間ではない(注意 \ref{chui:sub-check})。
+
+$A_2$:こちらは原点を含む($0 = 0^2$)。しかし
+$(1, 1) \in A_2$ に対し $2\,(1, 1) = (2, 2)$ は
+$2^2 = 4 \neq 2$ より $A_2$ の外に出る。スカラー倍で閉じないから
+部分空間ではない(和でも破れる:$(1,1) + (-1,1) = (0, 2) \notin A_2$)。
+\textbf{原点を含むことは必要条件にすぎない}ことを示す例である。
+\end{rei}
+
+\begin{rei}[例題・基本(生成された空間に入るか)]\label{rei:sub-member}
+$\vect{a}_1 = \mat{1 \\ 1 \\ 0}$, $\vect{a}_2 = \mat{0 \\ 1 \\ 2}$ について、
+$\vect{b} = \mat{1 \\ 3 \\ 4}$ と $\vect{b}' = \mat{3 \\ 1 \\ 4}$ が
+$\langle \vect{a}_1, \vect{a}_2 \rangle$ に属するか判定せよ。\\
+\textbf{解.}\ $c_1\vect{a}_1 + c_2\vect{a}_2 = \vect{b}$ を成分ごとに書くと
+\[
+c_1 = 1, \qquad c_1 + c_2 = 3, \qquad 2c_2 = 4.
+\]
+第 $1$ 式から $c_1 = 1$、第 $2$ 式から $c_2 = 2$。これは第 $3$ 式
+$2 \cdot 2 = 4$ も満たすから解が存在し、
+$\vect{b} = \vect{a}_1 + 2\vect{a}_2 \in \langle \vect{a}_1, \vect{a}_2 \rangle$。
+
+$\vect{b}'$ については $c_1 = 3$, $3 + c_2 = 1$ より $c_2 = -2$ だが、
+第 $3$ 式は $2c_2 = -4 \neq 4$ となり矛盾。解が存在しないから
+$\vect{b}' \notin \langle \vect{a}_1, \vect{a}_2 \rangle$ である
+(拡大係数行列で見れば
+$\mathrm{rank}\,A = 2$, $\mathrm{rank}\,(A \mid \vect{b}') = 3$ という
+定理 \ref{thm:solvable} の不成立にあたる)。
+\end{rei}
+
+\begin{rei}[例題・標準(行列の空間の部分空間)]\label{rei:sub-trace}
+$2 \times 2$ 行列のうち、対角成分の和(\textbf{トレース})が $0$ の
+もの全体
+\[
+W = \{\, A \in M_{2,2} \mid \mathrm{tr}\,A = 0 \,\}
+\]
+が $M_{2,2}$ の部分空間であることを示せ。\\
+\textbf{解.}\ 成分で書くと、$A = (a_{ij})$, $B = (b_{ij})$ に対し
+\[
+\mathrm{tr}(A + B) = (a_{11} + b_{11}) + (a_{22} + b_{22})
+= \mathrm{tr}\,A + \mathrm{tr}\,B, \qquad
+\mathrm{tr}(cA) = c\,\mathrm{tr}\,A
+\]
+が成り立つ(トレースの線形性)。よって
+$\mathrm{tr}\,A = \mathrm{tr}\,B = 0$ ならば
+$\mathrm{tr}(A + B) = 0$、$\mathrm{tr}(cA) = 0$ であり、
+零行列も $\mathrm{tr}\,O = 0$ を満たすから、$W$ は閉じており部分空間である。
+なお $W$ の元は $\mat{a & b \\ c & -a}$ の形の行列全体である。
+\end{rei}
+
+\begin{rei}[例題・標準(全体を張るかの判定)]\label{rei:sub-span}
+$\vect{a}_1 = \mat{1 \\ 1 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 2 \\ 4}$,
+$\vect{a}_3 = \mat{1 \\ 3 \\ 9}$ は $\R^3$ を生成するか。\\
+\textbf{解.}\ 列に並べた行列の行列式を第 $1$ 行で余因子展開すると
+\[
+\det \mat{1 & 1 & 1 \\ 1 & 2 & 3 \\ 1 & 4 & 9}
+= 1\,(2 \cdot 9 - 3 \cdot 4) - 1\,(1 \cdot 9 - 3 \cdot 1)
++ 1\,(1 \cdot 4 - 2 \cdot 1) = 6 - 6 + 2 = 2 \neq 0.
+\]
+よって行列は正則で $\mathrm{rank} = 3$。どんな $\vect{b} \in \R^3$ に
+対しても $A\vect{c} = \vect{b}$ が(ただ一通りに)解けるから、
+$\langle \vect{a}_1, \vect{a}_2, \vect{a}_3 \rangle = \R^3$ である。
+なお $\vect{a}_j$ は $(1,\ t,\ t^2)$ に $t = 1, 2, 3$ を代入したもので、
+この形の行列は多項式フィッティング(第I部)にも現れた。
+\end{rei}
+
+\begin{rei}[例題・標準(和空間への分解)]\label{rei:sub-decomp}
+$W_1 = \langle (1, 0, 1) \rangle$,
+$W_2 = \{\, (x, y, z) \mid x + y + z = 0 \,\}$ について、
+$W_1 + W_2 = \R^3$ かつ $W_1 \cap W_2 = \{\vect{0}\}$ を示せ。\\
+\textbf{解.}\ 任意の $\vect{v} = (x, y, z)$ を
+$\vect{v} = t\,(1, 0, 1) + \vect{w}$($\vect{w} \in W_2$)と
+分解できるかを考える。$\vect{w} = \vect{v} - t\,(1, 0, 1)
+= (x - t,\ y,\ z - t)$ が $W_2$ に入る条件は
+\[
+(x - t) + y + (z - t) = 0, \qquad \text{すなわち} \qquad
+t = \frac{x + y + z}{2}.
+\]
+この $t$ を選べば必ず分解できるから $W_1 + W_2 = \R^3$ である。
+たとえば $\vect{v} = (3, 1, 2)$ なら $t = 3$ で
+$(3,1,2) = 3\,(1,0,1) + (0, 1, -1)$($0 + 1 - 1 = 0$ を満たす)。
+
+共通部分:$t\,(1, 0, 1) \in W_2$ とすると $t + 0 + t = 2t = 0$ より
+$t = 0$。よって $W_1 \cap W_2 = \{\vect{0}\}$ である。
+この場合、分解は一意になる(二通りに書けたとすると、差をとれば
+$W_1 \cap W_2$ の零でない元ができて矛盾)。共通部分が $\{\vect{0}\}$ の
+和空間はとくに\textbf{直和}と呼ばれ、第V部以降で活躍する。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{部分空間}とは、和とスカラー倍で閉じた空でない部分集合である。
+閉じてさえいれば、$8$ つの公理は親の空間から遺伝して、
+それ自身ベクトル空間になる(定理 \ref{thm:sub-inherit})。
+\item 判定の第一歩は「$\vect{0}$ を含むか」。含まなければ即座に否定できる。
+ただし含んでいても閉性が破れる集合はある(例題 \ref{rei:sub-curve})。
+破れ方は和・スカラー倍のどちらでも起こりうる
+(反例 \ref{hanrei:sub-union}・\ref{hanrei:sub-lattice})。
+\item \textbf{共通部分} $W_1 \cap W_2$ と\textbf{和空間} $W_1 + W_2$ は
+部分空間になる。\textbf{和集合} $W_1 \cup W_2$ はそうとは限らず、
+それを含む最小の部分空間が $W_1 + W_2$ である。
+\item $\langle \vect{a}_1, \dots, \vect{a}_k \rangle$(線形結合全体)は、
+$\vect{a}_1, \dots, \vect{a}_k$ を含む\textbf{最小の部分空間}である
+(定理 \ref{thm:span-min})。
+\item $\R^n$ では、「$\vect{b}$ は張られた空間に入るか」は連立方程式の
+可解性($\mathrm{rank}\,A = \mathrm{rank}\,(A \mid \vect{b})$)に、
+「$\R^n$ 全体を張るか」は $\mathrm{rank}\,A = n$(正方なら
+$\det A \neq 0$)に帰着する。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:sub-ex1}
+次の集合はそれぞれ部分空間か。部分空間であるものは証明し、
+そうでないものは理由を一つ挙げよ。\\
+　(1) $\{\, (x, y, z) \in \R^3 \mid x - 3y + 2z = 0 \,\}$\\
+　(2) $\{\, (x, y) \in \R^2 \mid y = x^2 \,\}$\\
+　(3) $\{\, (x, y) \in \R^2 \mid x \le 0 \,\}$
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:sub-ex2}
+$\vect{a}_1 = \mat{1 \\ 0 \\ 2}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ について、
+$\vect{b} = \mat{3 \\ 1 \\ 4}$ と $\vect{b}' = \mat{1 \\ 1 \\ 1}$ が
+$\langle \vect{a}_1, \vect{a}_2 \rangle$ に属するか判定し、
+属する場合は線形結合の形に書け。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:sub-ex3}
+$2 \times 2$ の対角行列全体
+$D = \{\, \mat{a & 0 \\ 0 & d} \mid a, d \in \R \,\}$
+が $M_{2,2}$ の部分空間であることを示せ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:sub-ex4}
+$\R[x]_2$ の部分集合 $W = \{\, p \in \R[x]_2 \mid p(0) = 0 \,\}$ が
+部分空間であることを示せ。$W$ の元はどのような形の多項式か。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sub-ex5}
+$\R^2$ の二つの部分空間
+$W_1 = \{\, (x, y) \mid x + y = 0 \,\}$,
+$W_2 = \{\, (x, y) \mid x - y = 0 \,\}$ について、次を示せ。\\
+　(1) 和集合 $W_1 \cup W_2$ は部分空間でない。\\
+　(2) 和空間について $W_1 + W_2 = \R^2$ が成り立つ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sub-ex6}
+$\R[x]_2$ の部分集合
+$U_1 = \{\, p \mid p(1) = 0 \,\}$ と $U_2 = \{\, p \mid p(1) = 1 \,\}$
+について、$U_1$ は部分空間であり $U_2$ は部分空間でないことを示せ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sub-ex7}
+$\R^3$ の二つの平面
+$W_1 = \{\, (x, y, z) \mid x + y - z = 0 \,\}$,
+$W_2 = \{\, (x, y, z) \mid 2x - y + z = 0 \,\}$ の共通部分
+$W_1 \cap W_2$ を、$\langle \vect{a} \rangle$(あるベクトルの張る直線)の
+形で表せ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:sub-ex8}
+次の生成された部分空間はそれぞれ何か($\R^2$ の直線か、$\R^2$ 全体か)。
+理由とともに答えよ。\\
+　(1) $\left\langle \mat{1 \\ 2},\ \mat{2 \\ 4} \right\rangle$\\
+　(2) $\left\langle \mat{1 \\ 2},\ \mat{1 \\ 3} \right\rangle$
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:sub-ex9}
+$\vect{a}_1 = \mat{1 \\ 0 \\ 1}$, $\vect{a}_2 = \mat{0 \\ 1 \\ 1}$,
+$\vect{a}_3 = \mat{1 \\ 1 \\ 2}$ は $\R^3$ を生成するか。
+生成しない場合は、$\langle \vect{a}_1, \vect{a}_2, \vect{a}_3 \rangle$ が
+どのような平面か、$x, y, z$ の方程式で表せ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:sub-ex10}
+$C(\R)$ の部分空間である偶関数全体 $E$(問 \ref{q:vs-ex7})と
+奇関数全体 $O = \{\, f \mid f(-x) = -f(x) \,\}$ について、次を示せ。\\
+　(1) $E \cap O = \{o\}$($o$ は零関数)。\\
+　(2) $E + O = C(\R)$。すなわち、どんな連続関数も
+偶関数と奇関数の和に分解できる。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:sub-ex11}
+$\vect{b} \in \langle \vect{a}_1, \dots, \vect{a}_k \rangle$ ならば
+\[
+\langle \vect{a}_1, \dots, \vect{a}_k, \vect{b} \rangle
+= \langle \vect{a}_1, \dots, \vect{a}_k \rangle
+\]
+であることを証明せよ(すでに張られている空間に入っているベクトルを
+生成系に付け加えても、張られる空間は変わらない)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:sub-ex12}
+$W_1, W_2$ を $V$ の部分空間とする。和集合 $W_1 \cup W_2$ が
+部分空間になるのは、$W_1 \subseteq W_2$ または $W_2 \subseteq W_1$ の
+ときに限ることを証明せよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:sub-ex1}}:まず原点を含むか。含むものは
+文字で閉性を確かめる。(2) はスカラー倍、(3) は負のスカラー倍を疑う。
+\item \textbf{問 \ref{q:sub-ex2}}:$c_1\vect{a}_1 + c_2\vect{a}_2 = \vect{b}$
+を成分ごとの連立方程式にして解く。矛盾が出れば属さない。
+\item \textbf{問 \ref{q:sub-ex3}}:対角行列どうしの和・スカラー倍が
+対角行列のままであることを成分で確かめる。
+\item \textbf{問 \ref{q:sub-ex4}}:$p(0)$ は定数項である。
+$(p + q)(0)$ と $(cp)(0)$ を計算する。
+\item \textbf{問 \ref{q:sub-ex5}}:(1) は各直線から $1$ 点ずつとって
+和を作る。(2) は任意の $(x, y)$ を二つの直線上のベクトルの和に
+実際に分解する(係数を未知数にして解く)。
+\item \textbf{問 \ref{q:sub-ex6}}:$U_2$ は零多項式を含むか。
+$U_1$ は $(p+q)(1)$, $(cp)(1)$ を計算する。
+\item \textbf{問 \ref{q:sub-ex7}}:二つの方程式を連立して掃き出す。
+自由変数が $1$ 個残り、直線になる。
+\item \textbf{問 \ref{q:sub-ex8}}:$2$ 本が平行(一方が他方の定数倍)か
+どうかを見る。平行でなければ行列式で判定する。
+\item \textbf{問 \ref{q:sub-ex9}}:行列式を計算する。$0$ なら
+従属な $1$ 本を見つけて捨て、残り $2$ 本の張る平面の法線を求める。
+\item \textbf{問 \ref{q:sub-ex10}}:(1) は $f(x) = f(-x) = -f(x)$ から。
+(2) は $\dfrac{f(x) + f(-x)}{2}$ と $\dfrac{f(x) - f(-x)}{2}$ を考える。
+\item \textbf{問 \ref{q:sub-ex11}}:相互の包含を示す。$\supseteq$ は
+係数 $0$ を付け足すだけ。$\subseteq$ は $\vect{b}$ を線形結合で
+書き直して整理する。
+\item \textbf{問 \ref{q:sub-ex12}}:一方が他方を含めば和集合は大きい方
+そのもの。どちらも含まないときは、$\vect{u} \in W_1 \setminus W_2$ と
+$\vect{v} \in W_2 \setminus W_1$ の和がどちらにも入れないことを示す。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{基底と次元}\label{chap:basis}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 基底の二つの条件(線形独立+生成)と\textbf{座標}の意味を理解し、
+与えられた組が基底かどうかの判定と、基底に関する座標の計算が
+できるようになる。
+\item 基底の本数が選び方によらないこと(\textbf{次元}が定義できること)の
+証明を、交換補題から順を追って理解する。
+\item $n$ 次元空間では「独立な $n$ 本」または「生成する $n$ 本」の
+\textbf{どちらか一方の確認だけで}基底と判定できることを使いこなせるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 座標軸は自分で選ぶもの}
+
+$\R^n$ のベクトルには生まれつき成分が並んでいる。しかし前章までに
+仲間入りした空間たち――多項式の空間、解空間、漸化式を満たす数列の空間
+――には、あらかじめ決まった「座標軸」はない。
+それでも、たとえば平面 $x + y + z = 0$ 上の点は $2$ 個のパラメータで
+過不足なく表せた(第II部)。軸は与えられていなくても、
+\textbf{自分で軸を選べば座標が引ける}のである。
+
+この「自分で選ぶ座標軸」を厳密にしたものが\textbf{基底}であり、
+軸の本数が\textbf{次元}である。ただし一つ、確かめるべきことがある。
+座標軸の選び方は無数にあるのだから、
+\textbf{選び方によって軸の本数が変わってしまわないか?}
+もし $3$ 本の基底と $4$ 本の基底が同じ空間に共存できたら、
+「次元」という言葉は意味を失う。本章の山場は、
+その心配が無用であることの証明(基底の本数の不変性)である。
+
 \section{基底 ― 空間の「座標軸」}
 
-線形独立の定義(第II部)は、線形結合だけで書かれていたから、
-一般のベクトル空間でもそのまま通用する。
+線形独立の定義(第II部の定義 \ref{def:linindep})は、
+線形結合だけで書かれていたから、一般のベクトル空間でもそのまま通用する。
+念のため書き直しておく。
+
+\begin{teigi}[線形独立・線形従属(一般のベクトル空間)]\label{def:vs-indep}
+ベクトル空間 $V$ のベクトル $\vect{v}_1, \dots, \vect{v}_k$ が
+\[
+c_1\vect{v}_1 + \cdots + c_k\vect{v}_k = \vect{0}
+\implies c_1 = \cdots = c_k = 0
+\]
+を満たすとき\textbf{線形独立}であるといい、
+そうでないとき(係数のどれかが $0$ でない線形結合で $\vect{0}$ が
+作れるとき)\textbf{線形従属}であるという。
+\end{teigi}
 
 \begin{teigi}[基底]
 ベクトル空間 $V$ のベクトルの組 $\vect{e}_1, \dots, \vect{e}_n$ が
@@ -522,7 +1092,7 @@ W_3 = \{\, (x, y, z) \mid x \ge 0 \,\}
 とき、この組を $V$ の\textbf{基底}という。
 \end{teigi}
 
-\begin{teiri}[座標の一意性]
+\begin{teiri}[座標の一意性]\label{thm:coord-unique}
 $\vect{e}_1, \dots, \vect{e}_n$ が $V$ の基底ならば、
 任意の $\vect{v} \in V$ は
 \[
@@ -532,9 +1102,23 @@ $\vect{e}_1, \dots, \vect{e}_n$ が $V$ の基底ならば、
 この基底に関する $\vect{v}$ の\textbf{座標}という。
 \end{teiri}
 
-存在は生成性から、一意性は線形独立性から従う
-(二通りに書けたとして差をとれば、独立性より係数がすべて一致する)。
-つまり基底とは、\textbf{空間のすべての点に過不足なく「住所」を与える座標軸の組}である。
+\noindent\textbf{(証明)}\quad
+書ける(存在):基底の条件2(生成)そのものである。
+一通り(一意):二通りに
+\[
+\vect{v} = c_1 \vect{e}_1 + \cdots + c_n \vect{e}_n
+= d_1 \vect{e}_1 + \cdots + d_n \vect{e}_n
+\]
+と書けたとして、辺々引くと
+\[
+(c_1 - d_1)\vect{e}_1 + \cdots + (c_n - d_n)\vect{e}_n = \vect{0}.
+\]
+基底の条件1(独立)より係数はすべて $0$、すなわち $c_i = d_i$ である。
+$\blacksquare$
+
+つまり基底とは、\textbf{空間のすべての点に過不足なく「住所」を与える
+座標軸の組}である。生成が「すべての点に住所が行き渡ること」を、
+独立が「住所の重複がないこと」を保証している。
 
 \begin{rei}
 \begin{itemize}
@@ -550,33 +1134,65 @@ $\mat{1 \\ 1}$ と $\mat{1 \\ -1}$ も基底になる(独立で、生成する�
 \end{itemize}
 \end{rei}
 
-\section{次元}
+\section{次元 ― 本数の不変性を証明する}
 
-\begin{teiri}[基底の本数の不変性]
+動機で述べた核心の問いに答えよう。鍵は次の補題である。
+
+\begin{teiri}[交換補題]\label{thm:exchange}
+ベクトル空間 $V$ が $n$ 本のベクトル $\vect{u}_1, \dots, \vect{u}_n$ で
+生成されるならば、$V$ の中のどんな $n + 1$ 本のベクトルも線形従属である
+($n + 2$ 本以上でも同様)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v}_1, \dots, \vect{v}_{n+1} \in V$ を任意にとる。
+生成の仮定により、各 $\vect{v}_j$ は
+\[
+\vect{v}_j = a_{1j}\vect{u}_1 + a_{2j}\vect{u}_2 + \cdots + a_{nj}\vect{u}_n
+\qquad (j = 1, \dots, n+1)
+\]
+と書ける。すべては $0$ でない係数 $c_1, \dots, c_{n+1}$ で
+$c_1\vect{v}_1 + \cdots + c_{n+1}\vect{v}_{n+1} = \vect{0}$ とできることを
+示せばよい。上の表示を代入し、$\vect{u}_i$ ごとにまとめると
+\[
+c_1\vect{v}_1 + \cdots + c_{n+1}\vect{v}_{n+1}
+= \sum_{i=1}^{n} \bigl( a_{i1}c_1 + a_{i2}c_2 + \cdots + a_{i,n+1}c_{n+1} \bigr)
+\vect{u}_i
+\]
+となる。そこで、$c_1, \dots, c_{n+1}$ に関する同次連立一次方程式
+\[
+a_{i1}c_1 + a_{i2}c_2 + \cdots + a_{i,n+1}c_{n+1} = 0
+\qquad (i = 1, \dots, n)
+\]
+を考えると、これは\textbf{式 $n$ 本・未知数 $n + 1$ 個}の同次方程式だから、
+非自明な解 $(c_1, \dots, c_{n+1}) \neq (0, \dots, 0)$ をもつ
+(第II部の定理 \ref{thm:wide-homog})。この $c_j$ を使えば、
+各 $\vect{u}_i$ の係数がすべて $0$ になるので
+$c_1\vect{v}_1 + \cdots + c_{n+1}\vect{v}_{n+1} = \vect{0}$。
+よって $\vect{v}_1, \dots, \vect{v}_{n+1}$ は線形従属である。
+($n + 2$ 本以上の場合は、余分なベクトルの係数を $0$ とおけば
+$n + 1$ 本の場合に帰着する。) $\blacksquare$
+
+抽象的な「次元」の正当性が、掃き出し法の具体的な定理
+(未知数が式より多い同次方程式には非自明解がある)に支えられている
+――抽象と計算の往復が線形代数の醍醐味である。
+
+\begin{teiri}[基底の本数の不変性]\label{thm:dim-invariant}
 ベクトル空間 $V$ が $n$ 本のベクトルからなる基底をもつならば、
 $V$ のどの基底もちょうど $n$ 本からなる。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$m$ 本の基底 $B$ と $n$ 本の基底 $B'$ があったとして、$m < n$ と仮定する。
+$B$ は $V$ を $m$ 本で生成するから、交換補題 \ref{thm:exchange} により
+$V$ の中の $m + 1$ 本以上のベクトルは必ず従属である。
+ところが $B'$ は $n \ge m + 1$ 本の\textbf{線形独立な}組であり、矛盾。
+$n < m$ と仮定しても同様に矛盾するから、$m = n$ である。 $\blacksquare$
 
 \begin{teigi}[次元]
 この $n$ を $V$ の\textbf{次元}といい、$\dim V$ と書く。
 有限本の基底をもつ空間を\textbf{有限次元}、もたない空間を\textbf{無限次元}という。
 \end{teigi}
-
-\begin{itembox}[l]{深掘り:なぜ基底の本数は一致するのか}
-核心は次の補題である(\textbf{基底の交換補題}):
-「$n$ 本で生成される空間の中では、$n + 1$ 本以上のベクトルは必ず線形従属になる」。
-証明の仕掛けは、第II部の自由度定理に帰着させることである。
-$\vect{v}_1, \dots, \vect{v}_{n+1}$ がそれぞれ生成系 $n$ 本の線形結合で
-書けるとすると、$c_1\vect{v}_1 + \cdots + c_{n+1}\vect{v}_{n+1} = \vect{0}$
-という条件は、$c_1, \dots, c_{n+1}$ に関する\textbf{未知数 $n+1$ 個・式 $n$ 本}の
-同次連立一次方程式になる。階数は高々 $n$ だから自由度は $1$ 以上、
-すなわち非自明な解が必ず存在する。よって従属である。
-
-この補題から本数の一致は直ちに出る:基底が $m$ 本と $n$ 本($m < n$)あれば、
-$m$ 本の生成系の中に $n$ 本の独立なベクトルが存在することになり矛盾。
-\textbf{抽象的な「次元」の正当性が、具体的な掃き出し法の定理に支えられている}
-――抽象と計算の往復が線形代数の醍醐味である。
-\end{itembox}
 
 \begin{rei}
 $\dim \R^n = n$、$\dim \R[x]_n = n + 1$($1, x, \dots, x^n$ の $n+1$ 本)。
@@ -587,11 +1203,238 @@ $\dim \R^n = n$、$\dim \R[x]_n = n + 1$($1, x, \dots, x^n$ の $n+1$ 本)。
 ($1, x, x^2, \dots$ は何本とっても線形独立)。
 \end{rei}
 
+\section{基底の作り方と $n$ 本判定}
+
+基底は「間引く」か「付け足す」かで必ず作れる。
+
+\begin{teiri}[間引きと拡張]\label{thm:dim-extend}
+$V$ を有限次元ベクトル空間とする。
+\begin{enumerate}
+\item \textbf{(間引き)}\ $V$ の有限な生成系からは、一部のベクトルを
+取り除いて $V$ の基底を選び出せる。
+\item \textbf{(拡張)}\ $V$ の線形独立な組には、ベクトルを付け足して
+$V$ の基底に拡張できる。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) 生成系が従属なら、あるベクトルが残りの線形結合で書ける
+(第II部の定理 \ref{thm:dep-combo} と同じ論法)。そのベクトルを
+取り除いても張る空間は変わらない(問 \ref{q:sub-ex11})。
+これを繰り返すと、生成系は有限本だからいつか止まり、
+残った組は独立な生成系、すなわち基底である。
+
+(2) 鍵は次の補題である:
+\textbf{独立な組 $\vect{u}_1, \dots, \vect{u}_k$ と、その張る空間に
+入らないベクトル $\vect{v}$ をあわせた $k + 1$ 本も独立である。}
+実際 $c_1\vect{u}_1 + \cdots + c_k\vect{u}_k + c\vect{v} = \vect{0}$ とすると、
+もし $c \neq 0$ なら $\vect{v} = -\dfrac{c_1}{c}\vect{u}_1 - \cdots
+- \dfrac{c_k}{c}\vect{u}_k$ となって
+$\vect{v} \in \langle \vect{u}_1, \dots, \vect{u}_k \rangle$ に矛盾。
+よって $c = 0$ で、残りは $\vect{u}_i$ の独立性より $c_i = 0$ となる。
+
+そこで、与えられた独立な組がまだ $V$ を生成していなければ、
+張る空間の外からベクトルを $1$ 本とって付け足す。補題により独立性は
+保たれる。$\dim V = n$ とすると、交換補題 \ref{thm:exchange} により
+独立な組は $n$ 本以下だから、この操作は必ず止まる。
+止まったとき、その組は「張る空間の外にベクトルがない」、
+すなわち $V$ を生成する独立系=基底である。 $\blacksquare$
+
+\begin{teiri}[$n$ 次元空間での基底判定]\label{thm:dim-ncheck}
+$\dim V = n$ とする。$V$ のちょうど $n$ 本のベクトル
+$\vect{v}_1, \dots, \vect{v}_n$ について、
+\begin{enumerate}
+\item 線形独立ならば、基底である(生成の確認は不要)。
+\item $V$ を生成するならば、基底である(独立の確認は不要)。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) 拡張定理 \ref{thm:dim-extend}(2) により、この $n$ 本は基底に
+拡張できる。しかし基底は必ず $n$ 本(定理 \ref{thm:dim-invariant})
+だから、付け足すべきベクトルは $0$ 本であり、この組がすでに基底である。
+(2) 間引き定理 \ref{thm:dim-extend}(1) により、この $n$ 本から基底を
+選び出せる。基底は $n$ 本だから、取り除くべきベクトルは $0$ 本であり、
+この組がすでに基底である。 $\blacksquare$
+
+次元が分かっている空間では、この定理のおかげで基底の判定が半分の手間で
+済む。たとえば $\R^n$ の $n$ 本なら、行列式が $0$ でないこと
+(=独立)を見るだけでよい。
+
+\begin{teiri}[部分空間の次元]\label{thm:dim-sub}
+$n$ 次元ベクトル空間 $V$ の部分空間 $W$ について、次が成り立つ。
+\begin{enumerate}
+\item $W$ も有限次元で、$\dim W \le n$。
+\item $\dim W = n$ ならば $W = V$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $W$ の中の独立な組は $V$ の中でも独立だから、
+交換補題 \ref{thm:exchange} により本数は $n$ 以下である。
+$W$ の中で独立な組を、拡張定理の証明と同じ要領で
+($W$ の中の、張る空間の外のベクトルを付け足して)延ばしていくと、
+$n$ 本以下で必ず止まる。止まった組は $W$ を生成する独立系、
+すなわち $W$ の基底だから、$\dim W \le n$。
+(2) $\dim W = n$ なら、$W$ の基底は $V$ の中の独立な $n$ 本でもあるから、
+定理 \ref{thm:dim-ncheck}(1) により $V$ の基底である。よって
+$V$ のすべてのベクトルがその線形結合、すなわち $W$ の元であり、
+$W = V$ となる。 $\blacksquare$
+
 \begin{mondai}\label{q:basis1}
 　(1) 平面 $W = \{\,(x, y, z) \in \R^3 \mid x - y + 2z = 0\,\}$ の基底を一組求め、
 $\dim W$ を答えよ。\\
 　(2) $1,\ 1 + x,\ (1 + x)^2$ が $\R[x]_2$ の基底であることを示せ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[本数が合っていても基底とは限らない]\label{hanrei:dim-count}
+$\R^2$ で $\mat{1 \\ 2}, \mat{2 \\ 4}$ は、本数こそ $\dim \R^2 = 2$ に
+一致するが、$\mat{2 \\ 4} = 2\mat{1 \\ 2}$ と従属なので基底ではない
+(張るのは直線 $y = 2x$ だけで、生成もしていない)。
+逆に、独立でも本数が足りなければ基底ではない:
+$\mat{1 \\ 0 \\ 0}, \mat{0 \\ 1 \\ 0}$ は $\R^3$ で独立だが、
+$\mat{0 \\ 0 \\ 1}$ を書き表せないので生成しない。
+定理 \ref{thm:dim-ncheck} が使えるのは、
+\textbf{本数がちょうど $\dim V$ に一致しているとき}だけであり、
+そのときも独立か生成のどちらか一方は確認しなければならない。
+\end{hanrei}
+
+\begin{hanrei}[「座標」は基底とセットでしか意味をもたない]\label{hanrei:dim-coord}
+$\R^2$ のベクトル $\vect{v} = \mat{3 \\ 1}$ の座標は $(3, 1)$
+――と言い切るのは早計である。それは\textbf{標準基底に関する}座標にすぎない。
+基底 $\vect{e}'_1 = \mat{1 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ -1}$ をとると
+\[
+\mat{3 \\ 1} = 2\mat{1 \\ 1} + 1\mat{1 \\ -1}
+\]
+だから、この基底に関する $\vect{v}$ の座標は $(2, 1)$ である。
+同じベクトルでも、基底(=座標軸)が変われば住所は変わる。
+「座標」を口にするときは、どの基底に関する座標かをつねに意識せよ
+(この観点は第 \ref{chap:repmat} 章の主題になる)。
+\end{hanrei}
+
+\section{例題}
+
+基底の判定・座標の計算・次元の決定を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(解空間の基底)]\label{rei:dim-plane}
+平面 $W = \{\,(x, y, z) \in \R^3 \mid x + 2y - z = 0\,\}$ の基底を
+一組求め、$\dim W$ を答えよ。\\
+\textbf{解.}\ $x = -2y + z$ より、$y = s$, $z = t$ とおくと
+\[
+\mat{x \\ y \\ z} = s\mat{-2 \\ 1 \\ 0} + t\mat{1 \\ 0 \\ 1}.
+\]
+この $2$ 本は $W$ を生成し、しかも独立である(第 $2$・第 $3$ 成分を
+見れば、$s\,(-2,1,0) + t\,(1,0,1) = \vect{0}$ から $s = 0$, $t = 0$ が
+直ちに出る)。よって基底をなし、$\dim W = 2$ である。
+パラメータ表示では「自由変数の位置」に $1$ と $0$ が振り分けられるため、
+この方法で得られる生成系は自動的に独立になる。
+\end{rei}
+
+\begin{rei}[例題・基本(基底の判定と座標)]\label{rei:dim-coord}
+$\vect{a}_1 = \mat{1 \\ 1}$, $\vect{a}_2 = \mat{1 \\ -1}$ が $\R^2$ の
+基底であることを示し、$\vect{v} = \mat{1 \\ 5}$ のこの基底に関する
+座標を求めよ。\\
+\textbf{解.}\ $\det \mat{1 & 1 \\ 1 & -1} = -1 - 1 = -2 \neq 0$ より
+$2$ 本は独立(第II部の定理 \ref{thm:reg-rank})。
+$\dim \R^2 = 2$ だから、定理 \ref{thm:dim-ncheck}(1) により基底である。
+座標は $c_1\vect{a}_1 + c_2\vect{a}_2 = \vect{v}$ を解いて求める:
+\[
+c_1 + c_2 = 1, \qquad c_1 - c_2 = 5
+\]
+より $c_1 = 3$, $c_2 = -2$。座標は $(3, -2)$ である
+(検算:$3\mat{1\\1} - 2\mat{1\\-1} = \mat{1\\5}$)。
+\end{rei}
+
+\begin{rei}[例題・基本(行列の空間の次元)]\label{rei:dim-sym}
+$2 \times 2$ 対称行列全体 $S = \{\, A \mid {}^t\!A = A \,\}$
+(問 \ref{q:vs-ex9})の基底を一組求め、$\dim S$ を答えよ。\\
+\textbf{解.}\ 対称行列は $\mat{a & b \\ b & c}$ の形だから、
+\[
+\mat{a & b \\ b & c}
+= a\mat{1 & 0 \\ 0 & 0} + b\mat{0 & 1 \\ 1 & 0} + c\mat{0 & 0 \\ 0 & 1}
+\]
+と、$3$ 枚の行列の線形結合で書ける($3$ 枚は $S$ を生成する)。
+また線形結合が $O$ になるのは、各成分を比べて $a = b = c = 0$ の
+ときだけだから独立でもある。よって基底をなし、$\dim S = 3$ である。
+なお $\dim M_{2,2} = 4$(成分一つだけが $1$ の「行列単位」$4$ 枚が基底)
+だから、$S$ は $4$ 次元空間の中の $3$ 次元部分空間である。
+\end{rei}
+
+\begin{rei}[例題・標準(多項式の基底と座標)]\label{rei:dim-poly}
+$1,\ 1 + x,\ 1 + x + x^2$ が $\R[x]_2$ の基底であることを示し、
+$p(x) = 2 + 3x + x^2$ のこの基底に関する座標を求めよ。\\
+\textbf{解.}\ $c_1 \cdot 1 + c_2(1 + x) + c_3(1 + x + x^2) = 0$
+(恒等的に)とすると、次数ごとに係数を比べて
+\[
+c_1 + c_2 + c_3 = 0, \qquad c_2 + c_3 = 0, \qquad c_3 = 0
+\]
+となり、下から順に $c_3 = 0$, $c_2 = 0$, $c_1 = 0$。よって独立である。
+$\dim \R[x]_2 = 3$ だから、定理 \ref{thm:dim-ncheck}(1) により基底である。
+座標は $c_1 + c_2(1 + x) + c_3(1 + x + x^2) = 2 + 3x + x^2$ の係数比較で
+\[
+c_1 + c_2 + c_3 = 2, \qquad c_2 + c_3 = 3, \qquad c_3 = 1
+\]
+より $c_3 = 1$, $c_2 = 2$, $c_1 = -1$。座標は $(-1, 2, 1)$ である
+(検算:$-1 + 2(1 + x) + (1 + x + x^2) = 2 + 3x + x^2$)。
+\end{rei}
+
+\begin{rei}[例題・標準(生成系から基底を間引く)]\label{rei:dim-select}
+$\vect{a}_1 = \mat{1 \\ 2 \\ 3}$, $\vect{a}_2 = \mat{2 \\ 4 \\ 6}$,
+$\vect{a}_3 = \mat{1 \\ 1 \\ 1}$, $\vect{a}_4 = \mat{2 \\ 3 \\ 4}$ の
+張る部分空間 $W = \langle \vect{a}_1, \vect{a}_2, \vect{a}_3, \vect{a}_4
+\rangle$ の基底をこの中から選び出し、$\dim W$ を答えよ。\\
+\textbf{解.}\ 間引き定理 \ref{thm:dim-extend}(1) の方針で、従属なものを
+順に捨てる。$\vect{a}_2 = 2\vect{a}_1$ だから $\vect{a}_2$ を捨ててよい
+(問 \ref{q:sub-ex11}:張る空間は変わらない)。
+$\vect{a}_1, \vect{a}_3$ は比例していないので独立。
+$\vect{a}_4$ は $\vect{a}_4 = \vect{a}_1 + \vect{a}_3$
+(成分ごとに $2 = 1 + 1$, $3 = 2 + 1$, $4 = 3 + 1$)と書けるから捨ててよい。
+残った $\vect{a}_1, \vect{a}_3$ は独立な生成系なので $W$ の基底であり、
+$\dim W = 2$($W$ は $\R^3$ 内の平面)である。
+\end{rei}
+
+\begin{rei}[例題・標準(数列の空間の基底)]\label{rei:dim-seq}
+漸化式 $a_{n+2} = 2a_{n+1} - a_n$ を満たす数列全体 $W$
+(問 \ref{q:vs-ex6})について、定数数列 $(1, 1, 1, \dots)$ と
+数列 $(0, 1, 2, 3, \dots)$($a_n = n$)が $W$ の基底であることを示せ。\\
+\textbf{解.}\ まず両者が $W$ に属すること:定数数列は
+$1 = 2 \cdot 1 - 1$、数列 $a_n = n$ は $n + 2 = 2(n + 1) - n$ より、
+どちらも漸化式を満たす。
+
+生成:任意の $(a_n) \in W$ に対し、二つの数列の線形結合
+$b_n = a_0 \cdot 1 + (a_1 - a_0) \cdot n$ で定まる数列 $(b_n)$ は
+$W$ に属し、$b_0 = a_0$, $b_1 = a_1$ と最初の $2$ 項が $(a_n)$ と一致する。
+漸化式は最初の $2$ 項から残りすべてを決めるので $(a_n) = (b_n)$、
+すなわち $(a_n)$ は $2$ つの数列の線形結合である。
+
+独立:$c_1 \cdot 1 + c_2 \cdot n = 0$(すべての $n$)とすると、
+$n = 0$ で $c_1 = 0$、$n = 1$ で $c_2 = 0$。
+
+よって基底をなし、$\dim W = 2$ である。等差数列の一般項
+$a_n = a_0 + (a_1 - a_0)n$ は、この基底に関する座標表示だったのである。
+\end{rei}
+
+\begin{itembox}[l]{深掘り:無限次元の世界}
+$\R[x]$(次数制限なしの多項式全体)には有限本の基底がない。
+どんな有限個の多項式をとっても、その中の最高次数を $d$ とすれば
+$x^{d+1}$ はそれらの線形結合で書けないからである。
+$1, x, x^2, \dots$ は何本とっても独立で、$\R[x]$ は無限次元である。
+連続関数の空間 $C(\R)$ はさらに広大で、$e^x$ や $\sin x$ は
+どんな多項式とも一致しない(多項式は有限回微分すれば $0$ になるが、
+$e^x$ は何回微分しても $e^x$ のままである)。
+
+無限次元空間で「基底」を扱うには繊細さが要る。線形結合とは
+あくまで\textbf{有限個}の和だから、
+$e^x = 1 + x + \frac{x^2}{2!} + \cdots$ のような\textbf{無限和}は、
+ベクトル空間の言葉のままでは扱えない。無限和に意味を与えるには
+「収束」の概念、すなわち解析学との合流が必要で、その先に広がるのが
+\textbf{関数解析}(フーリエ級数、量子力学の数学)である。
+有限次元の理論はその登山口であり、本章で証明した「次元の不変性」の
+ような足場固めは、無限次元でも議論の模範になる。
+\end{itembox}
 
 \begin{mondai}\label{q:basis2}
 問 \ref{q:fib} の空間 $V$(漸化式 $a_{n+2} = a_{n+1} + a_n$ を満たす数列全体)
@@ -601,9 +1444,185 @@ $\dim W$ を答えよ。\\
 基底になる。)
 \end{mondai}
 
+\begin{matome}
+\begin{itemize}
+\item \textbf{基底}=線形独立な生成系。生成が「すべての点に住所を配る」こと、
+独立が「住所の重複を防ぐ」ことを保証し、座標が\textbf{ただ一通り}に定まる
+(定理 \ref{thm:coord-unique})。座標は基底とセットでのみ意味をもつ
+(反例 \ref{hanrei:dim-coord})。
+\item \textbf{交換補題}:$n$ 本で生成される空間では $n + 1$ 本以上は必ず従属。
+証明は「未知数が式より多い同次方程式には非自明解がある」に帰着する。
+これにより\textbf{基底の本数はとり方によらず}(定理 \ref{thm:dim-invariant})、
+\textbf{次元} $\dim V$ が矛盾なく定義できる。
+\item 基底は、生成系を\textbf{間引く}か、独立系に\textbf{付け足す}かで
+必ず作れる(定理 \ref{thm:dim-extend})。
+\item $\dim V = n$ のとき、$n$ 本のベクトルは「独立」か「生成」の
+\textbf{どちらか一方}を確かめれば基底である(定理 \ref{thm:dim-ncheck})。
+本数が $n$ でなければこの近道は使えない(反例 \ref{hanrei:dim-count})。
+\item 部分空間 $W$ は $\dim W \le \dim V$ を満たし、
+$\dim W = \dim V$ なら $W = V$(定理 \ref{thm:dim-sub})。
+\item 解空間の基底はパラメータ表示から読み取れ、次元は自由度
+$n - \mathrm{rank}\,A$ に一致する。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:dim-ex1}
+平面 $W = \{\,(x, y, z) \in \R^3 \mid 2x - y + 3z = 0\,\}$
+(例題 \ref{rei:sub-plane} の部分空間)の基底を一組求め、$\dim W$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:dim-ex2}
+$\vect{a}_1 = \mat{2 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1}$ が $\R^2$ の
+基底であることを示し、$\vect{v} = \mat{1 \\ 4}$ のこの基底に関する座標を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:dim-ex3}
+$2 \times 2$ の対角行列全体 $D$(問 \ref{q:sub-ex3})の基底を一組求め、
+$\dim D$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:dim-ex4}
+$W = \{\, p \in \R[x]_2 \mid p(0) = 0 \,\}$(問 \ref{q:sub-ex4})の
+基底を一組求め、$\dim W$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dim-ex5}
+$\R^4$ の部分空間
+$W = \{\,(x_1, x_2, x_3, x_4) \mid x_1 + x_2 + x_3 + x_4 = 0\,\}$ の
+基底を一組求め、$\dim W$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dim-ex6}
+$1 + x,\ 1 - x,\ x^2$ が $\R[x]_2$ の基底であることを示し、
+$p(x) = 3 + x - 2x^2$ のこの基底に関する座標を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dim-ex7}
+$2 \times 2$ の交代行列全体 $T = \{\, A \mid {}^t\!A = -A \,\}$
+(問 \ref{q:vs-ex9})の基底を一組求め、$\dim T$ を答えよ。
+また、$\dim S + \dim T$($S$ は対称行列全体)が $\dim M_{2,2}$ に
+一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dim-ex8}
+$\vect{a}_1 = \mat{1 \\ 2 \\ 3}$, $\vect{a}_2 = \mat{2 \\ 3 \\ 4}$,
+$\vect{a}_3 = \mat{3 \\ 5 \\ 7}$ は $\R^3$ の基底か。基底でない場合は、
+$W = \langle \vect{a}_1, \vect{a}_2, \vect{a}_3 \rangle$ の基底を
+この中から選び出し、$\dim W$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:dim-ex9}
+漸化式 $a_{n+2} = 3a_{n+1} - 2a_n$ を満たす数列全体を $W$ とする
+($W$ がベクトル空間になることは問 \ref{q:vs-ex6} と同様に示せる)。\\
+　(1) 定数数列 $(1, 1, 1, \dots)$ と等比数列 $(1, 2, 4, 8, \dots)$
+($a_n = 2^n$)がどちらも $W$ に属することを確かめよ。\\
+　(2) この $2$ 本が $W$ の基底であることを示し、初項が $a_0$, $a_1$ の
+一般の数列 $(a_n) \in W$ の一般項を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:dim-ex10}
+$\R^3$ の部分空間
+$W_1 = \{\,(x, y, z) \mid x + y + z = 0\,\}$,
+$W_2 = \{\,(x, y, z) \mid x = y\,\}$ について、
+$\dim W_1$, $\dim W_2$, $\dim (W_1 \cap W_2)$, $\dim (W_1 + W_2)$ を
+それぞれ求め、
+\[
+\dim(W_1 + W_2) = \dim W_1 + \dim W_2 - \dim(W_1 \cap W_2)
+\]
+が成り立っていることを確かめよ(この等式は\textbf{次元公式}と呼ばれ、
+一般に成り立つことが知られている)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:dim-ex11}
+$\vect{v}_1, \vect{v}_2, \vect{v}_3$ をベクトル空間 $V$ の基底とする。
+このとき
+\[
+\vect{w}_1 = \vect{v}_1, \qquad
+\vect{w}_2 = \vect{v}_1 + \vect{v}_2, \qquad
+\vect{w}_3 = \vect{v}_1 + \vect{v}_2 + \vect{v}_3
+\]
+も $V$ の基底であることを証明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:dim-ex12}
+有限次元ベクトル空間 $V$ の部分空間 $W_1, W_2$ について
+\[
+\dim(W_1 + W_2) \le \dim W_1 + \dim W_2
+\]
+を証明せよ(ヒント:$W_1$ の基底と $W_2$ の基底を合わせた組が
+$W_1 + W_2$ を生成することを示し、間引き定理 \ref{thm:dim-extend} を使う)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:dim-ex1}}:$y$ について解き、残り $2$ 変数を
+パラメータにする(例題 \ref{rei:dim-plane} と同じ手順)。
+\item \textbf{問 \ref{q:dim-ex2}}:行列式で独立を確かめ、
+定理 \ref{thm:dim-ncheck} を使う。座標は連立方程式で。
+\item \textbf{問 \ref{q:dim-ex3}}:対角行列を「基本の対角行列」の
+線形結合で書いてみる。
+\item \textbf{問 \ref{q:dim-ex4}}:$W$ の元は $a_1 x + a_2 x^2$ の形
+(問 \ref{q:sub-ex4})。
+\item \textbf{問 \ref{q:dim-ex5}}:$x_1$ について解き、$x_2, x_3, x_4$ を
+パラメータにする。
+\item \textbf{問 \ref{q:dim-ex6}}:独立の確認は係数比較。
+$\dim \R[x]_2 = 3$ と $n$ 本判定で基底と分かる。座標も係数比較で。
+\item \textbf{問 \ref{q:dim-ex7}}:${}^t\!A = -A$ から対角成分が $0$ に
+なることを導く。残る自由度を数える。
+\item \textbf{問 \ref{q:dim-ex8}}:行列式を計算する。$0$ なら従属。
+どれか $1$ 本を残り $2$ 本で表してみる。
+\item \textbf{問 \ref{q:dim-ex9}}:例題 \ref{rei:dim-seq} と同じ筋書き。
+「最初の $2$ 項が一致すれば全体が一致する」が鍵。
+\item \textbf{問 \ref{q:dim-ex10}}:$W_1 \cap W_2$ は連立して解く。
+$W_1 + W_2$ は $W_1$ より真に大きいことを示し、
+定理 \ref{thm:dim-sub} で次元を確定する。
+\item \textbf{問 \ref{q:dim-ex11}}:独立だけ示せば $n$ 本判定が使える。
+$c_1\vect{w}_1 + c_2\vect{w}_2 + c_3\vect{w}_3 = \vect{0}$ を
+$\vect{v}_i$ でまとめ直す。
+\item \textbf{問 \ref{q:dim-ex12}}:和空間の任意の元
+$\vect{w}_1 + \vect{w}_2$ を、二組の基底の線形結合で書く。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{線形写像 ― 構造を保つ写像}\label{chap:linmap}
 % =====================================================
+
+\begin{goal}
+\begin{itemize}
+\item 線形写像の定義(和とスカラー倍を保つ写像)を理解し、
+与えられた写像が線形かどうかを判定・証明できるようになる。
+また、線形写像が\textbf{基底の行き先だけで決まる}ことを使えるようになる。
+\item \textbf{核}と\textbf{像}を計算し、核による単射性の判定を
+使えるようになる。
+\item \textbf{次元定理} $\dim V = \dim \mathrm{Ker}\,f + \dim \mathrm{Im}\,f$
+の証明を理解し、微分・積分・数列など様々な線形写像に適用できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 空間の次は、空間のあいだの写像}
+
+第I部で、行列 $A$ を掛ける操作 $\vect{x} \mapsto A\vect{x}$ が
+$\R^n$ から $\R^m$ への「変換」であることを学び、
+それが和とスカラー倍を保つこと(定理 \ref{thm:matvec-linear})も確かめた。
+いま舞台はベクトル空間一般に広がった。ならば写像の概念も広げよう
+――行列という道具立てを離れ、\textbf{「和とスカラー倍を保つ」という
+性質だけ}を要求するのである。
+
+こうして得られる線形写像の世界には、思いがけない住人が加わる。
+なんと\textbf{微分も積分も線形写像}である。高校以来使ってきた
+「項別に微分してよい」という規則は、線形性の主張にほかならない。
+ベクトル空間の公理化(第 \ref{chap:vs} 章)が多項式や関数を
+ベクトルの仲間にしたように、線形写像の公理化は微分や積分を
+「行列の仲間」にする。そして第II部で調べた解空間や階数の理論が、
+\textbf{核}と\textbf{像}という言葉で一斉に一般化される。
+本章の頂点は、自由度定理の抽象版である\textbf{次元定理}の証明である。
 
 \section{定義と例}
 
@@ -619,7 +1638,39 @@ f(c\vect{u}) = c\,f(\vect{u})
 \end{teigi}
 
 第I部で「行列 $A$ の定める写像 $\vect{x} \mapsto A\vect{x}$」として
-出会った概念の、抽象版である。新しい舞台では、驚くべき例が加わる。
+出会った概念の、抽象版である。まず、定義から直ちに従う基本性質を
+まとめておく。
+
+\begin{teiri}[線形写像の基本性質]\label{thm:linmap-basic}
+線形写像 $f : V \to W$ について、次が成り立つ。
+\begin{enumerate}
+\item $f(\vect{0}) = \vect{0}$(零ベクトルは零ベクトルにうつる)。
+\item $f(-\vect{v}) = -f(\vect{v})$。
+\item 線形結合は線形結合にうつる:
+\[
+f(c_1\vect{v}_1 + \cdots + c_k\vect{v}_k)
+= c_1 f(\vect{v}_1) + \cdots + c_k f(\vect{v}_k).
+\]
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $f(\vect{0}) = f(0 \cdot \vect{0}) = 0 \cdot f(\vect{0}) = \vect{0}$
+(スカラー倍の保存と、$0\vect{w} = \vect{0}$(定理 \ref{thm:vs-basic}))。
+(2) $f(-\vect{v}) = f((-1)\vect{v}) = (-1)f(\vect{v}) = -f(\vect{v})$。
+(3) 和の保存を繰り返し使って項ごとに分け、各項でスカラー倍の保存を使う。
+$\blacksquare$
+
+(1) は実用上重要である:\textbf{$f(\vect{0}) \neq \vect{0}$ なら、
+その時点で線形写像ではない}(反例 \ref{hanrei:linmap-affine})。
+
+\begin{rei}[行列の定める写像]
+$m \times n$ 行列 $A$ に対し、$f(\vect{x}) = A\vect{x}$ は
+$\R^n \to \R^m$ の線形写像である(定理 \ref{thm:matvec-linear})。
+回転・鏡映・拡大などの幾何的変換(第I部)はすべてこの形だった。
+逆に、$\R^n \to \R^m$ の線形写像はすべて行列で書けること
+(定理 \ref{thm:lin-is-matrix})も第I部で見た。
+\end{rei}
 
 \begin{rei}[微分は線形写像である]
 微分 $D : \R[x]_n \to \R[x]_n$、$D(p) = p'$ は
@@ -628,13 +1679,64 @@ f(c\vect{u}) = c\,f(\vect{u})
 \]
 を満たすから線形写像である。高校で「項別に微分してよい」と教わった規則は、
 「微分は線形写像である」という一文に凝縮される。
-定積分 $p \mapsto \int_0^1 p(x)\,dx$($\R[x]_n \to \R$)も線形写像である。
+定積分 $p \mapsto \int_0^1 p(x)\,dx$($\R[x]_n \to \R$)も線形写像である
+(積分の線形性)。
 \end{rei}
 
 \begin{rei}[数列のシフト]
 数列空間上で、$(a_0, a_1, a_2, \dots) \mapsto (a_1, a_2, a_3, \dots)$ と
 一つずらす写像も線形写像である。漸化式の理論はこの写像の分析にほかならない。
 \end{rei}
+
+\begin{rei}[評価写像]
+点を一つ決めて多項式の値を読む写像、たとえば
+$T : \R[x]_2 \to \R$, $T(p) = p(1)$ も線形写像である:
+$(p + q)(1) = p(1) + q(1)$, $(cp)(1) = c\,p(1)$。
+「$x = 1$ を代入する」という操作さえ、線形写像なのである。
+\end{rei}
+
+\section{線形写像は基底の行き先で決まる}
+
+線形写像の著しい特徴は、\textbf{ごく少数の情報で全体が決まる}ことである。
+
+\begin{teiri}[基底の行き先が写像を決める]\label{thm:linmap-basis}
+$V$ を有限次元ベクトル空間、$\vect{e}_1, \dots, \vect{e}_n$ をその基底とし、
+$W$ のベクトル $\vect{w}_1, \dots, \vect{w}_n$ を任意に指定する。
+このとき、
+\[
+f(\vect{e}_i) = \vect{w}_i \qquad (i = 1, \dots, n)
+\]
+を満たす線形写像 $f : V \to W$ が\textbf{ただ一つ}存在する。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+存在:任意の $\vect{v} \in V$ は座標を使って
+$\vect{v} = c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ とただ一通りに書ける
+(定理 \ref{thm:coord-unique})から、
+\[
+f(\vect{v}) = c_1\vect{w}_1 + \cdots + c_n\vect{w}_n
+\]
+と定めれば $f$ は矛盾なく定義され、$f(\vect{e}_i) = \vect{w}_i$ を満たす。
+線形性を確かめる。$\vect{v}, \vect{v}'$ の座標を $(c_i)$, $(c'_i)$ とすると、
+$\vect{v} + \vect{v}' = \sum_i (c_i + c'_i)\vect{e}_i$ だから
+座標の一意性により $\vect{v} + \vect{v}'$ の座標は $(c_i + c'_i)$ であり、
+\[
+f(\vect{v} + \vect{v}') = \sum_i (c_i + c'_i)\vect{w}_i
+= \sum_i c_i\vect{w}_i + \sum_i c'_i\vect{w}_i = f(\vect{v}) + f(\vect{v}').
+\]
+スカラー倍も同様である。
+
+一意性:$g$ も条件を満たす線形写像とすると、任意の $\vect{v}$ に対し
+定理 \ref{thm:linmap-basic}(3) より
+\[
+g(\vect{v}) = g\Bigl(\sum_i c_i\vect{e}_i\Bigr) = \sum_i c_i\,g(\vect{e}_i)
+= \sum_i c_i\vect{w}_i = f(\vect{v}).
+\]
+よって $g = f$ である。 $\blacksquare$
+
+$n$ 次元空間からの線形写像は、基底 $n$ 本の行き先という
+\textbf{有限個のデータで完全に決まる}。「線形写像を行列で表す」
+(次章の表現行列)ことができるのは、この定理のおかげである。
 
 \section{核と像、そして次元定理}
 
@@ -646,28 +1748,87 @@ f(c\vect{u}) = c\,f(\vect{u})
 \mathrm{Im}\,f = \{\, f(\vect{v}) \mid \vect{v} \in V \,\}
 \]
 をそれぞれ $f$ の\textbf{核}、\textbf{像}という。
-$\mathrm{Ker}\,f$ は $V$ の、$\mathrm{Im}\,f$ は $W$ の部分空間になる。
 \end{teigi}
+
+\begin{teiri}\label{thm:kerim-sub}
+$\mathrm{Ker}\,f$ は $V$ の部分空間、$\mathrm{Im}\,f$ は $W$ の部分空間である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+核:$f(\vect{0}) = \vect{0}$ より $\vect{0} \in \mathrm{Ker}\,f$。
+$\vect{u}, \vect{v} \in \mathrm{Ker}\,f$ ならば
+$f(\vect{u} + \vect{v}) = f(\vect{u}) + f(\vect{v}) = \vect{0} + \vect{0}
+= \vect{0}$、$f(c\vect{u}) = c\,f(\vect{u}) = \vect{0}$ だから、
+和もスカラー倍も核に留まる。
+
+像:$\vect{0} = f(\vect{0}) \in \mathrm{Im}\,f$。
+$f(\vect{u}), f(\vect{v}) \in \mathrm{Im}\,f$ の和は
+$f(\vect{u}) + f(\vect{v}) = f(\vect{u} + \vect{v}) \in \mathrm{Im}\,f$、
+スカラー倍は $c\,f(\vect{u}) = f(c\vect{u}) \in \mathrm{Im}\,f$ である。
+$\blacksquare$
 
 $f(\vect{x}) = A\vect{x}$ のとき、$\mathrm{Ker}\,f$ は同次方程式の解空間であり、
 $\mathrm{Im}\,f$ は $A$ の列ベクトルが生成する空間(その次元は $\mathrm{rank}\,A$)である。
 つまり核と像は、第II部の主役たちの抽象化である。
 
-\begin{teiri}[単射性の判定]
+\begin{teiri}[単射性の判定]\label{thm:linmap-inj}
 線形写像 $f$ が単射(一対一)であることと、
 $\mathrm{Ker}\,f = \{\vect{0}\}$ は同値である。
 \end{teiri}
 
-「写像がつぶれていないこと」を、たった一点 $\vect{0}$ の逆像だけで
-判定できる――線形性のご利益である
-($f(\vect{u}) = f(\vect{v}) \iff f(\vect{u} - \vect{v}) = \vect{0}$ に注意)。
+\noindent\textbf{(証明)}\quad
+$f$ が単射なら、$f(\vect{v}) = \vect{0} = f(\vect{0})$ を満たす
+$\vect{v}$ は $\vect{0}$ しかないから $\mathrm{Ker}\,f = \{\vect{0}\}$。
+逆に $\mathrm{Ker}\,f = \{\vect{0}\}$ とする。$f(\vect{u}) = f(\vect{v})$
+ならば、線形性より
+$f(\vect{u} - \vect{v}) = f(\vect{u}) - f(\vect{v}) = \vect{0}$、
+すなわち $\vect{u} - \vect{v} \in \mathrm{Ker}\,f = \{\vect{0}\}$ だから
+$\vect{u} = \vect{v}$。よって単射である。 $\blacksquare$
 
-\begin{teiri}[次元定理]
+「写像がつぶれていないこと」を、たった一点 $\vect{0}$ の逆像だけで
+判定できる――線形性のご利益である。
+
+\begin{teiri}[次元定理]\label{thm:dimension}
 $V$ が有限次元のとき、線形写像 $f : V \to W$ に対して
 \[
 \dim V = \dim \mathrm{Ker}\,f + \dim \mathrm{Im}\,f.
 \]
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\dim V = n$、$\dim \mathrm{Ker}\,f = k$ とおき、
+$\mathrm{Ker}\,f$ の基底 $\vect{u}_1, \dots, \vect{u}_k$ をとる。
+拡張定理 \ref{thm:dim-extend}(2) により、これに $r = n - k$ 本を
+付け足して $V$ の基底
+\[
+\vect{u}_1, \dots, \vect{u}_k,\ \vect{v}_1, \dots, \vect{v}_r
+\]
+が作れる。このとき
+\textbf{$f(\vect{v}_1), \dots, f(\vect{v}_r)$ が $\mathrm{Im}\,f$ の基底}
+であることを示せば、$\dim \mathrm{Im}\,f = r = n - k$ となって証明が終わる。
+
+生成:$\mathrm{Im}\,f$ の任意の元は $f(\vect{v})$ の形である。
+$\vect{v} = a_1\vect{u}_1 + \cdots + a_k\vect{u}_k
++ b_1\vect{v}_1 + \cdots + b_r\vect{v}_r$ と基底で書いて $f$ を施すと、
+$f(\vect{u}_i) = \vect{0}$ だから
+\[
+f(\vect{v}) = b_1 f(\vect{v}_1) + \cdots + b_r f(\vect{v}_r).
+\]
+よって $f(\vect{v}_1), \dots, f(\vect{v}_r)$ は $\mathrm{Im}\,f$ を生成する。
+
+独立:$c_1 f(\vect{v}_1) + \cdots + c_r f(\vect{v}_r) = \vect{0}$ とすると、
+線形性より $f(c_1\vect{v}_1 + \cdots + c_r\vect{v}_r) = \vect{0}$、
+すなわち $c_1\vect{v}_1 + \cdots + c_r\vect{v}_r \in \mathrm{Ker}\,f$。
+核の元は核の基底で書けるから、ある $d_1, \dots, d_k$ により
+\[
+c_1\vect{v}_1 + \cdots + c_r\vect{v}_r
+= d_1\vect{u}_1 + \cdots + d_k\vect{u}_k,
+\]
+移項すれば
+$d_1\vect{u}_1 + \cdots + d_k\vect{u}_k - c_1\vect{v}_1 - \cdots
+- c_r\vect{v}_r = \vect{0}$。
+これは $V$ の基底の線形結合だから、係数はすべて $0$、
+とくに $c_1 = \cdots = c_r = 0$ である。 $\blacksquare$
 
 $f(\vect{x}) = A\vect{x}$($A$ は $m \times n$)の場合に翻訳すると
 \[
@@ -677,6 +1838,19 @@ n = (n - \mathrm{rank}\,A) + \mathrm{rank}\,A
 「入力の次元 = つぶれて消える次元 + 生き残って出力される次元」という
 \textbf{情報の保存則}として読める。
 
+\begin{teiri}[合成写像の線形性]\label{thm:linmap-comp}
+$f : V \to W$、$g : W \to U$ が線形写像ならば、合成
+$g \circ f : V \to U$($\vect{v} \mapsto g(f(\vect{v}))$)も線形写像である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$(g \circ f)(\vect{u} + \vect{v}) = g(f(\vect{u}) + f(\vect{v}))
+= g(f(\vect{u})) + g(f(\vect{v}))$、スカラー倍も同様。 $\blacksquare$
+
+行列の定める写像でいえば、合成は行列の積に対応する(第 \ref{chap:matmul} 章)。
+この対応が一般の線形写像でも成り立つことは、次章で表現行列を導入すると
+はっきり見える。
+
 \section{同型 ― 「見た目が違うだけ」を厳密にいう}
 
 \begin{teigi}[同型]
@@ -684,11 +1858,21 @@ n = (n - \mathrm{rank}\,A) + \mathrm{rank}\,A
 同型写像が存在する $V$ と $W$ は\textbf{同型}であるという($V \cong W$ と書く)。
 \end{teigi}
 
-\begin{teiri}
+\begin{teiri}\label{thm:iso-rn}
 $n$ 次元ベクトル空間 $V$ は、すべて $\R^n$ と同型である。
 実際、基底を一組固定し、各ベクトルをその座標にうつす写像
 $\vect{v} \mapsto (c_1, \dots, c_n)$ が同型写像になる。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+座標写像を $\varphi$ とする。定理 \ref{thm:linmap-basis} の証明で見たとおり、
+和の座標は座標の和、スカラー倍の座標は座標のスカラー倍だから
+$\varphi$ は線形である。$\varphi(\vect{v}) = \vect{0}$ は
+$\vect{v} = 0\vect{e}_1 + \cdots + 0\vect{e}_n = \vect{0}$ を意味するから
+$\mathrm{Ker}\,\varphi = \{\vect{0}\}$ で単射
+(定理 \ref{thm:linmap-inj})。また任意の $(c_1, \dots, c_n) \in \R^n$ は
+$c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ の座標だから全射。
+よって $\varphi$ は同型写像である。 $\blacksquare$
 
 \begin{itembox}[l]{深掘り:同型の哲学 ― では抽象論は無駄だったのか}
 「どうせすべて $\R^n$ と同型なら、最初から $\R^n$ だけ考えれば
@@ -708,9 +1892,327 @@ $\vect{v} \mapsto (c_1, \dots, c_n)$ が同型写像になる。
 $\mathrm{Im}\,D$ を求め、それぞれの次元が次元定理を満たすことを確かめよ。
 \end{mondai}
 
+\section{反例 ― 「線形」の落とし穴}
+
+\begin{hanrei}[一次関数は線形写像とは限らない]\label{hanrei:linmap-affine}
+高校で「一次関数」と呼んだ $f(x) = 2x + 3$($\R \to \R$)は、
+線形写像では\textbf{ない}。実際 $f(0) = 3 \neq 0$ であり、
+定理 \ref{thm:linmap-basic}(1) に反する
+(和も保たない:$f(1 + 1) = 7$ だが $f(1) + f(1) = 10$)。
+線形写像なのは $b = 0$ の場合 $f(x) = ax$ だけである。
+一般に、平行移動 $\vect{v} \mapsto \vect{v} + \vect{b}$
+($\vect{b} \neq \vect{0}$)は線形でない。
+線形写像+平行移動の形の写像は\textbf{アフィン写像}と呼ばれ、
+部分空間とアフィン部分空間(第 \ref{chap:subspace} 章の深掘り)と
+同じ関係にある。
+\end{hanrei}
+
+\begin{hanrei}[$f(\vect{0}) = \vect{0}$ でも線形とは限らない]\label{hanrei:linmap-square}
+$f : \R \to \R$, $f(x) = x^2$ は $f(0) = 0$ を満たすが線形でない。
+スカラー倍が保たれない:$f(2 \cdot 1) = 4$ だが $2f(1) = 2$。
+同様に $g : \R^2 \to \R$, $g(x, y) = xy$ も $g(0,0) = 0$ だが、
+$g(2, 2) = 4 \neq 2\,g(1, 1) = 2$ で線形でない。
+$f(\vect{0}) = \vect{0}$ は線形性の\textbf{必要条件にすぎず}、
+判定には和とスカラー倍の保存を正面から確かめる必要がある。
+\end{hanrei}
+
+\section{例題}
+
+線形性の判定、核と像の計算、次元定理の運用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(線形性の判定)]\label{rei:linmap-check}
+次の写像 $\R^2 \to \R^2$ は線形写像か。
+\[
+f(x, y) = (2x + y,\ x - 3y), \qquad g(x, y) = (x + 1,\ y)
+\]
+\textbf{解.}\ $f$ は線形である。
+$\vect{u} = (x_1, y_1)$, $\vect{v} = (x_2, y_2)$ に対し
+\[
+f(\vect{u} + \vect{v})
+= \bigl(2(x_1 + x_2) + (y_1 + y_2),\ (x_1 + x_2) - 3(y_1 + y_2)\bigr)
+= f(\vect{u}) + f(\vect{v}),
+\]
+$f(c\vect{u}) = (2cx_1 + cy_1,\ cx_1 - 3cy_1) = c\,f(\vect{u})$。
+実は $f(\vect{x}) = \mat{2 & 1 \\ 1 & -3}\vect{x}$ と行列で書ける。
+
+$g$ は線形でない。$g(0, 0) = (1, 0) \neq (0, 0)$ だから、
+定理 \ref{thm:linmap-basic}(1) に反する。
+\end{rei}
+
+\begin{rei}[例題・基本(核と像の計算)]\label{rei:linmap-kerim}
+$A = \mat{1 & 2 \\ 2 & 4}$ の定める線形写像
+$f : \R^2 \to \R^2$ の核と像を求め、次元定理を確かめよ。\\
+\textbf{解.}\ 核:$A\vect{x} = \vect{0}$ すなわち $x + 2y = 0$
+($2$ 行目は $1$ 行目の $2$ 倍)を解いて
+$\vect{x} = t\mat{-2 \\ 1}$。よって
+$\mathrm{Ker}\,f = \left\langle \mat{-2 \\ 1} \right\rangle$、次元は $1$。
+
+像:列ベクトルの張る空間で、$\mat{2 \\ 4} = 2\mat{1 \\ 2}$ だから
+$\mathrm{Im}\,f = \left\langle \mat{1 \\ 2} \right\rangle$、次元は $1$
+($\mathrm{rank}\,A = 1$)。
+
+次元定理:$\dim \R^2 = 2 = 1 + 1$ で成立している。
+「入力 $2$ 次元のうち、$1$ 次元分がつぶれ、$1$ 次元分が生き残る」。
+\end{rei}
+
+\begin{rei}[例題・基本(基底の行き先から写像を求める)]\label{rei:linmap-fromdata}
+線形写像 $f : \R^2 \to \R^2$ が
+\[
+f\mat{1 \\ 0} = \mat{1 \\ 3}, \qquad f\mat{0 \\ 1} = \mat{2 \\ -1}
+\]
+を満たすとき、$f\mat{4 \\ 5}$ と、一般の $f\mat{x \\ y}$ を求めよ。\\
+\textbf{解.}\ $\mat{4 \\ 5} = 4\mat{1 \\ 0} + 5\mat{0 \\ 1}$ だから、
+線形性(定理 \ref{thm:linmap-basic}(3))より
+\[
+f\mat{4 \\ 5} = 4\mat{1 \\ 3} + 5\mat{2 \\ -1} = \mat{14 \\ 7}.
+\]
+一般には
+$f\mat{x \\ y} = x\mat{1 \\ 3} + y\mat{2 \\ -1} = \mat{x + 2y \\ 3x - y}$、
+行列で書けば $f(\vect{x}) = \mat{1 & 2 \\ 3 & -1}\vect{x}$
+(基底の行き先が列に並ぶ)。基底 $2$ 本の行き先だけで、
+平面全体の写像が完全に決まった(定理 \ref{thm:linmap-basis})。
+\end{rei}
+
+\begin{rei}[例題・標準(評価写像の核と像)]\label{rei:linmap-eval}
+$T : \R[x]_2 \to \R$, $T(p) = p(1)$ について、
+$\mathrm{Ker}\,T$ の次元と基底を求め、次元定理を確かめよ。\\
+\textbf{解.}\ $T(1) = 1 \neq 0$ より $\mathrm{Im}\,T$ は $\{0\}$ ではなく、
+$\R$ の部分空間だから $\mathrm{Im}\,T = \R$(次元 $1$。
+定理 \ref{thm:dim-sub}(2) を $V = \R$ に使った)。
+次元定理より
+\[
+\dim \mathrm{Ker}\,T = \dim \R[x]_2 - \dim \mathrm{Im}\,T = 3 - 1 = 2.
+\]
+基底を具体的に求める。$p(1) = 0$ を満たす多項式として
+$x - 1$ と $x^2 - 1$ が取れる。この $2$ 本は独立
+(次数が違うので一方が他方の定数倍にならない)で、
+$\dim \mathrm{Ker}\,T = 2$ の空間の独立な $2$ 本だから基底である
+(定理 \ref{thm:dim-ncheck})。
+因数定理の言葉でいえば、$\mathrm{Ker}\,T$ は「$x - 1$ で割り切れる
+$2$ 次以下の多項式」の全体である。
+\end{rei}
+
+\begin{rei}[例題・標準($\R^3$ からの写像)]\label{rei:linmap-r3}
+$A = \mat{1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2}$ の定める線形写像
+$f : \R^3 \to \R^3$ の核と像の次元を求め、次元定理を確かめよ。\\
+\textbf{解.}\ 核:$A\vect{x} = \vect{0}$ は
+$x + z = 0$, $y + z = 0$, $x + y + 2z = 0$ で、第 $3$ 式は
+第 $1$ 式+第 $2$ 式なので落とせる。$z = t$ とおくと
+$\vect{x} = t\mat{-1 \\ -1 \\ 1}$、
+よって $\mathrm{Ker}\,f = \left\langle \mat{-1 \\ -1 \\ 1} \right\rangle$
+で次元 $1$。
+
+像:列ベクトル $3$ 本の張る空間である。第 $3$ 列 = 第 $1$ 列 + 第 $2$ 列
+だから、独立な第 $1$・第 $2$ 列が基底で、次元は $2$
+($\mathrm{rank}\,A = 2$。問 \ref{q:sub-ex9} で見た平面 $x + y - z = 0$
+である)。
+
+次元定理:$3 = 1 + 2$ で成立している。
+\end{rei}
+
+\begin{rei}[例題・標準(単射・全射・同型の判定)]\label{rei:linmap-iso}
+$T : \R[x]_2 \to \R^3$, $T(p) = \bigl(p(0),\ p(1),\ p(2)\bigr)$ が
+同型写像であることを示せ。\\
+\textbf{解.}\ 線形性:$(p + q)(a) = p(a) + q(a)$,
+$(cp)(a) = c\,p(a)$ が各点 $a = 0, 1, 2$ で成り立つから、
+$T$ は線形である。
+
+単射:$T(p) = \vect{0}$ とすると $p(0) = p(1) = p(2) = 0$、
+すなわち $2$ 次以下の多項式 $p$ が相異なる $3$ 点で $0$ になる。
+$p$ が零多項式でなければ、因数定理により $p$ は
+$x(x - 1)(x - 2)$ で割り切れて次数が $3$ 以上になり矛盾。
+よって $p = 0$、$\mathrm{Ker}\,T = \{0\}$ で単射である
+(定理 \ref{thm:linmap-inj})。
+
+全射:次元定理より
+$\dim \mathrm{Im}\,T = \dim \R[x]_2 - \dim \mathrm{Ker}\,T = 3 - 0 = 3$。
+$\mathrm{Im}\,T$ は $\R^3$ の $3$ 次元部分空間だから
+$\mathrm{Im}\,T = \R^3$(定理 \ref{thm:dim-sub}(2))で全射である。
+
+よって $T$ は同型写像である。「$2$ 次以下の多項式は、相異なる $3$ 点での
+値を指定すればただ一つに決まる」――第I部の多項式フィッティング
+(例 \ref{rei:gauss-fit})の背後にあった事実の、写像による言い換えである。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{線形写像}=和とスカラー倍を保つ写像。
+$f(\vect{0}) = \vect{0}$ は必要条件(反例 \ref{hanrei:linmap-affine})だが
+十分条件ではない(反例 \ref{hanrei:linmap-square})。
+行列写像だけでなく、\textbf{微分・積分・シフト・評価}も線形写像である。
+\item 線形写像は\textbf{基底の行き先だけで完全に決まる}
+(定理 \ref{thm:linmap-basis})。これが次章の表現行列の根拠になる。
+\item \textbf{核} $\mathrm{Ker}\,f$(つぶれて $\vect{0}$ になる入力全体)と
+\textbf{像} $\mathrm{Im}\,f$(出力全体)は部分空間であり、
+$f$ が単射 $\iff \mathrm{Ker}\,f = \{\vect{0}\}$。
+\item \textbf{次元定理}:$\dim V = \dim \mathrm{Ker}\,f + \dim \mathrm{Im}\,f$。
+証明は「核の基底を全体の基底に拡張し、付け足した分の行き先が像の基底になる」。
+自由度定理はその行列版である。
+\item 全単射な線形写像が\textbf{同型写像}。$n$ 次元空間はすべて
+$\R^n$ と同型であり、座標写像がその同型を与える。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:linmap-ex1}
+次の写像はそれぞれ線形写像か。線形であるものは証明し、
+そうでないものは理由を一つ挙げよ。\\
+　(1) $f : \R^2 \to \R^2$, $f(x, y) = (x - y,\ 2x)$\\
+　(2) $g : \R^2 \to \R^2$, $g(x, y) = (x + 2,\ y)$\\
+　(3) $h : \R^2 \to \R^2$, $h(x, y) = (x^2,\ y)$
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:linmap-ex2}
+$A = \mat{1 & 2 \\ 3 & 6}$ の定める線形写像 $f : \R^2 \to \R^2$ の
+核と像を求め(それぞれ基底を示せ)、次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:linmap-ex3}
+線形写像 $f : \R^2 \to \R^2$ が
+$f\mat{1 \\ 0} = \mat{2 \\ 1}$, $f\mat{0 \\ 1} = \mat{-1 \\ 1}$ を
+満たすとき、$f\mat{3 \\ 2}$ を求めよ。また一般の $f\mat{x \\ y}$ を
+成分で書き、$f$ を定める行列を答えよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:linmap-ex4}
+微分 $D : \R[x]_2 \to \R[x]_2$ について、$\mathrm{Ker}\,D$ と
+$\mathrm{Im}\,D$ を求め(それぞれ基底を示せ)、次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex5}
+$T : \R[x]_2 \to \R$, $T(p) = \displaystyle\int_0^1 p(x)\,dx$ について、\\
+　(1) $T$ が線形写像であることを示せ。\\
+　(2) $\dim \mathrm{Ker}\,T$ を次元定理を用いて求めよ。\\
+　(3) $\mathrm{Ker}\,T$ の基底を一組求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex6}
+$T : \R[x]_2 \to \R^2$, $T(p) = \bigl(p(0),\ p(1)\bigr)$ について、
+$\mathrm{Ker}\,T$ の基底と次元を求め、$T$ が全射かどうか、
+単射かどうかを判定せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex7}
+トレース $\mathrm{tr} : M_{2,2} \to \R$(例題 \ref{rei:sub-trace})に
+ついて、$\mathrm{Im}\,\mathrm{tr}$ と $\dim \mathrm{Ker}\,\mathrm{tr}$ を
+求め、次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:linmap-ex8}
+数列空間上のシフト写像
+$S : (a_0, a_1, a_2, \dots) \mapsto (a_1, a_2, a_3, \dots)$ について、\\
+　(1) $\mathrm{Ker}\,S$ を求めよ(どんな数列の集合か)。\\
+　(2) $S$ は全射であること、しかし単射でないことを示せ。
+(有限次元では起こらない現象である。問 \ref{q:linmap-ex11} と比較せよ。)
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:linmap-ex9}
+$2$ 回微分 $D^2 : \R[x]_3 \to \R[x]_3$($p \mapsto p''$)について、
+$\mathrm{Ker}\,D^2$ と $\mathrm{Im}\,D^2$ の基底と次元を求め、
+次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:linmap-ex10}
+差分写像 $\Delta : \R[x]_2 \to \R[x]_2$,
+$(\Delta p)(x) = p(x + 1) - p(x)$ について、\\
+　(1) $\Delta$ が線形写像であることを示せ。\\
+　(2) $\Delta(1)$, $\Delta(x)$, $\Delta(x^2)$ を計算せよ。\\
+　(3) $\mathrm{Ker}\,\Delta$ と $\mathrm{Im}\,\Delta$ の基底と次元を求め、
+次元定理を確かめよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:linmap-ex11}
+$V, W$ を同じ次元 $n$ の有限次元ベクトル空間、$f : V \to W$ を
+線形写像とする。このとき
+「$f$ が単射 $\iff$ $f$ が全射」
+を次元定理を用いて証明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:linmap-ex12}
+線形写像 $f : V \to W$、$g : W \to U$ の合成 $g \circ f$ について、
+次を証明せよ。\\
+　(1) $\mathrm{Ker}\,f \subseteq \mathrm{Ker}\,(g \circ f)$\\
+　(2) $\mathrm{Im}\,(g \circ f) \subseteq \mathrm{Im}\,g$\\
+　(3) $V, W, U$ が有限次元のとき
+$\dim \mathrm{Im}\,(g \circ f) \le \min\{\dim \mathrm{Im}\,f,\ \dim \mathrm{Im}\,g\}$
+(行列でいえば $\mathrm{rank}\,(BA) \le \min\{\mathrm{rank}\,A,
+\mathrm{rank}\,B\}$ にあたる)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:linmap-ex1}}:まず $f(\vect{0})$ を見る。
+$\vect{0}$ にうつるものは、和とスカラー倍の保存を文字で確かめる。
+\item \textbf{問 \ref{q:linmap-ex2}}:核は同次方程式を解く。
+像は列ベクトルの張る空間。$2$ 列が平行であることに注意。
+\item \textbf{問 \ref{q:linmap-ex3}}:$\mat{3 \\ 2} = 3\vect{e}_1 + 2\vect{e}_2$
+と分解して線形性を使う(例題 \ref{rei:linmap-fromdata})。
+\item \textbf{問 \ref{q:linmap-ex4}}:微分して $0$ になる多項式、
+微分の結果として現れる多項式をそれぞれ考える。
+\item \textbf{問 \ref{q:linmap-ex5}}:(2) は $\mathrm{Im}\,T = \R$ を
+先に示す($T(1)$ を計算)。(3) は $\int_0^1 p = 0$ を係数の条件に直す。
+\item \textbf{問 \ref{q:linmap-ex6}}:$p(0) = p(1) = 0$ は
+因数定理で「$x(x - 1)$ で割り切れる」と読める。
+\item \textbf{問 \ref{q:linmap-ex7}}:$\mathrm{tr}\,E = 2 \neq 0$ から
+像が $\R$ 全体と分かる。核は例題 \ref{rei:sub-trace} の空間である。
+\item \textbf{問 \ref{q:linmap-ex8}}:(1) は $S$ でうつした結果が
+零数列になる条件を書く。(2) 全射は「任意の数列の先頭に $0$ を足した
+数列」を考える。単射でないことは核から。
+\item \textbf{問 \ref{q:linmap-ex9}}:$2$ 回微分して消えるのは
+$1$ 次以下。像は何次以下になるか。
+\item \textbf{問 \ref{q:linmap-ex10}}:(2) の計算結果を並べれば
+像の生成系が得られる。核は $\Delta p = 0$ を係数比較で解く。
+\item \textbf{問 \ref{q:linmap-ex11}}:単射 $\iff \dim \mathrm{Ker} = 0$、
+全射 $\iff \dim \mathrm{Im} = n$(定理 \ref{thm:dim-sub}(2) を使う)。
+両者を次元定理でつなぐ。
+\item \textbf{問 \ref{q:linmap-ex12}}:(1)(2) は定義どおり元をとって追う。
+(3) は (2) と、「$g$ を $\mathrm{Im}\,f$ に制限した写像に次元定理を使う」
+または $\mathrm{Im}(g \circ f) = g(\mathrm{Im}\,f)$ に注目する。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{表現行列と基底の取り替え}\label{chap:repmat}
 % =====================================================
+
+\begin{goal}
+\begin{itemize}
+\item 基底を選ぶことで、抽象的な線形写像を\textbf{表現行列}という
+具体的な行列に翻訳できるようになる(「第 $j$ 列は
+$f(\vect{e}_j)$ の座標」)。
+\item 基底を取り替えたとき、座標が $\vect{c} = P\vect{c}'$、表現行列が
+$A' = P^{-1}AP$ と変わることを、導出込みで理解する。
+\item \textbf{相似}な行列は「同じ変換の別の座標表示」であることを理解し、
+行列式・トレースなどの\textbf{相似不変量}を、相似でないことの判定に
+使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 抽象と計算をつなぐ辞書}
+
+第III部で私たちは、多項式や数列までベクトルとみなし、微分や差分まで
+線形写像とみなす抽象の高みに登った。だが計算の道具は、あいかわらず
+第I・II部の行列と掃き出し法である。この二つの世界をつなぐ辞書が本章の
+主題、\textbf{表現行列}である。
+
+辞書の原理はすでに揃っている。第 \ref{chap:basis} 章で、基底を選べば
+どんな $n$ 次元空間のベクトルも座標 $(c_1, \dots, c_n)$ で表せることを見た
+(同型 $V \cong \R^n$)。第 \ref{chap:linmap} 章で、線形写像は基底の
+行き先だけで決まることを見た(定理 \ref{thm:linmap-basis})。
+ならば、\textbf{基底の行き先を座標で書いて並べれば}、写像の全情報が
+$1$ 枚の行列に収まるはずである。
+
+ただし、翻訳には代償が伴う。基底の選び方は自由だから、
+\textbf{同じ写像が基底ごとに違う行列で表される}。
+この「翻訳のゆらぎ」を制御する法則が基底変換の公式 $A' = P^{-1}AP$ であり、
+ゆらぎに影響されない量(不変量)を探す視点が、第IV部の固有値理論へと
+つながっていく。
 
 \section{線形写像を行列で書く}
 
@@ -727,9 +2229,25 @@ f(\vect{e}_j) = a_{1j}\vect{e}_1 + a_{2j}\vect{e}_2 + \cdots + a_{nj}\vect{e}_n
 \textbf{第 $j$ 列には $f(\vect{e}_j)$ の座標が入る}と覚える。
 \end{teigi}
 
-座標の言葉では、$\vect{v}$ の座標を $\vect{c}$ とすると
-$f(\vect{v})$ の座標は $A\vect{c}$ になる。
+\begin{teiri}[表現行列は座標の掛け算になる]\label{thm:repmat-coord}
+$\vect{v} \in V$ の座標を $\vect{c} = (c_1, \dots, c_n)$ とすると、
+$f(\vect{v})$ の座標は $A\vect{c}$ である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v} = c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ に $f$ を施すと、
+線形性(定理 \ref{thm:linmap-basic}(3))より
+\[
+f(\vect{v}) = \sum_{j=1}^n c_j\,f(\vect{e}_j)
+= \sum_{j=1}^n c_j \sum_{i=1}^n a_{ij}\vect{e}_i
+= \sum_{i=1}^n \Bigl( \sum_{j=1}^n a_{ij}c_j \Bigr) \vect{e}_i.
+\]
+$\vect{e}_i$ の係数 $\sum_j a_{ij}c_j$ は、ちょうど $A\vect{c}$ の
+第 $i$ 成分である。 $\blacksquare$
+
 抽象的な写像の計算が、行列の掛け算に完全に翻訳される。
+$V = \R^n$ で標準基底をとれば、表現行列は第I部の
+「線形変換を定める行列」(定理 \ref{thm:lin-is-matrix})そのものである。
 
 \begin{rei}[微分の表現行列]
 $D : \R[x]_2 \to \R[x]_2$ を基底 $1, x, x^2$ で表す。
@@ -751,42 +2269,100 @@ $A \neq O$ なのに $A^3 = O$ となる行列(\textbf{べき零行列})は、
 第VI部のジョルダン標準形で主役を演じる。
 \end{rei}
 
+\begin{teiri}[合成の表現行列は行列の積]\label{thm:repmat-comp}
+同じ基底に関する $f$ の表現行列を $A$、$g$ の表現行列を $B$ とすると、
+合成 $g \circ f$ の表現行列は積 $BA$ である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v}$ の座標を $\vect{c}$ とすると、定理 \ref{thm:repmat-coord} より
+$f(\vect{v})$ の座標は $A\vect{c}$、さらに $g$ を施した
+$g(f(\vect{v}))$ の座標は $B(A\vect{c}) = (BA)\vect{c}$ である。
+座標の一意性より、$g \circ f$ の表現行列は $BA$ である。 $\blacksquare$
+
+第 \ref{chap:matmul} 章で「行列の積は写像の合成を表すように定義した」
+ことを思い出そう。あの定義が、多項式や数列の空間の上の写像にまで、
+そのまま通用するのである。たとえば「$2$ 回微分」の表現行列は $A^2$ で
+計算できる(章末問題 \ref{q:repmat-ex9})。
+
 \section{基底を取り替えると行列はどう変わるか}
 
 同じ線形写像でも、基底を取り替えれば表現行列は変わる。
-新基底 $\vect{e}'_1, \dots, \vect{e}'_n$ を旧基底で展開した係数を
-列に並べた行列 $P$(\textbf{基底変換行列}、必ず正則)を使うと、
-新旧の座標は $\vect{c} = P\vect{c}'$ で結ばれ、表現行列は
+その変わり方を正確に求めよう。
 
-\begin{teiri}[表現行列の変換則]
-旧基底での表現行列を $A$、新基底での表現行列を $A'$ とすると
+\begin{teigi}[基底変換行列]\label{def:changebasis}
+$V$ の旧基底 $\vect{e}_1, \dots, \vect{e}_n$ と
+新基底 $\vect{e}'_1, \dots, \vect{e}'_n$ に対し、各新基底ベクトルを
+旧基底で展開して
+\[
+\vect{e}'_j = p_{1j}\vect{e}_1 + p_{2j}\vect{e}_2 + \cdots + p_{nj}\vect{e}_n
+\]
+と書いたときの係数を並べた行列 $P = (p_{ij})$ を\textbf{基底変換行列}という
+(\textbf{第 $j$ 列には $\vect{e}'_j$ の旧座標が入る})。
+$V = \R^n$ で旧基底が標準基底なら、$P$ は新基底のベクトルを
+そのまま列に並べた行列である。
+\end{teigi}
+
+\begin{teiri}[座標の変換則]\label{thm:coordchange}
+基底変換行列 $P$ は正則であり、ベクトル $\vect{v}$ の
+旧座標 $\vect{c}$ と新座標 $\vect{c}'$ は
+\[
+\vect{c} = P\vect{c}', \qquad \vect{c}' = P^{-1}\vect{c}
+\]
+で結ばれる。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{v} = \sum_j c'_j \vect{e}'_j$ に $\vect{e}'_j$ の展開を代入すると
+\[
+\vect{v} = \sum_j c'_j \sum_i p_{ij}\vect{e}_i
+= \sum_i \Bigl( \sum_j p_{ij}c'_j \Bigr) \vect{e}_i
+\]
+となり、旧座標の一意性から $c_i = \sum_j p_{ij}c'_j$、すなわち
+$\vect{c} = P\vect{c}'$ である。
+正則性:逆向きに、旧基底を新基底で展開した行列を $Q$ とすると、
+同じ議論で $\vect{c}' = Q\vect{c}$。合わせると
+$\vect{c} = PQ\vect{c}$ がすべての $\vect{c} \in \R^n$ で成り立つから
+$PQ = E$。よって $P$ は正則で($Q = P^{-1}$)、
+$\vect{c}' = P^{-1}\vect{c}$ である。 $\blacksquare$
+
+\begin{chui}[向きに注意]
+$P$ の列に入っているのは\textbf{新}基底の旧座標なのに、
+座標の変換は $\vect{c} = P\vect{c}'$(新座標に $P$ を掛けると
+\textbf{旧}座標に戻る)と、向きが逆に見える。
+「$P$ は新しい住所を古い住所に翻訳する行列」と覚えるとよい。
+新座標がほしければ $P^{-1}$ を掛ける。
+\end{chui}
+
+\begin{teiri}[表現行列の変換則]\label{thm:repmat-change}
+線形写像 $f : V \to V$ の旧基底での表現行列を $A$、
+新基底での表現行列を $A'$ とすると
 \[
 A' = P^{-1} A P.
 \]
 \end{teiri}
 
-$A' = P^{-1}AP$ の関係にある二つの行列は\textbf{相似}であるという。
+\noindent\textbf{(証明)}\quad
+$\vect{v}$ の新座標を $\vect{c}'$ とする。$f(\vect{v})$ の新座標を
+二通りの経路で計算する。まず旧座標に翻訳すると $\vect{c} = P\vect{c}'$
+(定理 \ref{thm:coordchange})。旧基底での表現行列 $A$ により、
+$f(\vect{v})$ の旧座標は $AP\vect{c}'$(定理 \ref{thm:repmat-coord})。
+これを新座標に翻訳し直すと $P^{-1}AP\vect{c}'$ である。
+一方、新基底での表現行列 $A'$ の定義から、$f(\vect{v})$ の新座標は
+$A'\vect{c}'$ でもある。すべての $\vect{c}'$ で
+$A'\vect{c}' = P^{-1}AP\vect{c}'$ が成り立つから、
+$A' = P^{-1}AP$ である。 $\blacksquare$
+
+「新座標 $\to$($P$ で)旧座標 $\to$($A$ で)写像を実行 $\to$
+($P^{-1}$ で)新座標に戻る」という三段構えが、式 $P^{-1}AP$ の
+右から左への読み方である。
+
+\begin{teigi}[相似]
+正則行列 $P$ により $B = P^{-1}AP$ と書けるとき、
+$A$ と $B$ は\textbf{相似}であるという。
+\end{teigi}
+
 相似な行列は「同じ変換を別の座標系から見たもの」にすぎない。
-
-\begin{itembox}[l]{深掘り:座標は人間の都合、変換は実在 ― そして不変量}
-回転や微分という\textbf{変換そのもの}は、人間が座標をどう引くかに
-関係なく存在する。座標と表現行列は、それを記述するための
-\textbf{観測者の都合}である。だとすれば、相似で変わらない量
-($= $ どの座標系から見ても同じ量)こそが、変換の本当の性質を表すはずである。
-実際、
-\[
-\det(P^{-1}AP) = \det P^{-1} \det A \det P = \det A
-\]
-より\textbf{行列式は相似不変}である(拡大率が座標の取り方によらないのは当然だ)。
-対角成分の和 $\mathrm{tr}\,A = a_{11} + \cdots + a_{nn}$(\textbf{トレース})も
-相似不変であることが知られている。階数も、そして第IV部で学ぶ
-\textbf{固有値}も相似不変である。
-
-逆に問おう。座標の取り方は自由なのだから、
-\textbf{表現行列が最も簡単になる基底}を選べばよいのではないか?
-最良の場合、表現行列は対角行列になる――これが\textbf{対角化}であり、
-第IV部の主題である。第III部の抽象論は、この問いを立てるための準備だった。
-\end{itembox}
 
 \begin{mondai}\label{q:repmat}
 $\R^2$ の線形変換 $f$ を標準基底に関する表現行列
@@ -795,3 +2371,351 @@ $A = \mat{3 & 1 \\ 1 & 3}$ で定める。
 に関する表現行列 $A' = P^{-1}AP$ を計算せよ
 ($P$ は新基底を列に並べた行列)。結果が対角行列になることを確かめよ。
 \end{mondai}
+
+\section{相似不変量 ― 座標によらない量}
+
+相似な行列は同じ変換の別表示だから、\textbf{相似で変わらない量}こそが
+変換そのものの性質を表す。代表が行列式とトレースである。
+行列式については、積の公式(定理 \ref{thm:det-prod})から直ちに
+\[
+\det(P^{-1}AP) = \det P^{-1} \det A \det P
+= \frac{1}{\det P}\,\det A\,\det P = \det A
+\]
+と分かる。トレース(対角成分の和
+$\mathrm{tr}\,A = a_{11} + \cdots + a_{nn}$)についても証明しよう。
+
+\begin{teiri}[トレースの相似不変性]\label{thm:trace-similar}
+\begin{enumerate}
+\item 任意の $n$ 次正方行列 $A, B$ について
+$\mathrm{tr}(AB) = \mathrm{tr}(BA)$。
+\item 相似な行列のトレースは等しい:
+$\mathrm{tr}(P^{-1}AP) = \mathrm{tr}\,A$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) 積の定義から $(AB)_{ii} = \sum_k a_{ik}b_{ki}$ なので
+\[
+\mathrm{tr}(AB) = \sum_{i=1}^n \sum_{k=1}^n a_{ik}b_{ki}, \qquad
+\mathrm{tr}(BA) = \sum_{k=1}^n \sum_{i=1}^n b_{ki}a_{ik}.
+\]
+どちらも「すべての添字の組 $(i, k)$ にわたる $a_{ik}b_{ki}$ の総和」で、
+足す順序が違うだけだから等しい。
+
+(2) (1) で $A$ の代わりに $P^{-1}A$、$B$ の代わりに $P$ をとると
+\[
+\mathrm{tr}(P^{-1}AP) = \mathrm{tr}\bigl((P^{-1}A)P\bigr)
+= \mathrm{tr}\bigl(P(P^{-1}A)\bigr) = \mathrm{tr}\,A. \qquad\blacksquare
+\]
+
+$AB \neq BA$ なのに $\mathrm{tr}(AB) = \mathrm{tr}(BA)$ は必ず成り立つ
+――トレースは行列の非可換性を「ならして」しまう不思議な量である。
+行列式・トレース・階数はどれも相似不変であり、しかも第IV部で学ぶ
+\textbf{固有値}から作られる量であることが分かってくる
+(行列式は固有値の積、トレースは固有値の和)。
+
+\begin{itembox}[l]{深掘り:座標は人間の都合、変換は実在 ― そして不変量}
+回転や微分という\textbf{変換そのもの}は、人間が座標をどう引くかに
+関係なく存在する。座標と表現行列は、それを記述するための
+\textbf{観測者の都合}である。だとすれば、相似で変わらない量
+($= $ どの座標系から見ても同じ量)こそが、変換の本当の性質を表すはずである。
+行列式(拡大率)とトレースの相似不変性は本文で示した。
+階数も、そして第IV部で学ぶ\textbf{固有値}も相似不変である。
+
+逆に問おう。座標の取り方は自由なのだから、
+\textbf{表現行列が最も簡単になる基底}を選べばよいのではないか?
+最良の場合、表現行列は対角行列になる――これが\textbf{対角化}であり、
+第IV部の主題である。第III部の抽象論は、この問いを立てるための準備だった。
+問 \ref{q:repmat} は、その最初の実演である。
+\end{itembox}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[表現行列は基底の順序にも依存する]\label{hanrei:repmat-order}
+「基底が同じ集合なら表現行列も同じ」ではない。
+\textbf{基底は順序込み}で指定するものである。
+微分 $D : \R[x]_2 \to \R[x]_2$ を、順序を逆にした基底
+$x^2,\ x,\ 1$ で表してみると、
+$D(x^2) = 2x$(座標 $(0, 2, 0)$)、$D(x) = 1$(座標 $(0, 0, 1)$)、
+$D(1) = 0$ より
+\[
+A' = \mat{0 & 0 & 0 \\ 2 & 0 & 0 \\ 0 & 1 & 0}
+\]
+となり、基底 $1, x, x^2$ での表現行列(上三角)とは別物(下三角)になる。
+もちろん両者は相似で、トレース($0$)も行列式($0$)も一致する。
+\end{hanrei}
+
+\begin{hanrei}[不変量が一致しても相似とは限らない]\label{hanrei:repmat-invariant}
+相似なら行列式・トレースは一致するが、\textbf{逆は成り立たない}。
+\[
+A = \mat{2 & 0 \\ 0 & 2} = 2E, \qquad B = \mat{2 & 1 \\ 0 & 2}
+\]
+は $\mathrm{tr} = 4$、$\det = 4$ と両不変量が一致する。
+しかし相似ではない:どんな正則行列 $P$ に対しても
+\[
+P^{-1}(2E)P = 2\,P^{-1}EP = 2E \neq B
+\]
+だから、$2E$ と相似な行列は $2E$ 自身しかない。
+不変量は「相似で\textbf{ない}ことの証明」には使えるが
+(値が違えば即座に非相似)、「相似で\textbf{ある}ことの証明」には
+一般に不十分である。相似の完全な判定は第VI部のジョルダン標準形で与えられる。
+\end{hanrei}
+
+\section{例題}
+
+表現行列の作成・利用と、基底変換の計算を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(標準基底に関する表現行列)]\label{rei:repmat-std}
+線形変換 $f : \R^2 \to \R^2$, $f(x, y) = (x + 2y,\ 3y)$ の
+標準基底に関する表現行列を求めよ。\\
+\textbf{解.}\ 基底ベクトルの行き先を計算して列に並べる。
+\[
+f\mat{1 \\ 0} = \mat{1 \\ 0}, \qquad f\mat{0 \\ 1} = \mat{2 \\ 3}
+\]
+より、表現行列は $A = \mat{1 & 2 \\ 0 & 3}$ である。
+検算:$A\mat{x \\ y} = \mat{x + 2y \\ 3y}$ で定義と一致する。
+\end{rei}
+
+\begin{rei}[例題・基本(うまい基底なら対角になる)]\label{rei:repmat-mirror}
+鏡映 $f : \R^2 \to \R^2$, $f(x, y) = (y, x)$(直線 $y = x$ に関する
+折り返し)の表現行列を、
+(i) 標準基底、(ii) 基底 $\vect{e}'_1 = \mat{1 \\ 1}$,
+$\vect{e}'_2 = \mat{1 \\ -1}$ のそれぞれについて求めよ。\\
+\textbf{解.}\ (i) $f(\vect{e}_1) = \mat{0 \\ 1}$,
+$f(\vect{e}_2) = \mat{1 \\ 0}$ を列に並べて
+$A = \mat{0 & 1 \\ 1 & 0}$。
+
+(ii) 行き先を\textbf{新基底で}展開する。
+$f(\vect{e}'_1) = \mat{1 \\ 1} = 1 \cdot \vect{e}'_1 + 0 \cdot \vect{e}'_2$、
+$f(\vect{e}'_2) = \mat{-1 \\ 1} = 0 \cdot \vect{e}'_1 + (-1)\vect{e}'_2$
+より
+\[
+A' = \mat{1 & 0 \\ 0 & -1}.
+\]
+鏡映の「本性」――鏡の向き($y = x$ 方向)は不動、垂直方向は反転――が、
+基底をうまく選ぶと対角行列としてむき出しになる。
+$\mathrm{tr}$ は $0$、$\det$ は $-1$ で、(i) と一致していることも確認できる。
+\end{rei}
+
+\begin{rei}[例題・基本(座標の変換)]\label{rei:repmat-coordchg}
+$\R^2$ の新基底 $\vect{e}'_1 = \mat{1 \\ 1}$,
+$\vect{e}'_2 = \mat{1 \\ -1}$ について基底変換行列 $P$ を書き、
+$\vect{v} = \mat{4 \\ 2}$ の新座標を求めよ。\\
+\textbf{解.}\ 旧基底は標準基底だから、$P$ は新基底を列に並べて
+$P = \mat{1 & 1 \\ 1 & -1}$。新座標は
+$\vect{c}' = P^{-1}\vect{v}$(定理 \ref{thm:coordchange})である。
+$\det P = -2$ より
+$P^{-1} = \dfrac{1}{-2}\mat{-1 & -1 \\ -1 & 1}
+= \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$、
+\[
+\vect{c}' = \frac{1}{2}\mat{1 & 1 \\ 1 & -1}\mat{4 \\ 2}
+= \frac{1}{2}\mat{6 \\ 2} = \mat{3 \\ 1}.
+\]
+検算:$3\mat{1 \\ 1} + 1\mat{1 \\ -1} = \mat{4 \\ 2}$。
+\end{rei}
+
+\begin{rei}[例題・標準(変換則の実演)]\label{rei:repmat-change-ex}
+標準基底に関する表現行列が $A = \mat{2 & 1 \\ 1 & 2}$ の線形変換 $f$ を、
+基底 $\vect{e}'_1 = \mat{1 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ -1}$ で
+表せ($P^{-1}AP$ の計算と、行き先の直接展開の両方で求めて一致を確かめよ)。\\
+\textbf{解.}\ \textbf{方法1($P^{-1}AP$)}:
+$P = \mat{1 & 1 \\ 1 & -1}$,
+$P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$(例題 \ref{rei:repmat-coordchg})。
+\[
+AP = \mat{2 & 1 \\ 1 & 2}\mat{1 & 1 \\ 1 & -1} = \mat{3 & 1 \\ 3 & -1},
+\qquad
+A' = P^{-1}(AP) = \frac{1}{2}\mat{1 & 1 \\ 1 & -1}\mat{3 & 1 \\ 3 & -1}
+= \mat{3 & 0 \\ 0 & 1}.
+\]
+\textbf{方法2(直接展開)}:
+$A\vect{e}'_1 = \mat{3 \\ 3} = 3\vect{e}'_1$、
+$A\vect{e}'_2 = \mat{1 \\ -1} = 1 \cdot \vect{e}'_2$ だから、
+係数を列に並べて $A' = \mat{3 & 0 \\ 0 & 1}$。両方法が一致した。
+$\vect{e}'_1$ 方向に $3$ 倍、$\vect{e}'_2$ 方向に $1$ 倍
+――この基底は $f$ の「軸」を捉えている(第IV部の固有ベクトルである)。
+\end{rei}
+
+\begin{rei}[例題・標準(多項式空間での基底取り替え)]\label{rei:repmat-poly}
+微分 $D : \R[x]_2 \to \R[x]_2$ の、基底
+$1,\ 1 + x,\ (1 + x)^2$(問 \ref{q:basis1}(2))に関する表現行列を求めよ。\\
+\textbf{解.}\ 各基底ベクトルの行き先を、\textbf{同じ基底で}展開する。
+\[
+D(1) = 0, \qquad
+D(1 + x) = 1, \qquad
+D\bigl((1 + x)^2\bigr) = 2(1 + x).
+\]
+座標はそれぞれ $(0,0,0)$, $(1,0,0)$, $(0,2,0)$ だから
+\[
+A' = \mat{0 & 1 & 0 \\ 0 & 0 & 2 \\ 0 & 0 & 0}.
+\]
+これは基底 $1, x, x^2$ での表現行列とまったく同じである。
+$1 + x$ は「$x$ を平行移動した変数」であり、微分は平行移動と交換する
+($p(x + 1)$ の微分は $p'(x + 1)$)ため、行列が変わらないのである。
+\textbf{基底を替えても行列が変わらないことも、変わることもある}
+――どう変わるかを統制するのが変換則 $A' = P^{-1}AP$ である。
+\end{rei}
+
+\begin{rei}[例題・標準(相似でないことの証明)]\label{rei:repmat-notsim}
+次の各組の行列が相似で\textbf{ない}ことを示せ。
+\[
+(1)\ \mat{1 & 2 \\ 2 & 1} \text{ と } \mat{1 & 1 \\ 1 & 1} \qquad
+(2)\ \mat{0 & 1 \\ -1 & 0} \text{ と } \mat{1 & 0 \\ 0 & -1}
+\]
+\textbf{解.}\ 相似なら行列式もトレースも一致するはずである(対偶を使う)。\\
+　(1) 行列式は $1 - 4 = -3$ と $1 - 1 = 0$ で異なる。よって相似でない。\\
+　(2) 行列式はどちらも $1$ と $-1$ ……ではなく、
+左は $0 - (-1) = 1$、右は $-1$ で異なる。よって相似でない
+(トレースはどちらも $0$ で一致するので、トレースだけでは判定できない
+ことにも注意)。
+幾何的にいえば、左は $90^\circ$ 回転(向きを保つ、$\det = 1$)、
+右は鏡映(向きを裏返す、$\det = -1$)であり、
+座標の取り替えでは互いにうつり合えない変換である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{表現行列}:基底を選び、$f(\vect{e}_j)$ の座標を第 $j$ 列に
+並べた行列。$\vect{v}$ の座標が $\vect{c}$ なら $f(\vect{v})$ の座標は
+$A\vect{c}$(定理 \ref{thm:repmat-coord})。合成は積 $BA$ に対応する
+(定理 \ref{thm:repmat-comp})。
+\item \textbf{基底変換行列} $P$:新基底の旧座標を列に並べた行列(正則)。
+座標は $\vect{c} = P\vect{c}'$、$\vect{c}' = P^{-1}\vect{c}$ で移り合う
+(「$P$ は新住所を旧住所に翻訳する」)。
+\item \textbf{表現行列の変換則}:$A' = P^{-1}AP$。この関係にある行列を
+\textbf{相似}といい、相似な行列は同じ変換の別の座標表示である。
+\item 行列式・トレースは\textbf{相似不変量}
+($\mathrm{tr}(AB) = \mathrm{tr}(BA)$ から従う。
+定理 \ref{thm:trace-similar})。不変量が違えば相似でないと判定できるが、
+一致しても相似とは限らない(反例 \ref{hanrei:repmat-invariant})。
+\item うまい基底を選ぶと表現行列は劇的に簡単になる(対角になる)ことがある。
+その体系的な方法=対角化が第IV部の主題である。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:repmat-ex1}
+線形変換 $f : \R^2 \to \R^2$, $f(x, y) = (2x - y,\ x + 3y)$ の
+標準基底に関する表現行列を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:repmat-ex2}
+微分 $D : \R[x]_3 \to \R[x]_3$ の基底 $1, x, x^2, x^3$ に関する
+表現行列 $A$ を求めよ。また $p(x) = 1 + x + x^2 + x^3$ の座標に
+$A$ を掛けることで $p'(x)$ を計算し、直接微分した結果と一致することを
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:repmat-ex3}
+$\R^2$ の基底 $\vect{e}'_1 = \mat{2 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ 1}$
+について基底変換行列 $P$ と $P^{-1}$ を求め、
+$\vect{v} = \mat{1 \\ 4}$ の新座標を計算せよ
+(問 \ref{q:dim-ex2} の結果と一致するはずである)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:repmat-ex4}
+恒等写像 $\mathrm{id} : V \to V$($\vect{v} \mapsto \vect{v}$)の
+表現行列は、どの基底に関しても単位行列 $E$ であることを示せ。
+また、スカラー倍写像 $\vect{v} \mapsto 3\vect{v}$ についてはどうか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex5}
+標準基底に関する表現行列が $A = \mat{1 & 2 \\ 0 & 3}$ の線形変換を、
+基底 $\vect{e}'_1 = \mat{1 \\ 0}$, $\vect{e}'_2 = \mat{1 \\ 1}$ で表した
+表現行列 $A'$ を、
+(i) $P^{-1}AP$ の計算、(ii) $A\vect{e}'_j$ を新基底で展開する方法、
+の両方で求め、一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex6}
+微分 $D : \R[x]_2 \to \R[x]_2$ の、基底
+$1,\ x,\ \dfrac{x^2}{2}$ に関する表現行列を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex7}
+写像 $f : \R[x]_1 \to \R[x]_1$ を $f(p)(x) = p(2x + 1)$ で定める
+($p$ に $2x + 1$ を代入した多項式を対応させる)。\\
+　(1) $f$ が線形写像であることを示せ。\\
+　(2) 基底 $1, x$ に関する表現行列 $A$ を求めよ。\\
+　(3) $p(x) = 3 + 4x$ に対し、座標に $A$ を掛けて $f(p)$ を求め、
+直接代入した結果と一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:repmat-ex8}
+次の各組の行列が相似でないことを、相似不変量を用いて示せ。
+\[
+(1)\ \mat{1 & 1 \\ 0 & 1} \text{ と } \mat{1 & 0 \\ 2 & 2} \qquad
+(2)\ \mat{2 & 0 \\ 0 & 3} \text{ と } \mat{2 & 0 \\ 0 & -3}
+\]
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:repmat-ex9}
+微分 $D : \R[x]_2 \to \R[x]_2$ の基底 $1, x, x^2$ に関する表現行列を
+$A$ とする。$A^2$ と $A^3$ を計算し、それぞれが
+「$2$ 回微分」「$3$ 回微分」の表現行列になっていること
+(定理 \ref{thm:repmat-comp})を、$D^2(x^2)$, $D^3(x^2)$ などの
+直接計算で確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:repmat-ex10}
+$90^\circ$ 回転の標準基底に関する表現行列は
+$A = \mat{0 & -1 \\ 1 & 0}$ である。基底
+$\vect{e}'_1 = \mat{1 \\ 1}$, $\vect{e}'_2 = \mat{1 \\ -1}$ に関する
+表現行列 $A' = P^{-1}AP$ を計算せよ。$A'$ は対角行列になるか。
+(実は、どんな実基底を選んでも回転の表現行列は対角にならない。
+その理由は第 \ref{chap:diag} 章の深掘りで明かされる。)
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:repmat-ex11}
+線形写像 $f : V \to V$ の、ある基底に関する表現行列を $A$ とする。
+次を証明せよ。\\
+　(1) $f$ が同型写像ならば $A$ は正則であり、$f^{-1}$ の表現行列は
+$A^{-1}$ である。\\
+　(2) 逆に $A$ が正則ならば $f$ は同型写像である。
+(ヒント:定理 \ref{thm:repmat-coord} と、座標写像が同型であること
+(定理 \ref{thm:iso-rn})を使う。)
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:repmat-ex12}
+行列の相似は\textbf{同値関係}であること、すなわち次を証明せよ。\\
+　(1) $A$ は $A$ 自身と相似(反射律)。\\
+　(2) $A$ が $B$ と相似ならば、$B$ は $A$ と相似(対称律)。\\
+　(3) $A$ が $B$ と相似、$B$ が $C$ と相似ならば、$A$ は $C$ と相似
+(推移律)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:repmat-ex1}}:$f(\vect{e}_1)$, $f(\vect{e}_2)$ を
+計算して列に並べる。
+\item \textbf{問 \ref{q:repmat-ex2}}:$D(x^k) = kx^{k-1}$ の座標を
+第 $k+1$ 列に入れる。$4 \times 4$ になる。
+\item \textbf{問 \ref{q:repmat-ex3}}:$P$ は新基底を列に並べる。
+$2 \times 2$ の逆行列公式で $P^{-1}$。新座標は $P^{-1}\vect{v}$。
+\item \textbf{問 \ref{q:repmat-ex4}}:$\mathrm{id}(\vect{e}_j) = \vect{e}_j$
+の座標はどうなるかを考える。
+\item \textbf{問 \ref{q:repmat-ex5}}:方法 (ii) では
+$A\vect{e}'_j = c_1\vect{e}'_1 + c_2\vect{e}'_2$ の $c_1, c_2$ を
+連立方程式で求める。
+\item \textbf{問 \ref{q:repmat-ex6}}:$D(x^2/2) = x$ に注意。
+できあがる行列は例題 \ref{rei:repmat-poly} のものと見比べよ。
+\item \textbf{問 \ref{q:repmat-ex7}}:$f(1)$ と $f(x)$ を計算して
+列に並べる。$1$ の行き先も忘れずに。
+\item \textbf{問 \ref{q:repmat-ex8}}:トレースと行列式を計算して比べる。
+どちらか一方でも違えば相似でない。
+\item \textbf{問 \ref{q:repmat-ex9}}:行列の積を計算し、
+「$k$ 回微分の表現行列」と読み比べる。$A^3 = O$ になる。
+\item \textbf{問 \ref{q:repmat-ex10}}:例題 \ref{rei:repmat-change-ex} と
+同じ手順。結果のトレースと行列式が $A$ と一致することも確かめよ。
+\item \textbf{問 \ref{q:repmat-ex11}}:座標写像 $\varphi$ を使うと
+$f$ と「$A$ を掛ける写像」が $\varphi$ を介して対応する。
+合成 $f \circ f^{-1} = \mathrm{id}$ の表現行列を考える。
+\item \textbf{問 \ref{q:repmat-ex12}}:(1) は $P = E$。(2) は
+$Q = P^{-1}$ とおく。(3) は二つの変換行列の積を作る。
+\end{itemize}
+}

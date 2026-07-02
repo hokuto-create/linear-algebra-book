@@ -7,7 +7,18 @@
 \chapter{固有値と固有ベクトル}\label{chap:eigen}
 % =====================================================
 
-\section{変換が「向きを変えない」方向}
+\begin{goal}
+\begin{itemize}
+\item 固有値・固有ベクトルの定義を、「変換が向きを変えない特別な方向」
+という幾何的意味とともに理解する。
+\item 固有多項式 $\det(\lambda E - A) = 0$ を解いて固有値を、
+同次方程式を掃き出して固有ベクトル(固有空間)を、確実に計算できるようになる。
+\item 固有値と正則性・三角行列・トレース・行列式の関係を使いこなし、
+「固有値は座標によらない変換そのものの属性」であることを説明できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 変換が「向きを変えない」方向}
 
 第III部の最後の問 \ref{q:repmat} で、不思議な実験をした。
 変換 $A = \mat{3 & 1 \\ 1 & 3}$ を、基底
@@ -36,11 +47,15 @@ $\lambda$ を $A$ の\textbf{固有値}、$\vect{v}$ を
 固有値 $\lambda$ に属する\textbf{固有ベクトル}という。
 \end{teigi}
 
+\begin{chui}[$\vect{v} \neq \vect{0}$ と $\lambda = 0$]
 $\vect{v} \neq \vect{0}$ の条件は本質的である
 ($\vect{v} = \vect{0}$ ならどんな $\lambda$ でも式が成り立ってしまい、
-何の情報もない)。一方、固有値 $\lambda = 0$ は許される:
-$A\vect{v} = \vect{0}$ となる $\vect{v} \neq \vect{0}$ の存在、
-すなわち「$A$ が正則でない」ことを意味する。
+何の情報もない)。一方、\textbf{固有値} $\lambda = 0$ は許される:
+$A\vect{v} = \vect{0}$ となる $\vect{v} \neq \vect{0}$ の存在を意味し、
+後述の定理 \ref{thm:eigen-zero} のとおり「$A$ が正則でない」ことと同値になる。
+「固有\textbf{ベクトル}は零を除外、固有\textbf{値}は零でもよい」と
+区別して覚えること。
+\end{chui}
 
 \section{固有値の求め方 ― 固有方程式}
 
@@ -48,12 +63,26 @@ $A\vect{v} = \vect{0}$ となる $\vect{v} \neq \vect{0}$ の存在、
 \[
 (\lambda E - A)\vect{v} = \vect{0}, \qquad \vect{v} \neq \vect{0}
 \]
-となる。これは「同次方程式が非自明な解をもつ」条件であり、
-第II部の正則性同値定理によって
+となる。これは「同次方程式が非自明な解をもつ」条件である。
+
+\begin{teiri}[固有値の特徴づけ]\label{thm:eigen-char}
+$\lambda$ が $A$ の固有値であることと、
 \[
 \det(\lambda E - A) = 0
 \]
-と同値である。左辺は $\lambda$ の $n$ 次多項式になる。
+は同値である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\lambda$ が固有値
+$\iff$ $(\lambda E - A)\vect{v} = \vect{0}$ が非自明な解 $\vect{v} \neq \vect{0}$
+をもつ
+$\iff$ $\lambda E - A$ が正則でない
+(正則なら解は $\vect{v} = \vect{0}$ のみ、正則でなければ自由度が $1$ 以上)
+$\iff$ $\det(\lambda E - A) = 0$
+(第II部の定理 \ref{thm:det-nonzero})。 $\blacksquare$
+
+左辺 $\det(\lambda E - A)$ は $\lambda$ の $n$ 次多項式になる。
 
 \begin{teigi}[固有多項式]
 $\varphi_A(\lambda) = \det(\lambda E - A)$ を $A$ の\textbf{固有多項式}、
@@ -87,6 +116,71 @@ $\lambda = 2$ のとき同様に $\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
 冒頭の「特別な方向」が、計算で再発見された。
 \end{rei}
 
+\begin{chui}[検算のすすめ]
+固有ベクトルを求めたら、必ず $A\vect{v} = \lambda\vect{v}$ に戻して
+検算すること。上の例なら
+$A\mat{1 \\ 1} = \mat{4 \\ 4} = 4\mat{1 \\ 1}$ と、一行で確かめられる。
+また $(\lambda E - A)\vect{v} = \vect{0}$ を解いたとき
+\textbf{解が $\vect{v} = \vect{0}$ しか出なかったら、
+固有値の計算が間違っている}(固有値なら非自明解が必ずあるはず)。
+掃き出しの途中で行が全部消えることが、むしろ正しさの証拠である。
+\end{chui}
+
+\section{固有値がすぐ分かる行列}
+
+\begin{teiri}[$0$ が固有値 $\iff$ 正則でない]\label{thm:eigen-zero}
+$0$ が $A$ の固有値であることと、$A$ が正則でないことは同値である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+定理 \ref{thm:eigen-char} で $\lambda = 0$ とすると、
+$0$ が固有値 $\iff \det(0 \cdot E - A) = \det(-A) = (-1)^n \det A = 0
+\iff \det A = 0 \iff A$ は正則でない
+(定理 \ref{thm:det-nonzero})。 $\blacksquare$
+
+\begin{teiri}[三角行列の固有値]\label{thm:eigen-tri}
+上三角行列(下三角行列・対角行列も同様)の固有値は、
+対角成分そのものである。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$A$ が上三角なら $\lambda E - A$ も上三角で、その対角成分は
+$\lambda - a_{11}, \dots, \lambda - a_{nn}$ である。三角行列の行列式は
+対角成分の積だから(定理 \ref{thm:det-tri})
+\[
+\varphi_A(\lambda) = (\lambda - a_{11})(\lambda - a_{22})\cdots(\lambda - a_{nn}).
+\]
+この根は $a_{11}, \dots, a_{nn}$ である。 $\blacksquare$
+
+ただし、\textbf{固有ベクトルまで自明とは限らない}
+(標準基底とは限らない。例題 \ref{rei:eigen-tri} で確かめる)。
+
+\begin{teiri}[トレース・行列式と固有値($2$ 次)]\label{thm:eigen-trdet2}
+$2$ 次正方行列 $A = \mat{a & b \\ c & d}$ の固有多項式は
+\[
+\varphi_A(\lambda) = \lambda^2 - (\mathrm{tr}\,A)\,\lambda + \det A
+\]
+であり、固有値 $\lambda_1, \lambda_2$(重解も込めて)について
+\[
+\lambda_1 + \lambda_2 = \mathrm{tr}\,A, \qquad
+\lambda_1 \lambda_2 = \det A
+\]
+が成り立つ。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - a & -b \\ -c & \lambda - d}
+= (\lambda - a)(\lambda - d) - bc
+= \lambda^2 - (a + d)\lambda + (ad - bc)
+\]
+で前半が従う。後半は $2$ 次方程式の解と係数の関係
+($\varphi_A(\lambda) = (\lambda - \lambda_1)(\lambda - \lambda_2)$ を
+展開して係数を比べる)である。 $\blacksquare$
+
+固有値を求めたら「和がトレース、積が行列式」で検算する習慣を
+つけるとよい。同じ関係は $n$ 次でも成り立つ(深掘り参照)。
+
 \section{固有空間}
 
 固有値 $\lambda$ に属する固有ベクトル全体に $\vect{0}$ を付け加えた集合
@@ -94,9 +188,13 @@ $\lambda = 2$ のとき同様に $\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
 W_\lambda = \{\, \vect{v} \mid A\vect{v} = \lambda\vect{v} \,\}
 = \mathrm{Ker}(\lambda E - A)
 \]
-は、同次方程式の解空間だから\textbf{部分空間}になる。
+は、同次方程式の解空間だから\textbf{部分空間}になる
+(第 \ref{chap:linmap} 章の言葉でいえば、線形写像
+$\vect{x} \mapsto (\lambda E - A)\vect{x}$ の核である)。
 これを固有値 $\lambda$ の\textbf{固有空間}という。
 固有ベクトルは $1$ 本ではなく、空間ごと存在するのである。
+固有空間の次元 $\dim W_\lambda$ は、自由度定理により
+$n - \mathrm{rank}(\lambda E - A)$ で計算できる。
 
 \begin{itembox}[l]{深掘り:固有値は「変換そのもの」の属性である}
 第III部の深掘りで、相似な行列($A' = P^{-1}AP$)は同じ変換を
@@ -108,7 +206,7 @@ W_\lambda = \{\, \vect{v} \mid A\vect{v} = \lambda\vect{v} \,\}
 よって\textbf{固有値は相似不変}、すなわち座標の取り方によらない
 「変換そのものの属性」である。さらに、固有多項式を
 $\varphi_A(\lambda) = (\lambda - \lambda_1)\cdots(\lambda - \lambda_n)$ と
-因数分解して係数を比較すると($n = 2$ で確かめよ)、
+因数分解して係数を比較すると(定理 \ref{thm:eigen-trdet2} は $n = 2$ の場合)、
 \[
 \lambda_1 + \cdots + \lambda_n = \mathrm{tr}\,A,
 \qquad
@@ -126,9 +224,346 @@ $A = \mat{1 & 4 \\ 2 & 3}$ の固有値と、各固有値に属する固有ベ�
 一致することを確かめよ。
 \end{mondai}
 
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[固有ベクトルの和は固有ベクトルとは限らない]\label{hanrei:eigen-sum}
+「固有ベクトルどうしを足しても固有ベクトル」ではない。
+$A = \mat{1 & 0 \\ 0 & 2}$ の固有ベクトル
+$\vect{e}_1 = \mat{1 \\ 0}$(固有値 $1$)と
+$\vect{e}_2 = \mat{0 \\ 1}$(固有値 $2$)の和
+$\vect{v} = \mat{1 \\ 1}$ は、
+\[
+A\vect{v} = \mat{1 \\ 2}
+\]
+となり、$\vect{v}$ のどんな定数倍でもない。よって固有ベクトルでない。
+和が固有ベクトルに留まるのは、\textbf{同じ固有値}に属する
+固有ベクトルどうし(=同じ固有空間の中)だけである。
+「固有ベクトル全体」は部分空間にならず、固有空間ごとに分かれて
+部分空間をなす、と整理しておこう。
+\end{hanrei}
+
+\begin{hanrei}[固有値は足し算・掛け算と相性が悪い]\label{hanrei:eigen-add}
+「$A + B$ の固有値は $A$ の固有値と $B$ の固有値の和」は誤りである。
+\[
+A = \mat{0 & 1 \\ 0 & 0}, \qquad B = \mat{0 & 0 \\ 1 & 0}
+\]
+はどちらも固有多項式 $\lambda^2$ をもち、固有値は $0$ のみ。
+しかし $A + B = \mat{0 & 1 \\ 1 & 0}$ の固有多項式は
+$\lambda^2 - 1$ で、固有値は $\pm 1$ である($0 + 0$ ではない)。
+積 $AB = \mat{1 & 0 \\ 0 & 0}$ の固有値も $1, 0$ で、
+「固有値の積($0 \cdot 0 = 0$)」からは説明できない。
+固有値は行列の和・積とは(一般には)連動しない。
+連動するのは\textbf{同じ $A$ のべき}である:$A\vect{v} = \lambda\vect{v}$
+ならば $A^2\vect{v} = \lambda^2\vect{v}$(問 \ref{q:eigen-ex8})。
+\end{hanrei}
+
+\section{例題}
+
+固有値・固有ベクトルの計算と検証、そして性質の証明を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(固有値と固有ベクトルの計算)]\label{rei:eigen-basic}
+$A = \mat{2 & 1 \\ 1 & 2}$ の固有値と固有ベクトルを求めよ。\\
+\textbf{解.}\ 固有多項式は
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - 2 & -1 \\ -1 & \lambda - 2}
+= (\lambda - 2)^2 - 1 = (\lambda - 3)(\lambda - 1)
+\]
+より固有値は $\lambda = 3, 1$
+(検算:和 $3 + 1 = 4 = \mathrm{tr}\,A$、積 $3 \cdot 1 = 3 = \det A$)。
+
+$\lambda = 3$:$(3E - A)\vect{v} = \mat{1 & -1 \\ -1 & 1}\vect{v} = \vect{0}$
+より $x = y$、$\vect{v} = t\mat{1 \\ 1}$($t \neq 0$)。
+
+$\lambda = 1$:$(E - A)\vect{v} = \mat{-1 & -1 \\ -1 & -1}\vect{v} = \vect{0}$
+より $x + y = 0$、$\vect{v} = t\mat{1 \\ -1}$($t \neq 0$)。
+
+例題 \ref{rei:repmat-change-ex} で「この基底なら表現行列が
+$\mathrm{diag}(3, 1)$ になる」と観察した、その基底が再登場した。
+\end{rei}
+
+\begin{rei}[例題・基本(三角行列)]\label{rei:eigen-tri}
+上三角行列 $A = \mat{3 & 1 \\ 0 & 2}$ の固有値と固有ベクトルを求めよ。\\
+\textbf{解.}\ 定理 \ref{thm:eigen-tri} より、固有値は対角成分の
+$\lambda = 3, 2$ である(固有方程式
+$(\lambda - 3)(\lambda - 2) = 0$ を解いても同じ)。
+
+$\lambda = 3$:$(3E - A)\vect{v} = \mat{0 & -1 \\ 0 & 1}\vect{v} = \vect{0}$
+より $y = 0$、$\vect{v} = t\mat{1 \\ 0}$。
+
+$\lambda = 2$:$(2E - A)\vect{v} = \mat{-1 & -1 \\ 0 & 0}\vect{v} = \vect{0}$
+より $x + y = 0$、$\vect{v} = t\mat{1 \\ -1}$。
+
+固有値は対角成分から即座に読めたが、固有ベクトルの一方
+$\mat{1 \\ -1}$ は標準基底ベクトルではない。
+\textbf{「三角行列だから固有ベクトルも自明」ではない}点に注意。
+\end{rei}
+
+\begin{rei}[例題・基本(固有ベクトルかどうかの判定)]\label{rei:eigen-check}
+$A = \mat{1 & 2 \\ 3 & 2}$ について、
+$\vect{v}_1 = \mat{1 \\ 1}$, $\vect{v}_2 = \mat{2 \\ 3}$ は
+$A$ の固有ベクトルか。固有ベクトルであれば固有値を答えよ。\\
+\textbf{解.}\ 定義に従い、$A$ を掛けて定数倍になるかを見る。
+\[
+A\vect{v}_1 = \mat{1 + 2 \\ 3 + 2} = \mat{3 \\ 5}
+\]
+は $\mat{1 \\ 1}$ の定数倍ではない($3 \neq 5$)ので、
+$\vect{v}_1$ は固有ベクトルで\textbf{ない}。
+\[
+A\vect{v}_2 = \mat{2 + 6 \\ 6 + 6} = \mat{8 \\ 12} = 4\mat{2 \\ 3}
+\]
+より、$\vect{v}_2$ は固有値 $4$ に属する固有ベクトルで\textbf{ある}。
+判定に固有方程式は不要である――掛けてみればよい。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次行列)]\label{rei:eigen-3x3}
+$A = \mat{1 & 0 & 2 \\ 0 & 3 & 0 \\ 2 & 0 & 1}$ の固有値と、
+各固有空間の基底を求めよ。\\
+\textbf{解.}\ 固有多項式を第 $2$ 行で余因子展開すると
+\[
+\varphi_A(\lambda) = \det\mat{\lambda - 1 & 0 & -2 \\ 0 & \lambda - 3 & 0 \\
+-2 & 0 & \lambda - 1}
+= (\lambda - 3)\bigl\{(\lambda - 1)^2 - 4\bigr\}
+= (\lambda - 3)^2(\lambda + 1).
+\]
+固有値は $\lambda = 3$(重解)と $\lambda = -1$
+(検算:和 $3 + 3 - 1 = 5 = \mathrm{tr}\,A$)。
+
+$\lambda = 3$:$(3E - A)\vect{v} = \mat{2 & 0 & -2 \\ 0 & 0 & 0 \\
+-2 & 0 & 2}\vect{v} = \vect{0}$ は $x = z$($y$ は自由)を与えるから、
+\[
+W_3 = \left\{ s\mat{1 \\ 0 \\ 1} + t\mat{0 \\ 1 \\ 0} \right\}
+\]
+で、基底は $\mat{1 \\ 0 \\ 1}, \mat{0 \\ 1 \\ 0}$($2$ 次元)。
+
+$\lambda = -1$:$(-E - A)\vect{v} = \mat{-2 & 0 & -2 \\ 0 & -4 & 0 \\
+-2 & 0 & -2}\vect{v} = \vect{0}$ は $x = -z$, $y = 0$ を与えるから、
+基底は $\mat{1 \\ 0 \\ -1}$($1$ 次元)。
+
+重解の固有値 $3$ に対して固有空間が $2$ 次元ある
+――この「重複度どうしの一致」が次章の対角化可能性の鍵になる。
+\end{rei}
+
+\begin{rei}[例題・標準(固有値 $0$ と正則性)]\label{rei:eigen-zero-ex}
+$A = \mat{2 & 6 \\ 1 & 3}$ の固有値と固有ベクトルを求め、
+$0$ が固有値であることと $\det A = 0$ の関係を確かめよ。\\
+\textbf{解.}\ $\varphi_A(\lambda) = (\lambda - 2)(\lambda - 3) - 6
+= \lambda^2 - 5\lambda = \lambda(\lambda - 5)$ より固有値は
+$\lambda = 0, 5$。
+
+$\lambda = 0$:$A\vect{v} = \vect{0}$、すなわち $x + 3y = 0$
+($2$ 行は比例)より $\vect{v} = t\mat{-3 \\ 1}$。
+
+$\lambda = 5$:$(5E - A)\vect{v} = \mat{3 & -6 \\ -1 & 2}\vect{v} = \vect{0}$
+より $x = 2y$、$\vect{v} = t\mat{2 \\ 1}$
+(検算:$A\mat{2 \\ 1} = \mat{10 \\ 5} = 5\mat{2 \\ 1}$)。
+
+実際 $\det A = 6 - 6 = 0$ で $A$ は正則でなく、
+定理 \ref{thm:eigen-zero} のとおり $0$ が固有値になっている。
+固有値 $0$ の固有空間 $W_0 = \mathrm{Ker}\,A$ は、
+同次方程式 $A\vect{x} = \vect{0}$ の解空間そのものである。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:射影の固有値)]\label{rei:eigen-proj}
+$P = \dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$ は、直線 $y = x$ への正射影
+(各点から直線に下ろした垂線の足へうつす変換)を表す。
+$P$ の固有値と固有ベクトルを求め、幾何的に解釈せよ。\\
+\textbf{解.}\ $\varphi_P(\lambda) = \left(\lambda - \dfrac{1}{2}\right)^2
+- \dfrac{1}{4} = \lambda^2 - \lambda = \lambda(\lambda - 1)$ より
+固有値は $\lambda = 1, 0$。
+
+$\lambda = 1$:$\vect{v} = t\mat{1 \\ 1}$
+(検算:$P\mat{1 \\ 1} = \mat{1 \\ 1}$)。
+直線 $y = x$ 上の点は射影で\textbf{動かない}(固有値 $1$)。
+
+$\lambda = 0$:$\vect{v} = t\mat{1 \\ -1}$
+(検算:$P\mat{1 \\ -1} = \vect{0}$)。
+直線に垂直な方向は射影で\textbf{つぶれる}(固有値 $0$)。
+
+「動かない方向」と「つぶれる方向」という射影の幾何的本性が、
+固有値 $1$ と $0$ にそのまま現れている。なお $P^2 = P$
+(2度射影しても同じ)であり、固有値も $1^2 = 1$, $0^2 = 0$ と
+つじつまが合っている。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{固有ベクトル}=変換で向きを変えない($\lambda$ 倍される
+だけの)零でないベクトル。\textbf{固有値} $\lambda$ は $0$ でもよく、
+$0$ が固有値 $\iff A$ が正則でない(定理 \ref{thm:eigen-zero})。
+\item 固有値は\textbf{固有方程式} $\det(\lambda E - A) = 0$ の解
+(定理 \ref{thm:eigen-char})、固有ベクトルは同次方程式
+$(\lambda E - A)\vect{v} = \vect{0}$ の非自明解。
+求めたら $A\vect{v} = \lambda\vect{v}$ で検算する。
+\item 三角行列の固有値は対角成分(定理 \ref{thm:eigen-tri})。
+ただし固有ベクトルは別途計算が要る。
+\item 固有値の\textbf{和はトレース、積は行列式}
+(定理 \ref{thm:eigen-trdet2}、$n$ 次でも成立)。検算に活用できる。
+\item 固有値 $\lambda$ の\textbf{固有空間}
+$W_\lambda = \mathrm{Ker}(\lambda E - A)$ は部分空間で、
+次元は $n - \mathrm{rank}(\lambda E - A)$。
+異なる固有値の固有ベクトルどうしの和は固有ベクトルにならない
+(反例 \ref{hanrei:eigen-sum})。
+\item 固有多項式は相似不変。固有値は座標の取り方によらない
+\textbf{変換そのものの属性}である。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:eigen-ex1}
+$A = \mat{5 & 4 \\ 2 & 3}$ の固有値と、各固有値に属する固有ベクトルを
+求めよ。また固有値の和と積を $\mathrm{tr}\,A$, $\det A$ と見比べよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:eigen-ex2}
+上三角行列 $A = \mat{2 & 3 \\ 0 & 5}$ の固有値を対角成分から読み取り、
+各固有値の固有ベクトルを求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:eigen-ex3}
+$A = \mat{1 & 2 \\ 3 & 2}$ について、次のベクトルが $A$ の固有ベクトル
+かどうかを判定し、固有ベクトルの場合は固有値を答えよ。
+\[
+\vect{v}_1 = \mat{1 \\ 1}, \qquad
+\vect{v}_2 = \mat{2 \\ 3}, \qquad
+\vect{v}_3 = \mat{1 \\ -1}
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:eigen-ex4}
+対角行列 $A = \mat{2 & 0 \\ 0 & -1}$ の固有値と固有空間を求めよ。
+一般に、対角行列 $\mathrm{diag}(a_1, \dots, a_n)$ の固有値と、
+標準基底の関係を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex5}
+$A = \mat{2 & 1 & 1 \\ 0 & 1 & 0 \\ 0 & 1 & 3}$ の固有値と、
+各固有空間の基底を求めよ(上三角に近い形なので、固有多項式は
+第 $1$ 列での余因子展開が速い)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex6}
+$90^\circ$ 回転行列 $R = \mat{0 & -1 \\ 1 & 0}$ には実数の固有値が
+存在しないことを、固有方程式を用いて示せ。
+また、その事実の幾何的な理由を一行で述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex7}
+$A = \mat{1 & 2 \\ 2 & 4}$ について、次に答えよ。\\
+　(1) $\det A$ を計算し、$0$ が固有値であることを予言せよ。\\
+　(2) 固有値と固有ベクトルをすべて求めよ。\\
+　(3) 固有値 $0$ の固有空間は、第II部で学んだどの空間と一致するか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:eigen-ex8}
+$A\vect{v} = \lambda\vect{v}$($\vect{v} \neq \vect{0}$)のとき、
+次を示せ。\\
+　(1) $A^2\vect{v} = \lambda^2\vect{v}$(したがって $\vect{v}$ は
+$A^2$ の固有値 $\lambda^2$ の固有ベクトル)。\\
+　(2) $A$ が正則ならば $\lambda \neq 0$ であり、
+$A^{-1}\vect{v} = \dfrac{1}{\lambda}\vect{v}$。\\
+　(3) 例題 \ref{rei:eigen-basic} の $A = \mat{2 & 1 \\ 1 & 2}$ について、
+$A^2$ の固有値を計算なしで予言し、$A^2$ を実際に計算して確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:eigen-ex9}
+$A = \mat{0 & 1 \\ 1 & 1}$ について、次に答えよ。\\
+　(1) 固有値 $\varphi = \dfrac{1 + \sqrt{5}}{2}$,
+$\psi = \dfrac{1 - \sqrt{5}}{2}$ を固有方程式から求めよ。\\
+　(2) 各固有値 $\lambda$ に対し、$\mat{1 \\ \lambda}$ が固有ベクトルに
+なることを、$\lambda^2 = \lambda + 1$ を用いて確かめよ。
+(この行列は第 \ref{chap:power} 章でフィボナッチ数列の解析に使われる。)
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:eigen-ex10}
+鏡映(直線 $y = x \tan\theta$ に関する折り返し)を表す行列
+$S = \mat{\cos 2\theta & \sin 2\theta \\ \sin 2\theta & -\cos 2\theta}$
+について、固有値が $\theta$ によらず $1$ と $-1$ であることを
+固有方程式から示せ。また、それぞれの固有ベクトルの方向を
+幾何的に説明せよ(計算では $\theta = 30^\circ$ など特定の場合を
+確かめればよい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:eigen-ex11}
+$A$ と転置行列 ${}^t\!A$ の固有多項式が一致する(したがって固有値も
+一致する)ことを証明せよ
+(ヒント:$\lambda E - {}^t\!A = {}^t(\lambda E - A)$ と、
+転置で行列式が変わらないこと(定理 \ref{thm:det-props})を使う)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:eigen-ex12}
+$B = P^{-1}AP$ とする($P$ は正則)。次を証明せよ。\\
+　(1) $A$ と $B$ の固有多項式は一致する。\\
+　(2) $\vect{v}$ が $A$ の固有値 $\lambda$ の固有ベクトルならば、
+$P^{-1}\vect{v}$ は $B$ の固有値 $\lambda$ の固有ベクトルである。
+(相似=座標変換で、固有値は不変、固有ベクトルは座標が変わるだけ。)
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:eigen-ex1}}:固有方程式を解き、各固有値で
+$(\lambda E - A)\vect{v} = \vect{0}$ を掃き出す。和と積で検算。
+\item \textbf{問 \ref{q:eigen-ex2}}:固有値は定理 \ref{thm:eigen-tri}。
+固有ベクトルは各固有値で同次方程式を解く。
+\item \textbf{問 \ref{q:eigen-ex3}}:$A$ を掛けて、結果がもとの
+ベクトルの定数倍かどうかを見るだけでよい。
+\item \textbf{問 \ref{q:eigen-ex4}}:$A\vect{e}_1$, $A\vect{e}_2$ を
+計算してみる。
+\item \textbf{問 \ref{q:eigen-ex5}}:第 $1$ 列で余因子展開すると
+固有多項式が $(\lambda - 2)(\lambda - 1)(\lambda - 3)$ と
+因数分解された形で得られる。固有ベクトルは各固有値で掃き出す。
+\item \textbf{問 \ref{q:eigen-ex6}}:判別式が負になることを見る。
+幾何的には「すべての方向が回されてしまう」。
+\item \textbf{問 \ref{q:eigen-ex7}}:(3) $W_0 = \mathrm{Ker}\,A$ は
+同次方程式の解空間である。
+\item \textbf{問 \ref{q:eigen-ex8}}:(1) は $A$ を $2$ 回掛ける。
+(2) は両辺に $A^{-1}$ を掛ける($\lambda = 0$ だと $A\vect{v} = \vect{0}$
+で正則性に矛盾)。
+\item \textbf{問 \ref{q:eigen-ex9}}:(2) は
+$A\mat{1 \\ \lambda} = \mat{\lambda \\ 1 + \lambda}$ を計算し、
+$1 + \lambda = \lambda^2$ で書き換える。
+\item \textbf{問 \ref{q:eigen-ex10}}:$\mathrm{tr}\,S = 0$,
+$\det S = -\cos^2 2\theta - \sin^2 2\theta = -1$ から固有方程式は
+$\lambda^2 - 1 = 0$。鏡の上の方向は不動、垂直方向は反転。
+\item \textbf{問 \ref{q:eigen-ex11}}:単位行列は転置しても変わらない。
+\item \textbf{問 \ref{q:eigen-ex12}}:(1) は深掘りの計算をなぞる。
+(2) は $B(P^{-1}\vect{v})$ を定義どおり計算する。
+$P^{-1}\vect{v} \neq \vect{0}$ の確認も忘れずに。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{対角化}\label{chap:diag}
 % =====================================================
+
+\begin{goal}
+\begin{itemize}
+\item 対角化の定義と基本定理(独立な固有ベクトル $n$ 本 $\iff$ 対角化可能)
+を証明つきで理解し、$2$ 次・$3$ 次の行列を実際に対角化できるようになる。
+\item 「相異なる固有値の固有ベクトルは線形独立」の証明を理解し、
+固有値がすべて異なる行列が必ず対角化できる理由を説明できるようになる。
+\item 固有値が重複する場合に、固有空間の次元(幾何的重複度)を調べて
+対角化可能かどうかを判定できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 最良の座標系を探す}
+
+第III部の終わりに立てた問いを思い出そう。座標(基底)の取り方は自由
+なのだから、\textbf{表現行列が最も簡単になる基底}を選べばよいのでは
+ないか?――前章で、その「最良の基底」の候補が見つかった。固有ベクトル
+である。固有ベクトルの方向では、変換はただの $\lambda$ 倍であり、
+これ以上簡単な作用はない。
+
+もし空間全体を固有ベクトルの基底で張り尽くせたら、どの基底方向でも
+変換は定数倍、すなわち表現行列は\textbf{対角行列}になる。
+これが対角化である。本章では、いつそれが可能で、いつ不可能なのかを
+完全に見極める。
 
 \section{対角化の定義と基本定理}
 
@@ -145,7 +580,7 @@ P^{-1} A P = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n}
 \textbf{表現行列が対角行列になるような基底を見つけること}である。
 そして、その基底の正体はもう分かっている。
 
-\begin{teiri}[対角化の基本定理]
+\begin{teiri}[対角化の基本定理]\label{thm:diag-main}
 $n$ 次正方行列 $A$ が対角化可能であるための必要十分条件は、
 \textbf{$A$ の固有ベクトルから線形独立な $n$ 本を選べる}ことである。
 このとき、固有ベクトル $\vect{p}_1, \dots, \vect{p}_n$ を列に並べた
@@ -154,52 +589,181 @@ $P^{-1}AP$ は対角行列になり、対角成分には対応する固有値が
 \textbf{並べた順に}現れる。
 \end{teiri}
 
-証明は一行の計算である。$A\vect{p}_j = \lambda_j \vect{p}_j$ を列ごとに束ねると
+\noindent\textbf{(証明)}\quad
+(十分性)独立な固有ベクトル $\vect{p}_1, \dots, \vect{p}_n$
+($A\vect{p}_j = \lambda_j\vect{p}_j$)があるとする。
+行列の積の列ごとの計算により
 \[
-AP = (\lambda_1 \vect{p}_1 \cdots \lambda_n \vect{p}_n) = P
-\mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n}
+AP = (A\vect{p}_1 \ \cdots \ A\vect{p}_n)
+= (\lambda_1 \vect{p}_1 \ \cdots \ \lambda_n \vect{p}_n) = P
+\mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n} = PD
 \]
-となり、$P$ が正則(列が線形独立)なら左から $P^{-1}$ を掛けてよい。
+となる。$P$ は列が線形独立だから正則(第II部の定理 \ref{thm:reg-rank})で、
+左から $P^{-1}$ を掛けて $P^{-1}AP = D$。
+
+(必要性)逆に $P^{-1}AP = D$(対角)とすると、両辺に左から $P$ を掛けて
+$AP = PD$。第 $j$ 列を比べると $A\vect{p}_j = \lambda_j \vect{p}_j$ であり、
+$P$ は正則だから各列 $\vect{p}_j$ は $\vect{0}$ でなく、$n$ 本は線形独立。
+すなわち独立な固有ベクトルが $n$ 本とれている。 $\blacksquare$
+
 問 \ref{q:repmat} で起きたことの完全な説明がこれである。
+実際の計算手順は次のとおり機械化される。
+\begin{enumerate}
+\item 固有方程式を解いて固有値をすべて求める。
+\item 各固有値の固有空間の基底を掃き出し法で求める。
+\item 集めた固有ベクトルが $n$ 本(独立)あれば、列に並べて $P$ を作る。
+$P^{-1}AP$ は、\textbf{並べた順に}固有値が並ぶ対角行列 $D$ になる。
+\item 検算は $AP = PD$ で行う($P^{-1}$ の計算は不要)。
+\end{enumerate}
 
 では、独立な固有ベクトルは $n$ 本そろうのか。
 強力な十分条件が一つある。
 
-\begin{teiri}
-相異なる固有値に属する固有ベクトルは線形独立である。
-したがって、\textbf{$n$ 次正方行列が $n$ 個の相異なる固有値をもてば、
-対角化可能}である。
+\section{相異なる固有値なら必ず対角化できる}
+
+\begin{teiri}[相異なる固有値の固有ベクトルは独立]\label{thm:diag-distinct}
+$\lambda_1, \dots, \lambda_k$ を $A$ の相異なる固有値、
+$\vect{v}_1, \dots, \vect{v}_k$ をそれぞれに属する固有ベクトルとすると、
+$\vect{v}_1, \dots, \vect{v}_k$ は線形独立である。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+本数 $k$ についての数学的帰納法で示す。$k = 1$ のときは、
+固有ベクトルは $\vect{0}$ でないから $1$ 本で独立である。
+
+$k - 1$ 本までは正しいとして、$k$ 本の場合を示す。
+\[
+c_1\vect{v}_1 + c_2\vect{v}_2 + \cdots + c_k\vect{v}_k = \vect{0}
+\tag{$*$}
+\]
+とする。($*$) の両辺に $A$ を掛けると、$A\vect{v}_i = \lambda_i\vect{v}_i$
+より
+\[
+c_1\lambda_1\vect{v}_1 + c_2\lambda_2\vect{v}_2 + \cdots
++ c_k\lambda_k\vect{v}_k = \vect{0}.
+\tag{$**$}
+\]
+一方、($*$) の両辺を $\lambda_k$ 倍すると
+\[
+c_1\lambda_k\vect{v}_1 + c_2\lambda_k\vect{v}_2 + \cdots
++ c_k\lambda_k\vect{v}_k = \vect{0}.
+\]
+($**$) からこれを辺々引くと、最後の項が消えて
+\[
+c_1(\lambda_1 - \lambda_k)\vect{v}_1 + \cdots
++ c_{k-1}(\lambda_{k-1} - \lambda_k)\vect{v}_{k-1} = \vect{0}.
+\]
+帰納法の仮定により $\vect{v}_1, \dots, \vect{v}_{k-1}$ は独立だから、
+係数はすべて $0$:$c_i(\lambda_i - \lambda_k) = 0$($i \le k - 1$)。
+固有値は相異なるので $\lambda_i - \lambda_k \neq 0$、よって
+$c_1 = \cdots = c_{k-1} = 0$。これを ($*$) に戻すと
+$c_k\vect{v}_k = \vect{0}$ で、$\vect{v}_k \neq \vect{0}$ より $c_k = 0$。
+以上ですべての係数が $0$ となり、独立が示された。 $\blacksquare$
+
+\begin{teiri}[$n$ 個の相異なる固有値をもてば対角化可能]\label{thm:diag-ndistinct}
+$n$ 次正方行列 $A$ が $n$ 個の相異なる実数の固有値をもてば、
+$A$ は対角化可能である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+各固有値から固有ベクトルを $1$ 本ずつとれば、
+定理 \ref{thm:diag-distinct} により独立な $n$ 本になる。
+あとは基本定理 \ref{thm:diag-main} による。 $\blacksquare$
+
+固有方程式は $n$ 次方程式だから解は高々 $n$ 個。
+「$n$ 個の相異なる固有値」はいわば\textbf{満員御礼}の状況であり、
+このとき対角化は自動的に成功する。
+問題は、固有方程式が重解をもつ場合である。
 
 \section{固有値が重複する場合}
 
-固有方程式が重解をもつ場合は、状況が分かれる。
-固有値 $\lambda$ の、固有方程式の解としての重複度を\textbf{代数的重複度}、
-固有空間の次元 $\dim W_\lambda$ を\textbf{幾何的重複度}と呼ぶと、
+\begin{teigi}[代数的重複度・幾何的重複度]
+固有値 $\lambda$ の、固有方程式の解としての重複度
+(固有多項式が $(\lambda' - \lambda)^m$ で割り切れる最大の $m$)を
+\textbf{代数的重複度}、固有空間の次元 $\dim W_\lambda$ を
+\textbf{幾何的重複度}と呼ぶ。
+\end{teigi}
+
 一般に
 \[
 1 \le (\text{幾何的重複度}) \le (\text{代数的重複度})
 \]
-が成り立ち、次が知られている。
+が成り立つ(左の不等号は固有ベクトルの存在そのもの。
+右の不等号の証明の粗筋は深掘りで述べる)。
+対角化可能性は、固有空間の次元だけで完全に判定できる。
 
-\begin{teiri}[対角化可能性の判定]
-$A$ が対角化可能 $\iff$ すべての固有値で
-幾何的重複度と代数的重複度が一致する。
+\begin{teiri}[対角化可能性の判定]\label{thm:diag-criterion}
+$n$ 次正方行列 $A$ の相異なる実数の固有値を
+$\lambda_1, \dots, \lambda_k$ とすると、
+\[
+A \text{ が対角化可能} \iff
+\dim W_{\lambda_1} + \cdots + \dim W_{\lambda_k} = n.
+\]
+固有多項式が実数の範囲で $1$ 次式の積に分解するときは、この条件は
+「\textbf{すべての固有値で幾何的重複度 = 代数的重複度}」と言い換えられる。
 \end{teiri}
 
-\begin{rei}[対角化できない行列]
+\noindent\textbf{(証明)}\quad
+($\Leftarrow$)各固有空間 $W_{\lambda_i}$ の基底を集めて
+$n$ 本のベクトルの組を作る。この組が線形独立であることを示す。
+線形結合が $\vect{0}$ になったとし、固有値ごとに項をまとめて
+$\vect{w}_1 + \cdots + \vect{w}_k = \vect{0}$
+($\vect{w}_i \in W_{\lambda_i}$)と書く。もしある $\vect{w}_i$ が
+$\vect{0}$ でなければ、$\vect{0}$ でないものだけを残した式は
+「相異なる固有値に属する固有ベクトルたちの、係数 $1$ の線形結合が
+$\vect{0}$」を意味し、定理 \ref{thm:diag-distinct} に矛盾する。
+よってすべての $\vect{w}_i = \vect{0}$ であり、各 $W_{\lambda_i}$ の中では
+基底の独立性から係数がすべて $0$ になる。ゆえにこの $n$ 本は独立な
+固有ベクトルであり、基本定理 \ref{thm:diag-main} により対角化可能である。
+
+($\Rightarrow$)対角化可能なら、基本定理により独立な固有ベクトル
+$n$ 本がとれる。それらを固有値ごとに分ければ、$W_{\lambda_i}$ の中に
+$n_i$ 本の独立なベクトルがあり($n_1 + \cdots + n_k = n$)、
+$\dim W_{\lambda_i} \ge n_i$。辺々足して
+$\sum_i \dim W_{\lambda_i} \ge n$。
+逆向きの不等式:各固有空間の基底を集めた
+$\sum_i \dim W_{\lambda_i}$ 本の組は、($\Leftarrow$)の議論と同じ理由で
+線形独立であり、$\R^n$ の独立系は $n$ 本以下(第 \ref{chap:basis} 章の
+交換補題 \ref{thm:exchange})だから
+$\sum_i \dim W_{\lambda_i} \le n$。よって等号が成り立つ。 $\blacksquare$
+
+\begin{rei}[対角化できない行列]\label{rei:diag-shear}
 $A = \mat{1 & 1 \\ 0 & 1}$ の固有多項式は $(\lambda - 1)^2$ で、
 固有値は $1$ のみ(代数的重複度 $2$)。固有空間は
 \[
 (E - A)\vect{v} = \mat{0 & -1 \\ 0 & 0}\vect{v} = \vect{0}
 \]
 の解空間で、$\vect{v} = t\mat{1 \\ 0}$ の $1$ 次元(幾何的重複度 $1$)。
-独立な固有ベクトルが $1$ 本しか取れず、\textbf{対角化できない}。
+次元の和は $1 < 2$ であり、\textbf{対角化できない}。
 この行列は「せん断(ずらし)変換」であり、どの方向も
 (横軸方向以外は)必ず傾けられてしまう。
 対角化できない行列をどこまで簡単にできるか
 ――その完全な答えが第VI部のジョルダン標準形である。
 \end{rei}
+
+\begin{itembox}[l]{深掘り:幾何的重複度 $\le$ 代数的重複度の理由}
+固有値 $\lambda_0$ の固有空間 $W_{\lambda_0}$ の次元を $m$ とし、
+その基底 $\vect{p}_1, \dots, \vect{p}_m$ を $\R^n$ の基底
+$\vect{p}_1, \dots, \vect{p}_m, \dots, \vect{p}_n$ に拡張する
+(第 \ref{chap:basis} 章の拡張定理)。この基底での $A$ の表現行列
+$A' = P^{-1}AP$ を考えると、最初の $m$ 本は固有ベクトルだから、
+$A'$ は左上 $m$ 列が「対角に $\lambda_0$、その下は $0$」という形になる:
+\[
+A' = \mat{\lambda_0 E_m & * \\ O & B}
+\]
+($E_m$ は $m$ 次単位行列、$B$ は $(n-m)$ 次正方行列)。
+この形の行列の行列式は、第 $1$ 列での余因子展開を $m$ 回繰り返すと
+分かるように「左上ブロックの行列式 × 右下ブロックの行列式」になるから、
+\[
+\varphi_A(\lambda) = \varphi_{A'}(\lambda)
+= (\lambda - \lambda_0)^m \det(\lambda E_{n-m} - B).
+\]
+(固有多項式が相似で不変であることは第 \ref{chap:eigen} 章の深掘りで
+示した。)よって $\varphi_A$ は $(\lambda - \lambda_0)^m$ で割り切れ、
+代数的重複度は $m$ 以上である。
+\textbf{固有空間が大きいほど、固有多項式にもその痕跡が残る}
+――というのがこの不等式の中身である。
+\end{itembox}
 
 \begin{itembox}[l]{深掘り:回転には実数の固有ベクトルがない ― 複素数の招待}
 回転行列 $R_\theta = \mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}$
@@ -233,30 +797,350 @@ $A = \mat{1 & 1 \\ 0 & 1}$ の固有多項式は $(\lambda - 1)^2$ で、
 重複度の言葉で説明せよ。
 \end{mondai}
 
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[固有値が重複しても対角化できることはある]\label{hanrei:diag-repeat}
+「固有値が重複したら対角化不可能」は誤りである。
+最も簡単な反例は単位行列 $E$:固有値は $1$(代数的重複度 $n$)だが、
+固有空間は $W_1 = \R^n$ 全体($n$ 次元)で、$E$ ははじめから対角である。
+$3$ 次の例では、例題 \ref{rei:eigen-3x3} の行列が固有値 $3$ を重複して
+もつのに対角化できる(例題 \ref{rei:diag-3x3})。
+定理 \ref{thm:diag-ndistinct} は\textbf{十分条件}であって必要条件ではない。
+重複があるときは、固有空間の次元を実際に数えて
+判定する(定理 \ref{thm:diag-criterion})。
+\end{hanrei}
+
+\begin{hanrei}[$P$ の列の順序と $D$ の順序はセットである]\label{hanrei:diag-order}
+$A = \mat{3 & 1 \\ 1 & 3}$ は、固有値 $4, 2$ と固有ベクトル
+$\mat{1 \\ 1}, \mat{1 \\ -1}$ をもつ(第 \ref{chap:eigen} 章)。ここで
+\[
+P = \mat{1 & 1 \\ -1 & 1} \quad
+\Bigl(\text{列の順序:} \mat{1 \\ -1},\ \mat{1 \\ 1}\Bigr)
+\]
+と並べたのに $D = \mat{4 & 0 \\ 0 & 2}$ とするのは\textbf{誤り}である。
+第 $1$ 列 $\mat{1 \\ -1}$ は固有値 $2$ の固有ベクトルだから、
+正しくは $D = \mat{2 & 0 \\ 0 & 4}$。実際
+$AP = \mat{2 & 4 \\ -2 & 4}$ と
+$P\mat{2 & 0 \\ 0 & 4} = \mat{2 & 4 \\ -2 & 4}$ は一致するが、
+$P\mat{4 & 0 \\ 0 & 2}$ は $\mat{4 & 2 \\ -4 & 2}$ で一致しない。
+\textbf{$D$ の第 $j$ 対角成分は、$P$ の第 $j$ 列の固有値}
+――順序の対応を崩してはならない。
+\end{hanrei}
+
+\section{例題}
+
+対角化の実行・判定・応用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(対角化の実行)]\label{rei:diag-basic}
+$A = \mat{1 & 2 \\ 2 & 1}$ を対角化せよ。\\
+\textbf{解.}\ $\varphi_A(\lambda) = (\lambda - 1)^2 - 4
+= (\lambda - 3)(\lambda + 1)$ より固有値は $3, -1$
+(相異なるので対角化可能と即断できる。定理 \ref{thm:diag-ndistinct})。
+
+$\lambda = 3$:$\mat{2 & -2 \\ -2 & 2}\vect{v} = \vect{0}$ より
+$\vect{v} = t\mat{1 \\ 1}$。
+$\lambda = -1$:$\mat{-2 & -2 \\ -2 & -2}\vect{v} = \vect{0}$ より
+$\vect{v} = t\mat{1 \\ -1}$。
+
+$P = \mat{1 & 1 \\ 1 & -1}$ と並べれば
+\[
+P^{-1}AP = \mat{3 & 0 \\ 0 & -1}.
+\]
+検算($AP = PD$):
+$AP = \mat{3 & -1 \\ 3 & 1}$、
+$PD = \mat{1 & 1 \\ 1 & -1}\mat{3 & 0 \\ 0 & -1} = \mat{3 & -1 \\ 3 & 1}$
+で一致。
+\end{rei}
+
+\begin{rei}[例題・基本(対角化可能性の判定)]\label{rei:diag-judge}
+次の行列は対角化可能か。
+\[
+(1)\ \mat{1 & 1 \\ 0 & 2} \qquad (2)\ \mat{2 & 1 \\ 0 & 2}
+\]
+\textbf{解.}\ (1) 三角行列だから固有値は対角成分の $1, 2$
+(定理 \ref{thm:eigen-tri})。$2$ 次で相異なる $2$ つの固有値をもつから、
+\textbf{固有ベクトルを求めるまでもなく}対角化可能である
+(定理 \ref{thm:diag-ndistinct})。
+
+(2) 固有値は $2$ のみ(代数的重複度 $2$)。固有空間は
+$\mat{0 & -1 \\ 0 & 0}\vect{v} = \vect{0}$ の解空間で
+$\vect{v} = t\mat{1 \\ 0}$ の $1$ 次元。次元の和が $1 < 2$ なので
+対角化不可能である(定理 \ref{thm:diag-criterion})。
+同じ三角行列でも、対角成分が重複するときは固有空間の次元を
+数えなければ判定できない。
+\end{rei}
+
+\begin{rei}[例題・基本($AP = PD$ による検算)]\label{rei:diag-verify}
+「$A = \mat{3 & 1 \\ 1 & 3}$ は $P = \mat{1 & 1 \\ 1 & -1}$ により
+$D = \mat{4 & 0 \\ 0 & 2}$ に対角化される」という主張
+(問 \ref{q:repmat} の結果)を、$P^{-1}$ を計算せずに検算せよ。\\
+\textbf{解.}\ $P^{-1}AP = D$ は(両辺に左から $P$ を掛ければ)
+$AP = PD$ と同値である。
+\[
+AP = \mat{3 & 1 \\ 1 & 3}\mat{1 & 1 \\ 1 & -1} = \mat{4 & 2 \\ 4 & -2},
+\qquad
+PD = \mat{1 & 1 \\ 1 & -1}\mat{4 & 0 \\ 0 & 2} = \mat{4 & 2 \\ 4 & -2}.
+\]
+一致するから主張は正しい($P$ が正則であること:
+$\det P = -2 \neq 0$ も確認)。
+逆行列の計算を避けられるので、検算はつねに $AP = PD$ で行うのがよい。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次行列の対角化)]\label{rei:diag-3x3}
+$A = \mat{1 & 0 & 2 \\ 0 & 3 & 0 \\ 2 & 0 & 1}$
+(例題 \ref{rei:eigen-3x3})を対角化せよ。\\
+\textbf{解.}\ 例題 \ref{rei:eigen-3x3} で求めたとおり、固有値は
+$3$(代数的重複度 $2$)と $-1$ で、固有空間は
+\[
+W_3 = \left\langle \mat{1 \\ 0 \\ 1}, \mat{0 \\ 1 \\ 0} \right\rangle
+\ (2 \text{ 次元}), \qquad
+W_{-1} = \left\langle \mat{1 \\ 0 \\ -1} \right\rangle \ (1 \text{ 次元}).
+\]
+次元の和は $2 + 1 = 3$ だから対角化可能である
+(定理 \ref{thm:diag-criterion})。基底を列に並べて
+\[
+P = \mat{1 & 0 & 1 \\ 0 & 1 & 0 \\ 1 & 0 & -1}, \qquad
+P^{-1}AP = \mat{3 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & -1}.
+\]
+検算($AP = PD$):$AP$ の各列は
+$A\mat{1 \\ 0 \\ 1} = \mat{3 \\ 0 \\ 3}$,
+$A\mat{0 \\ 1 \\ 0} = \mat{0 \\ 3 \\ 0}$,
+$A\mat{1 \\ 0 \\ -1} = \mat{-1 \\ 0 \\ 1}$ で、
+$PD$ の各列($3$ 倍、$3$ 倍、$-1$ 倍)と一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(パラメータつきの判定)]\label{rei:diag-param}
+$A = \mat{1 & 1 \\ 0 & a}$ が対角化可能であるための
+$a$ の条件を求めよ。\\
+\textbf{解.}\ 三角行列だから固有値は $1$ と $a$ である。
+
+$a \neq 1$ のとき:相異なる $2$ つの固有値をもつから対角化可能
+(定理 \ref{thm:diag-ndistinct})。
+
+$a = 1$ のとき:$A = \mat{1 & 1 \\ 0 & 1}$ はせん断行列
+(例 \ref{rei:diag-shear})で、固有空間が $1$ 次元しかなく対角化不可能。
+
+よって求める条件は $a \neq 1$ である。
+\textbf{パラメータの特別な値でだけ対角化が壊れる}――この現象は、
+固有値の衝突(重解化)が原因である。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:べきの対角化)]\label{rei:diag-power}
+$A$ が $P$ により $P^{-1}AP = D$(対角)と対角化されるならば、
+$A^2$ も同じ $P$ により対角化され、$P^{-1}A^2P = D^2$ となることを示せ。\\
+\textbf{解.}\ $P^{-1}AP = D$ の両辺を $2$ 乗すると、
+\[
+D^2 = (P^{-1}AP)(P^{-1}AP) = P^{-1}A\,(PP^{-1})\,AP = P^{-1}A^2P.
+\]
+真ん中の $PP^{-1} = E$ が消えるのが要点である。$D^2$ は対角行列
+(対角成分は $\lambda_i^2$)だから、$A^2$ は $P$ で対角化される。
+同様に繰り返せば $P^{-1}A^nP = D^n$、すなわち
+\[
+A^n = P D^n P^{-1}
+\]
+が任意の $n$ で成り立つ。この式が次章の主役になる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{対角化の基本定理}:$A$ が対角化可能 $\iff$ 独立な
+固有ベクトルが $n$ 本とれる。$P$ は固有ベクトルを列に並べた行列で、
+$D$ には\textbf{並べた順に}固有値が並ぶ(反例 \ref{hanrei:diag-order})。
+検算は $AP = PD$ で。
+\item \textbf{相異なる固有値の固有ベクトルは線形独立}
+(定理 \ref{thm:diag-distinct}、帰納法+固有値の差で消す証明)。
+したがって $n$ 個の相異なる固有値をもてば対角化可能。
+\item 固有値が重複する場合は、\textbf{固有空間の次元の和が $n$ に
+なるか}で判定する(定理 \ref{thm:diag-criterion})。
+言い換えれば、(固有多項式が $1$ 次式の積に分解するとき)
+すべての固有値で幾何的重複度=代数的重複度。
+\item 重複していても対角化できる例(単位行列など)はある
+(反例 \ref{hanrei:diag-repeat})。逆に、せん断
+$\mat{1 & 1 \\ 0 & 1}$ は固有空間が足りず対角化できない。
+その先はジョルダン標準形(第VI部)の出番である。
+\item 実数の固有値が存在しない行列(回転)もある。複素数まで広げれば
+固有値は必ず $n$ 個そろう(深掘り)。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:diag-ex1}
+$A = \mat{5 & 4 \\ 2 & 3}$(問 \ref{q:eigen-ex1} の行列)を対角化せよ
+($P$ と $P^{-1}AP$ を明示し、$AP = PD$ で検算すること)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:diag-ex2}
+$A = \mat{2 & 1 \\ 1 & 2}$(例題 \ref{rei:eigen-basic} の行列)を
+対角化せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:diag-ex3}
+次の行列はそれぞれ対角化可能か。理由とともに判定せよ
+(対角化の実行までは不要)。
+\[
+(1)\ \mat{1 & 1 \\ 0 & 1} \qquad
+(2)\ \mat{1 & 1 \\ 0 & 2} \qquad
+(3)\ \mat{4 & 0 \\ 0 & 4}
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:diag-ex4}
+$A = \mat{2 & 1 \\ 1 & 2}$ の固有ベクトルを
+$\mat{1 \\ -1}$, $\mat{1 \\ 1}$ の\textbf{順に}列に並べた
+$P = \mat{1 & 1 \\ -1 & 1}$ を使うとき、$P^{-1}AP$ はどんな対角行列に
+なるか。$AP = PD$ の検算で確かめよ(問 \ref{q:diag-ex2} と
+対角成分の順序を見比べること)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex5}
+$A = \mat{2 & 1 & 1 \\ 0 & 1 & 0 \\ 0 & 1 & 3}$
+(問 \ref{q:eigen-ex5} の行列)を対角化せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex6}
+$A = \mat{3 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 2}$ が対角化可能でないことを、
+固有空間の次元を計算して示せ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex7}
+固有値 $2$ と $5$ をもち、対応する固有ベクトルがそれぞれ
+$\mat{1 \\ 1}$, $\mat{1 \\ -1}$ である $2$ 次正方行列 $A$ を求めよ
+($A = PDP^{-1}$ を計算する)。
+求めた $A$ について $A\mat{1 \\ 1}$ を計算して検算せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:diag-ex8}
+$A = \mat{a & 1 \\ 0 & 2}$ が対角化可能であるための $a$ の条件を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:diag-ex9}
+正射影行列 $P_0 = \dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$
+(例題 \ref{rei:eigen-proj})を対角化し、
+$Q^{-1}P_0Q = \mat{1 & 0 \\ 0 & 0}$ となる $Q$ を求めよ。
+さらに、この対角化を用いて $P_0^2 = P_0$(2度射影しても同じ)を
+計算で示せ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:diag-ex10}
+$A$ は対角化可能で、ある正の整数 $k$ について $A^k = O$ を満たすとする。
+このとき $A = O$ であることを示せ
+(対角化できるのに「べきで消える」行列は零行列しかない。
+逆にいえば、$A \neq O$ なのに $A^k = O$ となる行列
+――第VI部の主役「べき零行列」――は決して対角化できない)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:diag-ex11}
+$A$ が対角化可能ならば、転置行列 ${}^t\!A$ も対角化可能であることを
+証明せよ(ヒント:$A = PDP^{-1}$ の両辺を転置し、
+${}^t(P^{-1}) = ({}^tP)^{-1}$ を使う)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:diag-ex12}
+相異なる固有値 $\lambda_1 \neq \lambda_2$ に属する固有ベクトル
+$\vect{v}_1, \vect{v}_2$ が線形独立であることを、帰納法を使わずに
+直接証明せよ(ヒント:$c_1\vect{v}_1 + c_2\vect{v}_2 = \vect{0}$ の
+両辺に $A$ を掛けた式と、$\lambda_2$ 倍した式を見比べる。
+定理 \ref{thm:diag-distinct} の証明の「最初の一歩」を自分の手で
+再現する問題である)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:diag-ex1}}:固有値・固有ベクトルは
+問 \ref{q:eigen-ex1} で求めてある。並べて $P$ を作り、$AP = PD$ で検算。
+\item \textbf{問 \ref{q:diag-ex2}}:例題 \ref{rei:eigen-basic} の結果を
+使う。
+\item \textbf{問 \ref{q:diag-ex3}}:固有値がすべて異なれば即対角化可能。
+重複するときだけ固有空間の次元を数える。(3) はそもそも対角行列。
+\item \textbf{問 \ref{q:diag-ex4}}:$D$ の対角には「$P$ に並べた順」で
+固有値が入る(反例 \ref{hanrei:diag-order})。
+\item \textbf{問 \ref{q:diag-ex5}}:$3$ つの固有値が相異なるので
+対角化可能。固有ベクトルは問 \ref{q:eigen-ex5} のもの。
+\item \textbf{問 \ref{q:diag-ex6}}:固有値 $2$ の固有空間を掃き出して
+次元を数える。$1 + 1 < 3$ になるはず。
+\item \textbf{問 \ref{q:diag-ex7}}:$A = PDP^{-1}$。$2 \times 2$ の
+逆行列公式を使う。
+\item \textbf{問 \ref{q:diag-ex8}}:三角行列なので固有値は $a$ と $2$。
+$a = 2$ の場合だけ固有空間を調べる。
+\item \textbf{問 \ref{q:diag-ex9}}:固有値 $1, 0$ の固有ベクトルを
+列に並べる。$P_0^2 = QD^2Q^{-1}$ と $D^2 = D$ に注目
+(例題 \ref{rei:diag-power})。
+\item \textbf{問 \ref{q:diag-ex10}}:$A = PDP^{-1}$ とすると
+$A^k = PD^kP^{-1} = O$。$D^k$ の対角成分はどうなるか。
+\item \textbf{問 \ref{q:diag-ex11}}:転置は積の順序を逆にする
+(定理 \ref{thm:transpose})。$({}^tP)^{-1}D\,({}^tP)$ の形に整える。
+\item \textbf{問 \ref{q:diag-ex12}}:$A$ を掛けた式から $\lambda_2$ 倍した
+式を引くと $\vect{v}_2$ の項が消える。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{対角化の威力 ― 行列のべき乗と漸化式}\label{chap:power}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 公式 $A^n = PD^nP^{-1}$ を使って、対角化可能な行列のべき乗を
+閉じた式で計算できるようになる。
+\item $3$ 項間漸化式を行列の反復に翻訳し、特性方程式の解(=固有値)から
+一般項を「等比数列の線形結合」として求められるようになる。
+その方法の正当性を、次元の議論で説明できるようになる。
+\item 「長期的な振る舞いは絶対値最大の固有値が支配する」という原理を、
+フィボナッチ数列や極限をもつ数列で使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 対角化は何の役に立つのか}
+
+前章で対角化の理論を整えた。本章はその\textbf{報酬}を受け取る章である。
+行列 $A$ を何度も掛ける――状態を毎期更新する人口モデル、
+毎項更新する漸化式、後に学ぶ微分方程式――という場面では、
+$A^n$ が主役になる。しかし $A^{100}$ を愚直に $100$ 回掛けるのは
+絶望的である。対角化はこの計算を一撃で終わらせ、しかも
+「$n \to \infty$ で何が起きるか」という\textbf{構造の理解}まで与えてくれる。
+高校で天下りに教わった漸化式の「特性方程式」の正体も、ここで明かされる。
+
 \section{$A^n$ の計算}
 
 対角化の最初の報酬は、行列のべき乗が一瞬で計算できることである。
-$P^{-1}AP = D$(対角行列)とすると $A = PDP^{-1}$ であり、
+
+\begin{teiri}[べき乗の公式]\label{thm:power-formula}
+$P^{-1}AP = D = \mathrm{diag}(\lambda_1, \dots, \lambda_k)$ と
+対角化されているとき、任意の正の整数 $n$ に対して
 \[
-A^n = (PDP^{-1})(PDP^{-1})\cdots(PDP^{-1}) = P D^n P^{-1}.
+A^n = P D^n P^{-1}, \qquad
+D^n = \mat{\lambda_1^n & & \\ & \ddots & \\ & & \lambda_k^n}.
 \]
-途中の $P^{-1}P$ がすべて消えるからである。そして対角行列のべき乗は
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$A = PDP^{-1}$ より
 \[
-D^n = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_k}^{\,n}
-= \mat{\lambda_1^n & & \\ & \ddots & \\ & & \lambda_k^n}
+A^n = (PDP^{-1})(PDP^{-1})\cdots(PDP^{-1}) = P D^n P^{-1}
 \]
-と、対角成分を $n$ 乗するだけである。
+――途中の $P^{-1}P$ がすべて消える(例題 \ref{rei:diag-power} で
+$n = 2$ の場合を確かめた。一般には $n$ についての帰納法)。
+対角行列のべきが対角成分のべきになることは、積の定義から直ちに分かる。
+$\blacksquare$
+
 $A^{100}$ を $100$ 回掛け算する必要はない。
 \textbf{よい座標系に移って計算し、最後に元の座標系に戻す}
-――$PDP^{-1}$ の三段構えは、この戦略の式形である。
+――$PD^nP^{-1}$ の三段構えは、この戦略の式形である。
+
+\begin{mondai}\label{q:power}
+問 \ref{q:eigen} の $A = \mat{1 & 4 \\ 2 & 3}$ について、
+対角化を用いて $A^n$ を求めよ。
+\end{mondai}
 
 \section{フィボナッチ数列 ― 本書の伏線を回収する}
 
-\begin{rei}[ビネの公式]
+\begin{rei}[ビネの公式]\label{rei:power-binet}
 フィボナッチ数列 $F_0 = 0$, $F_1 = 1$, $F_{n+2} = F_{n+1} + F_n$ を考える。
 隣り合う $2$ 項を束ねたベクトル $\vect{x}_n = \mat{F_{n+1} \\ F_n}$ を作ると、
 漸化式は
@@ -271,8 +1155,22 @@ $\vect{x}_n = A^n \vect{x}_0$ であり、問題は $A^n$ の計算に帰着し�
 \varphi = \frac{1 + \sqrt{5}}{2}, \qquad \psi = \frac{1 - \sqrt{5}}{2}
 \]
 (黄金比とその相棒)。固有ベクトルは $\vect{v}_\lambda = \mat{\lambda \\ 1}$
-と取れる(確かめよ)。相異なる $2$ つの固有値をもつので対角化可能で、
-$A^n = PD^nP^{-1}$ を計算して成分を取り出すと(計算は各自):
+と取れる(問 \ref{q:eigen-ex9} で確かめた)。相異なる $2$ つの固有値を
+もつので対角化可能で、
+\[
+P = \mat{\varphi & \psi \\ 1 & 1}, \qquad
+P^{-1} = \frac{1}{\varphi - \psi}\mat{1 & -\psi \\ -1 & \varphi}
+= \frac{1}{\sqrt{5}}\mat{1 & -\psi \\ -1 & \varphi}
+\]
+($\varphi - \psi = \sqrt{5}$、$2 \times 2$ の逆行列公式)。
+$\vect{x}_0 = \mat{1 \\ 0}$ だから
+\[
+P^{-1}\vect{x}_0 = \frac{1}{\sqrt{5}}\mat{1 \\ -1}, \qquad
+D^n P^{-1}\vect{x}_0 = \frac{1}{\sqrt{5}}\mat{\varphi^n \\ -\psi^n}, \qquad
+\vect{x}_n = P\,\Bigl(D^n P^{-1}\vect{x}_0\Bigr)
+= \frac{1}{\sqrt{5}}\mat{\varphi^{n+1} - \psi^{n+1} \\ \varphi^n - \psi^n}.
+\]
+第 $2$ 成分が $F_n$ だから
 \[
 F_n = \frac{\varphi^n - \psi^n}{\sqrt{5}}.
 \]
@@ -308,33 +1206,398 @@ $V$ 上の線形変換であり、等比数列はその固有ベクトルであ�
 ($e^{\lambda t}$ が微分の固有ベクトルとして)再現される。
 \end{itembox}
 
-\section{一般の線形漸化式}
+\section{$3$ 項間漸化式の一般解}
 
-フィボナッチの方法は一般化できる。$k$ 項間漸化式
-$a_{n+k} = c_{k-1}a_{n+k-1} + \cdots + c_0 a_n$ は、
-連続する $k$ 項を束ねることで $k$ 次正方行列(\textbf{同伴行列})の反復になり、
-その固有方程式は特性方程式 $\lambda^k = c_{k-1}\lambda^{k-1} + \cdots + c_0$
-に一致する。固有値がすべて異なれば、一般項は等比数列の線形結合で書ける。
-(特性方程式が重解をもつ場合は対角化できず、$n\lambda^n$ 型の項が現れる。
-その理由はジョルダン標準形で完全に説明される。)
+フィボナッチで使った方法は、そのまま定理の形にまとめられる。
 
-\begin{mondai}\label{q:power}
-問 \ref{q:eigen} の $A = \mat{1 & 4 \\ 2 & 3}$ について、
-対角化を用いて $A^n$ を求めよ。
-\end{mondai}
+\begin{teiri}[$3$ 項間漸化式の一般項]\label{thm:power-rec}
+漸化式
+\[
+a_{n+2} = p\,a_{n+1} + q\,a_n \qquad (q \neq 0)
+\]
+を満たす数列全体 $W$ は $2$ 次元のベクトル空間である。
+\textbf{特性方程式} $\lambda^2 = p\lambda + q$ が相異なる $2$ 解
+$\alpha, \beta$ をもつならば、等比数列 $(\alpha^n)$, $(\beta^n)$ が
+$W$ の基底になり、したがって一般項は
+\[
+a_n = c_1 \alpha^n + c_2 \beta^n
+\]
+の形にただ一通りに書ける($c_1, c_2$ は初期条件 $a_0, a_1$ から決まる)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$W$ がベクトル空間になることは問 \ref{q:vs-ex6} と同様
+(和とスカラー倍が同じ漸化式を保つ)。
+$\dim W = 2$ であることは問 \ref{q:basis2} と同様である:
+数列は最初の $2$ 項で完全に決まるから、
+「$a_0 = 1, a_1 = 0$ で始まる解」と「$a_0 = 0, a_1 = 1$ で始まる解」の
+$2$ 本が基底になる。
+
+次に、$\alpha$ は特性方程式の解だから $\alpha^2 = p\alpha + q$。
+両辺に $\alpha^n$ を掛ければ
+$\alpha^{n+2} = p\,\alpha^{n+1} + q\,\alpha^n$、
+すなわち等比数列 $(\alpha^n)$ は漸化式を満たし $W$ に属する。
+$(\beta^n)$ も同様である。
+
+独立性:$c_1\alpha^n + c_2\beta^n = 0$(すべての $n$)とすると、
+$n = 0, 1$ で
+\[
+c_1 + c_2 = 0, \qquad c_1\alpha + c_2\beta = 0.
+\]
+第 $1$ 式から $c_2 = -c_1$、第 $2$ 式に代入して
+$c_1(\alpha - \beta) = 0$。$\alpha \neq \beta$ より $c_1 = 0$、
+よって $c_2 = 0$ である。
+
+$2$ 次元空間 $W$ の独立な $2$ 本だから、
+定理 \ref{thm:dim-ncheck}(1) により基底である。 $\blacksquare$
+
+行列の言葉でいえば、$\vect{x}_n = \mat{a_{n+1} \\ a_n}$ と束ねると
+$\vect{x}_{n+1} = A\vect{x}_n$、$A = \mat{p & q \\ 1 & 0}$
+(\textbf{同伴行列})であり、その固有多項式は
+\[
+\det\mat{\lambda - p & -q \\ -1 & \lambda}
+= \lambda(\lambda - p) - q = \lambda^2 - p\lambda - q
+\]
+――ちょうど特性方程式になる。\textbf{特性方程式とは同伴行列の
+固有方程式}であり、等比数列の底 $\alpha, \beta$ とは固有値のことだった。
 
 \begin{mondai}\label{q:rec}
 漸化式 $a_{n+2} = a_{n+1} + 2a_n$, $a_0 = 1$, $a_1 = 1$ の一般項を、
 等比数列の線形結合として求めよ。
 \end{mondai}
 
+一般の $k$ 項間漸化式
+$a_{n+k} = c_{k-1}a_{n+k-1} + \cdots + c_0 a_n$ も、
+連続する $k$ 項を束ねることで $k$ 次の同伴行列の反復になり、
+その固有方程式は特性方程式 $\lambda^k = c_{k-1}\lambda^{k-1} + \cdots + c_0$
+に一致する。固有値がすべて異なれば、一般項は等比数列の線形結合で書ける。
+特性方程式が重解をもつ場合は $n\lambda^n$ 型の項が現れる
+(問 \ref{q:power-ex11}。行列の側では対角化不可能になっており、
+完全な説明は第VI部のジョルダン標準形で与えられる)。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[「成分ごとの $n$ 乗」は $A^n$ ではない]\label{hanrei:power-entrywise}
+$A^n$ を「各成分を $n$ 乗した行列」と混同してはならない。
+$A = \mat{1 & 1 \\ 1 & 1}$ では
+\[
+A^2 = \mat{2 & 2 \\ 2 & 2}
+\]
+であって、成分ごとの $2$ 乗 $\mat{1 & 1 \\ 1 & 1}$ とは別物である。
+成分ごとの $n$ 乗が正しいのは\textbf{対角行列だけ}であり、
+だからこそ「対角化してからべき乗し、元に戻す」
+$A^n = PD^nP^{-1}$ に価値がある。
+\end{hanrei}
+
+\begin{hanrei}[特性方程式が重解のときは等比数列だけでは足りない]\label{hanrei:power-double}
+漸化式 $a_{n+2} = 2a_{n+1} - a_n$ の特性方程式は
+$\lambda^2 - 2\lambda + 1 = (\lambda - 1)^2$ で、解は $\lambda = 1$ のみ
+(重解)。等比数列の解は定数数列 $(1, 1, 1, \dots)$ とその定数倍しか
+得られず、$1$ 次元分にしかならない。ところが解空間は $2$ 次元であり
+(例題 \ref{rei:dim-seq})、たとえば $a_n = n$(等差数列)は
+この漸化式の解なのに、どんな等比数列の線形結合でも書けない。
+足りない $1$ 本が $n \cdot 1^n = n$ 型の解である
+(一般の重解の場合は問 \ref{q:power-ex11})。
+行列の側では、同伴行列 $\mat{2 & -1 \\ 1 & 0}$ が対角化不可能に
+なっている――「重解=対角化の失敗=等比数列の不足」は同じ現象の
+三つの顔である。
+\end{hanrei}
+
+\section{例題}
+
+$A^n$ の計算と漸化式への応用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(三角行列のべき乗)]\label{rei:power-tri}
+$A = \mat{1 & 2 \\ 0 & 3}$ の $A^n$ を求めよ。\\
+\textbf{解.}\ 固有値は対角成分の $1, 3$。固有ベクトルは
+$\lambda = 1$ で $\mat{1 \\ 0}$、$\lambda = 3$ で $\mat{1 \\ 1}$
+(問 \ref{q:repmat-ex5} で対角化済み)。
+$P = \mat{1 & 1 \\ 0 & 1}$, $P^{-1} = \mat{1 & -1 \\ 0 & 1}$,
+$D = \mat{1 & 0 \\ 0 & 3}$ として
+\[
+A^n = PD^nP^{-1}
+= \mat{1 & 1 \\ 0 & 1}\mat{1 & 0 \\ 0 & 3^n}\mat{1 & -1 \\ 0 & 1}
+= \mat{1 & 3^n \\ 0 & 3^n}\mat{1 & -1 \\ 0 & 1}
+= \mat{1 & 3^n - 1 \\ 0 & 3^n}.
+\]
+検算:$n = 1$ で $\mat{1 & 2 \\ 0 & 3} = A$、
+$n = 2$ で $\mat{1 & 8 \\ 0 & 9}$ は直接計算の
+$A^2 = \mat{1 & 8 \\ 0 & 9}$ と一致する。
+\end{rei}
+
+\begin{rei}[例題・基本(対称行列のべき乗)]\label{rei:power-sym}
+$A = \mat{2 & 1 \\ 1 & 2}$ の $A^n$ を求めよ。\\
+\textbf{解.}\ 問 \ref{q:diag-ex2} より
+$P = \mat{1 & 1 \\ 1 & -1}$, $D = \mat{3 & 0 \\ 0 & 1}$,
+$P^{-1} = \dfrac{1}{2}\mat{1 & 1 \\ 1 & -1}$。よって
+\[
+A^n = \mat{1 & 1 \\ 1 & -1}\mat{3^n & 0 \\ 0 & 1}
+\cdot\frac{1}{2}\mat{1 & 1 \\ 1 & -1}
+= \frac{1}{2}\mat{3^n & 1 \\ 3^n & -1}\mat{1 & 1 \\ 1 & -1}
+= \frac{1}{2}\mat{3^n + 1 & 3^n - 1 \\ 3^n - 1 & 3^n + 1}.
+\]
+検算:$n = 1$ で $\dfrac{1}{2}\mat{4 & 2 \\ 2 & 4} = A$。
+また $\mathrm{tr}\,A^n = 3^n + 1$ は「固有値の $n$ 乗の和」に
+一致している(例題 \ref{rei:power-trace})。
+\end{rei}
+
+\begin{rei}[例題・基本(漸化式を解く)]\label{rei:power-rec-ex}
+漸化式 $a_{n+2} = 5a_{n+1} - 6a_n$, $a_0 = 0$, $a_1 = 5$ の一般項を求めよ。\\
+\textbf{解.}\ 特性方程式は $\lambda^2 = 5\lambda - 6$、すなわち
+$(\lambda - 2)(\lambda - 3) = 0$ で $\lambda = 2, 3$(相異なる)。
+定理 \ref{thm:power-rec} により $a_n = c_1 2^n + c_2 3^n$ とおける。
+初期条件から
+\[
+c_1 + c_2 = 0, \qquad 2c_1 + 3c_2 = 5
+\]
+を解いて $c_2 = 5$, $c_1 = -5$。よって
+\[
+a_n = 5\,(3^n - 2^n).
+\]
+検算:$a_2 = 5a_1 - 6a_0 = 25$、公式でも $5(9 - 4) = 25$ で一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(連立漸化式)]\label{rei:power-system}
+数列 $a_n, b_n$ が
+\[
+a_{n+1} = 3a_n + b_n, \qquad b_{n+1} = a_n + 3b_n, \qquad
+a_0 = 1,\ b_0 = 0
+\]
+を満たすとき、$a_n, b_n$ を求めよ。\\
+\textbf{解.}\ $\vect{x}_n = \mat{a_n \\ b_n}$ とおくと
+$\vect{x}_{n+1} = A\vect{x}_n$、$A = \mat{3 & 1 \\ 1 & 3}$ だから
+$\vect{x}_n = A^n\vect{x}_0$。$A$ は問 \ref{q:repmat} で対角化済み
+($P = \mat{1 & 1 \\ 1 & -1}$, $D = \mathrm{diag}(4, 2)$)なので、
+例題 \ref{rei:power-sym} と同じ計算で
+\[
+A^n = \frac{1}{2}\mat{4^n + 2^n & 4^n - 2^n \\ 4^n - 2^n & 4^n + 2^n}.
+\]
+$\vect{x}_0 = \mat{1 \\ 0}$ を掛けて第 $1$ 列を読み、
+\[
+a_n = \frac{4^n + 2^n}{2}, \qquad b_n = \frac{4^n - 2^n}{2}.
+\]
+検算:$n = 1$ で $a_1 = 3, b_1 = 1$ となり、
+$a_1 = 3a_0 + b_0 = 3$, $b_1 = a_0 + 3b_0 = 1$ と一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(極限をもつ数列)]\label{rei:power-limit}
+「前の $2$ 項の平均を次の項とする」数列
+$a_{n+2} = \dfrac{a_{n+1} + a_n}{2}$, $a_0 = 0$, $a_1 = 1$ について、
+一般項と極限 $\displaystyle\lim_{n\to\infty} a_n$ を求めよ。\\
+\textbf{解.}\ 特性方程式は $2\lambda^2 = \lambda + 1$、すなわち
+$(2\lambda + 1)(\lambda - 1) = 0$ で
+$\lambda = 1, -\dfrac{1}{2}$。よって
+$a_n = c_1 \cdot 1^n + c_2\left(-\dfrac{1}{2}\right)^n$ とおけて、
+初期条件 $c_1 + c_2 = 0$,
+$c_1 - \dfrac{c_2}{2} = 1$ から $c_1 = \dfrac{2}{3}$,
+$c_2 = -\dfrac{2}{3}$。
+\[
+a_n = \frac{2}{3}\left\{1 - \left(-\frac{1}{2}\right)^n\right\},
+\qquad
+\lim_{n\to\infty} a_n = \frac{2}{3}
+\]
+($\left|-\dfrac{1}{2}\right| < 1$ なので第 $2$ 項は $0$ に消える)。
+検算:$a_2 = \dfrac{1 + 0}{2} = \dfrac{1}{2}$、公式でも
+$\dfrac{2}{3}\left(1 - \dfrac{1}{4}\right) = \dfrac{1}{2}$。
+絶対値最大の固有値 $1$ が極限を支配し、もう一方の固有値
+$-\dfrac{1}{2}$ は「減衰する振動」として消えていく
+――固有値が数列の運命を完全に語っている。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:トレースと固有値のべき)]\label{rei:power-trace}
+$2$ 次正方行列 $A$ が相異なる固有値 $\lambda_1, \lambda_2$ をもつとき、
+\[
+\mathrm{tr}(A^n) = \lambda_1^n + \lambda_2^n
+\]
+を示せ。\\
+\textbf{解.}\ $A$ は対角化可能(定理 \ref{thm:diag-ndistinct})で、
+$A^n = PD^nP^{-1}$($D = \mathrm{diag}(\lambda_1, \lambda_2)$)。
+トレースは相似で不変だから(定理 \ref{thm:trace-similar})
+\[
+\mathrm{tr}(A^n) = \mathrm{tr}(PD^nP^{-1}) = \mathrm{tr}(D^n)
+= \lambda_1^n + \lambda_2^n.
+\]
+たとえば $A = \mat{2 & 1 \\ 1 & 2}$(固有値 $3, 1$)なら
+$\mathrm{tr}(A^{100}) = 3^{100} + 1$ と、$A^{100}$ を計算せずに分かる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{$A^n = PD^nP^{-1}$}(定理 \ref{thm:power-formula})。
+対角行列は成分ごとに $n$ 乗できるから、対角化さえ済めばべき乗は一撃である
+(成分ごとの $n$ 乗が許されるのは対角行列だけ:
+反例 \ref{hanrei:power-entrywise})。検算は $n = 1$ の代入で。
+\item $3$ 項間漸化式は同伴行列の反復であり、高校の\textbf{特性方程式}の
+正体は同伴行列の固有方程式である。相異なる $2$ 解 $\alpha, \beta$ を
+もてば、一般項は $a_n = c_1\alpha^n + c_2\beta^n$
+(定理 \ref{thm:power-rec}:等比数列 $2$ 本が $2$ 次元解空間の基底)。
+\item 重解の場合は等比数列だけでは足りず、$n\lambda^n$ 型の解が加わる
+(反例 \ref{hanrei:power-double})。行列の側では対角化の失敗に対応する。
+\item \textbf{長期的な振る舞いは絶対値最大の固有値が支配する}。
+フィボナッチの隣接比が黄金比に収束するのも、平均化の数列が
+$\dfrac{2}{3}$ に収束するのも、この原理の現れである。
+\item $\mathrm{tr}(A^n) = \lambda_1^n + \cdots + \lambda_k^n$ など、
+べき乗の不変量は固有値だけで計算できる。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:power-ex1}
+$A = \mat{1 & 2 \\ 2 & 1}$(例題 \ref{rei:diag-basic} で対角化済み)の
+$A^n$ を求めよ。$n = 1$ を代入して検算すること。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:power-ex2}
+$A = \mat{2 & 1 \\ 0 & 3}$ を対角化し、$A^n$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:power-ex3}
+漸化式 $a_{n+2} = a_{n+1} + 6a_n$, $a_0 = 0$, $a_1 = 5$ の一般項を
+求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:power-ex4}
+漸化式 $a_{n+2} = 2a_{n+1} + 3a_n$, $a_0 = 1$, $a_1 = 1$ の一般項を
+求めよ。$a_2$ を漸化式と公式の両方で計算して検算すること。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex5}
+$A = \mat{1 & 0 & 2 \\ 0 & 3 & 0 \\ 2 & 0 & 1}$
+(例題 \ref{rei:diag-3x3} で対角化済み)の $A^n$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex6}
+数列 $a_n, b_n$ が
+\[
+a_{n+1} = a_n + 2b_n, \qquad b_{n+1} = 2a_n + b_n, \qquad
+a_0 = 1,\ b_0 = 0
+\]
+を満たすとき、$a_n, b_n$ を求めよ
+(問 \ref{q:power-ex1} の結果が使える)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex7}
+漸化式 $a_{n+2} = \dfrac{1}{3}a_{n+1} + \dfrac{2}{3}a_n$,
+$a_0 = 0$, $a_1 = 5$ について、一般項と極限
+$\displaystyle\lim_{n\to\infty} a_n$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:power-ex8}
+$A = \mat{2 & 1 \\ 1 & 2}$ について、$\mathrm{tr}(A^{10})$ と
+$\det(A^{10})$ を、$A^{10}$ そのものを計算せずに求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:power-ex9}
+リュカ数列 $L_0 = 2$, $L_1 = 1$, $L_{n+2} = L_{n+1} + L_n$
+(フィボナッチと同じ漸化式で初期値だけ違う数列)について、次を示せ。\\
+　(1) $L_n = \varphi^n + \psi^n$
+($\varphi, \psi$ は例 \ref{rei:power-binet} の黄金比とその相棒)。\\
+　(2) $L_n = \mathrm{tr}(A^n)$($A = \mat{1 & 1 \\ 1 & 0}$ は
+フィボナッチの行列)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:power-ex10}
+$A = \dfrac{1}{3}\mat{1 & 1 \\ 1 & 1}$ について、次に答えよ。\\
+　(1) $A$ の固有値を求めよ。\\
+　(2) $A^n$ を求め、$n \to \infty$ で $A^n$ の各成分が $0$ に
+収束することを確かめよ。\\
+　(3) 対角化可能な行列について「すべての固有値の絶対値が $1$ より
+小さければ $A^n$ の各成分は $0$ に収束する」ことを、
+$A^n = PD^nP^{-1}$ から説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:power-ex11}
+特性方程式 $\lambda^2 = p\lambda + q$ が重解 $\alpha \neq 0$ をもつとする
+(このとき $p = 2\alpha$, $q = -\alpha^2$ である)。次を証明せよ。\\
+　(1) 数列 $(n\alpha^n)$ は漸化式 $a_{n+2} = p\,a_{n+1} + q\,a_n$ を
+満たす。\\
+　(2) $(\alpha^n)$ と $(n\alpha^n)$ は線形独立であり、したがって
+解空間の基底をなす(一般項は $a_n = (c_1 + c_2 n)\alpha^n$ の形になる)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:power-ex12}
+$A$ は対角化可能で、固有値が $\lambda_1, \dots, \lambda_n$
+(重複を込めて)であるとする。任意の正の整数 $k$ について次を示せ。\\
+　(1) $A^k$ の固有値は $\lambda_1^k, \dots, \lambda_n^k$ である。\\
+　(2) $\mathrm{tr}(A^k) = \lambda_1^k + \cdots + \lambda_n^k$、
+$\det(A^k) = (\lambda_1 \cdots \lambda_n)^k = (\det A)^k$。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:power-ex1}}:$P, D$ は例題 \ref{rei:diag-basic}。
+$PD^nP^{-1}$ を右から順に計算する。
+\item \textbf{問 \ref{q:power-ex2}}:三角行列なので固有値は対角成分。
+固有ベクトルを求めて例題 \ref{rei:power-tri} の手順で。
+\item \textbf{問 \ref{q:power-ex3}}:特性方程式
+$\lambda^2 = \lambda + 6$ を解き、初期条件で係数を決める。
+\item \textbf{問 \ref{q:power-ex4}}:同様。$\lambda = 3, -1$ になる。
+\item \textbf{問 \ref{q:power-ex5}}:$A^n = PD^nP^{-1}$。$P^{-1}$ は
+例題 \ref{rei:diag-3x3} の $P$ から掃き出しで求める
+(ブロック構造に注目すると楽)。
+\item \textbf{問 \ref{q:power-ex6}}:$\vect{x}_n = A^n\vect{x}_0$ の形に
+書き、$A^n$ に問 \ref{q:power-ex1} を使う。
+\item \textbf{問 \ref{q:power-ex7}}:特性方程式
+$3\lambda^2 = \lambda + 2$ を解く($\lambda = 1$ が解の一つ)。
+極限は絶対値最大の固有値 $1$ の項だけが生き残る。
+\item \textbf{問 \ref{q:power-ex8}}:例題 \ref{rei:power-trace} と、
+$\det(A^{10}) = (\det A)^{10}$(行列式の積公式)。
+\item \textbf{問 \ref{q:power-ex9}}:(1) は $c_1\varphi^n + c_2\psi^n$ に
+初期条件を入れる($\varphi + \psi = 1$ に注意)。
+(2) は例題 \ref{rei:power-trace}。
+\item \textbf{問 \ref{q:power-ex10}}:$A = \dfrac{2}{3} P_0$
+($P_0$ は例題 \ref{rei:eigen-proj} の射影行列)という見方もできる。
+\item \textbf{問 \ref{q:power-ex11}}:(1) は $p = 2\alpha$,
+$q = -\alpha^2$ を代入して両辺を比べる。(2) は $n = 0, 1$ の値で
+係数を決める。
+\item \textbf{問 \ref{q:power-ex12}}:$A^k = PD^kP^{-1}$ に、
+固有多項式の相似不変性・トレースと行列式の相似不変性を適用する。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{ケーリー・ハミルトンの定理と最小多項式}\label{chap:ch}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item ケーリー・ハミルトンの定理($\varphi_A(A) = O$)を、$2$ 次の場合の
+完全な証明と対角化可能な場合の証明とともに理解する。
+\item 定理を使って、高いべき乗の「べき下げ」(余りの方法)と、
+逆行列の多項式表示を実行できるようになる。
+\item \textbf{最小多項式}の基本性質($A$ を消す多項式をすべて割り切る、
+根は固有値と一致する)を証明つきで理解し、具体的な行列の最小多項式を
+計算して対角化可能性の判定に使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 行列は自分の固有方程式を満たす}
+
+第IV部の締めくくりに、固有多項式にまつわる美しい定理を紹介する。
+固有多項式 $\varphi_A(\lambda)$ は「数 $\lambda$ を入れる」ための
+多項式だった。ところが、そこに\textbf{行列 $A$ 自身を代入する}と、
+驚くべきことに必ず零行列になる。$2$ 次の場合に試すと
+\[
+A = \mat{1 & 2 \\ 3 & 4}, \qquad
+\varphi_A(\lambda) = \lambda^2 - 5\lambda - 2, \qquad
+A^2 - 5A - 2E = \mat{7 & 10 \\ 15 & 22} - \mat{5 & 10 \\ 15 & 20}
+- \mat{2 & 0 \\ 0 & 2} = O.
+\]
+偶然ではない。この事実(ケーリー・ハミルトンの定理)は、
+$A^2$ 以上のべきを $A$ と $E$ の線形結合に「たたみ込む」道具であり、
+対角化できない行列にも通用する。さらに、「$A$ を消す最小の多項式」を
+考えることで、対角化可能性の最も洗練された判定法(最小多項式)へと
+つながっていく。
+
 \section{ケーリー・ハミルトンの定理}
 
-\begin{teiri}[ケーリー・ハミルトン]
+\begin{teiri}[ケーリー・ハミルトン]\label{thm:ch-main}
 $A$ の固有多項式 $\varphi_A(\lambda)$ に $A$ 自身を代入すると零行列になる:
 \[
 \varphi_A(A) = O.
@@ -345,18 +1608,89 @@ A^2 - (\mathrm{tr}\,A)\,A + (\det A)\,E = O.
 \]
 \end{teiri}
 
+\noindent\textbf{(証明:$2$ 次の場合)}\quad
+$A = \mat{a & b \\ c & d}$ とすると
+\[
+A^2 = \mat{a^2 + bc & b(a + d) \\ c(a + d) & d^2 + bc}, \qquad
+(\mathrm{tr}\,A)A = (a + d)\mat{a & b \\ c & d}
+= \mat{a^2 + ad & b(a + d) \\ c(a + d) & ad + d^2}.
+\]
+辺々引くと非対角成分が消えて
+\[
+A^2 - (\mathrm{tr}\,A)A = \mat{bc - ad & 0 \\ 0 & bc - ad}
+= -(ad - bc)E = -(\det A)E,
+\]
+移項すれば $A^2 - (\mathrm{tr}\,A)A + (\det A)E = O$ である。 $\blacksquare$
+
+\noindent\textbf{(証明:対角化可能な場合の一般次数)}\quad
+$A = PDP^{-1}$($D = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$)と
+対角化されているとする。一般に、多項式
+$f(\lambda) = c_k\lambda^k + \cdots + c_1\lambda + c_0$ に対して
+$A^j = PD^jP^{-1}$(定理 \ref{thm:power-formula})だから
+\[
+f(A) = c_k PD^kP^{-1} + \cdots + c_1 PDP^{-1} + c_0 PEP^{-1}
+= P\,f(D)\,P^{-1}
+\]
+であり、$f(D) = \mathrm{diag}\bigl(f(\lambda_1), \dots, f(\lambda_n)\bigr)$
+である。$f = \varphi_A$ とすると、各 $\lambda_i$ は固有方程式の解だから
+$\varphi_A(\lambda_i) = 0$、よって $\varphi_A(D) = O$ となり
+\[
+\varphi_A(A) = P\,\varphi_A(D)\,P^{-1} = P\,O\,P^{-1} = O. \qquad\blacksquare
+\]
+
+対角化できない行列を含む完全な証明は余因子行列を使う(深掘り参照)。
 高校数学IIIや旧課程で「ハミルトン・ケーリーの定理」として
 $2$ 次の場合に触れた読者もいるだろう。一般の $n$ 次で成り立つ。
+
+\section{効用 ― べき下げと逆行列}
 
 この定理の効用は、\textbf{$A$ の高いべきを低いべきで表せる}ことである。
 $2$ 次なら $A^2 = (\mathrm{tr}\,A)A - (\det A)E$ を繰り返し使えば、
 $A^n$ はつねに $\alpha A + \beta E$ の形に落ちる
 (対角化できない行列にも使える点が強み)。
-また $\det A \neq 0$ なら、上式を変形して
+繰り返しを一気に済ませるのが、次の\textbf{余りの方法}である。
+
+\begin{teiri}[余りによるべき計算]\label{thm:ch-remainder}
+多項式 $f(\lambda)$ を固有多項式 $\varphi_A(\lambda)$ で割った余りを
+$r(\lambda)$ とすると($f = q\,\varphi_A + r$、
+$\deg r < n$)、
+\[
+f(A) = r(A).
+\]
+とくに $f(\lambda) = \lambda^N$ とすれば、$A^N$ は次数 $n - 1$ 以下の
+$A$ の多項式で書ける。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$f(\lambda) = q(\lambda)\varphi_A(\lambda) + r(\lambda)$ は
+$\lambda$ の多項式としての等式だから、両辺の $\lambda^k$ を $A^k$ で
+置き換えた行列の等式も成り立つ($A$ のべきどうしの積は順序を
+気にしなくてよいので、数の場合とまったく同じに展開できる)。
+ケーリー・ハミルトンの定理 \ref{thm:ch-main} より
+$\varphi_A(A) = O$ だから
+\[
+f(A) = q(A)\,\varphi_A(A) + r(A) = q(A)\,O + r(A) = r(A). \qquad\blacksquare
+\]
+
+余り $r$ の係数は、割り算を実行しなくても、
+\textbf{固有値を代入する}ことで求まる:$\varphi_A(\lambda_i) = 0$ だから
+$f(\lambda_i) = r(\lambda_i)$ が各固有値で成り立ち、これが $r$ の係数の
+連立方程式になる(例題 \ref{rei:ch-power100})。
+
+また $\det A \neq 0$ なら、$2$ 次のケーリー・ハミルトンの式を変形して
 \[
 A^{-1} = \frac{1}{\det A}\bigl((\mathrm{tr}\,A)E - A\bigr)
 \]
-と、逆行列まで $A$ の多項式で書ける。
+と、\textbf{逆行列まで $A$ の多項式で書ける}
+($A\bigl((\mathrm{tr}\,A)E - A\bigr) = (\mathrm{tr}\,A)A - A^2
+= (\det A)E$ による)。
+
+\begin{mondai}\label{q:ch}
+$A = \mat{1 & 4 \\ 2 & 3}$(問 \ref{q:eigen} の行列)について、\\
+　(1) ケーリー・ハミルトンの定理が成り立つこと($A^2 - 4A - 5E = O$)を
+直接計算で確かめよ。\\
+　(2) この式を用いて $A^{-1}$ を $A$ と $E$ の線形結合で表せ。
+\end{mondai}
 
 \begin{itembox}[l]{深掘り:有名な「一行の誤証明」}
 $\varphi_A(\lambda) = \det(\lambda E - A)$ に $\lambda = A$ を代入すれば
@@ -371,7 +1705,7 @@ $\det(\lambda E - A)$ の $\lambda$ は「数を入れる箱」として展開�
 多項式であって、行列を入れてよい場所ではない
 ($\lambda E - A$ の $\lambda E$ に $A$ を「掛ける」のか「代入する」のかが
 曖昧になる)。正しい証明は余因子行列を巧みに使う
-(あるいは「対角化可能な行列では明らか+極限論法」による)。
+(あるいは「対角化可能な行列では本文のとおり+極限論法」による)。
 \textbf{記号の見かけに引きずられず、式の型(スカラーか、行列か、多項式か)を
 確認する}――この習慣は、数学のあらゆる場面で誤りからあなたを守る。
 \end{itembox}
@@ -383,20 +1717,69 @@ $\varphi_A(A) = O$ により、「$A$ を代入すると消える多項式」は
 
 \begin{teigi}[最小多項式]
 $m(A) = O$ を満たす多項式のうち、次数最小で最高次係数 $1$ のものを
-$A$ の\textbf{最小多項式}といい、$m_A(\lambda)$ と書く。
+$A$ の\textbf{最小多項式}といい、$m_A(\lambda)$ と書く
+(そのようなものがただ一つであることは問 \ref{q:ch-ex11} で証明する)。
 \end{teigi}
 
-最小多項式は固有多項式を割り切り、しかも固有多項式と同じ根
-(固有値)をすべてもつことが知られている。違いは\textbf{重複度だけ}である。
-そして、対角化可能性の最も洗練された判定法が次である。
-
-\begin{teiri}[最小多項式による判定]
-$A$ が対角化可能 $\iff$ $m_A(\lambda)$ が重根をもたない。
+\begin{teiri}[最小多項式の基本性質]\label{thm:minpoly-basic}
+\begin{enumerate}
+\item $f(A) = O$ を満たす多項式 $f$ は、すべて $m_A$ で割り切れる。
+とくに、固有多項式は最小多項式で割り切れる($m_A \mid \varphi_A$)。
+\item $m_A(\lambda) = 0$ の解は、$A$ の固有値と過不足なく一致する。
+\end{enumerate}
 \end{teiri}
 
-\begin{rei}
+\noindent\textbf{(証明)}\quad
+(1) $f$ を $m_A$ で割って $f = q\,m_A + r$($\deg r < \deg m_A$)とする。
+行列を代入すると(定理 \ref{thm:ch-remainder} の証明と同じ理屈で)
+\[
+O = f(A) = q(A)\,m_A(A) + r(A) = r(A).
+\]
+もし $r$ が零多項式でなければ、「$A$ を消す、$m_A$ より次数の低い多項式」
+が存在することになり、$m_A$ の次数最小性に矛盾する。よって $r = 0$、
+すなわち $m_A \mid f$ である。$\varphi_A(A) = O$
+(ケーリー・ハミルトン)だから、とくに $m_A \mid \varphi_A$。
+
+(2) まず、固有値はすべて $m_A$ の根であることを示す。
+$\lambda$ を固有値、$\vect{v} \neq \vect{0}$ を固有ベクトルとすると、
+$A^k\vect{v} = \lambda^k\vect{v}$(問 \ref{q:eigen-ex8} の繰り返し)より、
+どんな多項式 $f$ でも $f(A)\vect{v} = f(\lambda)\vect{v}$ が成り立つ。
+$f = m_A$ とすると
+\[
+\vect{0} = m_A(A)\vect{v} = m_A(\lambda)\vect{v}
+\]
+で、$\vect{v} \neq \vect{0}$ だから $m_A(\lambda) = 0$。
+逆に、$m_A$ の根は、$m_A \mid \varphi_A$ により $\varphi_A$ の根、
+すなわち固有値である。 $\blacksquare$
+
+つまり、固有多項式と最小多項式は\textbf{同じ根をもち、
+違いは重複度だけ}である。
+そして、対角化可能性の最も洗練された判定法が次である。
+
+\begin{teiri}[最小多項式による判定]\label{thm:minpoly-diag}
+$A$ が対角化可能 $\iff$ $m_A(\lambda)$ が重根をもたない
+(すなわち、相異なる固有値を $\lambda_1, \dots, \lambda_k$ として
+$m_A(\lambda) = (\lambda - \lambda_1)\cdots(\lambda - \lambda_k)$)。
+\end{teiri}
+
+\noindent\textbf{(証明:$\Rightarrow$ の向き)}\quad
+$A = PDP^{-1}$ と対角化されているとし、相異なる固有値を
+$\lambda_1, \dots, \lambda_k$ とする。
+$g(\lambda) = (\lambda - \lambda_1)\cdots(\lambda - \lambda_k)$ とおくと、
+$g(A) = P\,g(D)\,P^{-1}$ であり、$g(D)$ は対角成分が
+$g(\lambda_i) = 0$ の対角行列、すなわち $O$。よって $g(A) = O$ である。
+性質 \ref{thm:minpoly-basic}(1) より $m_A \mid g$ で、
+一方 (2) より $m_A$ は $\lambda_1, \dots, \lambda_k$ をすべて根にもつから
+$\deg m_A \ge k = \deg g$。あわせて $m_A = g$ となり、重根をもたない。
+
+逆向き($m_A$ が重根をもたなければ対角化可能)も成り立つが、
+証明には固有空間への分解の理論が要るので、第VI部で
+ジョルダン標準形とともに完成させる。 $\blacksquare$
+
+\begin{rei}\label{rei:ch-minpoly}
 $A = \mat{1 & 1 \\ 0 & 1}$ の固有多項式は $(\lambda - 1)^2$。
-最小多項式の候補は $\lambda - 1$ と $(\lambda - 1)^2$ だが、
+最小多項式の候補は、$\varphi_A$ の約数で固有値 $1$ を根にもつ
+$\lambda - 1$ と $(\lambda - 1)^2$ だが(定理 \ref{thm:minpoly-basic})、
 $A - E \neq O$ なので $m_A(\lambda) = (\lambda - 1)^2$。重根をもつから
 対角化不可能――第 \ref{chap:diag} 章の結論と一致する。
 一方 $E = \mat{1 & 0 \\ 0 & 1}$ も固有多項式は $(\lambda - 1)^2$ だが、
@@ -406,9 +1789,301 @@ $m_E(\lambda) = \lambda - 1$ で重根なし(そもそも対角行列)。
 ジョルダン標準形を分類する鍵になる。
 \end{rei}
 
-\begin{mondai}\label{q:ch}
-$A = \mat{1 & 4 \\ 2 & 3}$(問 \ref{q:eigen} の行列)について、\\
-　(1) ケーリー・ハミルトンの定理が成り立つこと($A^2 - 4A - 5E = O$)を
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$A^2 = O$ でも $A = O$ とは限らない]\label{hanrei:ch-nilpotent}
+数の世界の「$x^2 = 0$ ならば $x = 0$」は、行列では通用しない。
+\[
+A = \mat{0 & 1 \\ 0 & 0}
+\]
+は $A \neq O$ なのに $A^2 = O$ である
+(固有多項式は $\lambda^2$ で、ケーリー・ハミルトンの主張どおり
+$A^2 = O$ になっている、ともいえる)。
+この $A$ の最小多項式は $\lambda^2$(重根)で、
+問 \ref{q:diag-ex10} で見たとおり、この種の行列
+(\textbf{べき零行列})は決して対角化できない。
+零因子(反例 \ref{hanrei:zerodiv})と同様、
+「数の常識」を行列に持ち込むときは検証が要る。
+\end{hanrei}
+
+\begin{hanrei}[$A$ を消す多項式が固有多項式とは限らない]\label{hanrei:ch-annihilator}
+「$f(A) = O$ ならば $f$ は固有多項式(の定数倍)だろう」は誤りである。
+$E$($2$ 次)の固有多項式は $(\lambda - 1)^2$ だが、
+より次数の低い $f(\lambda) = \lambda - 1$ がすでに $f(E) = E - E = O$ を
+満たす。正しい関係は定理 \ref{thm:minpoly-basic} のとおり
+「$A$ を消す多項式は\textbf{最小多項式の倍数}」であり、
+固有多項式はその一例にすぎない。
+ケーリー・ハミルトンの定理は「$\varphi_A$ は $A$ を消す」と
+述べているだけで、「$\varphi_A$ が最小である」とは述べていない。
+\end{hanrei}
+
+\section{例題}
+
+ケーリー・ハミルトンの検証・活用と、最小多項式の計算を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(定理の検証)]\label{rei:ch-verify}
+$A = \mat{2 & 1 \\ 1 & 2}$ についてケーリー・ハミルトンの定理の式を書き、
 直接計算で確かめよ。\\
-　(2) この式を用いて $A^{-1}$ を $A$ と $E$ の線形結合で表せ。
+\textbf{解.}\ $\mathrm{tr}\,A = 4$, $\det A = 3$ より、主張される式は
+$A^2 - 4A + 3E = O$ である。実際
+\[
+A^2 = \mat{5 & 4 \\ 4 & 5}, \qquad
+A^2 - 4A + 3E = \mat{5 - 8 + 3 & 4 - 4 \\ 4 - 4 & 5 - 8 + 3} = O.
+\]
+固有値 $3, 1$(例題 \ref{rei:eigen-basic})を使えば
+$\varphi_A(\lambda) = (\lambda - 3)(\lambda - 1) = \lambda^2 - 4\lambda + 3$
+とも書け、同じ式である。
+\end{rei}
+
+\begin{rei}[例題・基本(逆行列の計算)]\label{rei:ch-inverse}
+例題 \ref{rei:ch-verify} の式を使って
+$A = \mat{2 & 1 \\ 1 & 2}$ の逆行列を求めよ。\\
+\textbf{解.}\ $A^2 - 4A + 3E = O$ を移項して $A^2 - 4A = -3E$、
+$A$ でくくると $A(A - 4E) = -3E$、すなわち
+\[
+A \cdot \frac{1}{3}(4E - A) = E.
+\]
+よって
+\[
+A^{-1} = \frac{1}{3}(4E - A) = \frac{1}{3}\mat{2 & -1 \\ -1 & 2}.
+\]
+検算:$A \cdot \dfrac{1}{3}\mat{2 & -1 \\ -1 & 2}
+= \dfrac{1}{3}\mat{4 - 1 & -2 + 2 \\ 2 - 2 & -1 + 4} = E$。
+$2$ 次の逆行列公式(定理 \ref{thm:inv2x2})とも一致する。
+\end{rei}
+
+\begin{rei}[例題・基本(べき下げ)]\label{rei:ch-lower}
+$A = \mat{2 & 1 \\ 1 & 2}$ の $A^3$ を、$\alpha A + \beta E$ の形に
+表してから計算せよ。\\
+\textbf{解.}\ $A^2 = 4A - 3E$(例題 \ref{rei:ch-verify})を繰り返し使う。
+\[
+A^3 = A \cdot A^2 = A(4A - 3E) = 4A^2 - 3A = 4(4A - 3E) - 3A = 13A - 12E.
+\]
+成分で書けば
+\[
+A^3 = 13\mat{2 & 1 \\ 1 & 2} - 12E = \mat{14 & 13 \\ 13 & 14}.
+\]
+検算:$A^3 = A \cdot A^2 = \mat{2 & 1 \\ 1 & 2}\mat{5 & 4 \\ 4 & 5}
+= \mat{14 & 13 \\ 13 & 14}$ で一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(余りの方法で $A^{100}$)]\label{rei:ch-power100}
+$A = \mat{3 & -2 \\ 1 & 0}$ の $A^{100}$ を求めよ。\\
+\textbf{解.}\ $\varphi_A(\lambda) = \lambda^2 - 3\lambda + 2
+= (\lambda - 1)(\lambda - 2)$(固有値 $1, 2$)。
+$\lambda^{100}$ を $\varphi_A$ で割った余りを $a\lambda + b$ とおくと
+\[
+\lambda^{100} = q(\lambda)(\lambda - 1)(\lambda - 2) + a\lambda + b.
+\]
+$\lambda = 1$ を代入すると $1 = a + b$、$\lambda = 2$ を代入すると
+$2^{100} = 2a + b$。解いて $a = 2^{100} - 1$, $b = 2 - 2^{100}$。
+定理 \ref{thm:ch-remainder} より
+\[
+A^{100} = (2^{100} - 1)A + (2 - 2^{100})E
+= \mat{2^{101} - 1 & -2^{101} + 2 \\ 2^{100} - 1 & -2^{100} + 2}.
+\]
+検算:同じ手順を $N = 1$ で行うと $a = 1$, $b = 0$ で $A^1 = A$ となり
+つじつまが合う。対角化を経由してもよいが、余りの方法は
+$P^{-1}$ の計算が不要なぶん速い。
+\end{rei}
+
+\begin{rei}[例題・標準(最小多項式の計算)]\label{rei:ch-minpoly-3x3}
+次の行列の最小多項式を求め、対角化可能性を判定せよ。
+\[
+A = \mat{2 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3}, \qquad
+B = \mat{2 & 1 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3}
+\]
+\textbf{解.}\ どちらも固有多項式は $(\lambda - 2)^2(\lambda - 3)$ である。
+最小多項式は、固有値 $2, 3$ を根にもつ $\varphi$ の約数だから、候補は
+$(\lambda - 2)(\lambda - 3)$ と $(\lambda - 2)^2(\lambda - 3)$ の二つ
+(定理 \ref{thm:minpoly-basic})。
+
+$A$:$(A - 2E)(A - 3E)$ を計算すると、対角行列どうしの積で
+\[
+\mat{0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}\mat{-1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 0}
+= O.
+\]
+よって $m_A = (\lambda - 2)(\lambda - 3)$:重根なしで、
+$A$ は対角化可能(実際すでに対角行列)。
+
+$B$:同じ積を計算すると
+\[
+(B - 2E)(B - 3E)
+= \mat{0 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}
+\mat{-1 & 1 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 0}
+= \mat{0 & -1 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0} \neq O.
+\]
+よって $m_B = (\lambda - 2)^2(\lambda - 3)$:重根をもつので、
+$B$ は対角化不可能である(固有値 $2$ の固有空間を掃き出して
+次元 $1 < 2$ を確かめても同じ結論になる)。
+\textbf{固有多項式が同じでも、最小多項式が二つの行列を見分けた}。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$A^2 = A$ の固有値)]\label{rei:ch-proj-eigen}
+$A^2 = A$ を満たす行列(射影)の固有値は、$0$ または $1$ に限ることを
+示せ。\\
+\textbf{解.}\ $\lambda$ を固有値、$\vect{v} \neq \vect{0}$ を
+固有ベクトルとすると、
+\[
+\lambda\vect{v} = A\vect{v} = A^2\vect{v} = \lambda^2\vect{v}
+\]
+(最初の等号は定義、最後は問 \ref{q:eigen-ex8}(1))。よって
+$(\lambda^2 - \lambda)\vect{v} = \vect{0}$ で、$\vect{v} \neq \vect{0}$
+だから $\lambda^2 - \lambda = 0$、すなわち $\lambda = 0$ または $1$ である。
+最小多項式の言葉でいえば、$f(\lambda) = \lambda^2 - \lambda$ が
+$f(A) = O$ を満たすから $m_A \mid \lambda(\lambda - 1)$ であり、
+固有値($= m_A$ の根)は $\{0, 1\}$ に含まれる、と言い直せる。
+例題 \ref{rei:eigen-proj} の射影行列(固有値 $1, 0$)と整合している。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{ケーリー・ハミルトンの定理}:$\varphi_A(A) = O$。
+$2$ 次なら $A^2 - (\mathrm{tr}\,A)A + (\det A)E = O$(直接計算で証明)。
+対角化可能なら $f(A) = P f(D) P^{-1}$ からただちに従う。
+\item 効用は\textbf{べき下げ}:$f$ を $\varphi_A$ で割った余りが $r$ なら
+$f(A) = r(A)$(定理 \ref{thm:ch-remainder})。余りの係数は固有値の代入で
+求まる。$\det A \neq 0$ なら\textbf{逆行列も $A$ の多項式}で書ける。
+\item 「$\lambda = A$ を $\det(\lambda E - A)$ に代入」する一行の議論は
+誤り(型が違う)。式の型を確認する習慣をもつこと。
+\item \textbf{最小多項式} $m_A$:$A$ を消す最小次数のモニック多項式。
+$A$ を消す多項式はすべて $m_A$ の倍数で、とくに
+$m_A \mid \varphi_A$。$m_A$ の根は固有値と一致し、
+違いは重複度だけ(定理 \ref{thm:minpoly-basic})。
+\item $A$ が対角化可能 $\iff$ $m_A$ が重根をもたない
+(定理 \ref{thm:minpoly-diag})。固有多項式が同じでも最小多項式は
+異なりうる($E$ とせん断行列)。この道具は第VI部のジョルダン標準形で
+主役になる。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:ch-ex1}
+$A = \mat{1 & 2 \\ 3 & 4}$ についてケーリー・ハミルトンの式を書き、
+直接計算で確かめよ。
 \end{mondai}
+
+\begin{mondai}[基本]\label{q:ch-ex2}
+問 \ref{q:ch-ex1} の式を使って、$A = \mat{1 & 2 \\ 3 & 4}$ の逆行列を
+$A$ と $E$ の線形結合として求めよ($2$ 次の逆行列公式で検算すること)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ch-ex3}
+$A = \mat{1 & 2 \\ 0 & 2}$ について、ケーリー・ハミルトンの式を利用して
+$A^3$ を $\alpha A + \beta E$ の形に表し、成分を計算せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ch-ex4}
+次の行列の最小多項式を求めよ。
+\[
+(1)\ E = \mat{1 & 0 \\ 0 & 1} \qquad
+(2)\ O = \mat{0 & 0 \\ 0 & 0} \qquad
+(3)\ \mat{1 & 1 \\ 0 & 1} \qquad
+(4)\ \mat{2 & 0 \\ 0 & 3}
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex5}
+$A = \mat{2 & 1 \\ 1 & 2}$ の $A^{10}$ を、余りの方法
+(例題 \ref{rei:ch-power100})で求めよ
+(結果は問 \ref{q:power-ex1} の $A^n$ の公式に $n = 10$ を代入したものと
+一致するはずである)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex6}
+$A = \mat{1 & 1 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3}$ について、
+固有多項式が $(\lambda - 1)(\lambda - 2)(\lambda - 3)$ であることを
+確かめ、$(A - E)(A - 2E)(A - 3E) = O$ を直接計算で検証せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex7}
+$A = \mat{2 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 2}$ の最小多項式を求め、
+対角化可能性を判定せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ch-ex8}
+$90^\circ$ 回転行列 $R = \mat{0 & -1 \\ 1 & 0}$ について、
+ケーリー・ハミルトンの定理から $R^2 = -E$ を導き、
+それを使って $R^4$ と $R^{100}$ を求めよ。
+結果を回転の幾何(何度回るか)で解釈せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:ch-ex9}
+$A^2 = 5A - 6E$ を満たす $2$ 次正方行列 $A$ で、$A \neq 2E$ かつ
+$A \neq 3E$ であるものを考える。\\
+　(1) $A$ の最小多項式が $(\lambda - 2)(\lambda - 3)$ であることを示せ。\\
+　(2) $A$ は固有値 $2$ と $3$ を\textbf{両方}もち、対角化可能である
+ことを示せ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:ch-ex10}
+$2$ 次正方行列 $A$ について、$A^n = a_n A + b_n E$ と表したときの
+係数 $a_n, b_n$($n \ge 1$、$a_1 = 1, b_1 = 0$)を考える。\\
+　(1) ケーリー・ハミルトンの式を使って、漸化式
+\[
+a_{n+1} = (\mathrm{tr}\,A)\,a_n + b_n, \qquad
+b_{n+1} = -(\det A)\,a_n
+\]
+を導け。\\
+　(2) $A = \mat{2 & 1 \\ 1 & 2}$($\mathrm{tr} = 4$, $\det = 3$)について
+$a_2, b_2, a_3, b_3$ を計算し、例題 \ref{rei:ch-lower} の
+$A^3 = 13A - 12E$ と一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:ch-ex11}
+最小多項式はただ一つであることを証明せよ。すなわち、$m_1, m_2$ が
+ともに「$A$ を消す、次数最小のモニック多項式」ならば
+$m_1 = m_2$ であることを示せ
+(ヒント:差 $m_1 - m_2$ を考える。これも $A$ を消すが、
+最高次の項が打ち消し合って次数が下がる)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:ch-ex12}
+最小多項式の定数項に注目して、次を証明せよ。\\
+　(1) $m_A(0) \neq 0$ ならば $A$ は正則であり、$A^{-1}$ は $A$ の
+多項式で書ける。\\
+　(2) 逆に $m_A(0) = 0$ ならば $A$ は正則でない
+(ヒント:$m_A(\lambda) = \lambda\,h(\lambda)$ と書ける。
+$h(A) \neq O$ だから $h(A)\vect{w} \neq \vect{0}$ となる $\vect{w}$ があり、
+$\vect{v} = h(A)\vect{w}$ に $A$ を掛けるとどうなるか)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:ch-ex1}}:$\mathrm{tr}\,A$ と $\det A$ から式を
+立て、$A^2$ を計算して代入する。
+\item \textbf{問 \ref{q:ch-ex2}}:$A^2 - (\mathrm{tr})A = (\det)E$ の形に
+移項し、$A$ でくくる。
+\item \textbf{問 \ref{q:ch-ex3}}:$A^2 = 3A - 2E$ を繰り返し使う
+(例題 \ref{rei:ch-lower} と同じ手順)。
+\item \textbf{問 \ref{q:ch-ex4}}:候補は固有多項式の約数のうち、
+すべての固有値を根にもつもの。次数の低い候補から
+「$A$ を代入して $O$ になるか」を試す。
+\item \textbf{問 \ref{q:ch-ex5}}:$\lambda^{10}$ の余りを $a\lambda + b$
+とおき、$\lambda = 1, 3$ を代入して $a, b$ を決める。
+\item \textbf{問 \ref{q:ch-ex6}}:三角行列なので固有値は対角成分。
+積は左の二つから順に計算する。
+\item \textbf{問 \ref{q:ch-ex7}}:候補は $(\lambda - 2)$,
+$(\lambda - 2)^2$, $(\lambda - 2)^3$。低い次数から試す。
+\item \textbf{問 \ref{q:ch-ex8}}:$\mathrm{tr}\,R = 0$, $\det R = 1$。
+$R^{100} = (R^4)^{25}$。
+\item \textbf{問 \ref{q:ch-ex9}}:(1) 候補は $\lambda - 2$,
+$\lambda - 3$, $(\lambda - 2)(\lambda - 3)$。前の二つを仮定すると
+$A = 2E$ や $A = 3E$ になってしまう。(2) は
+定理 \ref{thm:minpoly-basic}(2) と \ref{thm:minpoly-diag}。
+\item \textbf{問 \ref{q:ch-ex10}}:$A^{n+1} = A \cdot A^n$ に
+$A^n = a_nA + b_nE$ を代入し、$A^2$ をケーリー・ハミルトンで下げる。
+\item \textbf{問 \ref{q:ch-ex11}}:$m_1 - m_2$ が零多項式でなければ、
+定数倍してモニックにでき、次数最小性に矛盾する。
+\item \textbf{問 \ref{q:ch-ex12}}:(1) $m_A(\lambda) = \lambda^k + \cdots
++ c_1\lambda + c_0$($c_0 \neq 0$)から $A(\cdots) = -c_0 E$ の形を作る。
+(2) $A\vect{v} = m_A(A)\vect{w} = \vect{0}$ かつ $\vect{v} \neq \vect{0}$
+なら、$A$ は非正則(定理 \ref{thm:eigen-zero})。
+\end{itemize}
+}
