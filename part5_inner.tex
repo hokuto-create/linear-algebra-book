@@ -2190,10 +2190,34 @@ ${}^t\!D = D$ がポイント。
 \chapter{二次形式}\label{chap:quadform}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 二次形式と対称行列の $1$ 対 $1$ 対応(${}^t\vect{x}A\vect{x}$ の形)
+を理解し、式と行列を相互に翻訳できるようになる。
+\item 直交変換による\textbf{標準形}(主軸変換)を実行でき、
+$xy$ 項のある二次曲線を楕円・双曲線に分類できるようになる。
+\item \textbf{正定値性}の意味と、固有値による判定・シルベスターの
+判定法を(証明の要点とともに)使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 交差項との戦い}
+
+高校の数学で、$x^2 + y^2 = 1$(円)や
+$\dfrac{x^2}{4} + y^2 = 1$(楕円)、$x^2 - y^2 = 1$(双曲線)は
+扱えたのに、$xy$ の混じった $2x^2 + 2xy + 2y^2 = 1$ という曲線は
+教科書に登場しなかった。理由は単純で、\textbf{交差項 $xy$ を処理する
+道具がなかった}からである。$2$ 変数以上の $2$ 次式は、最適化
+(最小値・最大値の判定)、統計(分散の計算)、物理(エネルギー)と、
+応用のあらゆる場面に現れる。その解析を阻む交差項を、前章のスペクトル
+定理が一撃で消し去る――これが本章の筋書きである。
+「$2$ 次式の理論は対称行列の理論である」ことを見届けよう。
+
 \section{二次形式と対称行列}
 
-\begin{teigi}[二次形式]
-$n$ 変数の $2$ 次の同次多項式を\textbf{二次形式}という。
+\begin{teigi}[二次形式]\label{def:quad}
+$n$ 変数の $2$ 次の同次多項式($2$ 次の項だけからなる多項式)を
+\textbf{二次形式}という。
 たとえば $2$ 変数では $q(x, y) = ax^2 + 2bxy + cy^2$。
 これは対称行列を使って
 \[
@@ -2204,19 +2228,53 @@ q(x, y) = \mat{x & y}\mat{a & b \\ b & c}\mat{x \\ y}
 振り分けるのが要点である。
 \end{teigi}
 
+$3$ 変数以上でも同じで、$x_i^2$ の係数を $(i, i)$ 成分に、
+$x_ix_j$($i \neq j$)の係数を\textbf{半分ずつ} $(i, j)$ 成分と
+$(j, i)$ 成分に置けばよい。たとえば
+\[
+q(x, y, z) = x^2 + 2y^2 + 3z^2 + 4xy - 2yz
+\quad\longleftrightarrow\quad
+A = \mat{1 & 2 & 0 \\ 2 & 2 & -1 \\ 0 & -1 & 3}
+\]
+($xy$ の係数 $4$ を $2$ と $2$ に、$yz$ の係数 $-2$ を $-1$ と $-1$ に
+分けた。$xz$ の項はないので $(1,3)$ 成分は $0$)。
+こうして\textbf{二次形式と対称行列は $1$ 対 $1$ に対応する}。
+$2$ 次式の問題は、そっくり対称行列の問題に翻訳される。
+
 \section{標準形 ― 交差項を消す}
 
 二次形式の解析を阻むのは交差項 $xy$ である。
-スペクトル定理がこれを一掃する。$A$ を直交行列 $P$ で対角化し、
+スペクトル定理がこれを一掃する。
+
+\begin{teiri}[主軸変換・標準形]\label{thm:quad-std}
+二次形式 $q(\vect{x}) = {}^t\vect{x}A\vect{x}$($A$ は対称行列)に対し、
+$A$ を直交行列 $P$ で対角化して
+${}^t\!PAP = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$ とし、
 変数変換 $\vect{x} = P\vect{y}$ を行うと
 \[
-{}^t\vect{x}A\vect{x} = {}^t\vect{y}\,({}^t\!PAP)\,\vect{y}
-= \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2.
+{}^t\vect{x}A\vect{x}
+= \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2
 \]
-\textbf{交差項のない標準形}が得られた。
-しかも $P$ は直交行列(座標軸の回転)なので、図形の形は歪まない。
+と、\textbf{交差項のない形(標準形)}になる。
+新しい座標軸(\textbf{主軸})の方向は $A$ の固有ベクトルの方向である。
+\end{teiri}
 
-\begin{rei}[二次曲線の分類]
+\noindent\textbf{(証明)}\quad
+$\vect{x} = P\vect{y}$ を代入するだけである。転置の法則より
+\[
+{}^t\vect{x}A\vect{x} = {}^t(P\vect{y})\,A\,(P\vect{y})
+= {}^t\vect{y}\,({}^t\!PAP)\,\vect{y}
+= {}^t\vect{y}\,\mathrm{diag}(\lambda_1, \dots, \lambda_n)\,\vect{y}
+= \sum_{i=1}^{n} \lambda_i y_i^2. \qquad\blacksquare
+\]
+
+しかも $P$ は直交行列(座標軸の回転・鏡映)なので、
+\textbf{図形の形は歪まない}し、ベクトルの長さも変わらない
+($\|\vect{x}\| = \|P\vect{y}\| = \|\vect{y}\|$。
+定理 \ref{thm:orth-preserve})。「同じ図形を、都合のよい向きから
+眺め直しただけ」というのが主軸変換の正体である。
+
+\begin{rei}[二次曲線の分類]\label{rei:quad-conic}
 曲線 $2x^2 + 2xy + 2y^2 = 1$ は何か。行列 $\mat{2 & 1 \\ 1 & 2}$ の
 固有値は $3, 1$ だから、軸を $45^\circ$ 回転した座標 $(X, Y)$ で
 \[
@@ -2231,17 +2289,22 @@ q(x, y) = \mat{x & y}\mat{a & b \\ b & c}\mat{x \\ y}
 
 \section{正定値性}
 
-\begin{teigi}[正定値]
+\begin{teigi}[正定値]\label{def:quad-posdef}
 二次形式 $q(\vect{x}) = {}^t\vect{x}A\vect{x}$($A$ は対称)が、
 $\vect{x} \neq \vect{0}$ のすべてで $q(\vect{x}) > 0$ となるとき、
 $q$(および $A$)は\textbf{正定値}であるという。
 すべてで $q(\vect{x}) < 0$ なら\textbf{負定値}、
 正負両方の値をとるなら\textbf{不定値}という。
+また、すべての $\vect{x}$ で $q(\vect{x}) \ge 0$(等号は
+$\vect{x} \neq \vect{0}$ でも起こりうる)となるときは
+\textbf{半正定値}という。
 \end{teigi}
 
+半正定値は「正定値の境界ケース」で、第VII部(特異値分解)で
+${}^t\!CC$ 型の行列とともに主役になる(問 \ref{q:quad-ex12} が予告編である)。
 標準形を見れば判定は明快である。
 
-\begin{teiri}[正定値性の判定]
+\begin{teiri}[正定値性の判定]\label{thm:quad-criteria}
 対称行列 $A$ について、次は同値である。
 \begin{enumerate}
 \item $A$ は正定値である。
@@ -2250,6 +2313,38 @@ $q$(および $A$)は\textbf{正定値}であるという。
 $k = 1, \dots, n$)がすべて正である(\textbf{シルベスターの判定法})。
 \end{enumerate}
 \end{teiri}
+
+\noindent\textbf{(証明:(1) $\iff$ (2))}\quad
+主軸変換(定理 \ref{thm:quad-std})で
+$q = \lambda_1y_1^2 + \cdots + \lambda_ny_n^2$ とする。
+変換 $\vect{x} = P\vect{y}$ は正則($P$ は直交行列)だから、
+$\vect{x} \neq \vect{0}$ と $\vect{y} \neq \vect{0}$ は同値であることに
+注意する。すべての $\lambda_i > 0$ なら、$\vect{y} \neq \vect{0}$ の
+とき正の項が少なくとも一つあり $q > 0$:正定値である。
+逆にある $\lambda_j \le 0$ なら、$\vect{y} = \vect{e}_j$
+(すなわち $\vect{x} = P\vect{e}_j \neq \vect{0}$)をとると
+$q = \lambda_j \le 0$ となり、正定値でない。
+
+\noindent\textbf{(証明:(1) $\iff$ (3)、$2$ 次の場合)}\quad
+$A = \mat{a & b \\ b & c}$ とする。首座小行列式は $a$ と
+$\det A = ac - b^2$ である。まず $a > 0$ かつ $ac - b^2 > 0$ とすると、
+平方完成により
+\[
+q(x, y) = ax^2 + 2bxy + cy^2
+= a\left(x + \frac{b}{a}y\right)^2 + \frac{ac - b^2}{a}\,y^2
+\]
+で、係数 $a$ と $\dfrac{ac - b^2}{a}$ はどちらも正。$q = 0$ となるのは
+両方の $2$ 乗が $0$、すなわち $y = 0$ かつ $x = 0$ のときだけなので、
+$q$ は正定値である。逆に $q$ が正定値なら
+\[
+a = q(1, 0) > 0, \qquad
+q\left(-\frac{b}{a},\, 1\right) = \frac{b^2}{a} - \frac{2b^2}{a} + c
+= \frac{ac - b^2}{a} > 0
+\]
+より $ac - b^2 > 0$ も従う。一般次数の証明も同じ発想
+(平方完成を繰り返して、各段階の係数が首座小行列式の比になることを
+確かめる)で進むが、本書では $2$ 次で納得すれば十分である。
+$\blacksquare$
 
 条件 3 は固有値を計算せずに済む実用的な判定法である。
 $2$ 次なら「$a > 0$ かつ $\det A > 0$」だけでよい。
@@ -2288,3 +2383,273 @@ H \text{ が不定値} \Rightarrow \text{鞍点}.
 　(2) 曲線 $x^2 + 4xy + y^2 = 1$ は楕円か双曲線か。
 固有値を求めて判定し、標準形を書け。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[対角成分がすべて正でも正定値とは限らない]\label{hanrei:quad-diag}
+「$x^2$ と $y^2$ の係数が正だから $q > 0$ だろう」は誤りである。
+\[
+q(x, y) = x^2 + 6xy + y^2, \qquad A = \mat{1 & 3 \\ 3 & 1}
+\]
+は対角成分がどちらも正だが、
+\[
+q(1, -1) = 1 - 6 + 1 = -4 < 0.
+\]
+交差項が強すぎると、斜め方向で負になってしまうのである
+(固有値は $4, -2$ の不定値。首座小行列式も $1 > 0$,
+$\det A = 1 - 9 = -8 < 0$ で、シルベスターの判定法は正しく
+「正定値でない」と告げる)。対角成分は $q(\vect{e}_i)$ の値しか
+見ておらず、\textbf{座標軸の方向だけ調べても全方向の正値性は
+保証されない}。
+\end{hanrei}
+
+\begin{hanrei}[$\det A > 0$ だけでも正定値とは限らない]\label{hanrei:quad-det}
+判定条件を「行列式が正」と省略してもいけない。
+\[
+A = -E = \mat{-1 & 0 \\ 0 & -1}
+\]
+は $\det A = 1 > 0$ だが、$q(x, y) = -x^2 - y^2$ は\textbf{負}定値である。
+$2$ 次の場合、$\det A > 0$ が保証するのは「固有値が同符号」まで
+($\det = \lambda_1\lambda_2$)であり、符号を確定させるには
+首座小行列式の\textbf{最初の一つ} $a_{11} > 0$ が要る。
+シルベスターの判定法が「首座小行列式\textbf{すべて}」を要求するのは
+このためである。
+\end{hanrei}
+
+\section{例題}
+
+行列表示・分類・判定・主軸変換を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(行列表示)]\label{rei:quad-matrix}
+次の二次形式に対応する対称行列を書け。
+\[
+\text{(1)}\ q(x, y) = 2x^2 - 4xy + 5y^2 \qquad
+\text{(2)}\ q(x, y, z) = x^2 + y^2 + z^2 + 2xy + 4yz
+\]
+\textbf{解.}\ 交差項の係数を半分ずつ振り分ける。
+\[
+\text{(1)}\ \mat{2 & -2 \\ -2 & 5} \qquad
+\text{(2)}\ \mat{1 & 1 & 0 \\ 1 & 1 & 2 \\ 0 & 2 & 1}
+\]
+(2) では $xy$ の係数 $2$ を $1$ ずつ、$yz$ の係数 $4$ を $2$ ずつに分け、
+$xz$ の項がないので $(1, 3)$ 成分は $0$ とした。
+検算には ${}^t\vect{x}A\vect{x}$ を展開して元の式に戻ることを
+確かめればよい。
+\end{rei}
+
+\begin{rei}[例題・基本(固有値による分類)]\label{rei:quad-classify}
+二次形式 $q(x, y) = 2x^2 + 4xy - y^2$ は正定値・負定値・不定値の
+どれか。また曲線 $q(x, y) = 1$ は楕円か双曲線か。\\
+\textbf{解.}\ 行列は $A = \mat{2 & 2 \\ 2 & -1}$。固有方程式は
+$\mathrm{tr} = 1$, $\det = -2 - 4 = -6$ より
+\[
+\lambda^2 - \lambda - 6 = (\lambda - 3)(\lambda + 2) = 0, \qquad
+\lambda = 3, -2.
+\]
+固有値が正負両方あるので\textbf{不定値}である。標準形は
+$3X^2 - 2Y^2 = 1$ で、曲線は\textbf{双曲線}である。
+\end{rei}
+
+\begin{rei}[例題・基本(シルベスターの判定法)]\label{rei:quad-sylv}
+二次形式 $q(x, y) = 4x^2 - 4xy + 3y^2$ が正定値であることを、
+シルベスターの判定法で確かめよ。\\
+\textbf{解.}\ 行列は $A = \mat{4 & -2 \\ -2 & 3}$。首座小行列式は
+\[
+4 > 0, \qquad \det A = 12 - 4 = 8 > 0.
+\]
+よって正定値である(定理 \ref{thm:quad-criteria})。
+固有値を求めなくても判定できるのがこの方法の利点である
+(実際、固有値は $\lambda^2 - 7\lambda + 8 = 0$ の解
+$\dfrac{7 \pm \sqrt{17}}{2}$ で、どちらも正だが値は汚い)。
+\end{rei}
+
+\begin{rei}[例題・標準(主軸変換)]\label{rei:quad-principal}
+曲線 $3x^2 - 2xy + 3y^2 = 8$ を主軸変換で標準形に直し、
+どんな図形か(主軸の方向も含めて)述べよ。\\
+\textbf{解.}\ 行列は $A = \mat{3 & -1 \\ -1 & 3}$。固有方程式
+$(3 - \lambda)^2 - 1 = 0$ より $\lambda = 2, 4$。固有ベクトルは、
+$\lambda = 2$:$x - y = 0$ から $\dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$、
+$\lambda = 4$:$x + y = 0$ から $\dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$。
+直交行列 $P = \dfrac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}$ による
+回転(と鏡映)後の座標 $(X, Y)$ で
+\[
+2X^2 + 4Y^2 = 8, \qquad\text{すなわち}\qquad
+\frac{X^2}{4} + \frac{Y^2}{2} = 1.
+\]
+長半径 $2$(方向は $\lambda = 2$ の固有ベクトル
+$\frac{1}{\sqrt{2}}(1, 1)$、つまり直線 $y = x$ の向き)、
+短半径 $\sqrt{2}$(方向は $y = -x$ の向き)の\textbf{楕円}である。
+係数の小さい固有値の方向ほど遠くまで伸びる
+(半径 $= \sqrt{8/\lambda_i}$)ことに注意。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 変数の分類)]\label{rei:quad-3var}
+二次形式 $q(x, y, z) = 2x^2 + 2y^2 + 2z^2 + 2xy + 2yz + 2zx$ を
+標準形に直し、正定値かどうか判定せよ。\\
+\textbf{解.}\ 行列は $A = \mat{2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2}$
+――例題 \ref{rei:spec-repeated} で直交対角化した行列である。
+固有値は $4, 1, 1$ だから、標準形は
+\[
+q = 4X^2 + Y^2 + Z^2.
+\]
+固有値がすべて正なので\textbf{正定値}である。
+シルベスターの判定法でも、首座小行列式が
+$2 > 0$、$\det\mat{2 & 1 \\ 1 & 2} = 3 > 0$、
+$\det A = 4 \cdot 1 \cdot 1 = 4 > 0$(固有値の積)となり一致する。
+曲面 $q = 1$ は $3$ 方向の半径が
+$\frac{1}{2}, 1, 1$ の\textbf{楕円面}(ラグビーボール状の曲面)である。
+\end{rei}
+
+\begin{rei}[例題・標準(パラメータの範囲)]\label{rei:quad-param}
+二次形式 $q(x, y) = tx^2 + 4xy + ty^2$ が正定値になるような
+実数 $t$ の範囲を求めよ。\\
+\textbf{解.}\ 行列は $\mat{t & 2 \\ 2 & t}$。シルベスターの判定法より
+\[
+t > 0 \quad\text{かつ}\quad t^2 - 4 > 0.
+\]
+$t^2 > 4$ は $t > 2$ または $t < -2$ だが、$t > 0$ との共通部分で
+$t > 2$。固有値でも検算できる:固有値は $t \pm 2$(固有ベクトル
+$(1, \pm 1)$)で、両方正 $\iff t - 2 > 0 \iff t > 2$。一致した。
+境界の $t = 2$ では $q = 2(x + y)^2$ となり、$x + y = 0$ の方向で
+$0$ になる(正定値でなく\textbf{半正定値})。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{二次形式} $q(\vect{x}) = {}^t\vect{x}A\vect{x}$ は
+\textbf{対称行列 $A$ と $1$ 対 $1$ に対応}する(交差項の係数は
+半分ずつ振り分ける)。
+\item 直交行列 $P$ による\textbf{主軸変換} $\vect{x} = P\vect{y}$ で、
+二次形式は標準形 $\sum \lambda_iy_i^2$ になる
+(定理 \ref{thm:quad-std})。座標軸の回転だから図形は歪まない。
+曲線 $q = 1$ は、固有値が $(+, +)$ なら楕円、$(+, -)$ なら双曲線。
+\item \textbf{正定値} $\iff$ 固有値がすべて正 $\iff$
+首座小行列式がすべて正(シルベスターの判定法。
+定理 \ref{thm:quad-criteria})。$2$ 次なら「$a > 0$ かつ $\det A > 0$」。
+\item 対角成分が正なだけでは正定値といえない
+(反例 \ref{hanrei:quad-diag})し、$\det A > 0$ だけでも足りない
+(反例 \ref{hanrei:quad-det})。
+\item 多変数関数の極値判定(ヘッセ行列の定値性)は二次形式の
+理論そのものである(深掘り)。半正定値($q \ge 0$)は
+第VII部で ${}^t\!CC$ 型の行列とともに再登場する。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:quad-ex1}
+次の二次形式に対応する対称行列を書け。
+\[
+\text{(1)}\ q(x, y) = x^2 + 6xy - 2y^2 \qquad
+\text{(2)}\ q(x, y, z) = x^2 + 2y^2 + 3z^2 + 4xy - 2yz
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quad-ex2}
+対称行列 $A = \mat{2 & -1 \\ -1 & 5}$ に対応する二次形式 $q(x, y)$ を
+書き、$q(1, 1)$ の値を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quad-ex3}
+二次形式 $q(x, y) = 3x^2 + 2xy + 3y^2$ を固有値によって分類
+(正定値・負定値・不定値)し、曲線 $q(x, y) = 1$ の標準形を書け。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quad-ex4}
+シルベスターの判定法で、次の二次形式が正定値かどうか判定せよ。
+\[
+\text{(1)}\ q(x, y) = 2x^2 + 2xy + 3y^2 \qquad
+\text{(2)}\ q(x, y) = x^2 + 4xy + y^2
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex5}
+曲線 $5x^2 - 4xy + 8y^2 = 36$ を主軸変換で標準形に直し、
+図形の種類・主軸の方向・半径を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex6}
+曲線 $2xy = 1$ を主軸変換で標準形に直し、どんな図形か述べよ。
+また、この結果が高校で学んだ反比例のグラフ
+$y = \dfrac{1}{2x}$ とどう関係するか説明せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex7}
+二次形式 $q(x, y, z) = 2x^2 + 2y^2 + 2z^2 - 2xy - 2yz - 2zx$ について、\\
+　(1) $q = (x - y)^2 + (y - z)^2 + (z - x)^2$ と変形できることを確かめ、
+$q$ が半正定値であることを示せ。\\
+　(2) $q(\vect{x}) = 0$ となる $\vect{x} \neq \vect{0}$ を一つ挙げ、
+$q$ が正定値では\textbf{ない}ことを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex8}
+二次形式 $q(x, y) = x^2 + 2txy + 4y^2$ が正定値になるような
+実数 $t$ の範囲を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:quad-ex9}
+問 \ref{q:quad-ex5} の $q(x, y) = 5x^2 - 4xy + 8y^2$ について、
+単位円 $x^2 + y^2 = 1$ 上での $q$ の最大値・最小値と、
+それを与える点を求めよ(ヒント:直交変換は
+$X^2 + Y^2 = x^2 + y^2$ を保つので、標準形のまま考えてよい)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:quad-ex10}
+正定値対称行列 $A$ について、$A$ は正則であり、$A^{-1}$ も
+正定値対称行列であることを示せ
+(ヒント:固有値で議論する。$A^{-1}$ の固有値は $A$ の固有値の
+逆数である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:quad-ex11}
+正定値対称行列 $A = (a_{ij})$ の対角成分はすべて正
+($a_{ii} > 0$)であることを証明せよ。また、逆が成り立たないことは
+どの反例から分かるか。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:quad-ex12}
+$C$ を $m \times n$ 実行列とする。\\
+　(1) $A = {}^t\!CC$($n$ 次対称行列)が半正定値であることを示せ
+(ヒント:${}^t\vect{x}\,{}^t\!CC\,\vect{x} = \|C\vect{x}\|^2$)。\\
+　(2) $A$ が正定値であることと、$C$ の列ベクトルが線形独立である
+ことが同値であることを示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:quad-ex1}}:交差項の係数を半分ずつ対称な位置に
+振り分ける。ない項は $0$。
+\item \textbf{問 \ref{q:quad-ex2}}:対角成分が $2$ 乗の係数、
+非対角成分の $2$ 倍が交差項の係数。
+\item \textbf{問 \ref{q:quad-ex3}}:固有方程式は
+$(\lambda - 3)^2 - 1 = 0$。
+\item \textbf{問 \ref{q:quad-ex4}}:首座小行列式 $a$ と $\det A$ の
+符号を見るだけ。
+\item \textbf{問 \ref{q:quad-ex5}}:固有値は $4, 9$ になる。
+固有ベクトルの方向が主軸。
+\item \textbf{問 \ref{q:quad-ex6}}:行列は $\mat{0 & 1 \\ 1 & 0}$。
+固有値 $\pm 1$、固有ベクトルは $(1, \pm 1)$ 方向。
+\item \textbf{問 \ref{q:quad-ex7}}:(1) は右辺を展開する。
+$2$ 乗の和は負になれない。(2) は $3$ つの $2$ 乗が同時に $0$ になる
+方向を探す。
+\item \textbf{問 \ref{q:quad-ex8}}:シルベスターの判定法で
+$t$ の不等式を作る(例題 \ref{rei:quad-param} と同型)。
+\item \textbf{問 \ref{q:quad-ex9}}:標準形 $4X^2 + 9Y^2$ を
+$X^2 + Y^2 = 1$ の下で動かす。$X^2 = 1 - Y^2$ を代入すると
+$1$ 変数の話になる。最後に $(X, Y)$ を $(x, y)$ に戻す。
+\item \textbf{問 \ref{q:quad-ex10}}:固有値がすべて正なら $0$ は
+固有値でないから正則(定理 \ref{thm:eigen-zero})。
+$A\vect{v} = \lambda\vect{v}$ の両辺に $A^{-1}$ を掛ける。
+対称性は ${}^t(A^{-1}) = ({}^t\!A)^{-1}$ から。
+\item \textbf{問 \ref{q:quad-ex11}}:$q(\vect{e}_i) = a_{ii}$ を計算する。
+\item \textbf{問 \ref{q:quad-ex12}}:(1) ノルムの $2$ 乗は非負。
+(2) 「$q(\vect{x}) = 0 \iff C\vect{x} = \vect{0}$」と
+「$C\vect{x} = \vect{0}$ が自明解しかもたない $\iff$ 列が線形独立」
+(第II部)をつなぐ。
+\end{itemize}
+}
