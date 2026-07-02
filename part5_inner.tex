@@ -7,14 +7,40 @@
 \chapter{内積とノルム}\label{chap:inner}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item $\R^n$ の標準内積とノルムを計算でき、コーシー・シュワルツの不等式と
+三角不等式を\textbf{証明つきで}理解する。
+\item 内積を使って $n$ 次元でも「角度」と「直交」が定義できることを理解し、
+直交条件・距離・単位ベクトルの計算を実行できるようになる。
+\item 内積の\textbf{公理}(対称・双線形・正値)を知り、関数の内積のような
+$\R^n$ 以外の内積空間でも同じ定理が使えることを理解する。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 長さと角度を舞台に呼び戻す}
+
 第IV部までの理論には、実は「長さ」と「角度」が登場しなかった。
 和とスカラー倍だけの世界(線形構造)で、どこまで行けるかを見てきたのである。
+基底も次元も固有値も、長さを測らずに定義できた。
 本部では幾何構造――内積――を導入する。
 舞台に定規と分度器が持ち込まれ、「直交」という強力な概念が使えるようになる。
 
-\section{標準内積}
+出発点は高校の内積である。平面ベクトルについて
+\[
+\vect{a} \cdot \vect{b} = |\vect{a}|\,|\vect{b}| \cos\theta
+= a_1 b_1 + a_2 b_2
+\]
+と、「長さと角度による定義」と「成分による計算式」の二本立てで学んだ。
+$n$ 次元ではどちらを定義に採用すべきか。$4$ 次元以上では
+「角度」を先に測る手段がないから、\textbf{成分の式を定義に採用し、
+そこから逆に角度を定義する}のが正しい順序である。
+この逆転がうまくいくこと(角度が矛盾なく定義できること)を保証するのが、
+本章の主役コーシー・シュワルツの不等式である。
 
-\begin{teigi}[標準内積とノルム]
+\section{標準内積とノルム}
+
+\begin{teigi}[標準内積とノルム]\label{def:inner-std}
 $\vect{a}, \vect{b} \in \R^n$ に対し、
 \[
 \langle \vect{a}, \vect{b} \rangle
@@ -29,32 +55,138 @@ $\vect{a}, \vect{b} \in \R^n$ に対し、
 \end{teigi}
 
 $n = 2, 3$ では高校の内積・大きさと完全に一致する。
-内積は各変数について線形であり、対称($\langle \vect{a}, \vect{b} \rangle
-= \langle \vect{b}, \vect{a} \rangle$)で、
-$\langle \vect{a}, \vect{a} \rangle \ge 0$(等号は $\vect{a} = \vect{0}$ のみ)
-を満たす。
+${}^t\vect{a}\,\vect{b}$ という行列の積の形($1 \times n$ 行列と
+$n \times 1$ 行列の積は $1 \times 1$、すなわち数)で書けることは、
+転置と積の計算法則(定理 \ref{thm:transpose})を内積に直結させる
+便利な表記であり、本部で繰り返し使う。
 
-\begin{teiri}[コーシー・シュワルツの不等式]
+\begin{teiri}[内積の基本性質]\label{thm:inner-props}
+任意の $\vect{a}, \vect{b}, \vect{c} \in \R^n$ と $k \in \R$ に対して:
+\begin{enumerate}
+\item \textbf{対称性}:$\langle \vect{a}, \vect{b} \rangle = \langle \vect{b}, \vect{a} \rangle$。
+\item \textbf{線形性}:$\langle \vect{a} + \vect{b}, \vect{c} \rangle
+= \langle \vect{a}, \vect{c} \rangle + \langle \vect{b}, \vect{c} \rangle$、
+$\langle k\vect{a}, \vect{b} \rangle = k\langle \vect{a}, \vect{b} \rangle$
+(対称性より第 $2$ 変数についても同様。あわせて\textbf{双線形}という)。
+\item \textbf{正値性}:$\langle \vect{a}, \vect{a} \rangle \ge 0$ であり、
+等号は $\vect{a} = \vect{0}$ のときに限る。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+すべて成分の計算に帰着する。
+(1) $a_i b_i = b_i a_i$(実数の積の交換律)を足し合わせればよい。
+(2) 第 $i$ 項が $(a_i + b_i)c_i = a_ic_i + b_ic_i$、$(ka_i)b_i = k(a_ib_i)$
+となること(実数の分配律・結合律)から従う。
+(3) $\langle \vect{a}, \vect{a} \rangle = a_1^2 + \cdots + a_n^2$ は
+$0$ 以上の実数の和だから $0$ 以上で、和が $0$ になるのは
+各 $a_i^2 = 0$、すなわちすべての成分が $0$ のときに限る。 $\blacksquare$
+
+ノルムについては、定義からただちに
+$\|k\vect{a}\| = |k|\,\|\vect{a}\|$ と、
+$\|\vect{a}\| \ge 0$(等号は $\vect{a} = \vect{0}$ のみ)が分かる。
+ノルム $1$ のベクトルを\textbf{単位ベクトル}という。
+$\vect{a} \neq \vect{0}$ を自分のノルムで割った
+$\dfrac{1}{\|\vect{a}\|}\vect{a}$ は、$\vect{a}$ と同じ向きの単位ベクトルである
+(この操作を\textbf{正規化}という)。また
+\[
+d(\vect{a}, \vect{b}) = \|\vect{a} - \vect{b}\|
+\]
+を $2$ 点(の位置ベクトル)$\vect{a}, \vect{b}$ の\textbf{距離}という。
+$n = 2, 3$ では座標幾何の $2$ 点間距離の公式そのものである。
+
+\begin{rei}[計算例]\label{rei:inner-firstcalc}
+$\vect{a} = \mat{1 \\ 2 \\ 2}$ について
+$\|\vect{a}\| = \sqrt{1 + 4 + 4} = 3$。正規化すると
+$\dfrac{1}{3}\mat{1 \\ 2 \\ 2}$(ノルム $1$ を確かめよ)。
+$\vect{b} = \mat{2 \\ -2 \\ 1}$ との内積は
+$\langle \vect{a}, \vect{b} \rangle = 2 - 4 + 2 = 0$、距離は
+$d(\vect{a}, \vect{b}) = \|(-1, 4, 1)\| = \sqrt{18} = 3\sqrt{2}$ である。
+\end{rei}
+
+\section{コーシー・シュワルツの不等式と三角不等式}
+
+\begin{teiri}[コーシー・シュワルツの不等式]\label{thm:inner-cs}
+任意の $\vect{a}, \vect{b} \in \R^n$ に対して
 \[
 |\langle \vect{a}, \vect{b} \rangle| \le \|\vect{a}\|\,\|\vect{b}\|.
 \]
+等号が成り立つのは、$\vect{a}, \vect{b}$ の一方が他方のスカラー倍
+(線形従属)のとき、かつそのときに限る。
 \end{teiri}
 
-証明は高校で習った判別式の技がそのまま使える。任意の実数 $t$ に対し
+\noindent\textbf{(証明)}\quad
+高校で習った判別式の技がそのまま使える。
+$\vect{a} = \vect{0}$ なら両辺とも $0$ で成立する(等号の場合も
+$\vect{0} = 0\vect{b}$ で線形従属)。$\vect{a} \neq \vect{0}$ とし、
+任意の実数 $t$ に対して
 \[
-\| t\vect{a} + \vect{b} \|^2
-= t^2 \|\vect{a}\|^2 + 2t\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2 \ge 0
+f(t) = \| t\vect{a} + \vect{b} \|^2
+= t^2 \|\vect{a}\|^2 + 2t\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2
 \]
-であり、$t$ の $2$ 次式が常に非負だから判別式 $\le 0$、すなわち
-$\langle \vect{a}, \vect{b} \rangle^2 \le \|\vect{a}\|^2 \|\vect{b}\|^2$ を得る。
+を考える(展開には定理 \ref{thm:inner-props} の双線形性を使った)。
+ノルムの $2$ 乗だから $f(t) \ge 0$ が\textbf{すべての} $t$ で成り立つ。
+$t^2$ の係数 $\|\vect{a}\|^2 > 0$ の $2$ 次式が常に非負だから判別式は
+$0$ 以下、すなわち
+\[
+\langle \vect{a}, \vect{b} \rangle^2 - \|\vect{a}\|^2 \|\vect{b}\|^2 \le 0
+\]
+であり、平方根をとれば不等式を得る。
+等号が成り立つのは判別式が $0$、すなわちある $t_0$ で $f(t_0) = 0$ と
+なるときである。$f(t_0) = \|t_0\vect{a} + \vect{b}\|^2 = 0$ は正値性より
+$\vect{b} = -t_0\vect{a}$ を意味し、これは線形従属にほかならない。
+逆に $\vect{b} = k\vect{a}$ なら両辺とも $|k|\,\|\vect{a}\|^2$ で等号が成り立つ。
+$\blacksquare$
 
 この不等式のおかげで、$n$ 次元でも
 \[
 \cos\theta = \frac{\langle \vect{a}, \vect{b} \rangle}{\|\vect{a}\|\,\|\vect{b}\|}
+\qquad (\vect{a}, \vect{b} \neq \vect{0})
 \]
-の右辺が必ず $-1$ 以上 $1$ 以下に収まり、\textbf{角度 $\theta$ が定義できる}。
-特に $\langle \vect{a}, \vect{b} \rangle = 0$ のとき
-$\vect{a}$ と $\vect{b}$ は\textbf{直交}するという。
+の右辺が必ず $-1$ 以上 $1$ 以下に収まり、\textbf{角度 $\theta$
+($0 \le \theta \le 180^\circ$)が矛盾なく定義できる}。
+測れないはずの $4$ 次元以上の「角度」が、内積を経由して意味をもつ。
+
+\begin{teigi}[直交]\label{def:inner-orth}
+$\langle \vect{a}, \vect{b} \rangle = 0$ のとき、$\vect{a}$ と $\vect{b}$ は
+\textbf{直交}するといい、$\vect{a} \perp \vect{b}$ と書く。
+零ベクトルは(角度は定義されないが)すべてのベクトルと直交すると約束する。
+\end{teigi}
+
+\begin{teiri}[三角不等式]\label{thm:inner-triangle}
+任意の $\vect{a}, \vect{b} \in \R^n$ に対して
+\[
+\|\vect{a} + \vect{b}\| \le \|\vect{a}\| + \|\vect{b}\|.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+両辺とも $0$ 以上だから、$2$ 乗して比べればよい。
+コーシー・シュワルツの不等式(定理 \ref{thm:inner-cs})より
+$\langle \vect{a}, \vect{b} \rangle \le \|\vect{a}\|\,\|\vect{b}\|$ だから
+\[
+\|\vect{a} + \vect{b}\|^2
+= \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle + \|\vect{b}\|^2
+\le \|\vect{a}\|^2 + 2\|\vect{a}\|\,\|\vect{b}\| + \|\vect{b}\|^2
+= \bigl(\|\vect{a}\| + \|\vect{b}\|\bigr)^2. \qquad\blacksquare
+\]
+
+「寄り道すると遠くなる」という平面図形の常識(三角形の $2$ 辺の和は
+他の $1$ 辺より長い)が、$n$ 次元でも成り立つわけである。
+コーシー・シュワルツの不等式が幾何の常識を高次元へ運ぶ橋になっている。
+
+\begin{teiri}[ピタゴラスの定理]\label{thm:inner-pyth}
+$\vect{a} \perp \vect{b}$ ならば
+$\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + \|\vect{b}\|^2$。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2$ で、直交より中央の項が $0$。 $\blacksquare$
+
+三平方の定理が $n$ 次元で(しかも逆向きも。問 \ref{q:inner-ex12})
+成り立つ。次章で正射影が「最も近い点」であることを示すとき、
+この定理が決定打になる。
 
 \begin{itembox}[l]{深掘り:相関係数の正体は $\cos\theta$ である}
 統計学で学ぶ相関係数 $r$ は、$2$ 種類のデータ
@@ -78,10 +210,38 @@ $r = \pm 1$(等号成立)はデータベクトルが平行、
 \section{抽象的な内積空間}
 
 第III部でベクトルを公理化したのと同様、内積も公理化できる。
-双線形・対称・正値性を満たす演算をもつベクトル空間を
-\textbf{内積空間}という。重要な例を一つ挙げる。
+定理 \ref{thm:inner-props} で\textbf{証明した}性質を、こんどは
+\textbf{要求する公理}に格上げするのである。
 
-\begin{rei}[関数の内積]
+\begin{teigi}[内積空間]\label{def:inner-axioms}
+ベクトル空間 $V$ の任意の $2$ 元 $\vect{u}, \vect{v}$ に実数
+$\langle \vect{u}, \vect{v} \rangle$ を対応させる演算が
+\begin{enumerate}
+\item 対称性:$\langle \vect{u}, \vect{v} \rangle = \langle \vect{v}, \vect{u} \rangle$、
+\item 双線形性:$\langle \vect{u} + \vect{u}', \vect{v} \rangle
+= \langle \vect{u}, \vect{v} \rangle + \langle \vect{u}', \vect{v} \rangle$、
+$\langle k\vect{u}, \vect{v} \rangle = k\langle \vect{u}, \vect{v} \rangle$
+(第 $2$ 変数も同様)、
+\item 正値性:$\langle \vect{u}, \vect{u} \rangle \ge 0$、等号は
+$\vect{u} = \vect{0}$ のみ、
+\end{enumerate}
+を満たすとき、この演算を\textbf{内積}、組 $(V, \langle\ ,\ \rangle)$ を
+\textbf{内積空間}という。ノルム・距離・角度・直交は、標準内積のときと
+同じ式で定義する。
+\end{teigi}
+
+\begin{chui}
+コーシー・シュワルツの不等式(定理 \ref{thm:inner-cs})と
+三角不等式(定理 \ref{thm:inner-triangle})の証明を見返すと、
+使ったのは\textbf{双線形性と正値性だけ}で、成分は一度も登場していない。
+したがって両定理は、どんな内積空間でも\textbf{再証明なしに}成り立つ。
+第III部で学んだ「公理からの証明は使い回せる」という節約が、
+ここでも効いている。
+\end{chui}
+
+重要な例を一つ挙げる。
+
+\begin{rei}[関数の内積]\label{rei:inner-func}
 区間 $[-1, 1]$ 上の連続関数の空間で、
 \[
 \langle f, g \rangle = \int_{-1}^{1} f(x)\,g(x)\,dx
@@ -105,37 +265,401 @@ $\sin nx$ と $\cos mx$ たちの直交性を利用して任意の周期関数�
 直交することを示せ。
 \end{mondai}
 
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[正値性が破れると「長さ」が壊れる]\label{hanrei:inner-indefinite}
+$\R^2$ に、内積もどきの演算
+\[
+\langle \vect{a}, \vect{b} \rangle' = a_1 b_1 - a_2 b_2
+\]
+を定めてみる(第 $2$ 成分の符号を反転した)。対称性と双線形性は
+成分計算でそのまま確かめられるが、\textbf{正値性が破れる}。実際
+\[
+\vect{a} = \mat{0 \\ 1} \ \text{に対し}\
+\langle \vect{a}, \vect{a} \rangle' = 0 - 1 = -1 < 0,
+\qquad
+\vect{b} = \mat{1 \\ 1} \ \text{に対し}\
+\langle \vect{b}, \vect{b} \rangle' = 1 - 1 = 0
+\ (\vect{b} \neq \vect{0}).
+\]
+「長さの $2$ 乗」が負になったり、零ベクトルでないのに $0$ に
+なったりするので、この演算からはノルムが定義できず、
+コーシー・シュワルツの不等式も保証されない。内積の三つの公理は
+どれも飾りではない。
+(なお、この符号ちがいの演算そのものは無意味ではなく、
+相対性理論の時空の幾何(ミンコフスキー計量)で主役を務める。
+「正値性を外すと何が起こるか」を真剣に研究した理論である。)
+\end{hanrei}
+
+\begin{hanrei}[内積は「消去」できない]\label{hanrei:inner-cancel}
+数の等式 $ab = ac$($a \neq 0$)なら $b = c$ と消去できるが、
+内積では $\langle \vect{a}, \vect{b} \rangle = \langle \vect{a}, \vect{c} \rangle$
+かつ $\vect{a} \neq \vect{0}$ でも $\vect{b} = \vect{c}$ とは限らない。
+\[
+\vect{a} = \mat{1 \\ 0}, \quad \vect{b} = \mat{0 \\ 1}, \quad
+\vect{c} = \mat{0 \\ 2}
+\]
+とすると $\langle \vect{a}, \vect{b} \rangle = \langle \vect{a}, \vect{c} \rangle = 0$
+だが $\vect{b} \neq \vect{c}$ である。内積は $\vect{a}$ 方向の情報しか
+見ておらず、それと直交する方向の違いを検出できないからである。
+ただし、\textbf{すべての} $\vect{a}$ に対して
+$\langle \vect{a}, \vect{b} \rangle = \langle \vect{a}, \vect{c} \rangle$
+が成り立つなら $\vect{b} = \vect{c}$ といえる(問 \ref{q:inner-ex9})。
+\end{hanrei}
+
+\section{例題}
+
+内積・ノルム・角度の計算と、不等式の使い方を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(計算)]\label{rei:inner-angle}
+$\R^4$ のベクトル $\vect{a} = (1, 1, 1, 1)$, $\vect{b} = (1, 1, 1, -1)$ の
+なす角を求めよ。\\
+\textbf{解.}\ $\langle \vect{a}, \vect{b} \rangle = 1 + 1 + 1 - 1 = 2$、
+$\|\vect{a}\| = \|\vect{b}\| = \sqrt{4} = 2$。よって
+\[
+\cos\theta = \frac{2}{2 \cdot 2} = \frac{1}{2}, \qquad \theta = 60^\circ.
+\]
+目で見ることのできない $4$ 次元のベクトルにも、内積を経由すれば
+角度が確定する。これが「成分の式を定義に採用する」ことの威力である。
+\end{rei}
+
+\begin{rei}[例題・基本(直交条件)]\label{rei:inner-orthparam}
+$\vect{a} = \mat{2 \\ -1 \\ 3}$ と $\vect{b} = \mat{1 \\ t \\ 2}$ が
+直交するように実数 $t$ を定めよ。\\
+\textbf{解.}\ 直交条件は $\langle \vect{a}, \vect{b} \rangle = 0$ だから
+\[
+2 \cdot 1 + (-1) \cdot t + 3 \cdot 2 = 8 - t = 0, \qquad t = 8.
+\]
+検算:$t = 8$ のとき $\langle \vect{a}, \vect{b} \rangle = 2 - 8 + 6 = 0$。
+「垂直」という幾何の条件が、内積 $= 0$ という $1$ 本の方程式に翻訳される。
+\end{rei}
+
+\begin{rei}[例題・基本(単位ベクトルと距離)]\label{rei:inner-normdist}
+　(1) $\vect{v} = \mat{3 \\ -4}$ と同じ向きの単位ベクトルを求めよ。\\
+　(2) $2$ 点 $\vect{a} = \mat{1 \\ 2}$, $\vect{b} = \mat{4 \\ 6}$ の距離を求めよ。\\
+\textbf{解.}\ (1) $\|\vect{v}\| = \sqrt{9 + 16} = 5$ だから、正規化して
+$\dfrac{1}{5}\mat{3 \\ -4} = \mat{3/5 \\ -4/5}$。
+ノルムを確かめると $\sqrt{9/25 + 16/25} = 1$ で正しい。\\
+　(2) $\vect{a} - \vect{b} = \mat{-3 \\ -4}$ より
+$d(\vect{a}, \vect{b}) = \sqrt{9 + 16} = 5$。
+座標平面の $2$ 点間距離の公式と同じ計算である。
+\end{rei}
+
+\begin{rei}[例題・標準(コーシー・シュワルツの応用)]\label{rei:inner-csapp}
+任意の実数 $a, b, c$ に対して
+\[
+(a + b + c)^2 \le 3(a^2 + b^2 + c^2)
+\]
+が成り立つことを示し、等号成立の条件を求めよ。\\
+\textbf{解.}\ $\vect{x} = (a, b, c)$, $\vect{y} = (1, 1, 1)$ にコーシー・
+シュワルツの不等式(定理 \ref{thm:inner-cs})を使う。
+$\langle \vect{x}, \vect{y} \rangle = a + b + c$、
+$\|\vect{x}\|^2 = a^2 + b^2 + c^2$、$\|\vect{y}\|^2 = 3$ だから
+\[
+(a + b + c)^2 = \langle \vect{x}, \vect{y} \rangle^2
+\le \|\vect{x}\|^2\,\|\vect{y}\|^2 = 3(a^2 + b^2 + c^2).
+\]
+等号は $\vect{x}$ と $\vect{y}$ が線形従属、すなわち
+$(a, b, c) = k(1, 1, 1)$、つまり $a = b = c$ のとき(逆も明らか)。
+高校で「うまい変形」を要した不等式が、ベクトルを一組選ぶだけで落ちる。
+\end{rei}
+
+\begin{rei}[例題・標準(関数の内積)]\label{rei:inner-funccalc}
+区間 $[-1, 1]$ 上の内積 $\langle f, g \rangle = \int_{-1}^{1} f(x)g(x)\,dx$
+について、$f(x) = 1$, $g(x) = x^2$ の内積とそれぞれのノルムを計算し、
+コーシー・シュワルツの不等式が成り立っていることを確かめよ。\\
+\textbf{解.}\
+\[
+\langle 1, x^2 \rangle = \int_{-1}^{1} x^2\,dx = \frac{2}{3}, \qquad
+\|1\|^2 = \int_{-1}^{1} 1\,dx = 2, \qquad
+\|x^2\|^2 = \int_{-1}^{1} x^4\,dx = \frac{2}{5}.
+\]
+よって $\|1\| = \sqrt{2}$, $\|x^2\| = \sqrt{2/5}$。不等式の両辺を
+$2$ 乗で比べると
+\[
+\langle 1, x^2 \rangle^2 = \frac{4}{9} \le \|1\|^2\|x^2\|^2
+= 2 \cdot \frac{2}{5} = \frac{4}{5}
+\]
+で、確かに成り立っている($4/9 < 4/5$)。等号でないのは、$1$ と $x^2$ が
+線形従属でない(定数倍の関係にない)ことの反映である。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:平行四辺形の法則)]\label{rei:inner-parallelogram}
+任意の $\vect{a}, \vect{b} \in \R^n$ に対して
+\[
+\|\vect{a} + \vect{b}\|^2 + \|\vect{a} - \vect{b}\|^2
+= 2\|\vect{a}\|^2 + 2\|\vect{b}\|^2
+\]
+が成り立つことを示せ(平行四辺形の $2$ 本の対角線の $2$ 乗和は、
+$4$ 辺の $2$ 乗和に等しい)。\\
+\textbf{解.}\ 双線形性(定理 \ref{thm:inner-props})で展開する。
+\[
+\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2, \qquad
+\|\vect{a} - \vect{b}\|^2 = \|\vect{a}\|^2 - 2\langle \vect{a}, \vect{b} \rangle
++ \|\vect{b}\|^2.
+\]
+辺々加えると内積の項が打ち消し合い、
+$2\|\vect{a}\|^2 + 2\|\vect{b}\|^2$ を得る。
+成分を書かずに、双線形性という「計算規則」だけで証明が済む点に注目せよ。
+この等式は標準内積に限らず、どんな内積空間のノルムでも成り立つ。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{標準内積}は $\langle \vect{a}, \vect{b} \rangle = \sum a_ib_i
+= {}^t\vect{a}\,\vect{b}$、\textbf{ノルム}は
+$\|\vect{a}\| = \sqrt{\langle \vect{a}, \vect{a} \rangle}$。
+対称・双線形・正値という三つの基本性質をもつ(定理 \ref{thm:inner-props})。
+\item \textbf{コーシー・シュワルツの不等式}
+$|\langle \vect{a}, \vect{b} \rangle| \le \|\vect{a}\|\,\|\vect{b}\|$
+(等号は線形従属のとき)により、$n$ 次元でも
+$\cos\theta$ を通じて\textbf{角度}が定義できる。
+$\langle \vect{a}, \vect{b} \rangle = 0$ が\textbf{直交}である。
+\item コーシー・シュワルツから\textbf{三角不等式}
+$\|\vect{a} + \vect{b}\| \le \|\vect{a}\| + \|\vect{b}\|$ が従う。
+直交すれば\textbf{ピタゴラスの定理}が使える。
+\item 対称・双線形・正値を公理とする\textbf{内積空間}では、
+上の定理がすべて再証明なしに成り立つ。関数の空間の
+$\langle f, g \rangle = \int f g\,dx$ が代表例で、
+「関数どうしの直交」が意味をもつ。
+\item 正値性の破れた演算(反例 \ref{hanrei:inner-indefinite})では
+長さが壊れる。また内積の値が一致しても、ベクトルは消去できない
+(反例 \ref{hanrei:inner-cancel})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:inner-ex1}
+次の各組のベクトルの内積・ノルム・なす角を求めよ。\\
+　(1) $\vect{a} = \mat{2 \\ 1}$, $\vect{b} = \mat{3 \\ -1}$\\
+　(2) $\vect{a} = \mat{1 \\ 2 \\ 2}$, $\vect{b} = \mat{-2 \\ 1 \\ 2}$
+(なす角は $\cos\theta$ の値まででよい)
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:inner-ex2}
+$\vect{a} = \mat{1 \\ -2 \\ 3}$ と $\vect{b} = \mat{2 \\ t \\ 4}$ が
+直交するように実数 $t$ を定めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:inner-ex3}
+　(1) $\vect{v} = \mat{1 \\ 2 \\ -2}$ と同じ向きの単位ベクトルを求めよ。\\
+　(2) $2$ 点 $\vect{a} = \mat{3 \\ 1}$, $\vect{b} = \mat{0 \\ 5}$ の
+距離を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:inner-ex4}
+区間 $[-1, 1]$ 上の内積 $\langle f, g \rangle = \int_{-1}^{1} f(x)g(x)\,dx$
+について、$f(x) = 1 + x$, $g(x) = x$ の内積 $\langle f, g \rangle$ と
+ノルム $\|f\|$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex5}
+コーシー・シュワルツの不等式を使って、任意の実数 $a, b, c$ に対して
+\[
+(a + 2b + 2c)^2 \le 9(a^2 + b^2 + c^2)
+\]
+が成り立つことを示し、等号成立の条件を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex6}
+$\|\vect{a}\| = 2$, $\|\vect{b}\| = 3$,
+$\langle \vect{a}, \vect{b} \rangle = -4$ のとき、\\
+　(1) $\|\vect{a} + \vect{b}\|$ と $\|\vect{a} - \vect{b}\|$ を求めよ
+(成分は与えられていないことに注意)。\\
+　(2) $\|\vect{a}\| = 2$, $\|\vect{b}\| = 3$ のまま
+$\langle \vect{a}, \vect{b} \rangle = 7$ となることはあり得るか。理由をつけて答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex7}
+$\R^2$ に演算 $\langle \vect{a}, \vect{b} \rangle_w = 2a_1b_1 + 3a_2b_2$ を
+定める。\\
+　(1) これが内積の公理(定義 \ref{def:inner-axioms})を満たすことを確かめよ。\\
+　(2) この内積での $\vect{e}_1 = \mat{1 \\ 0}$ のノルムを求めよ
+(標準内積とは「長さ」の値が変わることに注意)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:inner-ex8}
+区間 $[-1, 1]$ 上の内積 $\langle f, g \rangle = \int_{-1}^{1} f(x)g(x)\,dx$
+について、$x^2 - c$ が定数関数 $1$ と直交するように定数 $c$ を定めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:inner-ex9}
+$\R^n$ のベクトル $\vect{b}, \vect{c}$ について、\textbf{すべての}
+$\vect{a} \in \R^n$ に対して $\langle \vect{a}, \vect{b} \rangle
+= \langle \vect{a}, \vect{c} \rangle$ が成り立つならば
+$\vect{b} = \vect{c}$ であることを示せ
+(ヒント:$\vect{a} = \vect{b} - \vect{c}$ を代入する)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:inner-ex10}
+$n$ 次元立方体の対角線ベクトル $\vect{d} = (1, 1, \dots, 1) \in \R^n$ と
+辺ベクトル $\vect{e}_1 = (1, 0, \dots, 0)$ のなす角を $\theta_n$ とする。\\
+　(1) $n = 4$ のとき $\theta_4$ を求めよ。\\
+　(2) 一般の $n$ で $\cos\theta_n$ を求め、$n$ を大きくすると
+$\theta_n$ がどうなるか述べよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:inner-ex11}
+　(1) 三角不等式(定理 \ref{thm:inner-triangle})を用いて、
+\textbf{逆向き三角不等式}
+$\bigl|\,\|\vect{a}\| - \|\vect{b}\|\,\bigr| \le \|\vect{a} - \vect{b}\|$
+を証明せよ
+(ヒント:$\vect{a} = (\vect{a} - \vect{b}) + \vect{b}$ と分解する)。\\
+　(2) 等号が成り立つ例を一つ挙げよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:inner-ex12}
+ピタゴラスの定理の\textbf{逆}、すなわち
+「$\|\vect{a} + \vect{b}\|^2 = \|\vect{a}\|^2 + \|\vect{b}\|^2$ ならば
+$\vect{a} \perp \vect{b}$」を証明せよ。
+また、この逆が成り立つ理由を、展開式のどの項が消えることと対応するか
+説明せよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:inner-ex1}}:内積・ノルムを定義どおり計算し、
+$\cos\theta = \langle \vect{a}, \vect{b} \rangle / (\|\vect{a}\|\|\vect{b}\|)$
+に代入する。
+\item \textbf{問 \ref{q:inner-ex2}}:直交 $\iff$ 内積 $= 0$。$t$ の
+$1$ 次方程式になる。
+\item \textbf{問 \ref{q:inner-ex3}}:単位ベクトルはノルムで割る。距離は
+差のノルム。
+\item \textbf{問 \ref{q:inner-ex4}}:定義の積分を計算する。
+奇関数の対称区間の積分は $0$ になることを使うと速い。
+\item \textbf{問 \ref{q:inner-ex5}}:例題 \ref{rei:inner-csapp} をまねて
+$\vect{y} = (1, 2, 2)$ を選ぶ。
+\item \textbf{問 \ref{q:inner-ex6}}:$\|\vect{a} \pm \vect{b}\|^2$ を
+双線形性で展開する。(2) はコーシー・シュワルツの上限と比べる。
+\item \textbf{問 \ref{q:inner-ex7}}:対称・双線形は成分計算、正値性は
+$2a_1^2 + 3a_2^2 \ge 0$ から。係数が正であることが効く。
+\item \textbf{問 \ref{q:inner-ex8}}:$\langle x^2 - c, 1 \rangle = 0$ を
+$c$ について解く。
+\item \textbf{問 \ref{q:inner-ex9}}:移項して
+$\langle \vect{a}, \vect{b} - \vect{c} \rangle = 0$。$\vect{a}$ は
+何でもよいのだから、いちばん役に立つものを選ぶ。
+\item \textbf{問 \ref{q:inner-ex10}}:$\cos\theta_n = 1/\sqrt{n}$ になる。
+$n \to \infty$ での挙動を考える。
+\item \textbf{問 \ref{q:inner-ex11}}:分解して三角不等式を使うと
+$\|\vect{a}\| - \|\vect{b}\| \le \|\vect{a} - \vect{b}\|$。
+$\vect{a}$ と $\vect{b}$ を入れ替えてもう一本作る。
+\item \textbf{問 \ref{q:inner-ex12}}:$\|\vect{a} + \vect{b}\|^2$ の展開式と
+仮定を見比べる。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{正規直交基底とグラム・シュミットの直交化法}\label{chap:gs}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 正規直交基底の利点(座標が内積一発で求まる、線形独立性が自動)を
+証明つきで理解する。
+\item グラム・シュミットの直交化法を $\R^3$ の $3$ 本の基底に対して
+実行でき、なぜうまくいくのかを正射影の言葉で説明できるようになる。
+\item 直交補空間 $W^{\perp}$ と直交分解
+$\vect{v} = \vect{v}_W + \vect{v}_{\perp}$ を理解し、
+正射影と距離(点と部分空間の距離)を計算できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 「良い基底」を機械的に作る}
+
+第III部で見たとおり、基底は無数にあり、どれを選ぶかは自由である。
+だが計算の負担は基底によって大きく違う。一般の基底では、
+ベクトル $\vect{v}$ の座標を求めるだけで連立方程式を解く羽目になる
+(第III部の座標計算を思い出そう)。いっぽう標準基底なら座標は成分を
+読むだけだった。標準基底のこの快適さの正体は何か
+――\textbf{互いに直交する単位ベクトル}であること、それがすべてである。
+本章では、この快適さを備えた基底(正規直交基底)の利点を確かめ、
+どんな基底からでもそれを\textbf{機械的に}作り出す
+グラム・シュミットの直交化法を学ぶ。
+さらに、その副産物として「部分空間に届かない点から、
+部分空間内の最も近い点へ垂線を下ろす」正射影の理論が手に入る。
+これは第VII部の最小二乗法(データ分析の心臓部)の土台になる。
+
 \section{正規直交基底のありがたみ}
 
-\begin{teigi}[正規直交基底]
-基底 $\vect{u}_1, \dots, \vect{u}_n$ が、互いに直交し
+\begin{teigi}[正規直交基底]\label{def:gs-onb}
+ベクトルの組 $\vect{u}_1, \dots, \vect{u}_k$ が、互いに直交し
 ($i \neq j$ で $\langle \vect{u}_i, \vect{u}_j \rangle = 0$)、
 各ノルムが $1$($\|\vect{u}_i\| = 1$)であるとき、
+\textbf{正規直交系}という。正規直交系をなす基底を
 \textbf{正規直交基底}という。$\R^n$ の標準基底はその代表例である。
 \end{teigi}
 
-一般の基底では、ベクトル $\vect{v}$ の座標を求めるのに
-連立方程式を解く必要があった。正規直交基底なら、
-$\vect{v} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$ の両辺と
-$\vect{u}_i$ の内積をとるだけで、直交性により他の項が消え、
+正規直交系のありがたみは、まず\textbf{線形独立性がただで手に入る}
+ことに現れる。
+
+\begin{teiri}[正規直交系は線形独立]\label{thm:gs-indep}
+正規直交系 $\vect{u}_1, \dots, \vect{u}_k$ は線形独立である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$c_1\vect{u}_1 + \cdots + c_k\vect{u}_k = \vect{0}$ とする。
+両辺と $\vect{u}_j$ の内積をとると、双線形性より
 \[
-c_i = \langle \vect{v}, \vect{u}_i \rangle
+c_1\langle \vect{u}_1, \vect{u}_j \rangle + \cdots
++ c_k\langle \vect{u}_k, \vect{u}_j \rangle = 0
 \]
-と\textbf{座標が内積一発で求まる}。計算上も理論上も、
+で、直交性により左辺は $c_j\langle \vect{u}_j, \vect{u}_j \rangle = c_j$
+だけが生き残る($\|\vect{u}_j\| = 1$ を使った)。よって
+$c_j = 0$ がすべての $j$ で成り立ち、線形独立である。 $\blacksquare$
+
+したがって、$\R^n$ の中に $n$ 本の正規直交系があれば、本数だけで
+自動的に基底になる(定理 \ref{thm:dim-ncheck})。
+第二のありがたみが\textbf{座標計算}である。
+
+\begin{teiri}[座標は内積で求まる]\label{thm:gs-coord}
+$\vect{u}_1, \dots, \vect{u}_n$ を正規直交基底とすると、任意の
+$\vect{v}$ の展開 $\vect{v} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$ の
+係数(座標)は
+\[
+c_i = \langle \vect{v}, \vect{u}_i \rangle \qquad (i = 1, \dots, n)
+\]
+で与えられる。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+展開の両辺と $\vect{u}_i$ の内積をとると、定理 \ref{thm:gs-indep} の
+証明とまったく同じ理由で右辺は $c_i$ だけが残る。 $\blacksquare$
+
+一般の基底では連立方程式(掃き出し法)が必要だった座標計算が、
+\textbf{内積 $n$ 回で済む}。計算上も理論上も、
 基底は正規直交であるに越したことはない。
+
+\begin{rei}[座標の即読]\label{rei:gs-coordread}
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$ は $\R^2$ の正規直交基底である
+(直交と正規化を確かめよ)。$\vect{v} = \mat{4 \\ 2}$ の座標は
+\[
+c_1 = \langle \vect{v}, \vect{u}_1 \rangle = \frac{4 + 2}{\sqrt{2}} = 3\sqrt{2},
+\qquad
+c_2 = \langle \vect{v}, \vect{u}_2 \rangle = \frac{4 - 2}{\sqrt{2}} = \sqrt{2}.
+\]
+検算:$3\sqrt{2}\,\vect{u}_1 + \sqrt{2}\,\vect{u}_2
+= \mat{3 \\ 3} + \mat{1 \\ -1} = \mat{4 \\ 2}$。連立方程式は一度も
+解いていない。
+\end{rei}
 
 \section{グラム・シュミットの直交化法}
 
 幸い、どんな基底からでも正規直交基底を機械的に作れる。
 
-\begin{teiri}[グラム・シュミットの直交化法]
+\begin{teiri}[グラム・シュミットの直交化法]\label{thm:gs-main}
 線形独立な $\vect{a}_1, \dots, \vect{a}_k$ から、次の手順で
 正規直交系 $\vect{u}_1, \dots, \vect{u}_k$ が得られる
-(しかも各段階で張る空間は変わらない)。
+(しかも各段階で張る空間は変わらない:
+$\langle \vect{u}_1, \dots, \vect{u}_j \rangle
+= \langle \vect{a}_1, \dots, \vect{a}_j \rangle$)。
 \begin{enumerate}
 \item $\vect{b}_1 = \vect{a}_1$ とする。
 \item $\vect{b}_j = \vect{a}_j - \displaystyle\sum_{i=1}^{j-1}
@@ -153,7 +677,30 @@ $\dfrac{\langle \vect{a}, \vect{b} \rangle}{\langle \vect{b}, \vect{b} \rangle}\
 「新入りのベクトルから、既存メンバー方向の成分をすべて差し引けば、
 残りは全員と直交する」という、素朴だが完璧なアイデアである。
 
-\begin{rei}
+\noindent\textbf{(証明)}\quad
+$\vect{b}_1, \dots, \vect{b}_{j-1}$ が互いに直交している(帰納法の仮定)
+として、$\vect{b}_j$ が各 $\vect{b}_m$($m < j$)と直交することを
+確かめればよい。双線形性で展開すると
+\[
+\langle \vect{b}_j, \vect{b}_m \rangle
+= \langle \vect{a}_j, \vect{b}_m \rangle - \sum_{i=1}^{j-1}
+\frac{\langle \vect{a}_j, \vect{b}_i \rangle}{\langle \vect{b}_i, \vect{b}_i \rangle}
+\langle \vect{b}_i, \vect{b}_m \rangle
+= \langle \vect{a}_j, \vect{b}_m \rangle
+- \frac{\langle \vect{a}_j, \vect{b}_m \rangle}{\langle \vect{b}_m, \vect{b}_m \rangle}
+\langle \vect{b}_m, \vect{b}_m \rangle = 0
+\]
+(和のうち $i = m$ の項だけが残ることに帰納法の仮定を使った)。
+また、$\vect{b}_j$ の式を変形すると $\vect{a}_j$ は
+$\vect{b}_1, \dots, \vect{b}_j$ の線形結合、逆に $\vect{b}_j$ は
+$\vect{a}_1, \dots, \vect{a}_j$ の線形結合になっている(帰納的に
+$\vect{b}_i \in \langle \vect{a}_1, \dots, \vect{a}_i \rangle$)から、
+張る空間は各段階で変わらない。とくに、もし $\vect{b}_j = \vect{0}$ なら
+$\vect{a}_j$ が $\vect{a}_1, \dots, \vect{a}_{j-1}$ の線形結合となって
+線形独立の仮定に反するので、$\vect{b}_j \neq \vect{0}$ であり
+正規化(手順 3)が必ず実行できる。 $\blacksquare$
+
+\begin{rei}\label{rei:gs-worked}
 $\vect{a}_1 = \mat{1 \\ 1 \\ 0}$, $\vect{a}_2 = \mat{0 \\ 1 \\ 1}$ を直交化する。
 $\vect{b}_1 = \vect{a}_1$。
 $\langle \vect{a}_2, \vect{b}_1 \rangle = 1$,
@@ -170,6 +717,33 @@ $\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
 $\langle \vect{u}_1, \vect{u}_2 \rangle = 0$ を確かめてほしい。
 \end{rei}
 
+\begin{mondai}\label{q:gs}
+$\vect{a}_1 = \mat{1 \\ 0 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ に
+グラム・シュミットの直交化法を適用し、正規直交系を作れ。
+\end{mondai}
+
+\begin{itembox}[l]{深掘り:関数を直交化する ― ルジャンドル多項式}
+グラム・シュミットの直交化法の手順には「成分」が一度も登場しない。
+使うのは内積と引き算だけである。ということは、
+\textbf{関数の内積}(第 \ref{chap:inner} 章)をもつ多項式の空間でも
+そのまま実行できる。区間 $[-1, 1]$ 上の内積
+$\langle f, g \rangle = \int_{-1}^{1} f g\,dx$ で、
+基底 $1, x, x^2$ を直交化してみよう。
+$\vect{b}_1 = 1$。次に $\langle x, 1 \rangle = 0$(奇関数)だから
+$\vect{b}_2 = x$(最初から直交していた)。さらに
+$\langle x^2, 1 \rangle = \frac{2}{3}$, $\langle 1, 1 \rangle = 2$,
+$\langle x^2, x \rangle = 0$ より
+\[
+\vect{b}_3 = x^2 - \frac{2/3}{2} \cdot 1 - 0 \cdot x = x^2 - \frac{1}{3}.
+\]
+こうして得られる直交多項式列 $1,\ x,\ x^2 - \frac{1}{3},\ \dots$ は
+(定数倍を除いて)\textbf{ルジャンドル多項式}と呼ばれ、
+物理学(球対称なポテンシャルの展開)や数値積分(ガウス求積)で
+主役を務める。$19$ 世紀に個別に発見された特殊関数たちが、
+実は「多項式にグラム・シュミットを適用しただけ」という一つの操作で
+統一的に得られる――抽象化(内積の公理化)の配当である。
+\end{itembox}
+
 \section{直交補空間と正射影}
 
 部分空間 $W$ に対し、$W$ のすべてのベクトルと直交するベクトルの全体
@@ -177,13 +751,76 @@ $\langle \vect{u}_1, \vect{u}_2 \rangle = 0$ を確かめてほしい。
 W^{\perp} = \{\, \vect{v} \mid \text{すべての } \vect{w} \in W \text{ に対し }
 \langle \vect{v}, \vect{w} \rangle = 0 \,\}
 \]
-を $W$ の\textbf{直交補空間}という。任意の $\vect{v}$ は
+を $W$ の\textbf{直交補空間}という。
+
+\begin{teiri}[直交補空間の基本性質]\label{thm:gs-perpsub}
+$\R^n$ の部分空間 $W$ について、
+\begin{enumerate}
+\item $W^{\perp}$ は $\R^n$ の部分空間である。
+\item $W \cap W^{\perp} = \{\vect{0}\}$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $\vect{v}_1, \vect{v}_2 \in W^{\perp}$ とすると、任意の
+$\vect{w} \in W$ に対し双線形性より
+$\langle \vect{v}_1 + \vect{v}_2, \vect{w} \rangle
+= \langle \vect{v}_1, \vect{w} \rangle + \langle \vect{v}_2, \vect{w} \rangle
+= 0$、$\langle c\vect{v}_1, \vect{w} \rangle
+= c\langle \vect{v}_1, \vect{w} \rangle = 0$。
+$\vect{0}$ も明らかに属するから、部分空間の判定
+(第 \ref{chap:subspace} 章)により $W^{\perp}$ は部分空間である。
+(2) $\vect{x} \in W \cap W^{\perp}$ とすると、$\vect{x}$ は
+「$W$ のすべての元と直交する」元であると同時に自分自身が $W$ の元だから、
+$\langle \vect{x}, \vect{x} \rangle = 0$。正値性より
+$\vect{x} = \vect{0}$。 $\blacksquare$
+
+\begin{teiri}[直交分解]\label{thm:gs-decomp}
+$W$ を $\R^n$ の部分空間とすると、任意の $\vect{v} \in \R^n$ は
 \[
 \vect{v} = \underbrace{\vect{v}_W}_{\in W} +
 \underbrace{\vect{v}_{\perp}}_{\in W^{\perp}}
 \]
-の形に\textbf{ただ一通り}に分解され、$\vect{v}_W$ を $\vect{v}$ の
-$W$ への\textbf{正射影}という。
+の形に\textbf{ただ一通り}に分解できる。$\vect{v}_W$ を $\vect{v}$ の
+$W$ への\textbf{正射影}という。$W$ の正規直交基底
+$\vect{u}_1, \dots, \vect{u}_k$ を使えば
+\[
+\vect{v}_W = \langle \vect{v}, \vect{u}_1 \rangle \vect{u}_1 + \cdots
++ \langle \vect{v}, \vect{u}_k \rangle \vect{u}_k
+\]
+と計算できる。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{存在}:$W$ の基底をとりグラム・シュミットの直交化法で
+正規直交基底 $\vect{u}_1, \dots, \vect{u}_k$ にしておく。
+上の式で $\vect{v}_W$ を定め、$\vect{v}_{\perp} = \vect{v} - \vect{v}_W$
+とおく。$\vect{v}_W \in W$ は明らか。各 $\vect{u}_j$ との内積は
+\[
+\langle \vect{v}_{\perp}, \vect{u}_j \rangle
+= \langle \vect{v}, \vect{u}_j \rangle
+- \sum_{i=1}^{k} \langle \vect{v}, \vect{u}_i \rangle
+\langle \vect{u}_i, \vect{u}_j \rangle
+= \langle \vect{v}, \vect{u}_j \rangle - \langle \vect{v}, \vect{u}_j \rangle = 0
+\]
+だから、$\vect{v}_{\perp}$ は $W$ の基底のすべてと直交し、したがって
+その線形結合である $W$ のすべての元と直交する:
+$\vect{v}_{\perp} \in W^{\perp}$。
+\textbf{一意性}:$\vect{v} = \vect{w}_1 + \vect{h}_1 = \vect{w}_2 + \vect{h}_2$
+($\vect{w}_i \in W$, $\vect{h}_i \in W^{\perp}$)と二通りに書けたとすると、
+移項して
+\[
+\vect{w}_1 - \vect{w}_2 = \vect{h}_2 - \vect{h}_1.
+\]
+左辺は $W$ の元、右辺は $W^{\perp}$ の元だから、この共通のベクトルは
+$W \cap W^{\perp}$ に属し、定理 \ref{thm:gs-perpsub}(2) より $\vect{0}$。
+よって $\vect{w}_1 = \vect{w}_2$, $\vect{h}_1 = \vect{h}_2$ である。
+$\blacksquare$
+
+第 \ref{chap:subspace} 章の言葉でいえば、$\R^n$ は $W$ と $W^{\perp}$ の
+\textbf{直和}に分解される($W + W^{\perp} = \R^n$ かつ
+$W \cap W^{\perp} = \{\vect{0}\}$)。とくに次元を数えると
+$\dim W + \dim W^{\perp} = n$ が成り立つ(問 \ref{q:gs-ex10})。
 
 \begin{itembox}[l]{深掘り:正射影は「最良の近似」である}
 正射影 $\vect{v}_W$ には、計算を超えた意味がある:
@@ -204,43 +841,452 @@ $\vect{b}$ を $A$ の列が張る空間へ正射影した点なら必ず到達�
 それが「誤差最小の近似解」になる。第VII部で全面展開する。
 \end{itembox}
 
-\begin{mondai}\label{q:gs}
-$\vect{a}_1 = \mat{1 \\ 0 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ に
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[直交していない基底で座標公式を使ってはいけない]\label{hanrei:gs-nonorth}
+座標公式 $c_i = \langle \vect{v}, \vect{u}_i \rangle$
+(定理 \ref{thm:gs-coord})は\textbf{正規直交}基底専用である。
+$\R^2$ の基底 $\vect{a}_1 = \mat{1 \\ 0}$, $\vect{a}_2 = \mat{1 \\ 1}$
+(直交していない)と $\vect{v} = \mat{0 \\ 1}$ で試すと、公式もどきは
+\[
+\langle \vect{v}, \vect{a}_1 \rangle = 0, \qquad
+\langle \vect{v}, \vect{a}_2 \rangle = 1
+\]
+を返すが、$0 \cdot \vect{a}_1 + 1 \cdot \vect{a}_2 = \mat{1 \\ 1} \neq \vect{v}$
+で正しくない。正しい座標は $\vect{v} = -\vect{a}_1 + \vect{a}_2$、
+すなわち $(-1, 1)$ である。定理 \ref{thm:gs-coord} の証明を見返すと、
+「他の項が消える」ところで直交性を、「係数がそのまま残る」ところで
+ノルム $1$ を使っている。どちらが欠けても公式は崩れる。
+\end{hanrei}
+
+\begin{hanrei}[線形従属な組に直交化法を使うと零ベクトルが現れる]\label{hanrei:gs-dependent}
+グラム・シュミットの直交化法は\textbf{線形独立}な組が前提である。
+従属な組 $\vect{a}_1 = \mat{1 \\ 1}$, $\vect{a}_2 = \mat{2 \\ 2}$ に
+形式的に適用すると
+\[
+\vect{b}_2 = \vect{a}_2 -
+\frac{\langle \vect{a}_2, \vect{b}_1 \rangle}{\langle \vect{b}_1, \vect{b}_1 \rangle}
+\vect{b}_1 = \mat{2 \\ 2} - \frac{4}{2}\mat{1 \\ 1} = \vect{0}
+\]
+となり、正規化(零で割る)ができず手順が止まる。
+逆にこれは実用上の利点でもある:\textbf{直交化の途中で零ベクトルが
+出たら、もとの組は線形従属だった}と判定できる
+(定理 \ref{thm:gs-main} の証明の最後の段落の対偶)。
+\end{hanrei}
+
+\section{例題}
+
+直交化・座標計算・正射影の三点セットを練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(直交化)]\label{rei:gs-basic2d}
+$\vect{a}_1 = \mat{1 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 3}$ に
+グラム・シュミットの直交化法を適用せよ。\\
+\textbf{解.}\ $\vect{b}_1 = \vect{a}_1$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 1 + 3 = 4$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 3} - \frac{4}{2}\mat{1 \\ 1} = \mat{-1 \\ 1}.
+\]
+正規化して
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{-1 \\ 1}$。
+検算:$\langle \vect{u}_1, \vect{u}_2 \rangle = \frac{-1 + 1}{2} = 0$。
+\end{rei}
+
+\begin{rei}[例題・基本(座標計算)]\label{rei:gs-coordcalc}
+例題 \ref{rei:gs-basic2d} の正規直交基底
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{-1 \\ 1}$ に関する
+$\vect{v} = \mat{5 \\ 1}$ の座標を求めよ。\\
+\textbf{解.}\ 定理 \ref{thm:gs-coord} より
+\[
+c_1 = \langle \vect{v}, \vect{u}_1 \rangle = \frac{5 + 1}{\sqrt{2}} = 3\sqrt{2},
+\qquad
+c_2 = \langle \vect{v}, \vect{u}_2 \rangle = \frac{-5 + 1}{\sqrt{2}} = -2\sqrt{2}.
+\]
+検算:$3\sqrt{2}\,\vect{u}_1 - 2\sqrt{2}\,\vect{u}_2
+= \mat{3 \\ 3} + \mat{2 \\ -2} = \mat{5 \\ 1}$。
+\end{rei}
+
+\begin{rei}[例題・基本(直線への正射影)]\label{rei:gs-projline}
+$\vect{v} = \mat{3 \\ 1}$ の、直線 $W = \langle \mat{1 \\ 1} \rangle$ への
+正射影 $\vect{v}_W$ と、$\vect{v}$ から $W$ までの距離を求めよ。\\
+\textbf{解.}\ $\vect{a} = \mat{1 \\ 1}$ とすると
+\[
+\vect{v}_W = \frac{\langle \vect{v}, \vect{a} \rangle}{\langle \vect{a}, \vect{a} \rangle}
+\vect{a} = \frac{4}{2}\mat{1 \\ 1} = \mat{2 \\ 2}.
+\]
+残りは $\vect{v}_{\perp} = \vect{v} - \vect{v}_W = \mat{1 \\ -1}$ で、
+確かに $\langle \vect{v}_{\perp}, \vect{a} \rangle = 1 - 1 = 0$(直交)。
+距離は $\|\vect{v}_{\perp}\| = \sqrt{2}$ である。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 本の直交化)]\label{rei:gs-3vec}
+$\vect{a}_1 = \mat{1 \\ 1 \\ 0}$, $\vect{a}_2 = \mat{1 \\ 0 \\ 1}$,
+$\vect{a}_3 = \mat{0 \\ 1 \\ 1}$ を直交化して $\R^3$ の正規直交基底を作れ。\\
+\textbf{解.}\ $\vect{b}_1 = \vect{a}_1$。
+$\langle \vect{a}_2, \vect{b}_1 \rangle = 1$,
+$\langle \vect{b}_1, \vect{b}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 0 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+= \mat{1/2 \\ -1/2 \\ 1}.
+\]
+次に $\langle \vect{a}_3, \vect{b}_1 \rangle = 1$,
+$\langle \vect{a}_3, \vect{b}_2 \rangle = -\frac{1}{2} + 1 = \frac{1}{2}$,
+$\langle \vect{b}_2, \vect{b}_2 \rangle = \frac{1}{4} + \frac{1}{4} + 1
+= \frac{3}{2}$ より
+\[
+\vect{b}_3 = \mat{0 \\ 1 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+- \frac{1/2}{3/2}\mat{1/2 \\ -1/2 \\ 1}
+= \mat{0 - 1/2 - 1/6 \\ 1 - 1/2 + 1/6 \\ 1 - 1/3}
+= \mat{-2/3 \\ 2/3 \\ 2/3}.
+\]
+正規化して
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ -1 \\ 2}, \qquad
+\vect{u}_3 = \frac{1}{\sqrt{3}}\mat{-1 \\ 1 \\ 1}.
+\]
+検算:$\langle \vect{u}_1, \vect{u}_3 \rangle = \frac{-1 + 1 + 0}{\sqrt{6}} = 0$、
+$\langle \vect{u}_2, \vect{u}_3 \rangle = \frac{-1 - 1 + 2}{\sqrt{18}} = 0$。
+$3$ 本の正規直交系だから、本数だけで $\R^3$ の基底になる
+(定理 \ref{thm:gs-indep} と \ref{thm:dim-ncheck})。
+\end{rei}
+
+\begin{rei}[例題・標準(直交補空間)]\label{rei:gs-perpcalc}
+$W = \langle \mat{1 \\ 2 \\ 1} \rangle \subseteq \R^3$ の直交補空間
+$W^{\perp}$ の基底を一組求めよ。\\
+\textbf{解.}\ $\vect{v} = \mat{x \\ y \\ z} \in W^{\perp}$ の条件は、
+生成元との直交
+\[
+x + 2y + z = 0
+\]
+だけである($W$ の一般の元は $\mat{1\\2\\1}$ のスカラー倍だから、
+生成元と直交すれば $W$ 全体と直交する)。これは同次連立 $1$ 次方程式で、
+自由変数 $y, z$ を使って解けば
+\[
+\vect{v} = y\mat{-2 \\ 1 \\ 0} + z\mat{-1 \\ 0 \\ 1}.
+\]
+よって基底は $\mat{-2 \\ 1 \\ 0}, \mat{-1 \\ 0 \\ 1}$(たとえば)。
+$\dim W + \dim W^{\perp} = 1 + 2 = 3$ になっている。
+直交補空間の計算は\textbf{同次方程式の解空間}の計算
+(第II部)そのものである。
+\end{rei}
+
+\begin{rei}[例題・標準(平面への正射影と距離)]\label{rei:gs-projplane}
+平面 $W = \{\, (x, y, z) \mid x + y + z = 0 \,\}$ への
+$\vect{v} = \mat{1 \\ 2 \\ 3}$ の正射影 $\vect{v}_W$ と、
+$\vect{v}$ から $W$ までの距離を求めよ。\\
+\textbf{解.}\ 平面に直接射影する代わりに、$W^{\perp}$ が
+法線方向 $\vect{n} = \mat{1 \\ 1 \\ 1}$ の直線であることを使う
+(直線への射影のほうが計算が軽い)。
+\[
+\vect{v}_{\perp} = \frac{\langle \vect{v}, \vect{n} \rangle}{\langle \vect{n}, \vect{n} \rangle}
+\vect{n} = \frac{6}{3}\mat{1 \\ 1 \\ 1} = \mat{2 \\ 2 \\ 2}, \qquad
+\vect{v}_W = \vect{v} - \vect{v}_{\perp} = \mat{-1 \\ 0 \\ 1}.
+\]
+検算:$\vect{v}_W$ の成分の和は $-1 + 0 + 1 = 0$ で確かに $W$ の元。
+距離は $\|\vect{v}_{\perp}\| = \sqrt{12} = 2\sqrt{3}$ である。
+分解の一意性(定理 \ref{thm:gs-decomp})のおかげで、
+「どちら側から射影しても同じ分解」にたどり着く。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{正規直交基底}(互いに直交・各ノルム $1$)では、
+線形独立性が自動で成り立ち(定理 \ref{thm:gs-indep})、座標が
+$c_i = \langle \vect{v}, \vect{u}_i \rangle$ と\textbf{内積一発}で求まる
+(定理 \ref{thm:gs-coord})。この公式は正規直交基底専用である
+(反例 \ref{hanrei:gs-nonorth})。
+\item \textbf{グラム・シュミットの直交化法}:新しいベクトルから、
+既存の方向への正射影(影)をすべて引き去り、最後に正規化する。
+どんな線形独立な組も正規直交系に変換でき、各段階で張る空間は変わらない
+(定理 \ref{thm:gs-main})。従属な組では途中で零ベクトルが現れる
+(反例 \ref{hanrei:gs-dependent})。
+\item 手順は内積だけでできるので、\textbf{関数の空間でも実行できる}
+(ルジャンドル多項式)。
+\item \textbf{直交補空間} $W^{\perp}$ は部分空間で、
+$W \cap W^{\perp} = \{\vect{0}\}$。任意のベクトルは
+$\vect{v} = \vect{v}_W + \vect{v}_{\perp}$ とただ一通りに\textbf{直交分解}
+される(定理 \ref{thm:gs-decomp})。$W^{\perp}$ の計算は
+同次連立方程式の解空間の計算に帰着する。
+\item 正射影 $\vect{v}_W$ は $W$ の中で $\vect{v}$ に\textbf{最も近い点}
+であり(深掘り)、第VII部の最小二乗法の土台になる。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:gs-ex1}
+$\vect{a}_1 = \mat{3 \\ 4}$, $\vect{a}_2 = \mat{1 \\ 0}$ に
+グラム・シュミットの直交化法を適用し、正規直交基底を作れ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:gs-ex2}
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$ が $\R^2$ の正規直交基底で
+あることを確かめ、$\vect{v} = \mat{3 \\ 1}$ の座標
+$c_1, c_2$ を内積で求めよ($c_1\vect{u}_1 + c_2\vect{u}_2 = \vect{v}$ の
+検算もすること)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:gs-ex3}
+$\vect{a}_1 = \mat{1 \\ 1 \\ 1}$, $\vect{a}_2 = \mat{1 \\ 1 \\ 0}$ に
 グラム・シュミットの直交化法を適用し、正規直交系を作れ。
 \end{mondai}
+
+\begin{mondai}[基本]\label{q:gs-ex4}
+$\vect{v} = \mat{2 \\ 3}$ の、直線 $W = \langle \mat{1 \\ 1} \rangle$ への
+正射影を求め、$\vect{v}$ から $W$ までの距離を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex5}
+$\vect{a}_1 = \mat{1 \\ 2 \\ 2}$, $\vect{a}_2 = \mat{1 \\ 0 \\ 0}$,
+$\vect{a}_3 = \mat{0 \\ 1 \\ 0}$ を直交化して $\R^3$ の正規直交基底を作れ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex6}
+$W = \langle \mat{1 \\ 1 \\ 1} \rangle \subseteq \R^3$ の直交補空間
+$W^{\perp}$ の\textbf{正規直交}基底を一組求めよ
+(まず基底を求め、それを直交化する)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex7}
+平面 $W = \{\, (x, y, z) \mid x + y + z = 0 \,\}$ への
+$\vect{v} = \mat{3 \\ 0 \\ 0}$ の正射影 $\vect{v}_W$ と、
+$\vect{v}$ から $W$ までの距離を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:gs-ex8}
+区間 $[0, 1]$ 上の内積 $\langle f, g \rangle = \int_0^1 f(x)g(x)\,dx$ で、
+$f_1(x) = 1$, $f_2(x) = x$ にグラム・シュミットの直交化法を適用し、
+正規直交系を作れ(区間が $[-1, 1]$ でないことに注意。
+$\langle x, 1 \rangle \neq 0$ になる)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:gs-ex9}
+単位ベクトル $\vect{u} = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$ への正射影を
+与える行列 $P = \vect{u}\,{}^t\vect{u}$ を求め、
+$P^2 = P$、${}^t\!P = P$ が成り立つことを確かめよ。
+また $P\mat{1 \\ 0}$ を計算し、図形的に解釈せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:gs-ex10}
+$W = \langle \mat{1 \\ 0 \\ 1}, \mat{0 \\ 1 \\ 1} \rangle \subseteq \R^3$
+について $W^{\perp}$ を求め、$\dim W + \dim W^{\perp} = 3$ を確かめよ。
+さらに、一般の部分空間 $W \subseteq \R^n$ で
+$\dim W + \dim W^{\perp} = n$ が成り立つ理由を、
+$W^{\perp}$ が「$\dim W$ 本の独立な同次 $1$ 次方程式の解空間」である
+ことから説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:gs-ex11}
+正規直交基底 $\vect{u}_1, \dots, \vect{u}_n$ に関する展開
+$\vect{v} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$ について、
+\[
+\|\vect{v}\|^2 = c_1^2 + c_2^2 + \cdots + c_n^2
+\]
+が成り立つことを証明せよ(\textbf{パーセバルの等式}。
+ピタゴラスの定理の $n$ 本版である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:gs-ex12}
+$W$ を $\R^n$ の部分空間とする。$W \subseteq (W^{\perp})^{\perp}$ が
+成り立つことを証明せよ。さらに、次元を比較して
+$W = (W^{\perp})^{\perp}$ であることを示せ
+(問 \ref{q:gs-ex10} の次元公式を使ってよい)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:gs-ex1}}:$\vect{b}_2 = \vect{a}_2 -
+\frac{\langle \vect{a}_2, \vect{b}_1 \rangle}{\langle \vect{b}_1, \vect{b}_1 \rangle}
+\vect{b}_1$ を計算してから両方を正規化する。
+\item \textbf{問 \ref{q:gs-ex2}}:直交性・ノルム・座標のすべてが
+内積の計算である。
+\item \textbf{問 \ref{q:gs-ex3}}:例題 \ref{rei:gs-basic2d} と同じ手順を
+$\R^3$ で行う。
+\item \textbf{問 \ref{q:gs-ex4}}:正射影の公式
+$\frac{\langle \vect{v}, \vect{a} \rangle}{\langle \vect{a}, \vect{a} \rangle}
+\vect{a}$。距離は残差のノルム。
+\item \textbf{問 \ref{q:gs-ex5}}:分数が出るが恐れず進める。
+各段階で直交を検算すると安心。
+\item \textbf{問 \ref{q:gs-ex6}}:$x + y + z = 0$ の解空間の基底を求め、
+$2$ 本をグラム・シュミットで直交化する。
+\item \textbf{問 \ref{q:gs-ex7}}:例題 \ref{rei:gs-projplane} のように、
+法線方向へ射影してから引き算する。
+\item \textbf{問 \ref{q:gs-ex8}}:$\langle x, 1 \rangle = \frac{1}{2}$,
+$\langle 1, 1 \rangle = 1$。$\vect{b}_2 = x - \frac{1}{2}$ のノルムは
+$\int_0^1 (x - \frac{1}{2})^2 dx = \frac{1}{12}$ から。
+\item \textbf{問 \ref{q:gs-ex9}}:$\vect{u}\,{}^t\vect{u}$ は
+$2 \times 1$ 行列と $1 \times 2$ 行列の積($2 \times 2$ 行列)。
+$P\vect{v} = \langle \vect{v}, \vect{u} \rangle \vect{u}$ になっている。
+\item \textbf{問 \ref{q:gs-ex10}}:$W^{\perp}$ は $2$ 本の直交条件
+(同次方程式)の解空間。一般論は「解空間の次元 $=$ 未知数 $-$ 階数」
+(第II部)。
+\item \textbf{問 \ref{q:gs-ex11}}:$\|\vect{v}\|^2 =
+\langle \sum c_i\vect{u}_i, \sum c_j\vect{u}_j \rangle$ を双線形性で展開し、
+生き残る項を数える。
+\item \textbf{問 \ref{q:gs-ex12}}:$\vect{w} \in W$ が $W^{\perp}$ の
+すべての元と直交することは、$W^{\perp}$ の定義そのものから出る。
+次元は問 \ref{q:gs-ex10} の公式を $2$ 回使う。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{直交行列}\label{chap:orth}
 % =====================================================
 
-\begin{teigi}[直交行列]
+\begin{goal}
+\begin{itemize}
+\item 直交行列の定義(${}^t\!P P = E$)と、「列が正規直交基底をなす」
+「内積・長さを保つ」という二つの特徴づけを、証明つきで理解する。
+\item 与えられた行列が直交行列かどうかを判定でき、
+$2$ 次の直交行列を\textbf{回転か鏡映か}に分類できるようになる。
+\item $\det P = \pm 1$、積・逆も直交行列、実固有値は $\pm 1$ といった
+基本性質を導けるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 形を保つ変換を行列で捉える}
+
+前章で「良い基底 $=$ 正規直交基底」だと分かった。では、
+正規直交基底を\textbf{列に並べた行列}はどんな性質をもつだろうか。
+第I部以来、「列にベクトルを並べた行列」は基底の取り替えや
+線形変換の記述で繰り返し主役になってきた
+(定理 \ref{thm:coordchange})。正規直交基底を並べた行列には、
+それにふさわしい特別な名前と、際立った性質
+――\textbf{図形を変形させない}――がある。
+回転や鏡映がその代表例で、コンピュータグラフィックスからロボットの
+姿勢制御、そして次章の対称行列の対角化まで、この行列は至るところに現れる。
+
+\section{定義と第一の特徴づけ ― 列が正規直交基底}
+
+\begin{teigi}[直交行列]\label{def:orth}
 ${}^t\!P\,P = E$、すなわち ${}^t\!P = P^{-1}$ を満たす正方行列 $P$ を
 \textbf{直交行列}という。
 \end{teigi}
 
-定義の式 ${}^t\!P P = E$ を成分で読むと、
-「$P$ の列ベクトルたちが正規直交系をなす」ことと同値である。
-つまり\textbf{直交行列とは、正規直交基底を列に並べた行列}である
-(逆行列が転置で求まるのはそのご褒美である)。
+逆行列がわざわざ計算しなくても\textbf{転置するだけ}で手に入る
+――定義からしてすでに便利だが、この式の本当の意味は
+成分を読むと見えてくる。
 
-\begin{teiri}[直交行列の性質]
-$P$ を直交行列とすると、
+\begin{teiri}[直交行列 $=$ 正規直交基底を列に並べた行列]\label{thm:orth-column}
+$n$ 次正方行列 $P$ について、次は同値である。
 \begin{enumerate}
-\item 内積を保つ:$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$。
-したがって長さと角度を保つ。
-\item $\det P = \pm 1$。
-\item 直交行列の積、逆行列も直交行列である。
+\item $P$ は直交行列である(${}^t\!P P = E$)。
+\item $P$ の列ベクトル $\vect{p}_1, \dots, \vect{p}_n$ は
+$\R^n$ の正規直交基底をなす。
 \end{enumerate}
 \end{teiri}
 
-性質 1 は $\langle P\vect{x}, P\vect{y} \rangle = {}^t\vect{x}\,{}^t\!P P\,\vect{y}
-= {}^t\vect{x}\,\vect{y}$ から、性質 2 は
-${}^t\!PP = E$ の行列式をとり $(\det P)^2 = 1$ から従う。
+\noindent\textbf{(証明)}\quad
+積 ${}^t\!P P$ の $(i, j)$ 成分を計算する。${}^t\!P$ の第 $i$ 行は
+$P$ の第 $i$ 列 $\vect{p}_i$ を横に倒したものだから、
+積の定義(行 $\times$ 列)より
+\[
+({}^t\!P P)_{ij} = {}^t\vect{p}_i\,\vect{p}_j
+= \langle \vect{p}_i, \vect{p}_j \rangle.
+\]
+すなわち ${}^t\!P P$ は「列どうしの内積を並べた表」である。
+これが $E$ に等しいとは、対角成分について
+$\langle \vect{p}_i, \vect{p}_i \rangle = 1$(各列のノルムが $1$)、
+非対角成分について $\langle \vect{p}_i, \vect{p}_j \rangle = 0$
+($i \neq j$、列どうしが直交)ということで、
+これは列たちが正規直交系をなすことにほかならない。
+$n$ 本の正規直交系は自動的に $\R^n$ の基底になる
+(定理 \ref{thm:gs-indep})。 $\blacksquare$
 
-長さと角度を保つ変換とは、図形を\textbf{変形させない}変換である。
-平面($2$ 次)の直交行列は、回転($\det = 1$)と鏡映($\det = -1$)で
-すべて尽くされることが知られている。第I部に登場した回転行列 $R_\theta$ が
-直交行列であることは、列の正規直交性からすぐ確かめられる。
+つまり\textbf{直交行列とは、正規直交基底を列に並べた行列}である
+(逆行列が転置で求まるのはそのご褒美である)。
+前章のグラム・シュミットの直交化法は、
+「直交行列を製造する機械」だったと言い直せる。
+
+\begin{rei}[回転行列と置換行列]\label{rei:orth-examples}
+回転行列 $R_\theta = \mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}$
+の列は $\mat{\cos\theta \\ \sin\theta}$, $\mat{-\sin\theta \\ \cos\theta}$。
+どちらもノルム $1$($\cos^2\theta + \sin^2\theta = 1$)で、内積は
+$-\cos\theta\sin\theta + \sin\theta\cos\theta = 0$。よって直交行列である。
+また、標準基底を並べ替えた行列(\textbf{置換行列})、たとえば
+$\mat{0 & 1 \\ 1 & 0}$ も、列が標準基底そのもの(順序が違うだけ)
+なので直交行列である。
+\end{rei}
+
+\section{第二の特徴づけ ― 内積と長さを保つ}
+
+\begin{teiri}[直交行列の保存性質]\label{thm:orth-preserve}
+$n$ 次正方行列 $P$ について、次の三つは同値である。
+\begin{enumerate}
+\item $P$ は直交行列である。
+\item $P$ は内積を保つ:すべての $\vect{x}, \vect{y}$ で
+$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$。
+\item $P$ は長さを保つ:すべての $\vect{x}$ で
+$\|P\vect{x}\| = \|\vect{x}\|$。
+\end{enumerate}
+したがって直交行列は、長さと角度、すなわち\textbf{図形の形を変えない}。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1)$\Rightarrow$(2):内積を ${}^t\vect{a}\,\vect{b}$ の形で書き、
+転置の性質 ${}^t(AB) = {}^t\!B\,{}^t\!A$(定理 \ref{thm:transpose})を使うと
+\[
+\langle P\vect{x}, P\vect{y} \rangle = {}^t(P\vect{x})\,(P\vect{y})
+= {}^t\vect{x}\,{}^t\!P P\,\vect{y}
+= {}^t\vect{x}\,E\,\vect{y} = \langle \vect{x}, \vect{y} \rangle.
+\]
+(2)$\Rightarrow$(3):$\vect{y} = \vect{x}$ とおけば
+$\|P\vect{x}\|^2 = \|\vect{x}\|^2$。
+(3)$\Rightarrow$(2):長さの情報だけから内積が復元できることを使う。
+双線形性で展開すると
+\[
+\|\vect{x} + \vect{y}\|^2 = \|\vect{x}\|^2 + 2\langle \vect{x}, \vect{y} \rangle
++ \|\vect{y}\|^2,
+\qquad\text{すなわち}\qquad
+\langle \vect{x}, \vect{y} \rangle = \frac{1}{2}\bigl(
+\|\vect{x} + \vect{y}\|^2 - \|\vect{x}\|^2 - \|\vect{y}\|^2 \bigr)
+\]
+(\textbf{偏極恒等式})。$P$ が長さを保てば、右辺の三つのノルムはすべて
+($P(\vect{x} + \vect{y}) = P\vect{x} + P\vect{y}$ に注意して)
+変換後も変わらないから、左辺の内積も変わらない。
+(2)$\Rightarrow$(1):(2) を標準基底に適用すると
+$\langle P\vect{e}_i, P\vect{e}_j \rangle = \langle \vect{e}_i, \vect{e}_j \rangle$。
+$P\vect{e}_i$ は $P$ の第 $i$ 列だから、これは「列たちが正規直交系」
+を意味し、定理 \ref{thm:orth-column} より $P$ は直交行列である。
+$\blacksquare$
+
+「長さを保ちさえすれば、角度も自動的に保たれる」という
+(3)$\Rightarrow$(2) は少し驚く結果である。長さの中に内積の情報が
+丸ごと入っている(偏極恒等式)ことがその種明かしである。
+
+\begin{teiri}[直交行列の基本性質]\label{thm:orth-props}
+$P, Q$ を $n$ 次直交行列とすると、
+\begin{enumerate}
+\item $\det P = \pm 1$。
+\item 積 $PQ$ も直交行列である。
+\item 逆行列 $P^{-1}$($= {}^t\!P$)も直交行列である。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) ${}^t\!P P = E$ の両辺の行列式をとる。
+$\det {}^t\!P = \det P$(定理 \ref{thm:det-rules})と積の行列式
+(定理 \ref{thm:det-mult})より $(\det P)^2 = 1$、
+よって $\det P = \pm 1$。
+(2) ${}^t(PQ)\,(PQ) = {}^t Q\,{}^t\!P\,P\,Q = {}^t Q\,E\,Q = E$。
+(3) ${}^t(P^{-1})\,P^{-1} = {}^t({}^t\!P)\,{}^t\!P = P\,{}^t\!P$。
+ここで ${}^t\!P = P^{-1}$ だから $P\,{}^t\!P = P P^{-1} = E$ となり、
+$P^{-1}$ も直交行列である。 $\blacksquare$
+
+$\det P = \pm 1$ は、直交行列が\textbf{体積を変えない}
+(拡大率 $|\det| = 1$。第 \ref{chap:det} 章)ことを意味する。
+形も大きさも変えないのだから当然といえば当然である。
+逆は成り立たない――$\det = \pm 1$ でも直交行列とは限らない
+(反例 \ref{hanrei:orth-det})。
 
 \begin{mondai}\label{q:orthm}
 　(1) 回転行列 $R_\theta$ が直交行列であることを ${}^t R_\theta R_\theta = E$ の
@@ -248,16 +1294,392 @@ ${}^t\!PP = E$ の行列式をとり $(\det P)^2 = 1$ から従う。
 　(2) 直交行列 $P, Q$ の積 $PQ$ が直交行列であることを示せ。
 \end{mondai}
 
+\section{$2$ 次の直交行列の完全分類 ― 回転と鏡映}
+
+平面の直交行列は、実は\textbf{完全に}リストアップできる。
+
+\begin{teiri}[$2$ 次直交行列の分類]\label{thm:orth-2x2}
+$2$ 次の直交行列は、ある角 $\theta$ を用いて次のいずれかの形に書ける。
+\[
+\text{(i)}\ R_\theta = \mat{\cos\theta & -\sin\theta \\ \sin\theta & \cos\theta}
+\ (\det = 1:\textbf{回転}), \qquad
+\text{(ii)}\ S_\theta = \mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}
+\ (\det = -1:\textbf{鏡映}).
+\]
+(ii) は、$x$ 軸から角 $\theta/2$ の方向の直線に関する折り返しである。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$P$ の第 $1$ 列 $\vect{p}_1 = \mat{a \\ b}$ はノルム $1$、すなわち
+$a^2 + b^2 = 1$ だから、単位円上の点として
+$a = \cos\theta$, $b = \sin\theta$ と書ける。
+第 $2$ 列 $\vect{p}_2$ は「$\vect{p}_1$ と直交する単位ベクトル」だが、
+平面ではそのようなベクトルは $\vect{p}_1$ を $90^\circ$ 回した
+$\mat{-\sin\theta \\ \cos\theta}$ か、その逆向き
+$\mat{\sin\theta \\ -\cos\theta}$ の\textbf{二つしかない}
+(直交する方向が直線 $1$ 本分しかなく、その直線上の単位ベクトルは
+$2$ つだから)。前者が (i)(行列式は
+$\cos^2\theta + \sin^2\theta = 1$)、後者が (ii)(行列式は
+$-\cos^2\theta - \sin^2\theta = -1$)である。
+(ii) が鏡映であることは、加法定理から
+$S_\theta$ が方向ベクトル
+$\vect{u} = \mat{\cos(\theta/2) \\ \sin(\theta/2)}$ を動かさず
+($S_\theta \vect{u} = \vect{u}$。実際、第 $1$ 成分は
+$\cos\theta\cos\frac{\theta}{2} + \sin\theta\sin\frac{\theta}{2}
+= \cos\frac{\theta}{2}$、第 $2$ 成分は
+$\sin\theta\cos\frac{\theta}{2} - \cos\theta\sin\frac{\theta}{2}
+= \sin\frac{\theta}{2}$)、
+それと直交する方向を $-1$ 倍に反転することから分かる
+(問 \ref{q:orth-ex12} で $S_\theta^2 = E$ も確かめる)。 $\blacksquare$
+
+判定の実用は簡単で、\textbf{直交行列と分かったら行列式を見る}:
+$\det = 1$ なら回転(回転角は第 $1$ 列から読める)、
+$\det = -1$ なら鏡映(鏡映軸は固有値 $1$ の固有ベクトルの方向)である。
+
+\begin{itembox}[l]{深掘り:直交行列は計算機の味方である}
+直交行列の「長さを保つ」性質は、数値計算で決定的に重要になる。
+計算機の小数計算には必ず丸め誤差が混じるが、ベクトル $\vect{x}$ に
+誤差 $\vect{e}$ が乗った $\vect{x} + \vect{e}$ に直交行列を掛けても
+\[
+P(\vect{x} + \vect{e}) = P\vect{x} + P\vect{e}, \qquad
+\|P\vect{e}\| = \|\vect{e}\|
+\]
+と、\textbf{誤差はまったく増幅されない}。一般の行列では誤差が
+何倍にも拡大されうる(その拡大率を測る数学が第VII部の特異値である)
+のと対照的で、だから数値線形代数のアルゴリズムは、
+可能なかぎり直交行列による変換だけで組み立てられる
+(第VII部のQR分解、第IX部の数値固有値計算)。
+また、$3$ 次元の回転行列はコンピュータグラフィックスやロボットの
+姿勢表現の標準言語である。物体を回しても形が歪まないのは
+「変換行列が直交行列だから」にほかならない。
+なお、直交行列の全体は積と逆について閉じている
+(定理 \ref{thm:orth-props})。このような集まりを数学では\textbf{群}と
+呼び、直交行列のなす群(直交群)は「対称性」を記述する
+現代数学・物理学の基本語彙になっている。
+\end{itembox}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$\det = \pm 1$ でも直交行列とは限らない]\label{hanrei:orth-det}
+定理 \ref{thm:orth-props}(1) の逆は成り立たない。せん断行列
+\[
+A = \mat{1 & 1 \\ 0 & 1}
+\]
+は $\det A = 1$ だが、
+${}^t\!A A = \mat{1 & 1 \\ 1 & 2} \neq E$ なので直交行列ではない。
+実際、長さを保たない:$\|A\vect{e}_2\| = \|(1, 1)\| = \sqrt{2} \neq 1
+= \|\vect{e}_2\|$。「面積を保つ($\det = \pm 1$)」と
+「形を保つ(直交行列)」は別の概念であり、後者のほうが強い。
+\end{hanrei}
+
+\begin{hanrei}[列が直交するだけでは足りない]\label{hanrei:orth-notnormal}
+\[
+B = \mat{2 & 0 \\ 0 & 3}
+\]
+の列 $\mat{2 \\ 0}, \mat{0 \\ 3}$ は互いに直交するが、ノルムが
+$1$ でないので
+\[
+{}^t\!B B = \mat{4 & 0 \\ 0 & 9} \neq E
+\]
+となり、$B$ は直交行列ではない(各軸で別々の倍率に伸ばす変換だから、
+形を保たないのは当然である)。「直交行列」という名前は紛らわしいが、
+条件は\textbf{列が直交}ではなく\textbf{列が正規直交}
+(直交かつノルム $1$)である。名前に引きずられないこと。
+\end{hanrei}
+
+\section{例題}
+
+判定・計算・分類の練習をする。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(判定と逆行列)]\label{rei:orth-check}
+$A = \dfrac{1}{3}\mat{2 & -1 & 2 \\ 2 & 2 & -1 \\ -1 & 2 & 2}$ が
+直交行列であることを確かめ、$A^{-1}$ を求めよ。\\
+\textbf{解.}\ 列は $\dfrac{1}{3}\mat{2 \\ 2 \\ -1}$,
+$\dfrac{1}{3}\mat{-1 \\ 2 \\ 2}$, $\dfrac{1}{3}\mat{2 \\ -1 \\ 2}$。
+各ノルムの $2$ 乗は $\dfrac{4 + 4 + 1}{9} = 1$。列どうしの内積は
+\[
+\frac{-2 + 4 - 2}{9} = 0, \qquad \frac{4 - 2 - 2}{9} = 0, \qquad
+\frac{-2 - 2 + 4}{9} = 0.
+\]
+列が正規直交基底をなすから、定理 \ref{thm:orth-column} より直交行列である。
+よって逆行列は転置で
+\[
+A^{-1} = {}^t\!A = \frac{1}{3}\mat{2 & 2 & -1 \\ -1 & 2 & 2 \\ 2 & -1 & 2}.
+\]
+掃き出し法も余因子も使わずに逆行列が出た。
+\end{rei}
+
+\begin{rei}[例題・基本(保存性質の確認)]\label{rei:orth-preserve-ex}
+$P = \dfrac{1}{5}\mat{3 & -4 \\ 4 & 3}$ と
+$\vect{x} = \mat{1 \\ 2}$, $\vect{y} = \mat{2 \\ 0}$ について、
+$\|P\vect{x}\| = \|\vect{x}\|$ と
+$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$ を
+数値で確かめよ。\\
+\textbf{解.}\ $P\vect{x} = \dfrac{1}{5}\mat{3 - 8 \\ 4 + 6} = \mat{-1 \\ 2}$,
+$P\vect{y} = \dfrac{1}{5}\mat{6 \\ 8}$。
+\[
+\|P\vect{x}\| = \sqrt{1 + 4} = \sqrt{5} = \|\vect{x}\|, \qquad
+\langle P\vect{x}, P\vect{y} \rangle = -\frac{6}{5} + \frac{16}{5} = 2
+= \langle \vect{x}, \vect{y} \rangle.
+\]
+($P$ の列のノルムが $\frac{1}{5}\sqrt{9 + 16} = 1$ であることも
+確認しておこう。$P$ は $\cos\theta = \frac{3}{5}$ の回転行列である。)
+\end{rei}
+
+\begin{rei}[例題・基本(第 $3$ 列の補完)]\label{rei:orth-complete}
+$\vect{p}_1 = \dfrac{1}{3}\mat{2 \\ 2 \\ 1}$,
+$\vect{p}_2 = \dfrac{1}{3}\mat{-2 \\ 1 \\ 2}$ を最初の $2$ 列とする
+$3$ 次の直交行列を作るには、第 $3$ 列 $\vect{p}_3$ を何にすればよいか。\\
+\textbf{解.}\ 条件は「$\vect{p}_1, \vect{p}_2$ の両方と直交する単位ベクトル」。
+$\vect{p}_3 = \mat{x \\ y \\ z}$ とおくと(分母 $3$ は共通なので略して)
+\[
+2x + 2y + z = 0, \qquad -2x + y + 2z = 0.
+\]
+辺々加えると $3y + 3z = 0$ より $z = -y$。第 $1$ 式に戻すと
+$2x + 2y - y = 0$ より $x = -\dfrac{y}{2}$。$y = -2$ ととれば
+$(x, y, z) = (1, -2, 2)$、ノルムは $3$。よって
+\[
+\vect{p}_3 = \pm\frac{1}{3}\mat{1 \\ -2 \\ 2}
+\]
+($\pm$ のどちらでもよい。符号で $\det = \pm 1$ が切り替わる)。
+検算:$\langle \vect{p}_3, \vect{p}_1 \rangle \propto 2 - 4 + 2 = 0$、
+$\langle \vect{p}_3, \vect{p}_2 \rangle \propto -2 - 2 + 4 = 0$。
+\end{rei}
+
+\begin{rei}[例題・標準(回転の判定)]\label{rei:orth-rotation}
+$P = \dfrac{1}{2}\mat{1 & -\sqrt{3} \\ \sqrt{3} & 1}$ は直交行列か。
+直交行列なら、回転か鏡映かを判定し、回転ならその角を求めよ。\\
+\textbf{解.}\ 列のノルムは $\dfrac{1}{2}\sqrt{1 + 3} = 1$、列どうしの内積は
+$\dfrac{-\sqrt{3} + \sqrt{3}}{4} = 0$ で直交行列である。行列式は
+\[
+\det P = \frac{1 \cdot 1 - (-\sqrt{3})\sqrt{3}}{4} = \frac{1 + 3}{4} = 1
+\]
+だから\textbf{回転}(定理 \ref{thm:orth-2x2})。第 $1$ 列
+$\mat{\cos\theta \\ \sin\theta} = \mat{1/2 \\ \sqrt{3}/2}$ より
+$\theta = 60^\circ$ の回転である。
+\end{rei}
+
+\begin{rei}[例題・標準(鏡映の判定と軸)]\label{rei:orth-reflection}
+$P = \dfrac{1}{5}\mat{3 & 4 \\ 4 & -3}$ は直交行列であることを確かめ、
+回転か鏡映かを判定し、鏡映ならその軸(折り返しの直線)を求めよ。\\
+\textbf{解.}\ 列のノルムは $\dfrac{1}{5}\sqrt{9 + 16} = 1$、内積は
+$\dfrac{12 - 12}{25} = 0$ で直交行列。行列式は
+$\dfrac{-9 - 16}{25} = -1$ だから\textbf{鏡映}である。
+鏡映軸は「動かない方向」、すなわち固有値 $1$ の固有ベクトルの方向である。
+$(P - E)\vect{v} = \vect{0}$ を解くと
+\[
+P - E = \frac{1}{5}\mat{3 - 5 & 4 \\ 4 & -3 - 5}
+= \frac{1}{5}\mat{-2 & 4 \\ 4 & -8}
+\]
+より $-2x + 4y = 0$、すなわち $x = 2y$。よって軸は
+$\vect{v} = \mat{2 \\ 1}$ 方向の直線 $y = \dfrac{x}{2}$ である。
+検算:$P\mat{2 \\ 1} = \dfrac{1}{5}\mat{6 + 4 \\ 8 - 3} = \mat{2 \\ 1}$
+(動かない)。また軸と直交する $\mat{1 \\ -2}$ は
+$P\mat{1 \\ -2} = \dfrac{1}{5}\mat{3 - 8 \\ 4 + 6} = \mat{-1 \\ 2}
+= -\mat{1 \\ -2}$ と反転される。確かに折り返しである。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:実固有値は $\pm 1$)]\label{rei:orth-eigen}
+直交行列 $P$ の実固有値は $1$ か $-1$ に限ることを示せ。\\
+\textbf{解.}\ $\lambda$ を実固有値、$\vect{v} \neq \vect{0}$ を対応する
+固有ベクトルとする。$P$ は長さを保つ(定理 \ref{thm:orth-preserve})から
+\[
+\|\vect{v}\| = \|P\vect{v}\| = \|\lambda\vect{v}\| = |\lambda|\,\|\vect{v}\|.
+\]
+$\|\vect{v}\| \neq 0$ で割って $|\lambda| = 1$、実数だから
+$\lambda = \pm 1$ である。
+(回転行列 $R_\theta$($0 < \theta < 180^\circ$)のように実固有値を
+\textbf{もたない}直交行列もある。第 \ref{chap:eigen} 章の深掘りで見た
+とおり、複素数の世界では固有値 $\cos\theta \pm i\sin\theta$ をもち、
+その絶対値はやはり $1$ である。)
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{直交行列}は ${}^t\!P P = E$(${}^t\!P = P^{-1}$)を満たす
+正方行列であり、\textbf{正規直交基底を列に並べた行列}にほかならない
+(定理 \ref{thm:orth-column})。
+\item 直交行列は\textbf{内積と長さを保ち}、逆に長さを保つ行列は
+直交行列である(定理 \ref{thm:orth-preserve}、偏極恒等式)。
+図形の形を変えない変換の行列表現である。
+\item $\det P = \pm 1$、積と逆も直交行列、実固有値は $\pm 1$ に限る。
+ただし $\det = \pm 1$ だけでは直交行列といえない
+(反例 \ref{hanrei:orth-det})し、列の直交だけでも足りない
+(反例 \ref{hanrei:orth-notnormal}:\textbf{正規}直交が必要)。
+\item $2$ 次の直交行列は\textbf{回転}($\det = 1$)と\textbf{鏡映}
+($\det = -1$)で尽くされる(定理 \ref{thm:orth-2x2})。
+鏡映軸は固有値 $1$ の固有ベクトルの方向である。
+\item 長さを保つ性質ゆえ、直交行列による変換は\textbf{数値誤差を
+増幅しない}。数値線形代数(第VII部・第IX部)の主役である。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:orth-ex1}
+$A = \dfrac{1}{3}\mat{1 & 2 & 2 \\ 2 & 1 & -2 \\ 2 & -2 & 1}$ が
+直交行列であることを列の正規直交性で確かめ、$A^{-1}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:orth-ex2}
+次の行列のうち直交行列はどれか。直交行列でないものは理由を述べよ。
+\[
+\text{(a)}\ \mat{1 & 1 \\ 1 & -1} \qquad
+\text{(b)}\ \frac{1}{\sqrt{2}}\mat{1 & -1 \\ 1 & 1} \qquad
+\text{(c)}\ \mat{1 & 1 \\ 0 & 1}
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:orth-ex3}
+$P = \dfrac{1}{5}\mat{4 & -3 \\ 3 & 4}$ と $\vect{x} = \mat{1 \\ 1}$,
+$\vect{y} = \mat{1 \\ 0}$ について、$\|P\vect{x}\| = \|\vect{x}\|$ と
+$\langle P\vect{x}, P\vect{y} \rangle = \langle \vect{x}, \vect{y} \rangle$ を
+数値で確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:orth-ex4}
+$\vect{p}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
+$\vect{p}_2 = \mat{0 \\ 1 \\ 0}$ を最初の $2$ 列とする $3$ 次の直交行列を
+作るための第 $3$ 列 $\vect{p}_3$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex5}
+次の直交行列を回転か鏡映かに分類し、回転なら回転角を、
+鏡映なら鏡映軸を求めよ。
+\[
+P = \frac{1}{\sqrt{2}}\mat{1 & -1 \\ 1 & 1}, \qquad
+Q = \mat{0 & 1 \\ 1 & 0}
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex6}
+$x$ 軸に関する鏡映 $S_1 = \mat{1 & 0 \\ 0 & -1}$ と、
+直線 $y = x$ に関する鏡映 $S_2 = \mat{0 & 1 \\ 1 & 0}$ について、
+合成 $S_2 S_1$ と $S_1 S_2$ をそれぞれ計算し、どんな変換になるか
+(回転か鏡映か、回転ならその角)を答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex7}
+置換行列 $P = \mat{0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0}$ について、\\
+　(1) $P$ が直交行列であることを確かめよ。\\
+　(2) $P$ が標準基底 $\vect{e}_1, \vect{e}_2, \vect{e}_3$ を
+どう動かすかを調べ、$P^3 = E$ となる理由を説明せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:orth-ex8}
+$z$ 軸まわりの回転行列
+$R = \mat{\cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1}$
+が直交行列であることを確かめ、$\det R$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:orth-ex9}
+上三角行列かつ直交行列である $2$ 次正方行列は、
+対角成分が $\pm 1$ の対角行列
+$\mat{\pm 1 & 0 \\ 0 & \pm 1}$ に限ることを示せ
+(ヒント:$P = \mat{a & b \\ 0 & d}$ とおき、列の正規直交性を
+第 $1$ 列 → 第 $2$ 列の順に使う)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:orth-ex10}
+回転行列 $R_\theta$($0^\circ \le \theta < 360^\circ$)が実固有値を
+もつのは $\theta = 0^\circ$ と $\theta = 180^\circ$ のときに限ることを、
+固有方程式の判別式から示せ。それぞれの場合の固有値も求めよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:orth-ex11}
+$P$ を直交行列とする。${}^t\!P$ も直交行列であることを示し、
+そこから「直交行列の\textbf{行}ベクトルたちも正規直交基底をなす」
+ことを導け。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:orth-ex12}
+$\det = -1$ の $2$ 次直交行列
+$S_\theta = \mat{\cos\theta & \sin\theta \\ \sin\theta & -\cos\theta}$
+について、$S_\theta$ が対称行列であることと、
+$S_\theta^2 = E$($2$ 回折り返すと元に戻る)を示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:orth-ex1}}:$3$ 本の列のノルムと $3$ 組の内積を
+確かめる。逆行列は転置。
+\item \textbf{問 \ref{q:orth-ex2}}:列のノルムが $1$ か、列どうしが
+直交かを順に見る。
+\item \textbf{問 \ref{q:orth-ex3}}:$P\vect{x}, P\vect{y}$ を計算して
+定義どおり比べる。
+\item \textbf{問 \ref{q:orth-ex4}}:$2$ 本との直交条件(連立方程式)を
+解き、正規化する。例題 \ref{rei:orth-complete} と同じ手順。
+\item \textbf{問 \ref{q:orth-ex5}}:行列式の符号で分類。回転角は
+第 $1$ 列、鏡映軸は固有値 $1$ の固有ベクトル。
+\item \textbf{問 \ref{q:orth-ex6}}:積を計算し、
+定理 \ref{thm:orth-2x2} の形と見比べる。順序で結果が変わる。
+\item \textbf{問 \ref{q:orth-ex7}}:列が標準基底の並べ替えである。
+$P\vect{e}_i$ を追うと巡回が見える。
+\item \textbf{問 \ref{q:orth-ex8}}:列の正規直交性は $2$ 次の場合の
+計算に $z$ 成分が加わるだけ。行列式は余因子展開。
+\item \textbf{問 \ref{q:orth-ex9}}:第 $1$ 列のノルム $1$ から
+$a = \pm 1$。第 $1$ 列と第 $2$ 列の直交から $b = 0$。
+\item \textbf{問 \ref{q:orth-ex10}}:固有方程式は
+$\lambda^2 - 2\cos\theta\,\lambda + 1 = 0$。判別式 $\ge 0$ を解く。
+\item \textbf{問 \ref{q:orth-ex11}}:${}^t({}^t\!P)\,{}^t\!P = P\,{}^t\!P$
+を ${}^t\!P = P^{-1}$ で評価する。${}^t\!P$ の列は $P$ の行である。
+\item \textbf{問 \ref{q:orth-ex12}}:対称性は転置して見比べるだけ。
+$S_\theta^2$ は加法定理($\cos^2 + \sin^2 = 1$)で $E$ になる。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{対称行列のスペクトル分解}\label{chap:spectral}
 % =====================================================
+
+\begin{goal}
+\begin{itemize}
+\item 実対称行列の固有値がすべて実数であること、相異なる固有値の
+固有ベクトルが直交することを、\textbf{証明つきで}理解する。
+\item スペクトル定理(対称行列は直交行列で対角化できる)の主張と
+証明の骨格を理解し、$2$ 次・$3$ 次の対称行列の\textbf{直交対角化}を
+(固有値が重複する場合も含めて)実行できるようになる。
+\item スペクトル分解 $A = \sum_i \lambda_i P_i$ を計算でき、
+射影行列 $P_i$ の性質($P_i^2 = P_i$ など)を使ってべき乗などに
+応用できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 対角化の「完成形」}
+
+第IV部の対角化には二つの気がかりが残っていた。
+第一に、\textbf{対角化できない行列がある}こと(固有ベクトル不足)。
+第二に、対角化できても基底変換の行列 $P$ は斜めに歪んだ基底で、
+$P^{-1}$ の計算も面倒なこと。
+本章の主役である\textbf{対称行列}(${}^t\!A = A$)の世界では、
+この両方の心配が同時に消える。対称行列は\textbf{必ず}対角化でき、
+しかも変換行列として\textbf{直交行列}(前章)が選べるので、
+逆行列は転置するだけでよい。
+これほど都合のよい行列が「たまたまの例外」でないことは、
+第 \ref{chap:spectral} 章末の深掘りで見るとおりである
+――ヘッセ行列・分散共分散行列など、応用に現れる行列は
+驚くほど頻繁に対称なのだ。本章の定理は、第V部のクライマックスであると
+同時に、次章(二次形式)と第VII部(特異値分解)の土台になる。
 
 \section{対称行列の固有値・固有ベクトルの奇跡}
 
 ${}^t\!A = A$ を満たす行列を\textbf{対称行列}という。
 対称行列の固有値理論は、一般の行列では望めない完璧さをもつ。
+鍵は、\textbf{内積を行列の左右に渡せる}ことである:任意の
+$\vect{x}, \vect{y} \in \R^n$ に対して
+\[
+\langle A\vect{x}, \vect{y} \rangle = {}^t(A\vect{x})\,\vect{y}
+= {}^t\vect{x}\,{}^t\!A\,\vect{y} = {}^t\vect{x}\,A\vect{y}
+= \langle \vect{x}, A\vect{y} \rangle
+\]
+(${}^t\!A = A$ を使った)。この一行が本章のすべての源泉である。
 
-\begin{teiri}[対称行列の基本性質]
+\begin{teiri}[対称行列の基本性質]\label{thm:spec-basic}
 実対称行列 $A$ について、
 \begin{enumerate}
 \item 固有値はすべて\textbf{実数}である。
@@ -265,20 +1687,58 @@ ${}^t\!A = A$ を満たす行列を\textbf{対称行列}という。
 \end{enumerate}
 \end{teiri}
 
-性質 2 の証明は美しい。$A\vect{u} = \lambda\vect{u}$,
+\noindent\textbf{(証明)}\quad
+(2) から示す。$A\vect{u} = \lambda\vect{u}$,
 $A\vect{v} = \mu\vect{v}$($\lambda \neq \mu$)とすると、
-対称性 ${}^t\!A = A$ により
+内積の受け渡しにより
 \[
 \lambda \langle \vect{u}, \vect{v} \rangle
 = \langle A\vect{u}, \vect{v} \rangle
-= {}^t\vect{u}\,{}^t\!A\,\vect{v}
 = \langle \vect{u}, A\vect{v} \rangle
 = \mu \langle \vect{u}, \vect{v} \rangle
 \]
-となり、$\lambda \neq \mu$ から $\langle \vect{u}, \vect{v} \rangle = 0$。
-\textbf{内積を行列の左右に渡せる}ことが対称行列の本質である。
+となり、$(\lambda - \mu)\langle \vect{u}, \vect{v} \rangle = 0$。
+$\lambda \neq \mu$ から $\langle \vect{u}, \vect{v} \rangle = 0$ である。
 
-\begin{teiri}[実対称行列のスペクトル定理]
+(1) 固有方程式は(第 \ref{chap:eigen} 章の深掘りで触れたとおり)
+複素数の範囲では必ず解をもつ。そこで $\lambda$ を複素数の固有値、
+$\vect{v} \neq \vect{0}$ を複素成分の固有ベクトルとし、
+$\lambda$ が実は実数であることを示す。
+複素数 $z = p + qi$ の共役を $\bar{z} = p - qi$ と書き
+(高校で学んだ共役複素数)、ベクトル・行列の共役は成分ごとにとる。
+このとき $\bar{z}z = p^2 + q^2 \ge 0$ であり、$0$ になるのは $z = 0$
+のときに限る。さて、$1 \times 1$ 行列(数)
+\[
+s = {}^t\bar{\vect{v}}\,A\,\vect{v}
+\]
+を二通りに計算する。まず $A\vect{v} = \lambda\vect{v}$ を使うと
+\[
+s = {}^t\bar{\vect{v}}\,(\lambda\vect{v})
+= \lambda\,{}^t\bar{\vect{v}}\,\vect{v}
+= \lambda \sum_{i=1}^{n} \bar{v}_i v_i.
+\]
+次に、$A$ が実行列であることから、固有の式
+$A\vect{v} = \lambda\vect{v}$ の全成分の共役をとると
+$A\bar{\vect{v}} = \bar{\lambda}\bar{\vect{v}}$ が成り立つ。
+これと ${}^t\!A = A$ を使うと
+\[
+s = ({}^t\bar{\vect{v}}\,{}^t\!A)\,\vect{v}
+= {}^t(A\bar{\vect{v}})\,\vect{v}
+= {}^t(\bar{\lambda}\bar{\vect{v}})\,\vect{v}
+= \bar{\lambda} \sum_{i=1}^{n} \bar{v}_i v_i.
+\]
+$\sum \bar{v}_iv_i$ は各成分の絶対値の $2$ 乗の和で、
+$\vect{v} \neq \vect{0}$ より正である。よって二つの表示を比べて
+$\lambda = \bar{\lambda}$、すなわち $\lambda$ は実数である。
+$\blacksquare$
+
+固有値が実数なのだから、固有ベクトルも(実数の連立方程式
+$(A - \lambda E)\vect{x} = \vect{0}$ の解として)実ベクトルにとれる。
+「対称行列に虚数の出る幕はない」――これが第一の奇跡である。
+
+\section{スペクトル定理}
+
+\begin{teiri}[実対称行列のスペクトル定理]\label{thm:spec-main}
 実対称行列 $A$ は、\textbf{直交行列} $P$ によって対角化できる:
 \[
 {}^t\!P A P = \mat{\lambda_1 & & \\ & \ddots & \\ & & \lambda_n}.
@@ -287,13 +1747,60 @@ $A\vect{v} = \mu\vect{v}$($\lambda \neq \mu$)とすると、
 固有値が重複していても、対角化に失敗することはない。
 \end{teiri}
 
+\noindent\textbf{(証明:$2$ 次の場合の完全な証明)}\quad
+定理 \ref{thm:spec-basic}(1) より実数の固有値 $\lambda_1$ が存在するから、
+対応する固有ベクトルを正規化して単位ベクトル $\vect{u}_1$ をとる。
+平面内で $\vect{u}_1$ と直交する単位ベクトル $\vect{u}_2$ をとる
+($\vect{u}_1$ を $90^\circ$ 回せばよい)。このとき
+\[
+\langle A\vect{u}_2, \vect{u}_1 \rangle
+= \langle \vect{u}_2, A\vect{u}_1 \rangle
+= \lambda_1 \langle \vect{u}_2, \vect{u}_1 \rangle = 0
+\]
+(内積の受け渡しを使った)。すなわち $A\vect{u}_2$ は $\vect{u}_1$ と
+直交するが、平面で $\vect{u}_1$ と直交するベクトルは $\vect{u}_2$ の
+スカラー倍しかないから、$A\vect{u}_2 = \mu\vect{u}_2$ と書ける
+――つまり $\vect{u}_2$ も自動的に固有ベクトルである。
+$P = (\vect{u}_1\ \vect{u}_2)$ は正規直交基底を並べた行列だから
+直交行列で、${}^t\!PAP = \mat{\lambda_1 & 0 \\ 0 & \mu}$ となる。
+
+\noindent\textbf{(一般次数:帰納法の骨格)}\quad
+$n$ 次でも方針は同じである。実固有値 $\lambda_1$ と単位固有ベクトル
+$\vect{u}_1$ をとり、直交補空間 $W = \langle \vect{u}_1 \rangle^{\perp}$
+(次元 $n - 1$)を考える。上とまったく同じ計算で、
+$\vect{w} \in W$ ならば $A\vect{w} \in W$
+($\langle A\vect{w}, \vect{u}_1 \rangle = \langle \vect{w}, A\vect{u}_1 \rangle
+= \lambda_1\langle \vect{w}, \vect{u}_1 \rangle = 0$)、
+すなわち\textbf{$A$ は $W$ を $W$ の中に写す}。そこで $A$ を $W$ 上の
+変換とみなすと、これも対称性を保つ($W$ の正規直交基底に関する
+表現行列がまた対称行列になる)ので、次元が $1$ 小さい $W$ に
+帰納法の仮定が使え、$W$ の中に固有ベクトルからなる正規直交基底
+$\vect{u}_2, \dots, \vect{u}_n$ がとれる。先頭に $\vect{u}_1$ を
+加えれば $\R^n$ の固有ベクトルからなる正規直交基底が完成する。
+(表現行列が対称になることの丁寧な検証は進んだ教科書に譲るが、
+「固有ベクトルを一本立てるたびに、その直交補空間へ問題が縮小する」
+という骨格をつかんでほしい。) $\blacksquare$
+
 第IV部では「対角化できない行列がある」ことに悩まされたが、
 対称行列の世界ではその心配が消える。しかも基底変換は直交行列、
 つまり\textbf{回転(と鏡映)だけ}で済む。
 変換 $A$ は「直交する $n$ 本の軸に沿って、それぞれ $\lambda_i$ 倍に
 伸縮するだけ」という、考えうる最も素直な姿に分解される。
 
-\begin{rei}
+\subsection*{直交対角化の手順}
+
+\begin{enumerate}
+\item 固有方程式を解いて固有値を求める(すべて実数になるはずである)。
+\item 各固有値の固有空間の基底を求める(掃き出し法)。
+\item 固有値が重複している場合は、その固有空間の\textbf{中で}
+グラム・シュミットの直交化法を実行する。相異なる固有値の固有空間
+どうしは定理 \ref{thm:spec-basic}(2) により\textbf{自動的に直交する}
+ので、何もしなくてよい。
+\item 得られた正規直交基底を列に並べて $P$ とすれば、
+${}^t\!PAP$ が対角行列になる(対角成分は列の順の固有値)。
+\end{enumerate}
+
+\begin{rei}\label{rei:spec-2x2}
 $A = \mat{2 & 1 \\ 1 & 2}$。固有値は $3, 1$、固有ベクトルは
 $\mat{1 \\ 1}$, $\mat{1 \\ -1}$(確かに直交している)。正規化して並べた
 \[
@@ -302,13 +1809,63 @@ P = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}
 は直交行列で、${}^t\!PAP = \mat{3 & 0 \\ 0 & 1}$ となる。
 \end{rei}
 
-スペクトル定理は和の形にも書ける。固有値 $\lambda_i$ の固有空間への
-正射影行列を $P_i$ とすると
+\section{スペクトル分解 ― 行列を射影の重ね合わせに}
+
+スペクトル定理は和の形にも書ける。
+
+\begin{teiri}[スペクトル分解]\label{thm:spec-decomp}
+実対称行列 $A$ の相異なる固有値を $\lambda_1, \dots, \lambda_k$、
+固有値 $\lambda_i$ の固有空間への正射影行列を $P_i$ とすると:
+\begin{enumerate}
+\item $A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_k P_k$
+(\textbf{スペクトル分解})。
+\item $P_1 + P_2 + \cdots + P_k = E$。
+\item $P_i^2 = P_i$、${}^t\!P_i = P_i$、$P_iP_j = O$($i \neq j$)。
+\end{enumerate}
+ここで $P_i$ は、固有空間の正規直交基底 $\vect{u}$ たちを使って
+$P_i = \sum \vect{u}\,{}^t\vect{u}$ と書ける(和は固有値 $\lambda_i$ に
+属する基底ベクトルにわたる)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+スペクトル定理の正規直交基底 $\vect{u}_1, \dots, \vect{u}_n$
+(固有値 $\mu_1, \dots, \mu_n$、重複を許す)をとる。
+任意の $\vect{v}$ は $\vect{v} = \sum_j \langle \vect{v}, \vect{u}_j \rangle
+\vect{u}_j$ と展開でき(定理 \ref{thm:gs-coord})、
+$\vect{u}_j\,{}^t\vect{u}_j\,\vect{v}
+= \vect{u}_j (\,{}^t\vect{u}_j \vect{v}\,)
+= \langle \vect{v}, \vect{u}_j \rangle \vect{u}_j$ だから
 \[
-A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_k P_k
+\Bigl(\sum_{j=1}^{n} \vect{u}_j\,{}^t\vect{u}_j\Bigr)\vect{v} = \vect{v},
+\qquad\text{すなわち}\qquad
+\sum_{j=1}^{n} \vect{u}_j\,{}^t\vect{u}_j = E
 \]
-(\textbf{スペクトル分解})。「行列 = 固有値 × 射影 の重ね合わせ」という
-この見方は、量子力学(観測値 = 固有値、観測 = 射影)の数学的骨格そのものである。
+(これを固有値ごとにまとめれば (2))。また
+\[
+A\vect{v} = \sum_j \langle \vect{v}, \vect{u}_j \rangle A\vect{u}_j
+= \sum_j \mu_j \langle \vect{v}, \vect{u}_j \rangle \vect{u}_j
+= \Bigl(\sum_j \mu_j\,\vect{u}_j\,{}^t\vect{u}_j\Bigr)\vect{v}
+\]
+がすべての $\vect{v}$ で成り立つから
+$A = \sum_j \mu_j \vect{u}_j\,{}^t\vect{u}_j$。同じ固有値の項を
+まとめれば (1) を得る。(3) は正規直交性から:たとえば
+$(\vect{u}_a\,{}^t\vect{u}_a)(\vect{u}_b\,{}^t\vect{u}_b)
+= \vect{u}_a(\,{}^t\vect{u}_a\vect{u}_b\,){}^t\vect{u}_b
+= \langle \vect{u}_a, \vect{u}_b \rangle\,\vect{u}_a\,{}^t\vect{u}_b$
+は $a = b$ なら $\vect{u}_a\,{}^t\vect{u}_a$、$a \neq b$ なら $O$ になる。
+これを固有値ごとの和に適用すれば $P_i^2 = P_i$ と $P_iP_j = O$ が出る。
+${}^t(\vect{u}\,{}^t\vect{u}) = \vect{u}\,{}^t\vect{u}$ から
+${}^t\!P_i = P_i$ も分かる。 $\blacksquare$
+
+「行列 = 固有値 × 射影 の重ね合わせ」というこの見方は、
+量子力学(観測値 = 固有値、観測 = 射影)の数学的骨格そのものである。
+計算上の利点もある:性質 (3) のおかげで
+\[
+A^m = \lambda_1^m P_1 + \cdots + \lambda_k^m P_k
+\]
+と、\textbf{べき乗が固有値のべき乗だけで書ける}
+(展開すると交差項 $P_iP_j$ がすべて消えるからである。
+例題 \ref{rei:spec-power} で使う)。
 
 \begin{itembox}[l]{深掘り:なぜ対称行列はこれほど頻繁に現れるのか}
 対称行列は、応用数学の主要な舞台ほぼすべてに現れる。
@@ -332,14 +1889,335 @@ $P_1, P_2$ を求め、スペクトル分解 $A = 3P_1 + 1 \cdot P_2$ が
 (ヒント:単位固有ベクトル $\vect{u}$ への正射影行列は $\vect{u}\,{}^t\vect{u}$。)
 \end{mondai}
 
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[対称でない行列では固有ベクトルは直交しない]\label{hanrei:spec-nonsym}
+定理 \ref{thm:spec-basic}(2) の直交性は対称行列の特権である。
+非対称な
+\[
+B = \mat{1 & 1 \\ 0 & 2}
+\]
+は相異なる固有値 $1, 2$ をもち対角化可能だが、固有ベクトルは
+$\lambda = 1$ に $\mat{1 \\ 0}$、$\lambda = 2$ に $\mat{1 \\ 1}$ で、
+\[
+\Bigl\langle \mat{1 \\ 0}, \mat{1 \\ 1} \Bigr\rangle = 1 \neq 0.
+\]
+直交していない。「相異なる固有値の固有ベクトルは\textbf{線形独立}」
+(定理 \ref{thm:diag-distinct})は一般の行列で成り立つが、
+「\textbf{直交}」まで言えるのは対称性のご褒美である。
+\end{hanrei}
+
+\begin{hanrei}[対角化可能でも「直交行列で」対角化できるとは限らない]\label{hanrei:spec-notdiag}
+反例 \ref{hanrei:spec-nonsym} の $B$ は対角化可能である
+(固有値がすべて異なるから。定理 \ref{thm:diag-ndistinct})。
+では直交行列 $Q$ で ${}^t Q B Q = D$ とできるだろうか。
+もしできたとすると $B = QD\,{}^t Q$ と書け、その転置は
+\[
+{}^t\!B = {}^t({}^t Q)\,{}^t\!D\,{}^t Q = QD\,{}^t Q = B
+\]
+($D$ は対角行列なので ${}^t\!D = D$)となり、$B$ が対称行列で
+なければならない。しかし $B$ は対称でないから矛盾である。
+すなわち\textbf{直交行列で対角化できるのは対称行列だけ}であり
+(スペクトル定理のちょうど逆向きの主張。問 \ref{q:spec-ex11})、
+「対角化可能」と「直交対角化可能」は別の概念である。
+\end{hanrei}
+
+\section{例題}
+
+直交対角化(重複固有値の場合を含む)とスペクトル分解を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本($2$ 次の直交対角化)]\label{rei:spec-basic2}
+$A = \mat{3 & 1 \\ 1 & 3}$ を直交行列で対角化せよ。\\
+\textbf{解.}\ 固有方程式は $(\lambda - 3)^2 - 1 = 0$ より
+$\lambda = 4, 2$。固有ベクトルは、$\lambda = 4$:
+$(A - 4E)\vect{x} = \vect{0}$ すなわち $-x + y = 0$ から $\mat{1 \\ 1}$、
+$\lambda = 2$:$x + y = 0$ から $\mat{1 \\ -1}$。直交していることを
+確認し($1 - 1 = 0$)、正規化して並べる:
+\[
+P = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}, \qquad
+{}^t\!PAP = \mat{4 & 0 \\ 0 & 2}.
+\]
+検算:$A\mat{1 \\ 1} = \mat{4 \\ 4}$、$A\mat{1 \\ -1} = \mat{2 \\ -2}$。
+\end{rei}
+
+\begin{rei}[例題・基本(直交性の検証)]\label{rei:spec-orthcheck}
+$A = \mat{4 & 2 \\ 2 & 1}$ の固有値と固有ベクトルを求め、
+固有ベクトルが直交していることを確かめよ。\\
+\textbf{解.}\ 固有方程式は
+$\lambda^2 - 5\lambda + (4 - 4) = \lambda(\lambda - 5) = 0$ より
+$\lambda = 0, 5$($0$ が固有値、すなわち $A$ は正則でない。
+$\det A = 0$ とも整合)。固有ベクトルは、$\lambda = 0$:
+$4x + 2y = 0$ から $\mat{1 \\ -2}$、$\lambda = 5$:
+$-x + 2y = 0$ から $\mat{2 \\ 1}$。内積は
+\[
+\Bigl\langle \mat{1 \\ -2}, \mat{2 \\ 1} \Bigr\rangle = 2 - 2 = 0
+\]
+で、定理 \ref{thm:spec-basic}(2) のとおり直交している。
+\end{rei}
+
+\begin{rei}[例題・基本(スペクトル分解)]\label{rei:spec-decomp-ex}
+例題 \ref{rei:spec-basic2} の $A = \mat{3 & 1 \\ 1 & 3}$ の
+スペクトル分解を求めよ。\\
+\textbf{解.}\ 単位固有ベクトルは
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$($\lambda = 4$)、
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$($\lambda = 2$)。
+正射影行列は
+\[
+P_1 = \vect{u}_1\,{}^t\vect{u}_1 = \frac{1}{2}\mat{1 & 1 \\ 1 & 1}, \qquad
+P_2 = \vect{u}_2\,{}^t\vect{u}_2 = \frac{1}{2}\mat{1 & -1 \\ -1 & 1}.
+\]
+よって $A = 4P_1 + 2P_2$。検算:
+\[
+4P_1 + 2P_2 = \frac{1}{2}\mat{4 + 2 & 4 - 2 \\ 4 - 2 & 4 + 2}
+= \mat{3 & 1 \\ 1 & 3} = A.
+\]
+$P_1 + P_2 = E$、$P_1P_2 = O$ も成分計算ですぐ確かめられる
+(定理 \ref{thm:spec-decomp})。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次の直交対角化)]\label{rei:spec-3x3}
+$A = \mat{5 & 0 & 0 \\ 0 & 1 & 2 \\ 0 & 2 & 1}$ を直交行列で対角化せよ。\\
+\textbf{解.}\ ブロックの形から、固有方程式は
+$(5 - \lambda)\{(1 - \lambda)^2 - 4\} = 0$、すなわち
+$\lambda = 5, 3, -1$。固有ベクトルは
+\[
+\lambda = 5:\ \mat{1 \\ 0 \\ 0}, \qquad
+\lambda = 3:\ \mat{0 \\ 1 \\ 1}, \qquad
+\lambda = -1:\ \mat{0 \\ 1 \\ -1}
+\]
+($\lambda = 3$ は $-2y + 2z = 0$、$\lambda = -1$ は $2y + 2z = 0$
+から)。三本とも互いに直交している(相異なる固有値だから当然。
+定理 \ref{thm:spec-basic}(2))。正規化して
+\[
+P = \mat{1 & 0 & 0 \\ 0 & 1/\sqrt{2} & 1/\sqrt{2} \\ 0 & 1/\sqrt{2} & -1/\sqrt{2}},
+\qquad
+{}^t\!PAP = \mat{5 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & -1}.
+\]
+\end{rei}
+
+\begin{rei}[例題・標準(重複固有値とグラム・シュミット)]\label{rei:spec-repeated}
+$A = \mat{2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2}$ を直交行列で対角化せよ。\\
+\textbf{解.}\ 固有方程式を解くと(行の和がすべて $4$ であることから
+$\lambda = 4$ が見つかり、残りは因数分解で)
+$\lambda = 4, 1, 1$:固有値 $1$ が重複する。
+$\lambda = 4$:$\mat{1 \\ 1 \\ 1}$。
+$\lambda = 1$:$(A - E)\vect{x} = \vect{0}$ は $3$ 本とも
+$x + y + z = 0$ で、固有空間は平面(次元 $2$)。基底として
+$\vect{a}_1 = \mat{1 \\ -1 \\ 0}$, $\vect{a}_2 = \mat{1 \\ 0 \\ -1}$ を
+とれるが、\textbf{この $2$ 本は直交していない}ので、固有空間の中で
+グラム・シュミットの直交化法を実行する(手順 3)。
+$\langle \vect{a}_2, \vect{a}_1 \rangle = 1$,
+$\langle \vect{a}_1, \vect{a}_1 \rangle = 2$ より
+\[
+\vect{b}_2 = \mat{1 \\ 0 \\ -1} - \frac{1}{2}\mat{1 \\ -1 \\ 0}
+= \mat{1/2 \\ 1/2 \\ -1}.
+\]
+正規化してすべて並べると
+\[
+P = \mat{1/\sqrt{3} & 1/\sqrt{2} & 1/\sqrt{6} \\
+1/\sqrt{3} & -1/\sqrt{2} & 1/\sqrt{6} \\
+1/\sqrt{3} & 0 & -2/\sqrt{6}}, \qquad
+{}^t\!PAP = \mat{4 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1}.
+\]
+検算:$A\mat{1 \\ 1 \\ 1} = \mat{4 \\ 4 \\ 4}$、
+$A\mat{1 \\ -1 \\ 0} = \mat{1 \\ -1 \\ 0}$、
+$A\mat{1 \\ 1 \\ -2} = \mat{1 \\ 1 \\ -2}$。
+\textbf{重複固有値でも対角化は失敗しない}――固有空間の次元が
+ちゃんと重複度ぶんあり(スペクトル定理の保証)、その中を直交化
+すればよいだけである。
+\end{rei}
+
+\begin{rei}[例題・標準(スペクトル分解でべき乗)]\label{rei:spec-power}
+例題 \ref{rei:spec-decomp-ex} の分解 $A = 4P_1 + 2P_2$ を使って
+$A^n$($n \ge 1$)を求めよ。\\
+\textbf{解.}\ $P_1^2 = P_1$, $P_2^2 = P_2$, $P_1P_2 = P_2P_1 = O$
+(定理 \ref{thm:spec-decomp})より、展開の交差項がすべて消えて
+\[
+A^n = (4P_1 + 2P_2)^n = 4^nP_1 + 2^nP_2
+= \frac{1}{2}\mat{4^n + 2^n & 4^n - 2^n \\ 4^n - 2^n & 4^n + 2^n}.
+\]
+検算:$n = 1$ で $A$ に戻る。$n = 2$ では公式から
+$\frac{1}{2}\mat{20 & 12 \\ 12 & 20} = \mat{10 & 6 \\ 6 & 10}$、
+直接計算でも $A^2 = \mat{9 + 1 & 3 + 3 \\ 3 + 3 & 1 + 9}
+= \mat{10 & 6 \\ 6 & 10}$ で一致する。
+第 \ref{chap:power} 章の $P D^n P^{-1}$ 方式と同じ結果を与えるが、
+射影の言葉では「各固有方向の成分が別々に $\lambda^n$ 倍される」
+という描像がいっそう鮮明になる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item 対称行列の本質は\textbf{内積の受け渡し}
+$\langle A\vect{x}, \vect{y} \rangle = \langle \vect{x}, A\vect{y} \rangle$。
+ここから、固有値がすべて\textbf{実数}であること、相異なる固有値の
+固有ベクトルが\textbf{直交}することが従う(定理 \ref{thm:spec-basic})。
+\item \textbf{スペクトル定理}:実対称行列は直交行列で対角化できる
+(定理 \ref{thm:spec-main})。固有値が重複していても失敗しない。
+証明の骨格は「固有ベクトルを一本立てるたびに直交補空間へ縮小する」
+帰納法である。
+\item 直交対角化の手順:固有値 → 各固有空間の基底 →
+\textbf{重複固有値の固有空間内だけ}グラム・シュミット →
+正規直交基底を列に並べて $P$。相異なる固有値の固有空間は自動的に直交する。
+\item \textbf{スペクトル分解} $A = \sum_i \lambda_iP_i$
+($P_i$ は固有空間への正射影、$\sum P_i = E$, $P_i^2 = P_i$,
+$P_iP_j = O$)。べき乗は $A^m = \sum \lambda_i^mP_i$ と即座に求まる。
+\item 直交性・直交対角化可能性は対称行列の\textbf{特権}である:
+非対称なら固有ベクトルは直交せず(反例 \ref{hanrei:spec-nonsym})、
+直交行列で対角化できる行列は対称行列に限る
+(反例 \ref{hanrei:spec-notdiag})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:spec-ex1}
+$A = \mat{1 & 2 \\ 2 & 1}$ を直交行列で対角化せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:spec-ex2}
+$A = \mat{5 & 2 \\ 2 & 2}$ の固有値と固有ベクトルを求め、
+固有ベクトルが直交することを確かめてから、直交行列で対角化せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:spec-ex3}
+問 \ref{q:spec-ex1} の $A = \mat{1 & 2 \\ 2 & 1}$ について
+スペクトル分解 $A = \lambda_1P_1 + \lambda_2P_2$ を求め、
+$P_1 + P_2 = E$ と $P_1P_2 = O$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:spec-ex4}
+$B = \mat{1 & 1 \\ 0 & 2}$(反例 \ref{hanrei:spec-nonsym})について、
+固有値 $1, 2$ の固有ベクトルを実際に求め、直交して\textbf{いない}ことを
+内積の計算で確かめよ。また、この事実が定理 \ref{thm:spec-basic}(2) と
+矛盾しない理由を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex5}
+$A = \mat{2 & 1 & 0 \\ 1 & 2 & 0 \\ 0 & 0 & 5}$ を直交行列で対角化せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex6}
+$A = \mat{0 & 1 & 1 \\ 1 & 0 & 1 \\ 1 & 1 & 0}$ を直交行列で対角化せよ
+(固有値の一つは $2$ である。重複固有値の固有空間では
+グラム・シュミットの直交化法を使うこと)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex7}
+問 \ref{q:spec-ex3} のスペクトル分解を使って、
+$A = \mat{1 & 2 \\ 2 & 1}$ の $A^n$ を求めよ($n = 2$ で直接計算と
+一致することを確かめること)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:spec-ex8}
+実対称行列 $A$ の固有値を $\lambda_1, \dots, \lambda_n$(重複を許す)
+とするとき、成分の $2$ 乗和について
+\[
+\sum_{i,j} a_{ij}^2 = \mathrm{tr}(A^2) = \lambda_1^2 + \cdots + \lambda_n^2
+\]
+が成り立つことを示せ(ヒント:${}^t\!A = A$ より
+$\mathrm{tr}({}^t\!AA) = \mathrm{tr}(A^2)$。後半はトレースの相似不変性
+(定理 \ref{thm:trace-similar})を使う)。
+$A = \mat{1 & 2 \\ 2 & 1}$ で数値的に確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:spec-ex9}
+$A = \mat{2 & 1 \\ 1 & 2}$(固有値 $3, 1$)について、
+スペクトル分解を使って「$2$ 乗すると $A$ になる対称行列」
+$B = \sqrt{3}\,P_1 + P_2$ を構成し、$B^2 = A$ を
+射影行列の性質($P_i^2 = P_i$, $P_1P_2 = O$)から証明せよ。
+$B$ の成分も求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:spec-ex10}
+対称行列 $A$ が $A^2 = A$ を満たすとする($O$ でも $E$ でもないとする)。\\
+　(1) $A$ の固有値は $0$ と $1$ に限ることを示せ。\\
+　(2) スペクトル分解を使って、$A$ が固有値 $1$ の固有空間への
+\textbf{正射影行列}にほかならないことを示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:spec-ex11}
+直交行列 $P$ と対角行列 $D$ によって $A = PD\,{}^t\!P$ と書ける行列は
+対称行列であることを証明せよ(スペクトル定理の逆。あわせて
+「直交行列で対角化できる $\iff$ 対称行列」が完成する)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:spec-ex12}
+実対称行列 $A$ について、$\mathrm{Ker}\,A$ と $\mathrm{Im}\,A$ が
+直交する($\vect{x} \in \mathrm{Ker}\,A$ と
+$\vect{y} \in \mathrm{Im}\,A$ はつねに
+$\langle \vect{x}, \vect{y} \rangle = 0$)ことを証明せよ。
+さらに次元定理(定理 \ref{thm:dimension})を使って、
+$\R^n$ が $\mathrm{Ker}\,A$ と $\mathrm{Im}\,A$ の直和になることを示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:spec-ex1}}:固有値 $3, -1$。固有ベクトルを
+正規化して並べる。
+\item \textbf{問 \ref{q:spec-ex2}}:固有方程式は
+$\lambda^2 - 7\lambda + 6 = 0$。
+\item \textbf{問 \ref{q:spec-ex3}}:$P_i = \vect{u}_i\,{}^t\vect{u}_i$
+(単位固有ベクトルから作る)。
+\item \textbf{問 \ref{q:spec-ex4}}:上三角行列なので固有値は対角成分。
+定理の仮定(対称性)を $B$ は満たしていない。
+\item \textbf{問 \ref{q:spec-ex5}}:ブロックに分けて考える。
+$2 \times 2$ ブロックは例題 \ref{rei:spec-2x2} と同じ。
+\item \textbf{問 \ref{q:spec-ex6}}:$\lambda = 2, -1, -1$。
+$\lambda = -1$ の固有空間は平面 $x + y + z = 0$ で、
+例題 \ref{rei:spec-repeated} と同じ直交化になる。
+\item \textbf{問 \ref{q:spec-ex7}}:$A^n = 3^nP_1 + (-1)^nP_2$。
+$(-1)^n$ の符号に注意。
+\item \textbf{問 \ref{q:spec-ex8}}:$\mathrm{tr}({}^t\!AA)$ の対角成分が
+「各列のノルムの $2$ 乗」であることを確かめる。
+$A^2 = PD^2\,{}^t\!P$ は $D^2$ と相似。
+\item \textbf{問 \ref{q:spec-ex9}}:$B^2 = 3P_1^2 + 2\sqrt{3}P_1P_2 + P_2^2$
+を性質 (3) で整理する。
+\item \textbf{問 \ref{q:spec-ex10}}:(1) は例題 \ref{rei:ch-proj-eigen}
+と同じ論法。(2) はスペクトル分解 $A = 0 \cdot P_0 + 1 \cdot P_1 = P_1$。
+\item \textbf{問 \ref{q:spec-ex11}}:${}^t\!A$ を転置の計算法則で展開する。
+${}^t\!D = D$ がポイント。
+\item \textbf{問 \ref{q:spec-ex12}}:$\vect{y} = A\vect{z}$ と書いて
+内積の受け渡し。直和は「共通部分が $\{\vect{0}\}$」+「次元の和が $n$」。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{二次形式}\label{chap:quadform}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 二次形式と対称行列の $1$ 対 $1$ 対応(${}^t\vect{x}A\vect{x}$ の形)
+を理解し、式と行列を相互に翻訳できるようになる。
+\item 直交変換による\textbf{標準形}(主軸変換)を実行でき、
+$xy$ 項のある二次曲線を楕円・双曲線に分類できるようになる。
+\item \textbf{正定値性}の意味と、固有値による判定・シルベスターの
+判定法を(証明の要点とともに)使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 交差項との戦い}
+
+高校の数学で、$x^2 + y^2 = 1$(円)や
+$\dfrac{x^2}{4} + y^2 = 1$(楕円)、$x^2 - y^2 = 1$(双曲線)は
+扱えたのに、$xy$ の混じった $2x^2 + 2xy + 2y^2 = 1$ という曲線は
+教科書に登場しなかった。理由は単純で、\textbf{交差項 $xy$ を処理する
+道具がなかった}からである。$2$ 変数以上の $2$ 次式は、最適化
+(最小値・最大値の判定)、統計(分散の計算)、物理(エネルギー)と、
+応用のあらゆる場面に現れる。その解析を阻む交差項を、前章のスペクトル
+定理が一撃で消し去る――これが本章の筋書きである。
+「$2$ 次式の理論は対称行列の理論である」ことを見届けよう。
+
 \section{二次形式と対称行列}
 
-\begin{teigi}[二次形式]
-$n$ 変数の $2$ 次の同次多項式を\textbf{二次形式}という。
+\begin{teigi}[二次形式]\label{def:quad}
+$n$ 変数の $2$ 次の同次多項式($2$ 次の項だけからなる多項式)を
+\textbf{二次形式}という。
 たとえば $2$ 変数では $q(x, y) = ax^2 + 2bxy + cy^2$。
 これは対称行列を使って
 \[
@@ -350,19 +2228,53 @@ q(x, y) = \mat{x & y}\mat{a & b \\ b & c}\mat{x \\ y}
 振り分けるのが要点である。
 \end{teigi}
 
+$3$ 変数以上でも同じで、$x_i^2$ の係数を $(i, i)$ 成分に、
+$x_ix_j$($i \neq j$)の係数を\textbf{半分ずつ} $(i, j)$ 成分と
+$(j, i)$ 成分に置けばよい。たとえば
+\[
+q(x, y, z) = x^2 + 2y^2 + 3z^2 + 4xy - 2yz
+\quad\longleftrightarrow\quad
+A = \mat{1 & 2 & 0 \\ 2 & 2 & -1 \\ 0 & -1 & 3}
+\]
+($xy$ の係数 $4$ を $2$ と $2$ に、$yz$ の係数 $-2$ を $-1$ と $-1$ に
+分けた。$xz$ の項はないので $(1,3)$ 成分は $0$)。
+こうして\textbf{二次形式と対称行列は $1$ 対 $1$ に対応する}。
+$2$ 次式の問題は、そっくり対称行列の問題に翻訳される。
+
 \section{標準形 ― 交差項を消す}
 
 二次形式の解析を阻むのは交差項 $xy$ である。
-スペクトル定理がこれを一掃する。$A$ を直交行列 $P$ で対角化し、
+スペクトル定理がこれを一掃する。
+
+\begin{teiri}[主軸変換・標準形]\label{thm:quad-std}
+二次形式 $q(\vect{x}) = {}^t\vect{x}A\vect{x}$($A$ は対称行列)に対し、
+$A$ を直交行列 $P$ で対角化して
+${}^t\!PAP = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$ とし、
 変数変換 $\vect{x} = P\vect{y}$ を行うと
 \[
-{}^t\vect{x}A\vect{x} = {}^t\vect{y}\,({}^t\!PAP)\,\vect{y}
-= \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2.
+{}^t\vect{x}A\vect{x}
+= \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2
 \]
-\textbf{交差項のない標準形}が得られた。
-しかも $P$ は直交行列(座標軸の回転)なので、図形の形は歪まない。
+と、\textbf{交差項のない形(標準形)}になる。
+新しい座標軸(\textbf{主軸})の方向は $A$ の固有ベクトルの方向である。
+\end{teiri}
 
-\begin{rei}[二次曲線の分類]
+\noindent\textbf{(証明)}\quad
+$\vect{x} = P\vect{y}$ を代入するだけである。転置の法則より
+\[
+{}^t\vect{x}A\vect{x} = {}^t(P\vect{y})\,A\,(P\vect{y})
+= {}^t\vect{y}\,({}^t\!PAP)\,\vect{y}
+= {}^t\vect{y}\,\mathrm{diag}(\lambda_1, \dots, \lambda_n)\,\vect{y}
+= \sum_{i=1}^{n} \lambda_i y_i^2. \qquad\blacksquare
+\]
+
+しかも $P$ は直交行列(座標軸の回転・鏡映)なので、
+\textbf{図形の形は歪まない}し、ベクトルの長さも変わらない
+($\|\vect{x}\| = \|P\vect{y}\| = \|\vect{y}\|$。
+定理 \ref{thm:orth-preserve})。「同じ図形を、都合のよい向きから
+眺め直しただけ」というのが主軸変換の正体である。
+
+\begin{rei}[二次曲線の分類]\label{rei:quad-conic}
 曲線 $2x^2 + 2xy + 2y^2 = 1$ は何か。行列 $\mat{2 & 1 \\ 1 & 2}$ の
 固有値は $3, 1$ だから、軸を $45^\circ$ 回転した座標 $(X, Y)$ で
 \[
@@ -377,17 +2289,22 @@ q(x, y) = \mat{x & y}\mat{a & b \\ b & c}\mat{x \\ y}
 
 \section{正定値性}
 
-\begin{teigi}[正定値]
+\begin{teigi}[正定値]\label{def:quad-posdef}
 二次形式 $q(\vect{x}) = {}^t\vect{x}A\vect{x}$($A$ は対称)が、
 $\vect{x} \neq \vect{0}$ のすべてで $q(\vect{x}) > 0$ となるとき、
 $q$(および $A$)は\textbf{正定値}であるという。
 すべてで $q(\vect{x}) < 0$ なら\textbf{負定値}、
 正負両方の値をとるなら\textbf{不定値}という。
+また、すべての $\vect{x}$ で $q(\vect{x}) \ge 0$(等号は
+$\vect{x} \neq \vect{0}$ でも起こりうる)となるときは
+\textbf{半正定値}という。
 \end{teigi}
 
+半正定値は「正定値の境界ケース」で、第VII部(特異値分解)で
+${}^t\!CC$ 型の行列とともに主役になる(問 \ref{q:quad-ex12} が予告編である)。
 標準形を見れば判定は明快である。
 
-\begin{teiri}[正定値性の判定]
+\begin{teiri}[正定値性の判定]\label{thm:quad-criteria}
 対称行列 $A$ について、次は同値である。
 \begin{enumerate}
 \item $A$ は正定値である。
@@ -396,6 +2313,38 @@ $q$(および $A$)は\textbf{正定値}であるという。
 $k = 1, \dots, n$)がすべて正である(\textbf{シルベスターの判定法})。
 \end{enumerate}
 \end{teiri}
+
+\noindent\textbf{(証明:(1) $\iff$ (2))}\quad
+主軸変換(定理 \ref{thm:quad-std})で
+$q = \lambda_1y_1^2 + \cdots + \lambda_ny_n^2$ とする。
+変換 $\vect{x} = P\vect{y}$ は正則($P$ は直交行列)だから、
+$\vect{x} \neq \vect{0}$ と $\vect{y} \neq \vect{0}$ は同値であることに
+注意する。すべての $\lambda_i > 0$ なら、$\vect{y} \neq \vect{0}$ の
+とき正の項が少なくとも一つあり $q > 0$:正定値である。
+逆にある $\lambda_j \le 0$ なら、$\vect{y} = \vect{e}_j$
+(すなわち $\vect{x} = P\vect{e}_j \neq \vect{0}$)をとると
+$q = \lambda_j \le 0$ となり、正定値でない。
+
+\noindent\textbf{(証明:(1) $\iff$ (3)、$2$ 次の場合)}\quad
+$A = \mat{a & b \\ b & c}$ とする。首座小行列式は $a$ と
+$\det A = ac - b^2$ である。まず $a > 0$ かつ $ac - b^2 > 0$ とすると、
+平方完成により
+\[
+q(x, y) = ax^2 + 2bxy + cy^2
+= a\left(x + \frac{b}{a}y\right)^2 + \frac{ac - b^2}{a}\,y^2
+\]
+で、係数 $a$ と $\dfrac{ac - b^2}{a}$ はどちらも正。$q = 0$ となるのは
+両方の $2$ 乗が $0$、すなわち $y = 0$ かつ $x = 0$ のときだけなので、
+$q$ は正定値である。逆に $q$ が正定値なら
+\[
+a = q(1, 0) > 0, \qquad
+q\left(-\frac{b}{a},\, 1\right) = \frac{b^2}{a} - \frac{2b^2}{a} + c
+= \frac{ac - b^2}{a} > 0
+\]
+より $ac - b^2 > 0$ も従う。一般次数の証明も同じ発想
+(平方完成を繰り返して、各段階の係数が首座小行列式の比になることを
+確かめる)で進むが、本書では $2$ 次で納得すれば十分である。
+$\blacksquare$
 
 条件 3 は固有値を計算せずに済む実用的な判定法である。
 $2$ 次なら「$a > 0$ かつ $\det A > 0$」だけでよい。
@@ -434,3 +2383,273 @@ H \text{ が不定値} \Rightarrow \text{鞍点}.
 　(2) 曲線 $x^2 + 4xy + y^2 = 1$ は楕円か双曲線か。
 固有値を求めて判定し、標準形を書け。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[対角成分がすべて正でも正定値とは限らない]\label{hanrei:quad-diag}
+「$x^2$ と $y^2$ の係数が正だから $q > 0$ だろう」は誤りである。
+\[
+q(x, y) = x^2 + 6xy + y^2, \qquad A = \mat{1 & 3 \\ 3 & 1}
+\]
+は対角成分がどちらも正だが、
+\[
+q(1, -1) = 1 - 6 + 1 = -4 < 0.
+\]
+交差項が強すぎると、斜め方向で負になってしまうのである
+(固有値は $4, -2$ の不定値。首座小行列式も $1 > 0$,
+$\det A = 1 - 9 = -8 < 0$ で、シルベスターの判定法は正しく
+「正定値でない」と告げる)。対角成分は $q(\vect{e}_i)$ の値しか
+見ておらず、\textbf{座標軸の方向だけ調べても全方向の正値性は
+保証されない}。
+\end{hanrei}
+
+\begin{hanrei}[$\det A > 0$ だけでも正定値とは限らない]\label{hanrei:quad-det}
+判定条件を「行列式が正」と省略してもいけない。
+\[
+A = -E = \mat{-1 & 0 \\ 0 & -1}
+\]
+は $\det A = 1 > 0$ だが、$q(x, y) = -x^2 - y^2$ は\textbf{負}定値である。
+$2$ 次の場合、$\det A > 0$ が保証するのは「固有値が同符号」まで
+($\det = \lambda_1\lambda_2$)であり、符号を確定させるには
+首座小行列式の\textbf{最初の一つ} $a_{11} > 0$ が要る。
+シルベスターの判定法が「首座小行列式\textbf{すべて}」を要求するのは
+このためである。
+\end{hanrei}
+
+\section{例題}
+
+行列表示・分類・判定・主軸変換を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(行列表示)]\label{rei:quad-matrix}
+次の二次形式に対応する対称行列を書け。
+\[
+\text{(1)}\ q(x, y) = 2x^2 - 4xy + 5y^2 \qquad
+\text{(2)}\ q(x, y, z) = x^2 + y^2 + z^2 + 2xy + 4yz
+\]
+\textbf{解.}\ 交差項の係数を半分ずつ振り分ける。
+\[
+\text{(1)}\ \mat{2 & -2 \\ -2 & 5} \qquad
+\text{(2)}\ \mat{1 & 1 & 0 \\ 1 & 1 & 2 \\ 0 & 2 & 1}
+\]
+(2) では $xy$ の係数 $2$ を $1$ ずつ、$yz$ の係数 $4$ を $2$ ずつに分け、
+$xz$ の項がないので $(1, 3)$ 成分は $0$ とした。
+検算には ${}^t\vect{x}A\vect{x}$ を展開して元の式に戻ることを
+確かめればよい。
+\end{rei}
+
+\begin{rei}[例題・基本(固有値による分類)]\label{rei:quad-classify}
+二次形式 $q(x, y) = 2x^2 + 4xy - y^2$ は正定値・負定値・不定値の
+どれか。また曲線 $q(x, y) = 1$ は楕円か双曲線か。\\
+\textbf{解.}\ 行列は $A = \mat{2 & 2 \\ 2 & -1}$。固有方程式は
+$\mathrm{tr} = 1$, $\det = -2 - 4 = -6$ より
+\[
+\lambda^2 - \lambda - 6 = (\lambda - 3)(\lambda + 2) = 0, \qquad
+\lambda = 3, -2.
+\]
+固有値が正負両方あるので\textbf{不定値}である。標準形は
+$3X^2 - 2Y^2 = 1$ で、曲線は\textbf{双曲線}である。
+\end{rei}
+
+\begin{rei}[例題・基本(シルベスターの判定法)]\label{rei:quad-sylv}
+二次形式 $q(x, y) = 4x^2 - 4xy + 3y^2$ が正定値であることを、
+シルベスターの判定法で確かめよ。\\
+\textbf{解.}\ 行列は $A = \mat{4 & -2 \\ -2 & 3}$。首座小行列式は
+\[
+4 > 0, \qquad \det A = 12 - 4 = 8 > 0.
+\]
+よって正定値である(定理 \ref{thm:quad-criteria})。
+固有値を求めなくても判定できるのがこの方法の利点である
+(実際、固有値は $\lambda^2 - 7\lambda + 8 = 0$ の解
+$\dfrac{7 \pm \sqrt{17}}{2}$ で、どちらも正だが値は汚い)。
+\end{rei}
+
+\begin{rei}[例題・標準(主軸変換)]\label{rei:quad-principal}
+曲線 $3x^2 - 2xy + 3y^2 = 8$ を主軸変換で標準形に直し、
+どんな図形か(主軸の方向も含めて)述べよ。\\
+\textbf{解.}\ 行列は $A = \mat{3 & -1 \\ -1 & 3}$。固有方程式
+$(3 - \lambda)^2 - 1 = 0$ より $\lambda = 2, 4$。固有ベクトルは、
+$\lambda = 2$:$x - y = 0$ から $\dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$、
+$\lambda = 4$:$x + y = 0$ から $\dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$。
+直交行列 $P = \dfrac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}$ による
+回転(と鏡映)後の座標 $(X, Y)$ で
+\[
+2X^2 + 4Y^2 = 8, \qquad\text{すなわち}\qquad
+\frac{X^2}{4} + \frac{Y^2}{2} = 1.
+\]
+長半径 $2$(方向は $\lambda = 2$ の固有ベクトル
+$\frac{1}{\sqrt{2}}(1, 1)$、つまり直線 $y = x$ の向き)、
+短半径 $\sqrt{2}$(方向は $y = -x$ の向き)の\textbf{楕円}である。
+係数の小さい固有値の方向ほど遠くまで伸びる
+(半径 $= \sqrt{8/\lambda_i}$)ことに注意。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 変数の分類)]\label{rei:quad-3var}
+二次形式 $q(x, y, z) = 2x^2 + 2y^2 + 2z^2 + 2xy + 2yz + 2zx$ を
+標準形に直し、正定値かどうか判定せよ。\\
+\textbf{解.}\ 行列は $A = \mat{2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2}$
+――例題 \ref{rei:spec-repeated} で直交対角化した行列である。
+固有値は $4, 1, 1$ だから、標準形は
+\[
+q = 4X^2 + Y^2 + Z^2.
+\]
+固有値がすべて正なので\textbf{正定値}である。
+シルベスターの判定法でも、首座小行列式が
+$2 > 0$、$\det\mat{2 & 1 \\ 1 & 2} = 3 > 0$、
+$\det A = 4 \cdot 1 \cdot 1 = 4 > 0$(固有値の積)となり一致する。
+曲面 $q = 1$ は $3$ 方向の半径が
+$\frac{1}{2}, 1, 1$ の\textbf{楕円面}(ラグビーボール状の曲面)である。
+\end{rei}
+
+\begin{rei}[例題・標準(パラメータの範囲)]\label{rei:quad-param}
+二次形式 $q(x, y) = tx^2 + 4xy + ty^2$ が正定値になるような
+実数 $t$ の範囲を求めよ。\\
+\textbf{解.}\ 行列は $\mat{t & 2 \\ 2 & t}$。シルベスターの判定法より
+\[
+t > 0 \quad\text{かつ}\quad t^2 - 4 > 0.
+\]
+$t^2 > 4$ は $t > 2$ または $t < -2$ だが、$t > 0$ との共通部分で
+$t > 2$。固有値でも検算できる:固有値は $t \pm 2$(固有ベクトル
+$(1, \pm 1)$)で、両方正 $\iff t - 2 > 0 \iff t > 2$。一致した。
+境界の $t = 2$ では $q = 2(x + y)^2$ となり、$x + y = 0$ の方向で
+$0$ になる(正定値でなく\textbf{半正定値})。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{二次形式} $q(\vect{x}) = {}^t\vect{x}A\vect{x}$ は
+\textbf{対称行列 $A$ と $1$ 対 $1$ に対応}する(交差項の係数は
+半分ずつ振り分ける)。
+\item 直交行列 $P$ による\textbf{主軸変換} $\vect{x} = P\vect{y}$ で、
+二次形式は標準形 $\sum \lambda_iy_i^2$ になる
+(定理 \ref{thm:quad-std})。座標軸の回転だから図形は歪まない。
+曲線 $q = 1$ は、固有値が $(+, +)$ なら楕円、$(+, -)$ なら双曲線。
+\item \textbf{正定値} $\iff$ 固有値がすべて正 $\iff$
+首座小行列式がすべて正(シルベスターの判定法。
+定理 \ref{thm:quad-criteria})。$2$ 次なら「$a > 0$ かつ $\det A > 0$」。
+\item 対角成分が正なだけでは正定値といえない
+(反例 \ref{hanrei:quad-diag})し、$\det A > 0$ だけでも足りない
+(反例 \ref{hanrei:quad-det})。
+\item 多変数関数の極値判定(ヘッセ行列の定値性)は二次形式の
+理論そのものである(深掘り)。半正定値($q \ge 0$)は
+第VII部で ${}^t\!CC$ 型の行列とともに再登場する。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:quad-ex1}
+次の二次形式に対応する対称行列を書け。
+\[
+\text{(1)}\ q(x, y) = x^2 + 6xy - 2y^2 \qquad
+\text{(2)}\ q(x, y, z) = x^2 + 2y^2 + 3z^2 + 4xy - 2yz
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quad-ex2}
+対称行列 $A = \mat{2 & -1 \\ -1 & 5}$ に対応する二次形式 $q(x, y)$ を
+書き、$q(1, 1)$ の値を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quad-ex3}
+二次形式 $q(x, y) = 3x^2 + 2xy + 3y^2$ を固有値によって分類
+(正定値・負定値・不定値)し、曲線 $q(x, y) = 1$ の標準形を書け。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quad-ex4}
+シルベスターの判定法で、次の二次形式が正定値かどうか判定せよ。
+\[
+\text{(1)}\ q(x, y) = 2x^2 + 2xy + 3y^2 \qquad
+\text{(2)}\ q(x, y) = x^2 + 4xy + y^2
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex5}
+曲線 $5x^2 - 4xy + 8y^2 = 36$ を主軸変換で標準形に直し、
+図形の種類・主軸の方向・半径を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex6}
+曲線 $2xy = 1$ を主軸変換で標準形に直し、どんな図形か述べよ。
+また、この結果が高校で学んだ反比例のグラフ
+$y = \dfrac{1}{2x}$ とどう関係するか説明せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex7}
+二次形式 $q(x, y, z) = 2x^2 + 2y^2 + 2z^2 - 2xy - 2yz - 2zx$ について、\\
+　(1) $q = (x - y)^2 + (y - z)^2 + (z - x)^2$ と変形できることを確かめ、
+$q$ が半正定値であることを示せ。\\
+　(2) $q(\vect{x}) = 0$ となる $\vect{x} \neq \vect{0}$ を一つ挙げ、
+$q$ が正定値では\textbf{ない}ことを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quad-ex8}
+二次形式 $q(x, y) = x^2 + 2txy + 4y^2$ が正定値になるような
+実数 $t$ の範囲を求めよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:quad-ex9}
+問 \ref{q:quad-ex5} の $q(x, y) = 5x^2 - 4xy + 8y^2$ について、
+単位円 $x^2 + y^2 = 1$ 上での $q$ の最大値・最小値と、
+それを与える点を求めよ(ヒント:直交変換は
+$X^2 + Y^2 = x^2 + y^2$ を保つので、標準形のまま考えてよい)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:quad-ex10}
+正定値対称行列 $A$ について、$A$ は正則であり、$A^{-1}$ も
+正定値対称行列であることを示せ
+(ヒント:固有値で議論する。$A^{-1}$ の固有値は $A$ の固有値の
+逆数である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:quad-ex11}
+正定値対称行列 $A = (a_{ij})$ の対角成分はすべて正
+($a_{ii} > 0$)であることを証明せよ。また、逆が成り立たないことは
+どの反例から分かるか。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:quad-ex12}
+$C$ を $m \times n$ 実行列とする。\\
+　(1) $A = {}^t\!CC$($n$ 次対称行列)が半正定値であることを示せ
+(ヒント:${}^t\vect{x}\,{}^t\!CC\,\vect{x} = \|C\vect{x}\|^2$)。\\
+　(2) $A$ が正定値であることと、$C$ の列ベクトルが線形独立である
+ことが同値であることを示せ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:quad-ex1}}:交差項の係数を半分ずつ対称な位置に
+振り分ける。ない項は $0$。
+\item \textbf{問 \ref{q:quad-ex2}}:対角成分が $2$ 乗の係数、
+非対角成分の $2$ 倍が交差項の係数。
+\item \textbf{問 \ref{q:quad-ex3}}:固有方程式は
+$(\lambda - 3)^2 - 1 = 0$。
+\item \textbf{問 \ref{q:quad-ex4}}:首座小行列式 $a$ と $\det A$ の
+符号を見るだけ。
+\item \textbf{問 \ref{q:quad-ex5}}:固有値は $4, 9$ になる。
+固有ベクトルの方向が主軸。
+\item \textbf{問 \ref{q:quad-ex6}}:行列は $\mat{0 & 1 \\ 1 & 0}$。
+固有値 $\pm 1$、固有ベクトルは $(1, \pm 1)$ 方向。
+\item \textbf{問 \ref{q:quad-ex7}}:(1) は右辺を展開する。
+$2$ 乗の和は負になれない。(2) は $3$ つの $2$ 乗が同時に $0$ になる
+方向を探す。
+\item \textbf{問 \ref{q:quad-ex8}}:シルベスターの判定法で
+$t$ の不等式を作る(例題 \ref{rei:quad-param} と同型)。
+\item \textbf{問 \ref{q:quad-ex9}}:標準形 $4X^2 + 9Y^2$ を
+$X^2 + Y^2 = 1$ の下で動かす。$X^2 = 1 - Y^2$ を代入すると
+$1$ 変数の話になる。最後に $(X, Y)$ を $(x, y)$ に戻す。
+\item \textbf{問 \ref{q:quad-ex10}}:固有値がすべて正なら $0$ は
+固有値でないから正則(定理 \ref{thm:eigen-zero})。
+$A\vect{v} = \lambda\vect{v}$ の両辺に $A^{-1}$ を掛ける。
+対称性は ${}^t(A^{-1}) = ({}^t\!A)^{-1}$ から。
+\item \textbf{問 \ref{q:quad-ex11}}:$q(\vect{e}_i) = a_{ii}$ を計算する。
+\item \textbf{問 \ref{q:quad-ex12}}:(1) ノルムの $2$ 乗は非負。
+(2) 「$q(\vect{x}) = 0 \iff C\vect{x} = \vect{0}$」と
+「$C\vect{x} = \vect{0}$ が自明解しかもたない $\iff$ 列が線形独立」
+(第II部)をつなぐ。
+\end{itemize}
+}
