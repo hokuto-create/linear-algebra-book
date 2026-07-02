@@ -1614,7 +1614,22 @@ $\det e^{A} = e^{\mathrm{tr}\,A} > 0$ を突き合わせる。
 \chapter{線形微分方程式系 ― 本書の二本柱が合流する}\label{chap:ode}
 % =====================================================
 
-\section{基本定理}
+\begin{goal}
+\begin{itemize}
+\item 初期値問題 $\vect{x}' = A\vect{x}$, $\vect{x}(0) = \vect{x}_0$ の解が
+$\vect{x}(t) = e^{tA}\vect{x}_0$ で\textbf{ただ一つ}に定まることを、
+証明とともに理解する。
+\item \textbf{固有値法}で解を構成できるようになる:対角化可能なら
+$e^{\lambda t}$ の重ね合わせ、ジョルダン細胞からは $te^{\lambda t}$ 型、
+複素固有値からは振動(回転)が現れる。
+\item $2$ 階の微分方程式を $1$ 階の系に直して解けるようになり、
+「特性方程式」の正体が固有多項式であることを説明できるようになる。
+\item 解の長期挙動(安定性)を\textbf{固有値の実部}で判定できるように
+なる($2$ 次ならトレースと行列式だけでよい)。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 連立方程式の微分方程式版}
 
 未知関数が複数あり、互いの変化が絡み合う微分方程式
 \[
@@ -1627,8 +1642,15 @@ x_2' = a_{21}x_1 + a_{22}x_2
 \]
 を\textbf{線形微分方程式系}という(人口の相互作用、化学反応、
 経済の動学モデル、回路方程式など、応用は無数にある)。
+$x_1$ の変化が $x_2$ に、$x_2$ の変化が $x_1$ に影響する――
+この「絡み合い」こそ、第I部以来くり返し見てきた連立の困難であり、
+それを解きほぐす道具(固有ベクトル)もすでに手の中にある。
+本章で、\textbf{連立一次方程式}(第一の柱)と
+\textbf{固有値・固有ベクトル}(第二の柱)が、微分方程式の上で合流する。
 
-\begin{teiri}
+\section{基本定理}
+
+\begin{teiri}[解の存在と一意性]\label{thm:ode-main}
 初期値問題 $\dfrac{d\vect{x}}{dt} = A\vect{x}$, $\vect{x}(0) = \vect{x}_0$ の
 解はただ一つ存在し、
 \[
@@ -1637,11 +1659,33 @@ x_2' = a_{21}x_1 + a_{22}x_2
 で与えられる。
 \end{teiri}
 
-解であることは前章の性質 3 から直ちに従う
-($\frac{d}{dt}e^{tA}\vect{x}_0 = Ae^{tA}\vect{x}_0$、$t = 0$ で $\vect{x}_0$)。
+\noindent\textbf{(証明)}\quad
+\textbf{(存在)}\ $\vect{x}(t) = e^{tA}\vect{x}_0$ とおくと、
+前章の性質 3(定理 \ref{thm:exp-basic})より
+\[
+\vect{x}'(t) = \frac{d}{dt}\bigl(e^{tA}\bigr)\vect{x}_0
+= Ae^{tA}\vect{x}_0 = A\vect{x}(t),
+\]
+また $\vect{x}(0) = e^{O}\vect{x}_0 = \vect{x}_0$。よって解である。
+
+\textbf{(一意性)}\ $\vect{x}(t)$ を任意の解とし、
+$\vect{y}(t) = e^{-tA}\vect{x}(t)$ とおく。行列とベクトルの積の微分にも
+積の微分法が成り立つ(成分ごとに書けば普通の積の微分法である)から、
+\[
+\vect{y}'(t) = \bigl(-Ae^{-tA}\bigr)\vect{x}(t) + e^{-tA}\vect{x}'(t)
+= e^{-tA}\bigl(-A\vect{x}(t) + A\vect{x}(t)\bigr) = \vect{0}
+\]
+(途中で $Ae^{-tA} = e^{-tA}A$ を使った。$e^{-tA}$ は $A$ の
+べきの級数なので $A$ と可換である)。すべての成分の導関数が
+恒等的に $0$ だから $\vect{y}(t)$ は定数ベクトルで、
+$\vect{y}(t) = \vect{y}(0) = \vect{x}_0$。両辺に $e^{tA}$ を掛けて
+($e^{tA}e^{-tA} = E$)、$\vect{x}(t) = e^{tA}\vect{x}_0$ を得る。
+解は必ずこの形しかない。 $\blacksquare$
+
 一変数の $y' = ay \Rightarrow y = e^{at}y_0$ と\textbf{完全に同じ形}である。
 第I部以来温めてきた「連立方程式を一本の式 $A\vect{x} = \vect{b}$ に束ねる」
-発想が、微分方程式でも全く同様に実を結んだ。
+発想が、微分方程式でも全く同様に実を結んだ。しかも一意性まで込みで、
+\textbf{未来は初期値と $A$ から完全に決まる}ことが分かった。
 
 \section{固有値法 ― 解の設計図}
 
@@ -1658,8 +1702,9 @@ $A$ が対角化可能なら、固有ベクトルの基底 $\vect{v}_1, \dots, \
 \[
 \vect{x}(t) = c_1 e^{\lambda_1 t}\vect{v}_1 + \cdots + c_n e^{\lambda_n t}\vect{v}_n.
 \]
+(これが確かに解で初期値も合うから、一意性によりこれ\textbf{しか}ない。)
 
-\begin{rei}
+\begin{rei}\label{rei:ode-eigen}
 $\dfrac{d\vect{x}}{dt} = \mat{3 & 1 \\ 1 & 3}\vect{x}$,
 $\vect{x}(0) = \mat{1 \\ 0}$ を解く。本書で繰り返し登場したこの行列の
 固有値・固有ベクトルは $4, \mat{1 \\ 1}$ と $2, \mat{1 \\ -1}$。初期値を展開して
@@ -1679,11 +1724,51 @@ $\mat{1 \\ 1}$ の方向に吸い寄せられていく。
 対角化できない場合はジョルダン標準形が引き受ける。
 $2$ 次の細胞 $J = \mat{\lambda & 1 \\ 0 & \lambda}$ では
 $e^{tJ} = e^{\lambda t}\mat{1 & t \\ 0 & 1}$ だったから、解に
-\textbf{$t e^{\lambda t}$ 型の項}が現れる。
-高校・大学初年で「特性方程式が重解のときは $te^{\lambda t}$(漸化式なら
-$n\lambda^n$)を試せ」と天下りに教わる処方箋の出どころは、
-ジョルダン細胞の $1$ だったのである。離散(漸化式)と連続(微分方程式)の
-二つの謎が、同じ一つの行列の形で同時に解けた。
+\textbf{$t e^{\lambda t}$ 型の項}が現れる(例題 \ref{rei:ode-jordan})。
+また、実行列でも固有値が複素数になることがある。そのとき解に
+現れるのは\textbf{振動(回転)}である(例題 \ref{rei:ode-rotation})。
+まとめると、解の部品は
+\[
+e^{\lambda t} \text{(伸縮)}, \qquad
+t^k e^{\lambda t} \text{(細胞のはみ出し)}, \qquad
+e^{\alpha t}\cos\beta t,\ e^{\alpha t}\sin\beta t \text{(複素固有値)}
+\]
+の三種類ですべてであり、どれが現れるかはジョルダン標準形が決める。
+
+\section{高階の方程式も一階の系になる}
+
+単独の未知関数の $2$ 階方程式
+\[
+y'' + p\,y' + q\,y = 0
+\]
+も、この枠組みで解ける。$\vect{x} = \mat{y \\ y'}$ とおくと
+$\vect{x}' = \mat{y' \\ y''} = \mat{y' \\ -q\,y - p\,y'}$ だから、
+\[
+\frac{d\vect{x}}{dt} = \mat{0 & 1 \\ -q & -p}\vect{x}
+\]
+という系になる(第IV部で漸化式を行列に直したのと同じ手口である)。
+この係数行列の固有多項式は
+\[
+\det\mat{\lambda & -1 \\ q & \lambda + p} = \lambda^2 + p\lambda + q
+\]
+――高校・大学初年で天下りに与えられる\textbf{「特性方程式」の正体は、
+系に直したときの固有多項式}だったのである。
+
+特性方程式が相異なる解 $\lambda_1, \lambda_2$ をもてば対角化でき、
+一般解は $y = C_1 e^{\lambda_1 t} + C_2 e^{\lambda_2 t}$。
+\textbf{重解} $\lambda$ のときは、係数行列が対角化できず
+(幾何的重複度 $1$ のジョルダン細胞になる。例題 \ref{rei:ode-jordan} の
+あとの章末問題 \ref{q:ode-ex8} で確かめる)、一般解に $te^{\lambda t}$ が
+現れて $y = (C_1 + C_2 t)e^{\lambda t}$ となる。
+「重解のときは $te^{\lambda t}$ を試せ(漸化式なら $n\lambda^n$)」という
+処方箋の出どころは、ジョルダン細胞の $1$ だった。
+離散(漸化式)と連続(微分方程式)の二つの謎が、
+同じ一つの行列の形で同時に解けた。
+
+\begin{mondai}\label{q:ode-2nd}
+$y'' - 5y' + 6y = 0$ を $1$ 階の系に直し、係数行列の固有値を求めて
+一般解を書け。
+\end{mondai}
 
 \section{安定性 ― 固有値の実部がすべてを決める}
 
@@ -1701,6 +1786,35 @@ $\vect{0}$ に収束する(\textbf{漸近安定})。
 \item 虚部をもつ固有値は、解に\textbf{振動}(回転)をもたらす。
 \end{itemize}
 \end{itembox}
+
+($t^k$ の因子があっても $e^{\alpha t}$($\alpha < 0$)の減衰が必ず
+勝つことが知られており、判定は実部だけで済む。)
+$2$ 次の系なら、固有値を求めるまでもなく判定できる。
+
+\begin{teiri}[$2$ 次の系の安定判定]\label{thm:ode-2x2}
+$2$ 次正方行列 $A$ について、
+\[
+\text{漸近安定}
+\iff \mathrm{tr}\,A < 0 \ \text{かつ}\ \det A > 0.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+固有値を $\lambda_1, \lambda_2$(複素数も許す)とすると、固有多項式の
+係数の関係(定理 \ref{thm:eigen-trdet2})から
+$\lambda_1 + \lambda_2 = \mathrm{tr}\,A$,
+$\lambda_1 \lambda_2 = \det A$ である。
+
+(i) 固有値がともに実数のとき:「両方負」$\iff$「和が負かつ積が正」
+(積が正なら同符号、和が負ならその符号は負)。
+
+(ii) 固有値が共役な複素数 $\alpha \pm i\beta$($\beta \neq 0$)のとき:
+$\det A = \alpha^2 + \beta^2 > 0$ はつねに成り立ち、
+$\mathrm{tr}\,A = 2\alpha$ だから「実部 $\alpha$ が負」$\iff$
+「$\mathrm{tr}\,A < 0$」。
+
+どちらの場合も、「すべての固有値の実部が負」と
+「$\mathrm{tr}\,A < 0$ かつ $\det A > 0$」が一致する。 $\blacksquare$
 
 連立方程式の解の個数を $\det$ が支配したように、
 微分方程式の長期挙動は固有値の\textbf{実部の符号}が支配する。
@@ -1736,3 +1850,313 @@ $\vect{x}(0) = \mat{1 \\ 1}$ を固有値法で解け
 　(2) $\dfrac{d\vect{x}}{dt} = \mat{2 & 1 \\ 0 & 2}\vect{x}$ の解を
 $e^{tJ}$ を用いて書き、$te^{2t}$ 型の項が現れることを確かめよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[漸近安定でも、ノルムは一時的に大きく育ちうる]\label{hanrei:ode-transient}
+「固有値の実部がすべて負なら、解は単調に小さくなっていく」は誤りである。
+\[
+A = \mat{-1 & 10 \\ 0 & -1}
+\]
+の固有値は $-1$ のみ(実部負)で、系は漸近安定である。
+$A = -E + 10N$($N^2 = O$)だから
+$e^{tA} = e^{-t}\mat{1 & 10t \\ 0 & 1}$ で、初期値
+$\vect{x}_0 = \mat{0 \\ 1}$(ノルム $1$)の解は
+\[
+\vect{x}(t) = e^{-t}\mat{10t \\ 1}.
+\]
+$t = 1$ でのノルムは $e^{-1}\sqrt{100 + 1} \approx 3.7$ ――
+最終的には $\vect{0}$ に収束するのに、途中で初期値の
+$3.7$ 倍以上に膨らむ。原因は、$te^{-t}$ 型の項(ジョルダン細胞)と
+成分間の非対称な結合($10$)である。「最後は収束する」ことと
+「途中も暴れない」ことは別問題であり、この\textbf{一時的増大}は
+数値計算や制御工学で実際に問題になる現象である。
+\end{hanrei}
+
+\begin{hanrei}[トレースが負というだけでは安定といえない]\label{hanrei:ode-trace}
+定理 \ref{thm:ode-2x2} の条件を「$\mathrm{tr}\,A < 0$」だけに
+値切ってはいけない。
+\[
+A = \mat{-3 & 0 \\ 0 & 1}
+\]
+は $\mathrm{tr}\,A = -2 < 0$ だが、固有値 $1 > 0$ をもち、解
+$\vect{x}(t) = \mat{c_1 e^{-3t} \\ c_2 e^{t}}$ は $c_2 \neq 0$ のとき
+発散する(不安定)。トレースは固有値の\textbf{和}にすぎないので、
+大きな負の固有値が正の固有値を隠してしまうのである。
+ここで効くのが第二の条件で、実際 $\det A = -3 < 0$ が
+「符号の異なる実固有値(鞍点)」を検出している。
+\end{hanrei}
+
+\section{例題}
+
+固有値法・ジョルダン型・振動型の求解と、安定性の判定を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(固有値法)]\label{rei:ode-basic}
+$\vect{x}' = \mat{1 & 2 \\ 2 & 1}\vect{x}$,
+$\vect{x}(0) = \mat{3 \\ 1}$ を解け。この系は安定か。\\
+\textbf{解.}\ 固有多項式は $\lambda^2 - 2\lambda - 3 = (\lambda - 3)(\lambda + 1)$。
+固有値 $3$ の固有ベクトル $\mat{1 \\ 1}$、固有値 $-1$ の固有ベクトル
+$\mat{1 \\ -1}$。初期値を展開すると
+\[
+\mat{3 \\ 1} = 2\mat{1 \\ 1} + 1 \cdot \mat{1 \\ -1}
+\]
+($2 + 1 = 3$, $2 - 1 = 1$ で検算)。よって
+\[
+\vect{x}(t) = 2e^{3t}\mat{1 \\ 1} + e^{-t}\mat{1 \\ -1}.
+\]
+固有値 $3 > 0$ があるので\textbf{不安定}($t \to \infty$ で
+$\mat{1 \\ 1}$ 方向に発散していく)。
+\end{rei}
+
+\begin{rei}[例題・基本(絡み合いのない系)]\label{rei:ode-decoupled}
+$\vect{x}' = \mat{-1 & 0 \\ 0 & -2}\vect{x}$,
+$\vect{x}(0) = \mat{4 \\ 5}$ を解け。\\
+\textbf{解.}\ 対角行列なら連立は最初からほどけていて、
+$x_1' = -x_1$, $x_2' = -2x_2$ を別々に解くだけである:
+\[
+\vect{x}(t) = \mat{4e^{-t} \\ 5e^{-2t}}
+\qquad (= e^{tA}\vect{x}_0,\ e^{tA} = \mat{e^{-t} & 0 \\ 0 & e^{-2t}}).
+\]
+固有値 $-1, -2$ がともに負なので漸近安定で、実際
+$\vect{x}(t) \to \vect{0}$。対角化とは、一般の系を
+「この形にほどける座標」を探すことにほかならない。
+\end{rei}
+
+\begin{rei}[例題・基本(安定性の判定)]\label{rei:ode-stability}
+次の係数行列をもつ系の安定性を、定理 \ref{thm:ode-2x2} で判定せよ。
+\[
+(1)\ \mat{-2 & 1 \\ 0 & -1} \qquad
+(2)\ \mat{1 & 2 \\ 2 & 1} \qquad
+(3)\ \mat{-1 & -2 \\ 2 & -1}
+\]
+\textbf{解.}\\
+　(1) $\mathrm{tr} = -3 < 0$, $\det = 2 > 0$ で\textbf{漸近安定}
+(実際、固有値は $-2, -1$)。\\
+　(2) $\det = 1 - 4 = -3 < 0$ で\textbf{不安定}(符号の異なる
+実固有値をもつ鞍点。例題 \ref{rei:ode-basic} で解いたとおり
+固有値は $3, -1$)。\\
+　(3) $\mathrm{tr} = -2 < 0$, $\det = 1 + 4 = 5 > 0$ で\textbf{漸近安定}。
+固有多項式は $\lambda^2 + 2\lambda + 5 = 0$ で固有値は
+$-1 \pm 2i$(複素数)。実部 $-1 < 0$ で収束しつつ、虚部 $\pm 2$ が
+\textbf{渦を巻きながら}収束することを教えている。
+\end{rei}
+
+\begin{rei}[例題・標準(ジョルダン型:$te^{\lambda t}$ の出現)]\label{rei:ode-jordan}
+$\vect{x}' = \mat{1 & 1 \\ -1 & 3}\vect{x}$,
+$\vect{x}(0) = \mat{1 \\ 0}$ を解け。\\
+\textbf{解.}\ この行列は対角化できない(問 \ref{q:nilp-gen}、
+例 \ref{rei:jordan-2x2})。例題 \ref{rei:exp-jordan} で求めた
+\[
+e^{tA} = e^{2t}\mat{1 - t & t \\ -t & 1 + t}
+\]
+に初期値を掛けるだけでよい:
+\[
+\vect{x}(t) = e^{tA}\mat{1 \\ 0} = e^{2t}\mat{1 - t \\ -t}.
+\]
+検算:$t = 0$ で $\mat{1 \\ 0}$。また
+$\vect{x}' = e^{2t}\mat{2(1-t) - 1 \\ -2t - 1} = e^{2t}\mat{1 - 2t \\ -1 - 2t}$
+と
+$A\vect{x} = e^{2t}\mat{(1-t) + (-t) \\ -(1-t) + 3(-t)}
+= e^{2t}\mat{1 - 2t \\ -1 - 2t}$ が一致する。
+固有値 $2 > 0$ で不安定。$te^{2t}$ 型の項が、対角化不能の
+「はみ出し」の痕跡である。
+\end{rei}
+
+\begin{rei}[例題・標準(振動:複素固有値と回転)]\label{rei:ode-rotation}
+$\vect{x}' = \mat{0 & -1 \\ 1 & 0}\vect{x}$,
+$\vect{x}(0) = \mat{1 \\ 0}$ を解け。解の軌道はどんな図形か。\\
+\textbf{解.}\ 係数行列は回転の生成行列 $K$(例題 \ref{rei:exp-rotation})
+だから
+\[
+\vect{x}(t) = e^{tK}\mat{1 \\ 0}
+= \mat{\cos t & -\sin t \\ \sin t & \cos t}\mat{1 \\ 0}
+= \mat{\cos t \\ \sin t}.
+\]
+軌道は\textbf{原点を中心とする単位円}で、周期 $2\pi$ で回り続ける。
+固有値は $\pm i$(固有多項式 $\lambda^2 + 1 = 0$):実部 $0$ なので
+収束も発散もせず、虚部 $\pm 1$ が角速度 $1$ の振動として現れている。
+これは単振動 $y'' = -y$($y = \cos t$)を系に直したものでもある。
+実部が負の複素固有値なら、円がだんだん縮んで\textbf{渦巻き}になる
+(章末問題 \ref{q:ode-ex7})。
+\end{rei}
+
+\begin{rei}[例題・標準($2$ 階方程式を系に直して解く)]\label{rei:ode-2nd}
+$y'' - 3y' + 2y = 0$, $y(0) = 1$, $y'(0) = 0$ を解け。\\
+\textbf{解.}\ $\vect{x} = \mat{y \\ y'}$ とおくと
+\[
+\vect{x}' = \mat{0 & 1 \\ -2 & 3}\vect{x}, \qquad
+\vect{x}(0) = \mat{1 \\ 0}.
+\]
+固有多項式は $\lambda^2 - 3\lambda + 2 = (\lambda - 1)(\lambda - 2)$
+(特性方程式そのもの)。固有値 $1$ の固有ベクトルは
+$\mat{1 \\ 1}$、固有値 $2$ の固有ベクトルは $\mat{1 \\ 2}$
+(下の成分が上の成分の $\lambda$ 倍になる:$\vect{x} = (y, y')$ の
+構造の反映である)。初期値を展開して
+\[
+\mat{1 \\ 0} = 2\mat{1 \\ 1} - \mat{1 \\ 2}
+\]
+($2 - 1 = 1$, $2 - 2 = 0$)。よって
+$\vect{x}(t) = 2e^{t}\mat{1 \\ 1} - e^{2t}\mat{1 \\ 2}$ で、
+第 $1$ 成分を読んで
+\[
+y(t) = 2e^{t} - e^{2t}.
+\]
+検算:$y(0) = 1$, $y'(t) = 2e^t - 2e^{2t}$ より $y'(0) = 0$、
+$y'' - 3y' + 2y = (2 - 6 + 4)e^t + (-4 + 6 - 2)e^{2t} = 0$。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item 初期値問題 $\vect{x}' = A\vect{x}$, $\vect{x}(0) = \vect{x}_0$ の解は
+$\vect{x}(t) = e^{tA}\vect{x}_0$ で\textbf{ただ一つ}
+(定理 \ref{thm:ode-main}。一意性は $e^{-tA}\vect{x}$ が定数になる
+ことから)。
+\item \textbf{固有値法}:$A\vect{v} = \lambda\vect{v}$ なら
+$e^{\lambda t}\vect{v}$ が解。対角化可能なら初期値を固有ベクトルで
+展開して $e^{\lambda t}$ を重ね合わせる。解の部品は
+$e^{\lambda t}$/$t^k e^{\lambda t}$(ジョルダン細胞)/
+$e^{\alpha t}\cos\beta t,\ e^{\alpha t}\sin\beta t$(複素固有値)の三種類。
+\item $2$ 階方程式は $\vect{x} = (y,\ y')$ で $1$ 階の系になり、
+\textbf{特性方程式 $=$ 係数行列の固有多項式}。重解のときの
+$te^{\lambda t}$ はジョルダン細胞の $1$ の産物である。
+\item 安定性は\textbf{固有値の実部}で決まる:すべて負なら漸近安定、
+正が一つでもあれば不安定、虚部は振動。$2$ 次なら
+「$\mathrm{tr}\,A < 0$ かつ $\det A > 0$」が漸近安定の必要十分条件
+(定理 \ref{thm:ode-2x2})。
+\item ただし漸近安定でも途中でノルムが膨らむことがあり
+(反例 \ref{hanrei:ode-transient})、$\mathrm{tr} < 0$ だけでは
+安定といえない(反例 \ref{hanrei:ode-trace})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:ode-ex1}
+$\vect{x}' = \mat{3 & 1 \\ 1 & 3}\vect{x}$,
+$\vect{x}(0) = \mat{0 \\ 2}$ を固有値法で解け(固有値・固有ベクトルは
+例 \ref{rei:ode-eigen} のものを使ってよい)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ode-ex2}
+$\vect{x}' = \mat{-2 & 0 \\ 0 & -5}\vect{x}$,
+$\vect{x}(0) = \mat{1 \\ 3}$ を解き、$t \to \infty$ での挙動を述べよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ode-ex3}
+次の係数行列をもつ系の安定性を、定理 \ref{thm:ode-2x2}
+(と行列式の符号)で判定せよ。
+\[
+(1)\ \mat{-1 & 2 \\ 0 & -3} \qquad
+(2)\ \mat{2 & 0 \\ 1 & -1} \qquad
+(3)\ \mat{0 & 1 \\ -4 & 0}
+\]
+((3) は収束・発散のどちらでもない。解がどうなるかを一言で述べよ。)
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:ode-ex4}
+$y'' - y' - 2y = 0$, $y(0) = 0$, $y'(0) = 3$ を、$1$ 階の系に直して解け。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ode-ex5}
+$\vect{x}' = \mat{1 & 4 \\ 2 & 3}\vect{x}$,
+$\vect{x}(0) = \mat{3 \\ 0}$ を固有値法で解け。
+$t \to \infty$ で解はどの方向に伸びていくか。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ode-ex6}
+$\vect{x}' = \mat{3 & 1 \\ -1 & 5}\vect{x}$,
+$\vect{x}(0) = \mat{1 \\ 0}$ を解け
+(ヒント:$e^{tA}$ は問 \ref{q:exp-ex6} で求めた)。
+解に $te^{4t}$ 型の項が現れることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ode-ex7}
+$\vect{x}' = \mat{-1 & -1 \\ 1 & -1}\vect{x}$,
+$\vect{x}(0) = \mat{1 \\ 0}$ を解け
+(ヒント:係数行列は $-E + K$($K$ は回転の生成行列)と分解でき、
+$-E$ と $K$ は可換)。解の軌道はどんな図形か。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:ode-ex8}
+$y'' - 2y' + y = 0$, $y(0) = 1$, $y'(0) = 0$ について、\\
+　(1) $1$ 階の系に直したときの係数行列 $A = \mat{0 & 1 \\ -1 & 2}$ が
+対角化できないことを確かめよ。\\
+　(2) 一般解が $y = (C_1 + C_2 t)e^{t}$ となることを認めて、
+初期条件から解を求めよ。また、それが方程式を満たすことを検算せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:ode-ex9}
+反例 \ref{hanrei:ode-transient} の系
+$\vect{x}' = \mat{-1 & 10 \\ 0 & -1}\vect{x}$,
+$\vect{x}(0) = \mat{0 \\ 1}$ について、\\
+　(1) $\|\vect{x}(t)\|^2 = e^{-2t}(100t^2 + 1)$ を確かめよ。\\
+　(2) $t = 1$ で $\|\vect{x}(1)\| > 3$ となることと、
+$t \to \infty$ で $\|\vect{x}(t)\| \to 0$ となることを示せ
+($t^2 e^{-2t} \to 0$ は認めてよい)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:ode-ex10}
+鞍点型の系 $\vect{x}' = \mat{1 & 0 \\ 0 & -1}\vect{x}$ を考える。\\
+　(1) 初期値 $\vect{x}_0 = \mat{c_1 \\ c_2}$ に対する解を書け。\\
+　(2) $t \to \infty$ で $\vect{0}$ に収束するのは、初期値がどんな
+集合にあるときか(この集合が本章の深掘りでいう\textbf{安定多様体}である)。\\
+　(3) 解の各成分の積 $x_1(t)\,x_2(t)$ が $t$ によらず一定であることを
+示し、軌道がどんな曲線に沿うか述べよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:ode-ex11}
+$\vect{x}' = A\vect{x}$ の解全体の集合 $V$
+(初期値を固定しない、すべての解の集合)について、\\
+　(1) $V$ が関数のベクトル空間の部分空間になること
+(解の和も、スカラー倍も、また解であること)を示せ。\\
+　(2) 対応 $\vect{x}_0 \mapsto (\text{初期値 } \vect{x}_0 \text{ の解})$
+が $\R^n$ から $V$ への全単射な線形写像であることを示し、
+$\dim V = n$ を結論せよ(定理 \ref{thm:ode-main} を使ってよい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:ode-ex12}
+$A$ が交代行列(${}^t\!A = -A$)のとき、$\vect{x}' = A\vect{x}$ の
+どんな解もノルムが一定($\|\vect{x}(t)\| = \|\vect{x}_0\|$)であることを
+示せ(ヒント:問 \ref{q:exp-ex12} より $e^{tA}$ は直交行列で、
+直交行列はノルムを保つ(第V部))。
+例題 \ref{rei:ode-rotation} の円軌道はこの特別な場合である。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:ode-ex1}}:初期値を固有ベクトルで展開し、
+それぞれに $e^{\lambda t}$ を付ける。
+\item \textbf{問 \ref{q:ode-ex2}}:対角行列なので成分ごとに
+$1$ 変数の方程式。
+\item \textbf{問 \ref{q:ode-ex3}}:$\mathrm{tr}$ と $\det$ を計算する。
+(3) は実部 $0$ の複素固有値。
+\item \textbf{問 \ref{q:ode-ex4}}:$\vect{x} = (y, y')$。
+特性方程式は $\lambda^2 - \lambda - 2 = 0$。一般解に初期条件を代入する。
+\item \textbf{問 \ref{q:ode-ex5}}:固有値 $5, -1$、固有ベクトル
+$(1, 1), (2, -1)$。展開係数は連立方程式で求める。
+\item \textbf{問 \ref{q:ode-ex6}}:$\vect{x}(t) = e^{tA}\vect{x}_0$ に
+代入するだけ。検算は $\vect{x}'$ と $A\vect{x}$ の比較。
+\item \textbf{問 \ref{q:ode-ex7}}:$e^{tA} = e^{-t}e^{tK}$
+(可換なので分解できる)。減衰 $\times$ 回転 $=$ 渦巻き。
+\item \textbf{問 \ref{q:ode-ex8}}:(1) は重解 $1$ と
+幾何的重複度(階数)の確認。(2) 初期条件から $C_1, C_2$ を決める。
+\item \textbf{問 \ref{q:ode-ex9}}:$e^{tA} = e^{-t}(E + 10tN)$。
+ノルムの $2$ 乗は成分の $2$乗和。$e^{-2} \approx 0.135$,
+$\sqrt{101} > 10$ を使う。
+\item \textbf{問 \ref{q:ode-ex10}}:成分ごとに解ける。
+収束条件は $e^{t}$ の係数が $0$ になること。
+(3) は積を計算すると $t$ が消える(双曲線 $x_1 x_2 = c$)。
+\item \textbf{問 \ref{q:ode-ex11}}:(1) 微分の線形性。
+(2) 線形性は $e^{tA}(\vect{u} + \vect{v})$ の分配。全射は
+「どんな解も $e^{tA}\vect{x}_0$ の形」(一意性)、単射は
+$t = 0$ を代入して初期値を読む。
+\item \textbf{問 \ref{q:ode-ex12}}:解は $e^{tA}\vect{x}_0$ で、
+$e^{tA}$ が直交行列。直交行列はノルムを保つのだった。
+\end{itemize}
+}
+
