@@ -560,11 +560,42 @@ $\mathrm{Im}\,f \neq \{0\}$。$\R$ の部分空間は $\{0\}$ と $\R$ しかな
 \chapter{商空間 ― 「違いを無視する」という構成}\label{chap:quotient}
 % =====================================================
 
-\section{部分空間で割る}
+\begin{goal}
+\begin{itemize}
+\item 商空間 $V/W$ の定義(類と代表)を理解し、二つの類が一致する条件
+$\vect{u} + W = \vect{v} + W \iff \vect{u} - \vect{v} \in W$ を使って
+類の一致を判定できるようになる。
+\item 類の演算が\textbf{代表の取り方によらず}定まること
+(well-defined 性)の証明を理解し、「代表に依存する定義」が
+無効であることを反例で説明できるようになる。
+\item $\dim(V/W) = \dim V - \dim W$ を基底の延長によって証明でき、
+商空間の基底を具体的に計算できるようになる。
+\item 連立一次方程式の解集合が「$\mathrm{Ker}\,A$ の類」である
+ことを見抜き、第II部の解の構造定理を商空間の言葉で言い直せるようになる。
+\item \textbf{準同型定理}の主張と証明を理解し、次元定理との関係を
+説明できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 「違い」を無視した世界}
 
 整数を $3$ で割った余りで分類すると、無限にある整数が
 $\{0, 1, 2\}$ の三クラスに「圧縮」され、クラスどうしで
 矛盾なく足し算ができた(合同式)。同じことをベクトル空間で行う。
+
+実は、読者はすでに商空間の実物を見ている。第II部の解の構造定理
+(定理 \ref{thm:structure})によれば、$A\vect{x} = \vect{b}$ の解集合は
+\[
+\vect{x}_0 + (\text{同次方程式 } A\vect{x} = \vect{0} \text{ の解空間})
+\]
+という「部分空間の平行移動」であった。つまり解集合とは、
+\textbf{「差が同次解であるようなベクトルたちをひとまとめにした束}」である。
+また微積分で、$f'$ が同じ関数は定数差を除いて一致した(積分定数 $C$)。
+これも「差が定数であるものをひとまとめにする」勘定である。
+本章は、この「差を無視してまとめた束」たち自身を要素とする
+新しいベクトル空間――商空間――を正式に構成する。
+
+\section{部分空間で割る}
 
 \begin{teigi}[商空間]
 ベクトル空間 $V$ とその部分空間 $W$ に対し、
@@ -583,25 +614,135 @@ c(\vect{v} + W) = c\vect{v} + W
 矛盾なく定まることが要点である)。これを\textbf{商空間}という。
 \end{teigi}
 
+記号を読み解こう。$\vect{v} + W = \{\, \vect{v} + \vect{w} \mid
+\vect{w} \in W \,\}$ は「$\vect{v}$ を $W$ の分だけぼかした集合」であり、
+$\vect{v}$ をその類の\textbf{代表}という。二つの類の一致は
+\[
+\vect{u} + W = \vect{v} + W \iff \vect{u} - \vect{v} \in W
+\]
+で判定できる(差が $W$ に属せば、ぼかすと同じ集合になる)。
+また、同一視の規則 $\sim$ は\textbf{同値関係}になっている:
+$\vect{v} - \vect{v} = \vect{0} \in W$(自分と同一視)、
+$\vect{u} - \vect{v} \in W$ なら $\vect{v} - \vect{u} =
+-(\vect{u} - \vect{v}) \in W$(向きによらない)、そして
+$W$ が和で閉じることから推移律が出る(章末問題 \ref{q:quot-ex10})。
+これらはすべて\textbf{$W$ が部分空間であること}に支えられている。
+部分空間でない集合で割ろうとすると破綻する(反例 \ref{hanrei:quot-notsub})。
+
+定義の「要点」と述べた部分を、きちんと証明しておこう。
+類どうしの和は「代表を選んで足し、その類をとる」ものだが、
+代表の選び方は一通りではない。選び方を変えても答えの類が変わらないこと
+(\textbf{well-defined 性})は、当たり前ではなく、証明すべき事実である。
+
+\begin{teiri}[類の演算は代表の取り方によらない]\label{thm:quot-welldef}
+$\vect{u} + W = \vect{u}' + W$、$\vect{v} + W = \vect{v}' + W$ ならば、
+\[
+(\vect{u} + \vect{v}) + W = (\vect{u}' + \vect{v}') + W, \qquad
+c\vect{u} + W = c\vect{u}' + W.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+仮定より $\vect{u} - \vect{u}' \in W$, $\vect{v} - \vect{v}' \in W$。
+$W$ は部分空間だから和とスカラー倍で閉じており、
+\[
+(\vect{u} + \vect{v}) - (\vect{u}' + \vect{v}')
+= (\vect{u} - \vect{u}') + (\vect{v} - \vect{v}') \in W, \qquad
+c\vect{u} - c\vect{u}' = c(\vect{u} - \vect{u}') \in W.
+\]
+よってどちらも同じ類を定める。ベクトル空間の公理は、代表の計算が
+$V$ の公理を満たすことからそのまま遺伝する(零ベクトルは
+$\vect{0} + W = W$、$\vect{v} + W$ の逆ベクトルは $-\vect{v} + W$)。
+$\blacksquare$
+
 幾何的なイメージ:$V = \R^2$、$W$ を原点を通る直線とすると、
 類 $\vect{v} + W$ は「$W$ に平行な直線」である。商空間 $\R^2/W$ とは、
 \textbf{平行線の一本一本を「一つの点」とみなした世界}であり、
 直線の束は $1$ 個のパラメータで番号付けできるから $1$ 次元になる。
-一般に次が成り立つ。
 
-\begin{teiri}
+\begin{rei}[$\R^2$ を直線で割る]\label{rei:quot-line}
+$V = \R^2$, $W = \langle \mat{1 \\ 1} \rangle$(直線 $y = x$)とする。
+$\mat{2 \\ 3} + W = \mat{0 \\ 1} + W$ である
+(差 $\mat{2 \\ 2} = 2\mat{1 \\ 1} \in W$)。一般に
+$\mat{x \\ y} + W = \mat{0 \\ y - x} + W$ だから、各類は
+「$y$ 切片 $y - x$」というただ一つの数で代表され、$\R^2/W$ は
+$1$ 次元になる($\dim = 2 - 1$)。類の足し算は切片の足し算である。
+\end{rei}
+
+\begin{rei}[連立一次方程式の解集合は一つの類である]\label{rei:quot-sol}
+$A\vect{x} = \vect{b}$ が解 $\vect{x}_0$ をもつとき、解の全体は
+解の構造定理(定理 \ref{thm:structure})より
+$\vect{x}_0 + \mathrm{Ker}\,A$、すなわち
+\textbf{商空間 $\R^n/\mathrm{Ker}\,A$ のただ一つの類}である。
+「特殊解の取り替え」で一般解の見た目が変わっても解集合が同じだったのは、
+\textbf{同じ類の代表を取り替えていただけ}だからである。
+\end{rei}
+
+次元の勘定を一般化しよう。証明の中に「商空間の基底の作り方」が
+含まれている点に注意してほしい。
+
+\begin{teiri}[商空間の次元]\label{thm:quot-dim}
 $V$ が有限次元のとき、$\dim(V/W) = \dim V - \dim W$。
 \end{teiri}
 
+\noindent\textbf{(証明)}\quad
+$W$ の基底 $\vect{w}_1, \dots, \vect{w}_k$ をとり、$V$ の基底
+$\vect{w}_1, \dots, \vect{w}_k, \vect{u}_1, \dots, \vect{u}_m$
+($k + m = \dim V$)に延長する(定理 \ref{thm:dim-extend})。
+\textbf{延長分の類} $\vect{u}_1 + W, \dots, \vect{u}_m + W$ が
+$V/W$ の基底になることを示す。
+
+\textbf{(生成)}\ 任意の $\vect{v} \in V$ を基底で展開して
+$\vect{v} = \sum_i a_i \vect{w}_i + \sum_j b_j \vect{u}_j$ とすると、
+$\sum_i a_i \vect{w}_i \in W$ だから
+\[
+\vect{v} + W = \Bigl(\sum_j b_j \vect{u}_j\Bigr) + W
+= \sum_j b_j (\vect{u}_j + W).
+\]
+$W$ に属する部分は、類をとると\textbf{消える}のである。
+
+\textbf{(線形独立)}\ $\sum_j b_j (\vect{u}_j + W) = W$(零類)とすると、
+$\sum_j b_j \vect{u}_j \in W$ だから、$W$ の基底で
+$\sum_j b_j \vect{u}_j = \sum_i a_i \vect{w}_i$ と書ける。移項すれば
+$V$ の基底 $\vect{w}_1, \dots, \vect{w}_k, \vect{u}_1, \dots, \vect{u}_m$
+の自明でない線形関係になるから、係数はすべて $0$、とくに全部の
+$b_j = 0$。よって基底であり、$\dim(V/W) = m = \dim V - \dim W$。
+$\blacksquare$
+
 \section{準同型定理 ― 次元定理の完成形}
 
-\begin{teiri}[準同型定理]
+\begin{teiri}[準同型定理]\label{thm:quot-hom}
 線形写像 $f : V \to U$ に対して、
 \[
 V/\mathrm{Ker}\,f \;\cong\; \mathrm{Im}\,f.
 \]
 同型写像は $\vect{v} + \mathrm{Ker}\,f \mapsto f(\vect{v})$ で与えられる。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$K = \mathrm{Ker}\,f$ と略記し、
+$\varphi(\vect{v} + K) = f(\vect{v})$ と定める。確かめることは四つある。
+
+\textbf{(well-defined)}\ 代表を取り替えて $\vect{v} + K = \vect{v}' + K$
+とすると $\vect{v} - \vect{v}' \in K$、すなわち
+$f(\vect{v} - \vect{v}') = \vect{0}$ だから
+$f(\vect{v}) = f(\vect{v}')$。値は代表によらない。
+
+\textbf{(線形)}\ 類の演算の定義と $f$ の線形性から
+\[
+\varphi\bigl((\vect{u} + K) + (\vect{v} + K)\bigr)
+= f(\vect{u} + \vect{v}) = f(\vect{u}) + f(\vect{v})
+= \varphi(\vect{u} + K) + \varphi(\vect{v} + K)
+\]
+で、スカラー倍も同様。
+
+\textbf{(全射)}\ $\mathrm{Im}\,f$ の任意の要素は $f(\vect{v})$ の形で、
+これは $\varphi(\vect{v} + K)$ である。
+
+\textbf{(単射)}\ $\varphi(\vect{v} + K) = \vect{0}$ とすると
+$f(\vect{v}) = \vect{0}$、すなわち $\vect{v} \in K$ だから
+$\vect{v} + K = K$(零類)。核が零類だけなので単射である
+(定理 \ref{thm:linmap-inj})。 $\blacksquare$
 
 読み方:$f$ で同じ行き先につぶれるベクトルたち(差が核に属するもの)を
 ひとまとめにすれば、$f$ は\textbf{一対一}になる。
@@ -631,6 +772,291 @@ $\mathrm{Im}\,f$ と同型になる」という形の定理は、ベクトル空
 $\mathrm{Ker}\,f$ を求め、$f$ が全射であることを示し、
 準同型定理の両辺の次元が一致することを確かめよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[部分空間でない集合では「同一視」が破綻する]\label{hanrei:quot-notsub}
+$V = \R^2$ で、部分空間ではない半直線
+$W = \{\, (x, 0) \mid x \ge 0 \,\}$(スカラー倍で閉じていない:
+反例 \ref{ex:halfplane} の親戚)を使って
+「$\vect{u} \sim \vect{v} \iff \vect{u} - \vect{v} \in W$」と
+定めてみる。すると
+\[
+(1, 0) - (0, 0) = (1, 0) \in W \quad\text{だが}\quad
+(0, 0) - (1, 0) = (-1, 0) \notin W.
+\]
+つまり「$(1,0)$ は $(0,0)$ と同一視されるのに、$(0,0)$ は $(1,0)$ と
+同一視されない」という非対称が起き、「同一視」の名に値しない
+(同値関係にならない)。類への分割そのものが成立せず、
+商空間は作れない。\textbf{$W$ が部分空間であること}は飾りではなく、
+構成全体を支える土台である。
+\end{hanrei}
+
+\begin{hanrei}[代表に依存する「定義」は定義にならない]\label{hanrei:quot-illdef}
+$V = \R^2$, $W = \langle \mat{1 \\ 1} \rangle$ の商空間で、
+「類の大きさ」を $N(\vect{v} + W) = \|\vect{v}\|$ と定めたくなった
+としよう。ところが例 \ref{rei:quot-line} のとおり
+$\mat{2 \\ 3} + W = \mat{0 \\ 1} + W$ は同じ類なのに、
+\[
+\left\|\mat{2 \\ 3}\right\| = \sqrt{13} \neq 1 = \left\|\mat{0 \\ 1}\right\|
+\]
+と、代表の選び方で値が変わってしまう。これでは $N$ は
+「類の関数」になっていない。商空間の上で何かを定義するときは、
+定理 \ref{thm:quot-welldef} のような\textbf{代表非依存性の確認}が
+毎回必須である(和とスカラー倍は合格した。$N$ は不合格である)。
+\end{hanrei}
+
+\section{例題}
+
+類の扱いと商空間の計算、準同型定理の使い方を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(類の一致判定)]\label{rei:quot-same}
+$V = \R^2$, $W = \langle \mat{1 \\ 2} \rangle$ とする。次の類は
+一致するか:
+(1) $\mat{3 \\ 7} + W$ と $\mat{1 \\ 3} + W$、
+(2) $\mat{1 \\ 0} + W$ と $\mat{0 \\ 1} + W$。\\
+\textbf{解.}\ 差が $W$ に属するかを見る。
+(1) $\mat{3 \\ 7} - \mat{1 \\ 3} = \mat{2 \\ 4} = 2\mat{1 \\ 2} \in W$
+なので\textbf{一致する}。
+(2) $\mat{1 \\ 0} - \mat{0 \\ 1} = \mat{1 \\ -1}$ が
+$t\mat{1 \\ 2}$ の形になるには $t = 1$ かつ $2t = -1$ が必要で不可能。
+よって\textbf{一致しない}。
+\end{rei}
+
+\begin{rei}[例題・基本(商空間の基底と座標)]\label{rei:quot-basis}
+$V = \R^3$, $W = \langle \mat{1 \\ 1 \\ 1} \rangle$ とする。
+$V/W$ の基底を一組求め、$\mat{2 \\ 3 \\ 5} + W$ をその基底で展開せよ。\\
+\textbf{解.}\ $W$ の基底 $\vect{w}_1 = {}^t(1,1,1)$ を
+$\{\vect{w}_1, \vect{e}_1, \vect{e}_2\}$ と $V$ の基底に延長できる
+(行列に並べると $\det \neq 0$)。定理 \ref{thm:quot-dim} の証明より
+$\{\vect{e}_1 + W,\ \vect{e}_2 + W\}$ が $V/W$ の基底で、
+$\dim(V/W) = 3 - 1 = 2$。展開するには、代表から $W$ 成分を消せばよい:
+\[
+\mat{2 \\ 3 \\ 5} - 5\mat{1 \\ 1 \\ 1} = \mat{-3 \\ -2 \\ 0}
+= -3\vect{e}_1 - 2\vect{e}_2
+\]
+だから $\mat{2 \\ 3 \\ 5} + W = -3(\vect{e}_1 + W) - 2(\vect{e}_2 + W)$。
+検算:$\mat{2 \\ 3 \\ 5} - \mat{-3 \\ -2 \\ 0} = \mat{5 \\ 5 \\ 5} \in W$。
+\end{rei}
+
+\begin{rei}[例題・基本(解集合を類として読む)]\label{rei:quot-eq}
+方程式 $x + y - z = 2$ の解集合を、商空間の言葉で表せ。
+また ${}^t(2, 0, 0)$ と ${}^t(0, 2, 0)$ が同じ類の代表であることを
+確かめよ。\\
+\textbf{解.}\ $A = \mat{1 & 1 & -1}$ とすると
+$\mathrm{Ker}\,A = \{\, {}^t(x, y, z) \mid x + y - z = 0 \,\}$
+($2$ 次元の平面)。解集合は
+\[
+\mat{2 \\ 0 \\ 0} + \mathrm{Ker}\,A
+\]
+という $\R^3/\mathrm{Ker}\,A$ のただ一つの類である。差を計算すると
+${}^t(2, 0, 0) - {}^t(0, 2, 0) = {}^t(2, -2, 0)$ で、
+$2 + (-2) - 0 = 0$ より $\mathrm{Ker}\,A$ に属する。よって
+$2$ つの特殊解は同じ類を定める(見た目の違う一般解は同じ解集合)。
+\end{rei}
+
+\begin{rei}[例題・標準(多項式の商空間)]\label{rei:quot-poly}
+$V = \R[x]_2$、$W = \{\, p \in V \mid p(1) = 0 \,\}$ とする。
+$\dim(V/W)$ を求め、$x^2 + W = 1 + W$ を確かめよ。さらに
+任意の $p$ に対し $p + W = p(1)(1 + W)$ となることを示せ。\\
+\textbf{解.}\ $W$ は $x - 1$ と $x^2 - 1$ で生成される $2$ 次元の
+部分空間である($p(1) = 0$ なる $2$ 次以下の多項式は
+$(x - 1)$ で割り切れ、$p = (ax + b)(x - 1) = a(x^2 - x) + b(x - 1)$ の形)。
+よって $\dim(V/W) = 3 - 2 = 1$。
+$x^2 - 1 \in W$ だから $x^2 + W = 1 + W$。一般に
+$p - p(1) \cdot 1$ は $x = 1$ で値 $p(1) - p(1) = 0$ をとるから
+$W$ に属し、$p + W = p(1)(1 + W)$。
+\textbf{類を決める情報は「$x = 1$ での値」だけ}であり、
+$V/W$ は $1$ 次元になる($W$ で割ると、$p(1)$ 以外の情報が消える)。
+\end{rei}
+
+\begin{rei}[例題・標準(準同型定理の適用)]\label{rei:quot-hom}
+$f : \R^3 \to \R^2$ を $f(x, y, z) = \mat{x + y \\ y + z}$ で定める。
+準同型定理の同型 $\R^3/\mathrm{Ker}\,f \cong \mathrm{Im}\,f$ を
+具体的に確認せよ。\\
+\textbf{解.}\ $x + y = 0$, $y + z = 0$ より
+$\mathrm{Ker}\,f = \langle {}^t(1, -1, 1) \rangle$($1$ 次元)。
+$f(\vect{e}_1) = {}^t(1, 0)$, $f(\vect{e}_3) = {}^t(0, 1)$ が
+$\R^2$ を張るから $f$ は全射で $\mathrm{Im}\,f = \R^2$($2$ 次元)。
+準同型定理より $\R^3/\mathrm{Ker}\,f \cong \R^2$ で、次元は
+$3 - 1 = 2$ と一致する。同型写像は
+$\vect{v} + \mathrm{Ker}\,f \mapsto f(\vect{v})$、すなわち
+「類に、その代表の行き先を対応させる」写像である。たとえば
+${}^t(1, 0, 0) + \mathrm{Ker}\,f$ と ${}^t(2, -1, 1) + \mathrm{Ker}\,f$
+は同じ類(差が核に属する)で、行き先もともに ${}^t(1, 0)$ になる。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:自然な射影)]\label{rei:quot-proj}
+写像 $\pi : V \to V/W$ を $\pi(\vect{v}) = \vect{v} + W$ で定める
+(\textbf{自然な射影})。$\pi$ が線形写像であり、
+$\mathrm{Ker}\,\pi = W$, $\mathrm{Im}\,\pi = V/W$ となることを示せ。
+さらに $\pi$ に次元定理を適用すると何が得られるか。\\
+\textbf{解.}\ 類の演算の定義そのものから
+\[
+\pi(\vect{u} + \vect{v}) = (\vect{u} + \vect{v}) + W
+= (\vect{u} + W) + (\vect{v} + W) = \pi(\vect{u}) + \pi(\vect{v}),
+\]
+$\pi(c\vect{v}) = c\vect{v} + W = c(\vect{v} + W) = c\,\pi(\vect{v})$
+で線形である。$\pi(\vect{v})$ が零類 $W$ になる条件は
+$\vect{v} + W = W \iff \vect{v} \in W$ だから
+$\mathrm{Ker}\,\pi = W$。任意の類 $\vect{v} + W$ は $\pi(\vect{v})$
+だから全射で $\mathrm{Im}\,\pi = V/W$。次元定理
+(定理 \ref{thm:dimension})を適用すると
+\[
+\dim V = \dim \mathrm{Ker}\,\pi + \dim \mathrm{Im}\,\pi
+= \dim W + \dim(V/W)
+\]
+となり、定理 \ref{thm:quot-dim} の\textbf{別証明}が得られる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{商空間} $V/W$:差が $W$ に属するベクトルを同一視した
+「類」たちのベクトル空間。類の一致は
+$\vect{u} + W = \vect{v} + W \iff \vect{u} - \vect{v} \in W$ で判定する。
+\item 類の和・スカラー倍は\textbf{代表の取り方によらない}
+(定理 \ref{thm:quot-welldef})。逆に、代表に依存する量(ノルムなど)は
+商空間上の定義にならない(反例 \ref{hanrei:quot-illdef})。
+$W$ が部分空間でないと同一視自体が破綻する
+(反例 \ref{hanrei:quot-notsub})。
+\item $\dim(V/W) = \dim V - \dim W$(定理 \ref{thm:quot-dim})。
+$W$ の基底を $V$ の基底に延長すると、\textbf{延長分の類}が
+$V/W$ の基底になる($W$ 成分は類をとると消える)。
+\item $A\vect{x} = \vect{b}$ の解集合は
+$\R^n/\mathrm{Ker}\,A$ の\textbf{一つの類}(例 \ref{rei:quot-sol})。
+解の構造定理は商空間の言葉で「解集合 $=$ 類」と要約される。
+\item \textbf{準同型定理}(定理 \ref{thm:quot-hom}):
+$V/\mathrm{Ker}\,f \cong \mathrm{Im}\,f$。つぶれる分(核)で
+割っておけば $f$ は同型になる。次元をとると次元定理が再現される。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:quot-ex1}
+$V = \R^2$, $W = \langle \mat{2 \\ 1} \rangle$ とする。次の類は
+一致するか、判定せよ:
+(1) $\mat{5 \\ 3} + W$ と $\mat{1 \\ 1} + W$、
+(2) $\mat{3 \\ 1} + W$ と $\mat{0 \\ 1} + W$。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quot-ex2}
+$V = \R^3$, $W = \langle \mat{1 \\ 0 \\ 1} \rangle$ とする。
+$\dim(V/W)$ を求めよ。また $\mat{2 \\ 1 \\ 3} + W$ と
+$\mat{1 \\ 1 \\ 2} + W$ が同じ類であることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quot-ex3}
+方程式 $2x + y = 4$ の解集合を「特殊解 $+$ 核」の形に書き、
+これが $\R^2/\mathrm{Ker}\,A$($A = \mat{2 & 1}$)のどの類であるかを
+述べよ。また特殊解 ${}^t(2, 0)$ と ${}^t(0, 4)$ が同じ類を定めることを
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:quot-ex4}
+$V = \R[x]_1$, $W = \{\, p \mid p(0) = 0 \,\}$ とする。
+$W$ の基底と $\dim(V/W)$ を求め、$(x + 2) + W = 2 + W$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quot-ex5}
+$V = \R^3$, $W = \langle \mat{1 \\ 1 \\ 0}, \mat{0 \\ 1 \\ 1} \rangle$
+とする。$\dim(V/W)$ を求め、$\{\vect{e}_1 + W\}$ が $V/W$ の基底に
+なることを認めた上で、$\mat{3 \\ 2 \\ 1} + W$ を
+$c(\vect{e}_1 + W)$ の形に表せ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quot-ex6}
+$V = \R^2$, $W = \langle \mat{1 \\ 1} \rangle$ とする。
+次の対応のうち、$V/W$ 上の写像として well-defined なものはどちらか。
+well-defined なものは線形性も確かめ、そうでないものは代表を取り替えて
+値が変わる実例を示せ。
+\[
+F(\vect{v} + W) = x - y, \qquad G(\vect{v} + W) = x + y
+\qquad \left(\vect{v} = \mat{x \\ y}\right).
+\]
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quot-ex7}
+$f : \R^2 \to \R$ を $f(x, y) = x - 2y$ で定める。
+$\mathrm{Ker}\,f$ と $\mathrm{Im}\,f$ を求め、準同型定理
+$\R^2/\mathrm{Ker}\,f \cong \mathrm{Im}\,f$ の両辺の次元が一致することを
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:quot-ex8}
+$V$ を $2 \times 2$ 実行列の空間($\dim V = 4$)、$W$ を対称行列全体
+($\dim W = 3$。問 \ref{q:vs-ex9})とする。
+$\dim(V/W)$ を求めよ。また $K = \mat{0 & 1 \\ -1 & 0}$ として、
+$A = \mat{1 & 2 \\ 0 & 1}$ の類が $A + W = K + W$ を満たすことを
+確かめよ(ヒント:$A - K$ が対称かどうかを見る)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:quot-ex9}
+微分写像 $D : \R[x]_2 \to \R[x]_2$($D(p) = p'$)について
+$\mathrm{Ker}\,D$ と $\mathrm{Im}\,D$ を求め、準同型定理から
+\[
+\R[x]_2/\{\text{定数}\} \;\cong\; \R[x]_1
+\]
+を導け。この同型が「原始関数は積分定数 $C$ の差を除いて一意」という
+微積分の事実とどう対応するかを説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:quot-ex10}
+部分空間 $W$ による同一視
+$\vect{u} \sim \vect{v} \iff \vect{u} - \vect{v} \in W$ が
+同値関係であること、すなわち
+(i) $\vect{v} \sim \vect{v}$、
+(ii) $\vect{u} \sim \vect{v}$ ならば $\vect{v} \sim \vect{u}$、
+(iii) $\vect{u} \sim \vect{v}$ かつ $\vect{v} \sim \vect{w}$ ならば
+$\vect{u} \sim \vect{w}$、
+を $W$ が部分空間であることだけから示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:quot-ex11}
+線形写像 $f : V \to U$ と部分空間 $W \subseteq \mathrm{Ker}\,f$ に対し、
+\[
+\bar{f}(\vect{v} + W) = f(\vect{v})
+\]
+が well-defined な線形写像 $\bar{f} : V/W \to U$ を定めることを示せ
+(準同型定理の証明の前半の一般化。$W = \mathrm{Ker}\,f$ のときに
+単射性まで加わったものが準同型定理である)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:quot-ex1}}:差をとって $W$ の生成元の定数倍に
+なるかを見る(例題 \ref{rei:quot-same})。
+\item \textbf{問 \ref{q:quot-ex2}}:次元は定理 \ref{thm:quot-dim}。
+一致判定は差が生成元の定数倍か。
+\item \textbf{問 \ref{q:quot-ex3}}:$\mathrm{Ker}\,A$ は同次方程式
+$2x + y = 0$ の解空間。特殊解の差が核に属するかを確かめる。
+\item \textbf{問 \ref{q:quot-ex4}}:$p(0) = 0$ を満たす $1$ 次以下の
+多項式は $bx$ の形。$(x + 2) - 2 = x \in W$。
+\item \textbf{問 \ref{q:quot-ex5}}:例題 \ref{rei:quot-basis} と同様に
+$\mat{3 \\ 2 \\ 1} - c\vect{e}_1 \in W$ となる $c$ を、$W$ の生成元の
+線形結合の条件から求める。
+\item \textbf{問 \ref{q:quot-ex6}}:代表の差 $t\,{}^t(1,1)$ を
+加えたときに値が変わらないかを調べる(反例 \ref{hanrei:quot-illdef} と
+同じ検査)。
+\item \textbf{問 \ref{q:quot-ex7}}:核は直線。$f \neq o$ だから像は
+$\R$ 全体(問 \ref{q:dual-ex11} と同じ論法)。
+\item \textbf{問 \ref{q:quot-ex8}}:$\dim(V/W) = 4 - 3$。
+$A - K$ を計算して対称性を見る。
+\item \textbf{問 \ref{q:quot-ex9}}:$p' = 0$ となるのは定数だけ。
+$1, x, x^2$ の微分から $\mathrm{Im}\,D$ を読む。
+\item \textbf{問 \ref{q:quot-ex10}}:$\vect{0} \in W$、
+$\vect{w} \in W \Rightarrow -\vect{w} \in W$、和で閉じること、の三つを
+それぞれ使う。
+\item \textbf{問 \ref{q:quot-ex11}}:代表の差が $W \subseteq
+\mathrm{Ker}\,f$ に属することから値の一致を導く。線形性は準同型定理の
+証明と同じ計算。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{テンソル積 ― 空間の「掛け算」}\label{chap:tensor}

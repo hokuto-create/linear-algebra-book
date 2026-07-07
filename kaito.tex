@@ -8341,6 +8341,128 @@ $\mathrm{Im}\,f = \R^2$(次元 $2$)。準同型定理の両辺は
 $\dim(\R^3/\mathrm{Ker}\,f) = 3 - 1 = 2 = \dim \mathrm{Im}\,f$ で一致する。
 
 \bigskip
+\noindent\textbf{問 \ref{q:quot-ex1}}\quad
+(1) 差は $\mat{5 \\ 3} - \mat{1 \\ 1} = \mat{4 \\ 2} = 2\mat{2 \\ 1} \in W$
+なので\textbf{一致する}。
+(2) 差は $\mat{3 \\ 1} - \mat{0 \\ 1} = \mat{3 \\ 0}$。
+$t\mat{2 \\ 1}$ の形なら $t = \dfrac{3}{2}$ かつ $t = 0$ が必要で不可能。
+よって\textbf{一致しない}。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex2}}\quad
+$\dim(V/W) = \dim V - \dim W = 3 - 1 = 2$。差は
+\[
+\mat{2 \\ 1 \\ 3} - \mat{1 \\ 1 \\ 2} = \mat{1 \\ 0 \\ 1} \in W
+\]
+なので同じ類である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex3}}\quad
+$\mathrm{Ker}\,A$ は $2x + y = 0$ の解空間
+$\langle \mat{1 \\ -2} \rangle$。特殊解 ${}^t(2, 0)$ を使えば、解集合は
+\[
+\mat{2 \\ 0} + \mathrm{Ker}\,A
+\]
+という $\R^2/\mathrm{Ker}\,A$ の一つの類である。
+${}^t(2, 0) - {}^t(0, 4) = {}^t(2, -4) = 2\,{}^t(1, -2) \in \mathrm{Ker}\,A$
+だから、二つの特殊解は同じ類を定める。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex4}}\quad
+$p(0) = 0$ を満たす $1$ 次以下の多項式は $bx$ の形なので
+$W = \langle x \rangle$(基底 $\{x\}$、次元 $1$)。よって
+$\dim(V/W) = 2 - 1 = 1$。また $(x + 2) - 2 = x \in W$ より
+$(x + 2) + W = 2 + W$。
+(一般に $p + W = p(0)(1 + W)$:類を決めるのは定数項だけである。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex5}}\quad
+$\dim(V/W) = 3 - 2 = 1$。
+$\mat{3 \\ 2 \\ 1} - c\vect{e}_1 = a\mat{1 \\ 1 \\ 0} + b\mat{0 \\ 1 \\ 1}$
+とすると、第 $3$ 成分から $b = 1$、第 $2$ 成分から $a + b = 2$ より
+$a = 1$、第 $1$ 成分から $a = 3 - c$ より $c = 2$。よって
+\[
+\mat{3 \\ 2 \\ 1} + W = 2(\vect{e}_1 + W).
+\]
+検算:$\mat{3 \\ 2 \\ 1} - \mat{2 \\ 0 \\ 0} = \mat{1 \\ 2 \\ 1}
+= \mat{1 \\ 1 \\ 0} + \mat{0 \\ 1 \\ 1} \in W$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex6}}\quad
+代表に $t\,{}^t(1, 1)$ を加えて値の変化を見る。
+$F$:$(x + t) - (y + t) = x - y$ で変わらないから well-defined。
+線形性は
+\[
+F\bigl((\vect{u} + W) + (\vect{v} + W)\bigr)
+= (x_1 + x_2) - (y_1 + y_2) = F(\vect{u} + W) + F(\vect{v} + W)
+\]
+とスカラー倍の同様の計算で確かめられる。
+$G$:$(x + t) + (y + t) = x + y + 2t$ で値が変わる。実例として
+$\mat{1 \\ 0} + W = \mat{0 \\ -1} + W$(差 ${}^t(1,1) \in W$)なのに
+$G$ の値は $1$ と $-1$ で異なる。よって well-defined でない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex7}}\quad
+$x - 2y = 0$ より $\mathrm{Ker}\,f = \langle \mat{2 \\ 1} \rangle$
+(次元 $1$)。$f(1, 0) = 1 \neq 0$ だから $\mathrm{Im}\,f = \R$
+(次元 $1$)。準同型定理の両辺の次元は
+$\dim(\R^2/\mathrm{Ker}\,f) = 2 - 1 = 1 = \dim \mathrm{Im}\,f$ で一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex8}}\quad
+$\dim(V/W) = 4 - 3 = 1$。差を計算すると
+\[
+A - K = \mat{1 & 2 \\ 0 & 1} - \mat{0 & 1 \\ -1 & 0}
+= \mat{1 & 1 \\ 1 & 1}
+\]
+は対称行列、すなわち $A - K \in W$。よって $A + W = K + W$ である。
+(任意の行列は対称部分 $+$ 交代部分に分かれるから、類を決めるのは
+交代部分だけであり、$V/W$ は $\{K + W\}$ を基底とする $1$ 次元になる。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex9}}\quad
+$p' = 0$ となる $2$ 次以下の多項式は定数だけなので
+$\mathrm{Ker}\,D = \{\text{定数}\}$(次元 $1$)。
+$D(a + bx + cx^2) = b + 2cx$ で $b, 2c$ は任意の実数を動くから
+$\mathrm{Im}\,D = \R[x]_1$(次元 $2$)。準同型定理より
+\[
+\R[x]_2/\{\text{定数}\} \;\cong\; \R[x]_1,
+\qquad 3 - 1 = 2 \text{ で次元も一致}.
+\]
+対応:$q \in \R[x]_1$ の原始関数の全体($D$ の逆像)は、一つの特殊解
+$p_0$ に対して $p_0 + \{\text{定数}\}$ という\textbf{一つの類}である。
+「原始関数は積分定数 $C$ の差を除いて一意」とは、
+「原始関数の全体が商空間 $\R[x]_2/\{\text{定数}\}$ のただ一つの類を
+なす」ことの言い換えであり、$C$ は類の中で代表を動かす自由度である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex10}}\quad
+(i) $W$ は部分空間だから $\vect{0} \in W$ であり、
+$\vect{v} - \vect{v} = \vect{0} \in W$。よって $\vect{v} \sim \vect{v}$。
+(ii) $\vect{u} - \vect{v} \in W$ なら、スカラー倍で閉じることから
+$(-1)(\vect{u} - \vect{v}) = \vect{v} - \vect{u} \in W$。よって
+$\vect{v} \sim \vect{u}$。
+(iii) $\vect{u} - \vect{v} \in W$ かつ $\vect{v} - \vect{w} \in W$ なら、
+和で閉じることから
+$(\vect{u} - \vect{v}) + (\vect{v} - \vect{w}) = \vect{u} - \vect{w} \in W$。
+よって $\vect{u} \sim \vect{w}$。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex11}}\quad
+\textbf{well-defined 性}:$\vect{v} + W = \vect{v}' + W$ とすると
+$\vect{v} - \vect{v}' \in W \subseteq \mathrm{Ker}\,f$ だから
+$f(\vect{v}) - f(\vect{v}') = f(\vect{v} - \vect{v}') = \vect{0}$、
+すなわち $f(\vect{v}) = f(\vect{v}')$。値は代表の取り方によらない。
+\textbf{線形性}:類の演算の定義と $f$ の線形性から
+\[
+\bar{f}\bigl((\vect{u} + W) + (\vect{v} + W)\bigr)
+= f(\vect{u} + \vect{v}) = f(\vect{u}) + f(\vect{v})
+= \bar{f}(\vect{u} + W) + \bar{f}(\vect{v} + W),
+\]
+$\bar{f}\bigl(c(\vect{v} + W)\bigr) = f(c\vect{v}) = c f(\vect{v})
+= c\,\bar{f}(\vect{v} + W)$。 $\blacksquare$
+
+\bigskip
 \noindent\textbf{問 \ref{q:tensor}}\quad
 $\vect{u} = \mat{a \\ b}$, $\vect{v} = \mat{c \\ d}$ として
 $\vect{u} \otimes \vect{v}$ の係数を比較すると
