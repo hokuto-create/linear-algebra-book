@@ -7813,8 +7813,177 @@ $\vect{u}_2 = A\vect{v}_2/1 = \mat{0 \\ 1}$。よって
 \[
 A = \mat{1 & 0 \\ 0 & 1}\mat{2 & 0 \\ 0 & 1}\mat{0 & 1 \\ 1 & 0}.
 \]
-($最後の行列は {}^tV$。「軸を入れ替えてから、各軸を $2$ 倍・$1$ 倍する」
+(最後の行列は ${}^tV$。「軸を入れ替えてから、各軸を $2$ 倍・$1$ 倍する」
 変換だと読める。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex1}}\quad
+${}^t\!AA = \mat{9 & 0 \\ 0 & 4}$ はすでに対角で、固有値は $9, 4$。
+大きい順に $\vect{v}_1 = \vect{e}_1$, $\vect{v}_2 = \vect{e}_2$($V = E$)、
+$\sigma_1 = 3$, $\sigma_2 = 2$。
+$\vect{u}_1 = A\vect{e}_1/3 = {}^t(1, 0, 0)$,
+$\vect{u}_2 = A\vect{e}_2/2 = {}^t(0, 0, 1)$、
+残りは $\vect{u}_3 = {}^t(0, 1, 0)$。よって
+\[
+A = \mat{1 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 0}
+\mat{3 & 0 \\ 0 & 2 \\ 0 & 0} E.
+\]
+(検算:$U\Sigma$ の列は $3\vect{u}_1 = {}^t(3,0,0)$,
+$2\vect{u}_2 = {}^t(0,0,2)$ で $A$ の列と一致。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex2}}\quad
+${}^t\!AA = \mat{4 & 0 \\ 0 & 9}$ の固有値は $9, 4$。大きい順に
+$\vect{v}_1 = \vect{e}_2$, $\vect{v}_2 = \vect{e}_1$、
+$\sigma_1 = 3$, $\sigma_2 = 2$。
+$\vect{u}_1 = A\vect{e}_2/3 = \vect{e}_1$,
+$\vect{u}_2 = A\vect{e}_1/2 = \vect{e}_2$。よって
+\[
+A = E\mat{3 & 0 \\ 0 & 2}\mat{0 & 1 \\ 1 & 0}.
+\]
+(問 \ref{q:svd} と同じく「軸の入れ替え $+$ 伸縮」である。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex3}}\quad
+${}^t\!AA = \mat{5 & 10 \\ 10 & 20}$ の固有値は $25, 0$(階数 $1$)。
+$\sigma_1 = 5$,
+$\vect{v}_1 = \dfrac{1}{\sqrt{5}}\mat{1 \\ 2}$,
+$\vect{v}_2 = \dfrac{1}{\sqrt{5}}\mat{-2 \\ 1}$。
+$\vect{u}_1 = \dfrac{A\vect{v}_1}{5}
+= \dfrac{1}{5\sqrt{5}}\mat{10 \\ 5} = \dfrac{1}{\sqrt{5}}\mat{2 \\ 1}$、
+直交する $\vect{u}_2 = \dfrac{1}{\sqrt{5}}\mat{-1 \\ 2}$ を補って
+\[
+U = \frac{1}{\sqrt{5}}\mat{2 & -1 \\ 1 & 2}, \quad
+\Sigma = \mat{5 & 0 \\ 0 & 0}, \quad
+V = \frac{1}{\sqrt{5}}\mat{1 & -2 \\ 2 & 1}.
+\]
+検算:$\sigma_1\vect{u}_1{}^t\vect{v}_1 = 5 \cdot \dfrac{1}{5}
+\mat{2 & 4 \\ 1 & 2} = A$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex4}}\quad
+$A$ は対称で固有値 $4, 2$(ともに正)だから、直交対角化が
+そのまま SVD になる:
+\[
+A = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}\mat{4 & 0 \\ 0 & 2}
+\cdot\frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}
+\qquad (U = V,\ \sigma_1 = 4,\ \sigma_2 = 2).
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex5}}\quad
+${}^t\!AA = \mat{3 & 3 \\ 3 & 3}$ の固有値は $6, 0$ だから
+$\sigma_1 = \sqrt{6}$、
+$\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$。
+$A\vect{v}_1 = \dfrac{2}{\sqrt{2}}{}^t(1, 1, 1) = \sqrt{2}\,{}^t(1,1,1)$ より
+$\vect{u}_1 = \dfrac{\sqrt{2}}{\sqrt{6}}\mat{1 \\ 1 \\ 1}
+= \dfrac{1}{\sqrt{3}}\mat{1 \\ 1 \\ 1}$。このとき
+\[
+\sigma_1\vect{u}_1{}^t\vect{v}_1
+= \sqrt{6}\cdot\frac{1}{\sqrt{3}}\cdot\frac{1}{\sqrt{2}}
+\mat{1 \\ 1 \\ 1}\mat{1 & 1}
+= 1 \cdot \mat{1 & 1 \\ 1 & 1 \\ 1 & 1} = A.
+\]
+階数 $1$ の行列は「特異値 $1$ 個 $\times$ 外積 $1$ 個」で書き切れる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex6}}\quad
+${}^t\!AA = \mat{2 & 1 \\ 1 & 1}$ の固有多項式は
+$\lambda^2 - 3\lambda + 1 = 0$、固有値は $\dfrac{3 \pm \sqrt{5}}{2}$。
+$\left(\dfrac{1 + \sqrt{5}}{2}\right)^2 = \dfrac{6 + 2\sqrt{5}}{4}
+= \dfrac{3 + \sqrt{5}}{2}$ に注意して
+\[
+\sigma_1 = \frac{1 + \sqrt{5}}{2}, \qquad \sigma_2 = \frac{\sqrt{5} - 1}{2},
+\qquad
+\sigma_1\sigma_2 = \frac{5 - 1}{4} = 1 = |\det A|.
+\]
+固有値 $1$(重解)は「向きの変わらない方向 $\vect{e}_2$
+での伸縮率」しか測っていない。この行列はせん断で、
+斜め方向のベクトルを最大 $\sigma_1 \approx 1.618$ 倍まで伸ばす
+――その情報は特異値にしか現れない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex7}}\quad
+${}^t\!AA = \mat{1 & 1 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 4}$ の固有値は
+$4, 2, 0$。大きい順に
+\[
+\vect{v}_1 = \mat{0 \\ 0 \\ 1}, \quad
+\vect{v}_2 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \quad
+\vect{v}_3 = \frac{1}{\sqrt{2}}\mat{1 \\ -1 \\ 0}, \qquad
+\sigma_1 = 2,\ \sigma_2 = \sqrt{2}.
+\]
+$\vect{u}_1 = A\vect{v}_1/2 = \mat{0 \\ 1}$,
+$\vect{u}_2 = A\vect{v}_2/\sqrt{2}
+= \dfrac{1}{\sqrt{2}}\cdot\dfrac{1}{\sqrt{2}}\mat{2 \\ 0} = \mat{1 \\ 0}$。
+よって
+\[
+A = \mat{0 & 1 \\ 1 & 0}\mat{2 & 0 & 0 \\ 0 & \sqrt{2} & 0}\,{}^tV.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex8}}\quad
+　(1) 問 \ref{q:svd-ex4} より $\sigma_1 = 4$ だから $\|A\| = 4$。
+達成するのは $\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$
+(実際 $A\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{4 \\ 4}$ のノルムは $4$)。\\
+　(2) $A\vect{e}_1 = \mat{3 \\ 1}$ で
+$\|A\vect{e}_1\| = \sqrt{10} \approx 3.16 \le 4$。\\
+　(3) 展開式 $\|A\vect{x}\|^2 = 16c_1^2 + 4c_2^2 \ge 4(c_1^2 + c_2^2)$
+より、単位ベクトルでの最小値は $\sigma_2 = 2$
+($\vect{x} = \vect{v}_2$ で達成)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex9}}\quad
+積の行列式より $\det A = \det U \cdot \det\Sigma \cdot \det{}^tV$。
+直交行列では $(\det U)^2 = \det({}^t\!UU) = 1$ だから
+$\det U = \pm 1$、$\det {}^tV = \det V = \pm 1$。
+$\det\Sigma = \sigma_1\cdots\sigma_n$ なので、絶対値をとって
+$|\det A| = \sigma_1\cdots\sigma_n$。
+反例 \ref{hanrei:svd-eigen} の行列では
+$\sigma_1\sigma_2 = \dfrac{(1 + \sqrt{5})(\sqrt{5} - 1)}{4} = 1$ で、
+確かに $|\det A| = 1$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex10}}\quad
+　(1) ${}^tQQ = E$ の固有値はすべて $1$ だから、特異値は
+$\sqrt{1} = 1$ ばかりである。\\
+　(2) 特異値がすべて $1$ なら $\Sigma = E$ で
+$A = U E\,{}^tV = U{}^tV$。直交行列の積は直交行列
+(${}^t(U{}^tV)(U{}^tV) = V{}^tUU{}^tV = E$)だから $A$ は直交行列。\\
+　(3) ${}^t(cA)(cA) = c^2\,{}^t\!AA$ の固有値は $c^2\lambda_i$ だから、
+特異値は $\sqrt{c^2\lambda_i} = c\sigma_i$($c > 0$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex11}}\quad
+${}^tV V = E$ に注意して
+\[
+A\,{}^t\!A = (U\Sigma{}^tV)(V\,{}^t\Sigma\,{}^tU)
+= U(\Sigma\,{}^t\Sigma)\,{}^tU.
+\]
+$\Sigma\,{}^t\Sigma$ は $m$ 次の対角行列で、対角成分は
+$\sigma_1^2, \dots, \sigma_r^2$ と $0$($m - r$ 個)。
+よって $A\,{}^t\!A$ の固有値は $\sigma_i^2$ と $0$ たちである。
+一方 ${}^t\!AA = V({}^t\Sigma\,\Sigma){}^tV$ の固有値は
+$\sigma_i^2$ と $0$($n - r$ 個)。零でない固有値は
+どちらも $\sigma_1^2, \dots, \sigma_r^2$ で一致するから、
+特異値はどちらの行列から作っても同じである
+($0$ の個数、すなわち行列のサイズだけが違う)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex12}}\quad
+$A$ の列を $\vect{a}_1, \dots, \vect{a}_n$ とすると、
+${}^t\!A\vect{x}$ の第 $i$ 成分は $\langle \vect{a}_i, \vect{x} \rangle$
+である。よって
+\[
+{}^t\!A\vect{x} = \vect{0}
+\iff \text{すべての } i \text{ で } \langle \vect{a}_i, \vect{x} \rangle = 0
+\iff \vect{x} \perp \langle \vect{a}_1, \dots, \vect{a}_n \rangle
+= \mathrm{Im}\,A
+\]
+(生成系のすべてと直交すれば、その線形結合のすべてと直交する)。
+すなわち $\mathrm{Ker}\,{}^t\!A = (\mathrm{Im}\,A)^{\perp}$。
+次元は、$\dim W + \dim W^{\perp} = m$(第V部、問 \ref{q:gs-ex10} の
+一般化)に $W = \mathrm{Im}\,A$($\dim = r$)を当てはめて
+$\dim(\mathrm{Im}\,A)^{\perp} = m - r$ である。
 
 \bigskip
 \noindent\textbf{問 \ref{q:pinv}}\quad
