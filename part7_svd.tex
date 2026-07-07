@@ -1613,6 +1613,33 @@ $\langle \vect{a}_i, \vect{x} \rangle$($\vect{a}_i$ は $A$ の第 $i$ 列)。
 \chapter{低ランク近似と擬似逆行列}\label{chap:pinv}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item SVD の\textbf{和形式} $A = \sum_i \sigma_i\vect{u}_i{}^t\vect{v}_i$ を
+理解し、上位 $k$ 項で打ち切った $A_k$ が「階数 $k$ 以下で最良の近似」
+であること(\textbf{エッカート・ヤングの定理})を、証明つきで理解する。
+\item \textbf{擬似逆行列} $A^{+} = V\Sigma^{+}{}^tU$ を定義から計算でき、
+$\vect{x}^* = A^{+}\vect{b}$ が「ノルム最小の最小二乗解」である
+ことの証明を理解する。
+\item 「解が一意・無数・なし」の三つの場合が、$A^{+}$ によって
+一つの公式に統一されるさまを、具体例で確かめられるようになる。
+\item $AA^{+}$, $A^{+}A$ が正射影行列になることなど、
+$A^{+}$ の基本性質を使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 分解を「使う」:削る、そして解く}
+
+前章で、どんな行列も $A = U\Sigma\,{}^tV$ と分解できることを証明した。
+最終章となる本章は、この分解を\textbf{使う}章である。使い道は二つ。
+一つは\textbf{削る}こと:特異値の小さい部品を捨てて、
+巨大な行列を少ないデータで近似する(データ圧縮・次元削減)。
+もう一つは\textbf{解く}こと:第I部以来くり返し向き合ってきた
+$A\vect{x} = \vect{b}$ に、解が一意でも・無数でも・存在しなくても通用する
+「ただ一つの公式の答え」を与える(擬似逆行列)。
+どちらも、特異値分解が $A$ の情報を\textbf{重要度順に}
+($\sigma_1 \ge \sigma_2 \ge \cdots$)並べてくれることの恩恵である。
+
 \section{低ランク近似 ― データ圧縮の数学}
 
 SVD は和の形にも書ける(スペクトル分解の類似):
@@ -1620,16 +1647,89 @@ SVD は和の形にも書ける(スペクトル分解の類似):
 A = \sigma_1 \vect{u}_1{}^t\vect{v}_1 + \sigma_2 \vect{u}_2{}^t\vect{v}_2
 + \cdots + \sigma_r \vect{u}_r{}^t\vect{v}_r.
 \]
+実際、右辺を任意の $\vect{v}_j$ に施すと、${}^t\vect{v}_i\vect{v}_j$ は
+$i = j$ のとき $1$、それ以外は $0$ だから、結果は
+$\sigma_j\vect{u}_j$($j \le r$)または $\vect{0}$($j > r$)となり、
+$A\vect{v}_j$ と一致する。基底での行き先がすべて一致するから
+両辺は等しい(第III部:線形写像は基底の行き先で決まる)。
+
 各項 $\vect{u}_i{}^t\vect{v}_i$ は階数 $1$ の行列であり、
 $A$ は「階数 $1$ の部品 $r$ 個の、重み $\sigma_i$ 付きの重ね合わせ」である。
 特異値は大きい順に並んでいるから、\textbf{上位 $k$ 項で打ち切れば、
-$A$ のよい近似が得られる}はずである。実際、次が成り立つ。
+$A$ のよい近似が得られる}はずである。「良さ」を前章の作用素ノルム
+(定義 \ref{def:svd-norm})で測ると、これが\textbf{最良}であることまで
+証明できる。
 
-\begin{teiri}[エッカート・ヤングの定理]
-上位 $k$ 項の和 $A_k = \sigma_1\vect{u}_1{}^t\vect{v}_1 + \cdots +
-\sigma_k\vect{u}_k{}^t\vect{v}_k$ は、
-\textbf{階数 $k$ 以下のすべての行列の中で $A$ に最も近い}。
+\begin{teiri}[エッカート・ヤングの定理]\label{thm:pinv-eckart}
+$A$ の上位 $k$ 項の和($k < r$)
+\[
+A_k = \sigma_1\vect{u}_1{}^t\vect{v}_1 + \cdots +
+\sigma_k\vect{u}_k{}^t\vect{v}_k
+\]
+は、階数 $k$ 以下のすべての行列の中で $A$ に最も近い。すなわち、
+階数 $k$ 以下の任意の $m \times n$ 行列 $B$ に対して
+\[
+\|A - A_k\| = \sigma_{k+1} \le \|A - B\|.
+\]
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{(誤差の値)}\ 差をとると
+\[
+A - A_k = \sigma_{k+1}\vect{u}_{k+1}{}^t\vect{v}_{k+1} + \cdots
++ \sigma_r\vect{u}_r{}^t\vect{v}_r
+\]
+で、これは「特異値 $\sigma_{k+1} \ge \cdots \ge \sigma_r$ をもつ行列の
+和形式」そのものである。よって定理 \ref{thm:svd-norm}(作用素ノルム
+$=$ 最大特異値)より $\|A - A_k\| = \sigma_{k+1}$。
+
+\textbf{(これより良くはできない)}\ $B$ を階数 $k$ 以下の任意の行列と
+する。次元定理(定理 \ref{thm:dimension})より
+$\dim \mathrm{Ker}\,B = n - \mathrm{rank}\,B \ge n - k$。
+一方 $W' = \langle \vect{v}_1, \dots, \vect{v}_{k+1} \rangle$ は
+$k + 1$ 次元である。$\mathrm{Ker}\,B$ の基底($n - k$ 本以上)と
+$W'$ の基底($k + 1$ 本)を合わせると $n + 1$ 本以上の
+$\R^n$ のベクトルになるから線形従属(第II部)であり、自明でない関係式
+\[
+\underbrace{a_1\vect{p}_1 + \cdots}_{\mathrm{Ker}\,B \text{ の基底の結合}}
++ \underbrace{b_1\vect{q}_1 + \cdots}_{W' \text{ の基底の結合}} = \vect{0}
+\]
+が存在する。$\vect{x} = a_1\vect{p}_1 + \cdots = -(b_1\vect{q}_1 + \cdots)$
+とおくと、もし $\vect{x} = \vect{0}$ なら各基底の線形独立性から
+係数がすべて $0$ となり矛盾するので、$\vect{x} \neq \vect{0}$。
+この $\vect{x}$ は $\mathrm{Ker}\,B$ と $W'$ の\textbf{両方}に属する。
+正規化して $\|\vect{x}\| = 1$ としてよい。
+$\vect{x} \in W'$ を $\vect{x} = c_1\vect{v}_1 + \cdots +
+c_{k+1}\vect{v}_{k+1}$($c_1^2 + \cdots + c_{k+1}^2 = 1$)と展開すると、
+$B\vect{x} = \vect{0}$ だから
+\[
+\|(A - B)\vect{x}\|^2 = \|A\vect{x}\|^2
+= \sigma_1^2 c_1^2 + \cdots + \sigma_{k+1}^2 c_{k+1}^2
+\ \ge\ \sigma_{k+1}^2 (c_1^2 + \cdots + c_{k+1}^2) = \sigma_{k+1}^2
+\]
+(2 番目の等号は定理 \ref{thm:svd-norm} の証明と同じ展開)。
+作用素ノルムは「単位ベクトルの行き先のノルムの最大値」だから
+$\|A - B\| \ge \|(A - B)\vect{x}\| \ge \sigma_{k+1}$。 $\blacksquare$
+
+\begin{rei}[階数 $1$ 近似]\label{rei:pinv-rank1approx}
+$A = \mat{3 & 1 \\ 1 & 3}$(問 \ref{q:svd-ex4}:半正定値対称なので
+特異値は固有値 $4, 2$ に一致し、
+$\vect{u}_1 = \vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1, 1)$)の
+最良の階数 $1$ 近似は
+\[
+A_1 = 4 \cdot \frac{1}{\sqrt{2}}\mat{1 \\ 1} \cdot
+\frac{1}{\sqrt{2}}\mat{1 & 1} = \mat{2 & 2 \\ 2 & 2},
+\qquad
+A - A_1 = \mat{1 & -1 \\ -1 & 1}
+\]
+で、誤差は $\|A - A_1\| = \sigma_2 = 2$
+($A - A_1 = 2 \cdot \frac{1}{2}\mat{1 & -1 \\ -1 & 1}$ は
+特異値 $2$ の階数 $1$ 行列)。
+たとえば「左上の $2 \times 2$ だけ残す」ような素朴な階数 $1$ 近似
+$B = \mat{3 & 1 \\ 0 & 0}$ では
+$A - B = \mat{0 & 0 \\ 1 & 3}$ の特異値が $\sqrt{10}$ となり、
+誤差 $\sqrt{10} \approx 3.16 > 2$。定理のとおり $A_1$ には勝てない。
+\end{rei}
 
 \begin{itembox}[l]{深掘り:画像圧縮・主成分分析・推薦システム}
 $1000 \times 1000$ 画素のモノクロ画像は $100$ 万個の数からなる行列だが、
@@ -1658,17 +1758,19 @@ $\vect{v}_1$ は「データが最も大きくばらつく方向」(第 $1$ 主�
 $A\vect{x} = \vect{b}$ の解は「一意・無数・なし」の三択だった。
 擬似逆行列は、\textbf{三つの場合すべてに、ただ一つの標準的な答え}を与える。
 
-\begin{teigi}[ムーア・ペンローズの擬似逆行列]
+\begin{teigi}[ムーア・ペンローズの擬似逆行列]\label{def:pinv}
 $A = U\Sigma{}^tV$ に対し、$\Sigma$ の零でない対角成分を逆数にして
-転置した行列を $\Sigma^{+}$ とし、
+転置した行列($n \times m$)を $\Sigma^{+}$ とし、
 \[
 A^{+} = V\,\Sigma^{+}\,{}^t U
 \]
 を $A$ の\textbf{擬似逆行列}という($A$ が正則なら $A^{+} = A^{-1}$ に一致する)。
 \end{teigi}
 
-\begin{teiri}
-$\vect{x}^{*} = A^{+}\vect{b}$ は、
+\begin{teiri}[擬似逆行列の解くもの]\label{thm:pinv-main}
+$\vect{x}^{*} = A^{+}\vect{b}$ は、$\|\vect{b} - A\vect{x}\|$ を
+最小にする $\vect{x}$(最小二乗解)の中で、
+ノルム $\|\vect{x}\|$ が\textbf{最小のただ一つのもの}である。とくに:
 \begin{enumerate}
 \item 解が一意に存在するなら、その解そのもの。
 \item 解が存在しないなら、残差 $\|\vect{b} - A\vect{x}\|$ を最小にする
@@ -1678,16 +1780,398 @@ $\vect{x}^{*} = A^{+}\vect{b}$ は、
 \end{enumerate}
 \end{teiri}
 
+\noindent\textbf{(証明)}\quad
+すべてを SVD の座標で見ると一望できる。
+$\vect{u}_1, \dots, \vect{u}_m$ は $\R^m$ の、
+$\vect{v}_1, \dots, \vect{v}_n$ は $\R^n$ の正規直交基底だから、
+\[
+\vect{b} = \beta_1\vect{u}_1 + \cdots + \beta_m\vect{u}_m
+\quad (\beta_i = \langle \vect{b}, \vect{u}_i \rangle), \qquad
+\vect{x} = \xi_1\vect{v}_1 + \cdots + \xi_n\vect{v}_n
+\]
+と展開できる。$A\vect{v}_j = \sigma_j\vect{u}_j$($j \le r$)、
+$A\vect{v}_j = \vect{0}$($j > r$)だから
+$A\vect{x} = \sum_{i \le r} \sigma_i\xi_i\vect{u}_i$ で、
+ピタゴラスの定理より
+\[
+\|\vect{b} - A\vect{x}\|^2
+= \sum_{i=1}^{r}(\beta_i - \sigma_i\xi_i)^2
++ \sum_{i=r+1}^{m}\beta_i^2.
+\]
+第 $2$ 群は $\vect{x}$ に無関係な定数。第 $1$ 群は
+$\xi_i = \beta_i/\sigma_i$($i \le r$)と選べば $0$ にでき、
+それ以外の選び方では正になる。よって
+\[
+\vect{x} \text{ が最小二乗解}
+\iff \xi_i = \frac{\beta_i}{\sigma_i} \ (i = 1, \dots, r)
+\]
+であり、$\xi_{r+1}, \dots, \xi_n$ は\textbf{自由}である
+(自由度が残る $\iff r < n \iff$ 解が無数)。
+最小二乗解のノルムは
+\[
+\|\vect{x}\|^2 = \sum_{i=1}^{r}\left(\frac{\beta_i}{\sigma_i}\right)^2
++ \sum_{i=r+1}^{n}\xi_i^2
+\]
+だから、$\xi_{r+1} = \cdots = \xi_n = 0$ と選んだときに限り最小になる。
+その唯一の元は
+\[
+\vect{x}^* = \sum_{i=1}^{r}\frac{\beta_i}{\sigma_i}\vect{v}_i
+\]
+である。一方、$A^{+}\vect{b} = V\Sigma^{+}({}^tU\vect{b})$ を計算すると、
+${}^tU\vect{b}$ の成分は $\beta_i$、$\Sigma^{+}$ はそれを
+$\beta_i/\sigma_i$($i \le r$)に変えて残りを $0$ にし、
+$V$ はそれらを係数として $\vect{v}_i$ を束ねるから、
+$A^{+}\vect{b} = \sum_{i \le r}(\beta_i/\sigma_i)\vect{v}_i
+= \vect{x}^*$。
+主張 1〜3 はこの特別な場合である:解が存在するなら残差の最小値は
+$0$ で最小二乗解 $=$ 通常の解(1, 3)、存在しないなら残差最小の解の中で
+ノルム最小(2, 3)。とくに解が一意なら、それが唯一の最小二乗解だから
+$\vect{x}^*$ と一致する(1)。 $\blacksquare$
+
 「解けないなら最も近くへ、答えが多すぎるなら最も慎ましいものを」
 ――第I部で三つに割れた世界が、一つの式 $\vect{x}^* = A^{+}\vect{b}$ に
 統一された。実際の数値計算ライブラリで連立方程式や回帰を解くとき、
 内部で動いているのはまさにこの SVD 経由の擬似逆行列である。
 
 \begin{mondai}\label{q:pinv}
-$A = \mat{1 & 1 \\ 0 & 0}$(本章の例で SVD 済み)について、\\
+$A = \mat{1 & 1 \\ 0 & 0}$(例 \ref{rei:svd-first} で SVD 済み)について、\\
 　(1) $A^{+}$ を求めよ。\\
 　(2) 解の存在しない方程式 $A\vect{x} = \mat{1 \\ 1}$ に対し
 $\vect{x}^{*} = A^{+}\mat{1 \\ 1}$ を計算し、これが
 最小二乗解の中でノルム最小のものになっていることを
 (最小二乗解の全体を求めて)確かめよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$(AB)^{+} = B^{+}A^{+}$ は一般には成り立たない]\label{hanrei:pinv-product}
+逆行列の公式 $(AB)^{-1} = B^{-1}A^{-1}$ の類似を期待したくなるが、
+擬似逆行列では崩れる。
+$A = \mat{1 & 0}$($1 \times 2$)、$B = \mat{1 \\ 1}$($2 \times 1$)と
+すると $AB = (1)$($1 \times 1$)で $(AB)^{+} = (1)$。一方、
+$A$ の特異値分解は $\sigma_1 = 1$, $\vect{u}_1 = 1$,
+$\vect{v}_1 = {}^t(1, 0)$ だから $A^{+} = \mat{1 \\ 0}$、
+$B$ は $\sigma_1 = \sqrt{2}$, $\vect{v}_1 = 1$,
+$\vect{u}_1 = \frac{1}{\sqrt{2}}{}^t(1, 1)$ だから
+$B^{+} = \frac{1}{2}\mat{1 & 1}$。よって
+\[
+B^{+}A^{+} = \frac{1}{2}\mat{1 & 1}\mat{1 \\ 0} = \left(\frac{1}{2}\right)
+\neq (1) = (AB)^{+}.
+\]
+擬似逆行列は「最小二乗 $+$ ノルム最小」という\textbf{最適化の答え}で
+あって、代数的な逆数ではない。逆行列の公式を無反省に流用しては
+いけないのである($A$ が正則な場合に限れば
+$(AB)^{-1} = B^{-1}A^{-1}$ は健在である)。
+\end{hanrei}
+
+\begin{hanrei}[擬似逆行列は入力の小さな変化に対して連続でない]\label{hanrei:pinv-discont}
+$\varepsilon > 0$ に対し
+\[
+A_{\varepsilon} = \mat{1 & 0 \\ 0 & \varepsilon}
+\quad\Longrightarrow\quad
+A_{\varepsilon}^{+} = A_{\varepsilon}^{-1}
+= \mat{1 & 0 \\ 0 & 1/\varepsilon}
+\]
+は、$\varepsilon \to 0$ で右下の成分が\textbf{発散}する。ところが
+$\varepsilon = 0$ の行列そのものの擬似逆行列は
+\[
+A_0 = \mat{1 & 0 \\ 0 & 0}
+\quad\Longrightarrow\quad
+A_0^{+} = \mat{1 & 0 \\ 0 & 0}
+\]
+と、いたって穏やかである。原因は\textbf{階数の急落}
+($\mathrm{rank}\,A_{\varepsilon} = 2$ が $\varepsilon = 0$ で突然 $1$ に
+落ちる)にある。実務データの行列は誤差のせいで「厳密には階数が
+落ちていないが、特異値が非常に小さい」状態になりがちで、
+$1/\sigma$ が誤差を巨大に増幅してしまう。そこで実際の数値計算では、
+\textbf{小さな特異値を $0$ とみなして切り捨ててから} $A^{+}$ を作る
+(前節の低ランク近似がここでも働く)。
+\end{hanrei}
+
+\section{例題}
+
+擬似逆行列の計算と、低ランク近似・最小二乗法との連携を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(対角型の擬似逆行列)]\label{rei:pinv-diag}
+$A = \mat{2 & 0 \\ 0 & 3 \\ 0 & 0}$ の $A^{+}$ を求め、
+$\vect{b} = {}^t(2, 3, 5)$ に対する $\vect{x}^* = A^{+}\vect{b}$ を
+計算せよ。\\
+\textbf{解.}\ $A$ はすでに「対角型」なので $U = E_3$, $V = E_2$,
+$\Sigma = A$ とみなせる($\sigma_1 = 3 \ge \sigma_2 = 2$ の順序に
+こだわるなら列を並べ替えるが、結果は同じ)。零でない対角成分を
+逆数にして転置し
+\[
+A^{+} = \mat{1/2 & 0 & 0 \\ 0 & 1/3 & 0}, \qquad
+\vect{x}^* = A^{+}\mat{2 \\ 3 \\ 5} = \mat{1 \\ 1}.
+\]
+残差は $\vect{b} - A\vect{x}^* = {}^t(0, 0, 5)$ で、
+$\mathrm{Im}\,A$(第 $3$ 成分が $0$ の平面)と直交している。
+届かない第 $3$ 成分だけをあきらめた、最小二乗の答えである。
+\end{rei}
+
+\begin{rei}[例題・基本(階数 $1$ の擬似逆行列)]\label{rei:pinv-rank1}
+$A = \mat{1 & 2 \\ 2 & 4}$(例題 \ref{rei:svd-rank1}:$\sigma_1 = 5$,
+$\vect{u}_1 = \vect{v}_1 = \frac{1}{\sqrt{5}}{}^t(1, 2)$)の $A^{+}$ を
+求め、$AA^{+}A = A$ を確かめよ。\\
+\textbf{解.}\ 和形式で書けば $A = \sigma_1\vect{u}_1{}^t\vect{v}_1$ に
+対して $A^{+} = \dfrac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1$ だから
+\[
+A^{+} = \frac{1}{5}\cdot\frac{1}{5}\mat{1 \\ 2}\mat{1 & 2}
+= \frac{1}{25}\mat{1 & 2 \\ 2 & 4} = \frac{1}{25}A.
+\]
+検算:$A^2 = \mat{5 & 10 \\ 10 & 20} = 5A$ だから
+\[
+AA^{+}A = \frac{1}{25}A^3 = \frac{1}{25}\cdot 5 \cdot A^2 = \frac{1}{25}
+\cdot 25A = A.
+\]
+「逆行列もどき」の等式 $AA^{+}A = A$ は任意の行列で成り立つ
+(章末問題 \ref{q:pinv-ex12})。
+\end{rei}
+
+\begin{rei}[例題・基本(ノルム最小の解)]\label{rei:pinv-minnorm}
+方程式 $x + 2y = 5$(解は無数)の解のうちノルム最小のものを、
+擬似逆行列で求めよ。\\
+\textbf{解.}\ $A = \mat{1 & 2}$($1 \times 2$)について
+${}^t\!AA = \mat{1 & 2 \\ 2 & 4}$ の固有値は $5, 0$ だから
+$\sigma_1 = \sqrt{5}$, $\vect{v}_1 = \frac{1}{\sqrt{5}}{}^t(1, 2)$、
+$\vect{u}_1 = A\vect{v}_1/\sqrt{5} = 1$。よって
+\[
+A^{+} = \frac{1}{\sqrt{5}}\vect{v}_1 \cdot 1 = \frac{1}{5}\mat{1 \\ 2},
+\qquad
+\vect{x}^* = A^{+}(5) = \mat{1 \\ 2}.
+\]
+検算:$1 + 2 \cdot 2 = 5$ で確かに解であり、直線 $x + 2y = 5$ 上で
+原点に最も近い点(法線方向 ${}^t(1,2)$ 上の点)になっている。
+\end{rei}
+
+\begin{rei}[例題・標準(列独立な場合:二つの経路で同じ答え)]\label{rei:pinv-fullcol}
+$A = \mat{1 & 1 \\ 1 & 0 \\ 0 & 1}$ について $A^{+}$ を
+(i) SVD(例題 \ref{rei:svd-tall})から、
+(ii) 公式 $({}^t\!AA)^{-1}{}^t\!A$(章末問題 \ref{q:pinv-ex11})から
+求め、一致することを確かめよ。\\
+\textbf{解.}\ (i) $\sigma_1 = \sqrt{3}$, $\sigma_2 = 1$,
+$\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,1)$,
+$\vect{v}_2 = \frac{1}{\sqrt{2}}{}^t(1,-1)$,
+$\vect{u}_1 = \frac{1}{\sqrt{6}}{}^t(2,1,1)$,
+$\vect{u}_2 = \frac{1}{\sqrt{2}}{}^t(0,1,-1)$ より
+\[
+A^{+} = \frac{1}{\sqrt{3}}\vect{v}_1{}^t\vect{u}_1
++ \frac{1}{1}\vect{v}_2{}^t\vect{u}_2
+= \frac{1}{6}\mat{2 & 1 & 1 \\ 2 & 1 & 1}
++ \frac{1}{2}\mat{0 & 1 & -1 \\ 0 & -1 & 1}
+= \frac{1}{3}\mat{1 & 2 & -1 \\ 1 & -1 & 2}.
+\]
+(ii) ${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$,
+$({}^t\!AA)^{-1} = \dfrac{1}{3}\mat{2 & -1 \\ -1 & 2}$ より
+\[
+({}^t\!AA)^{-1}{}^t\!A = \frac{1}{3}\mat{2 & -1 \\ -1 & 2}
+\mat{1 & 1 & 0 \\ 1 & 0 & 1} = \frac{1}{3}\mat{1 & 2 & -1 \\ 1 & -1 & 2}
+\]
+で一致する。$\vect{b} = {}^t(1,1,1)$ なら
+$\vect{x}^* = \frac{1}{3}{}^t(1 + 2 - 1,\ 1 - 1 + 2)
+= {}^t(2/3,\ 2/3)$ ――例題 \ref{rei:qr-lsq} で QR 分解から求めた
+最小二乗解と同じ答えである。正規方程式・QR・SVD のどの道を通っても、
+着く場所は一つしかない。
+\end{rei}
+
+\begin{rei}[例題・標準(解が無数の最小二乗:第 \ref{chap:lsq} 章の宿題)]\label{rei:pinv-dependent2}
+$A = \mat{1 & 1 \\ 1 & 1}$, $\vect{b} = \mat{1 \\ 0}$
+(反例 \ref{hanrei:lsq-dependent}:最小二乗解は直線
+$x + y = \frac{1}{2}$ 全体だった)について
+$\vect{x}^* = A^{+}\vect{b}$ を求め、定理 \ref{thm:pinv-main} の
+主張を確かめよ。\\
+\textbf{解.}\ ${}^t\!AA = \mat{2 & 2 \\ 2 & 2}$ の固有値は $4, 0$ だから
+$\sigma_1 = 2$, $\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,1)$、
+$\vect{u}_1 = A\vect{v}_1/2 = \frac{1}{\sqrt{2}}{}^t(1,1)$。よって
+\[
+A^{+} = \frac{1}{2}\vect{v}_1{}^t\vect{u}_1
+= \frac{1}{4}\mat{1 & 1 \\ 1 & 1}, \qquad
+\vect{x}^* = A^{+}\mat{1 \\ 0} = \mat{1/4 \\ 1/4}.
+\]
+$\vect{x}^*$ は $x + y = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$ を
+満たすから確かに最小二乗解の一つで、しかも直線
+$x + y = \frac{1}{2}$ 上で原点に最も近い点である。
+第 \ref{chap:lsq} 章で「どれを選ぶかは第 \ref{chap:pinv} 章で決着する」と
+予告した宿題が、これで果たされた。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$AA^{+}$ と $A^{+}A$ は正射影行列)]\label{rei:pinv-proj}
+$A = U\Sigma\,{}^tV$(階数 $r$)について、次を示せ。
+\[
+AA^{+} = \vect{u}_1{}^t\vect{u}_1 + \cdots + \vect{u}_r{}^t\vect{u}_r,
+\qquad
+A^{+}A = \vect{v}_1{}^t\vect{v}_1 + \cdots + \vect{v}_r{}^t\vect{v}_r.
+\]
+すなわち $AA^{+}$ は $\mathrm{Im}\,A$ への、$A^{+}A$ は
+$\mathrm{Im}\,{}^t\!A$ への正射影行列である。\\
+\textbf{解.}\ ${}^tVV = E$ より
+\[
+AA^{+} = U\Sigma\,{}^tV \cdot V\Sigma^{+}{}^tU = U(\Sigma\Sigma^{+}){}^tU.
+\]
+$\Sigma\Sigma^{+}$ は $m$ 次の対角行列で、対角成分は
+$\sigma_i \cdot \frac{1}{\sigma_i} = 1$($i \le r$)と $0$($i > r$)。
+よって $U(\Sigma\Sigma^{+}){}^tU = \sum_{i \le r}\vect{u}_i{}^t\vect{u}_i$
+であり、これは正規直交系 $\vect{u}_1, \dots, \vect{u}_r$ の張る空間
+$= \mathrm{Im}\,A$(定理 \ref{thm:svd-rank})への正射影行列である
+(定理 \ref{thm:gs-decomp} の公式の行列版。例題 \ref{rei:qr-proj} と
+同じ形)。$A^{+}A = V(\Sigma^{+}\Sigma){}^tV$ も同様で、
+$\mathrm{Im}\,{}^t\!A = \langle \vect{v}_1, \dots, \vect{v}_r \rangle$
+(第 \ref{chap:svd} 章の深掘り)への正射影行列になる。
+「$AA^{+}$ は単位行列に届かないが、届く範囲($\mathrm{Im}\,A$)では
+単位行列として働く」――擬似逆行列の「擬似」の中身である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item SVD の\textbf{和形式}:$A = \sum_{i=1}^{r}\sigma_i\vect{u}_i
+{}^t\vect{v}_i$(階数 $1$ の部品の重み付き重ね合わせ)。
+上位 $k$ 項の $A_k$ は\textbf{階数 $k$ 以下で最良の近似}で、誤差は
+$\|A - A_k\| = \sigma_{k+1}$(エッカート・ヤングの定理
+\ref{thm:pinv-eckart})。これが画像圧縮・主成分分析・推薦システムの
+数学的基盤である。
+\item \textbf{擬似逆行列} $A^{+} = V\Sigma^{+}{}^tU$。
+$\vect{x}^* = A^{+}\vect{b}$ は「最小二乗解の中でノルム最小の
+ただ一つのもの」(定理 \ref{thm:pinv-main}):解が一意ならその解、
+なければ最小二乗解、多すぎればノルム最小のもの。
+\item 列が線形独立なら $A^{+} = ({}^t\!AA)^{-1}{}^t\!A$
+(正規方程式の公式と一致)。$AA^{+}$ は $\mathrm{Im}\,A$ への、
+$A^{+}A$ は $\mathrm{Im}\,{}^t\!A$ への\textbf{正射影行列}
+(例題 \ref{rei:pinv-proj})。また $AA^{+}A = A$ が常に成り立つ。
+\item ただし $(AB)^{+} = B^{+}A^{+}$ は一般に不成立
+(反例 \ref{hanrei:pinv-product})。また $A^{+}$ は階数が落ちる点で
+\textbf{不連続}で、小さな特異値は誤差を増幅する
+(反例 \ref{hanrei:pinv-discont}。実務では小さな特異値を切り捨てる)。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:pinv-ex1}
+$A = \mat{3 & 0 \\ 0 & 0 \\ 0 & 2}$(問 \ref{q:svd-ex1})の $A^{+}$ を
+求め、$AA^{+}A = A$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pinv-ex2}
+$A = \mat{2 & 4 \\ 1 & 2}$(問 \ref{q:svd-ex3})の $A^{+}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pinv-ex3}
+方程式 $x + y = 4$ の解のうちノルム最小のものを擬似逆行列で求め、
+別の解 ${}^t(4, 0)$ とノルムを比較せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pinv-ex4}
+$A = \mat{2 & 1 \\ 1 & 2}$(特異値 $3, 1$。例題 \ref{rei:svd-sym})の
+最良の階数 $1$ 近似 $A_1$ を求め、誤差 $\|A - A_1\|$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex5}
+$A = \mat{1 & 0 & 1 \\ 0 & 1 & 0}$(例題 \ref{rei:svd-wide})について、\\
+　(1) $A^{+}$ を求めよ。\\
+　(2) $AA^{+} = E$($2$ 次単位行列)を確かめよ(行が線形独立なら
+$A^{+}$ は「右逆行列」になる)。\\
+　(3) $A\vect{x} = \mat{2 \\ 3}$ のノルム最小の解を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex6}
+$A = \mat{1 & 1 & 0 \\ 0 & 0 & 2}$(問 \ref{q:svd-ex7})について
+$A^{+}$ を求め、$A\vect{x} = \mat{1 \\ 2}$ のノルム最小の解が
+${}^t\!\left(\frac{1}{2},\ \frac{1}{2},\ 1\right)$ であることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex7}
+$A = \mat{4 & 4 \\ -3 & 3}$(例題 \ref{rei:svd-2x2})の最良の階数 $1$
+近似 $A_1$ を求め、誤差 $\|A - A_1\|$ が $\sigma_2 = 3\sqrt{2}$ に
+なることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex8}
+ある $1000 \times 1000$ の画像(行列)の特異値が、
+$\sigma_1 = 20$, $\sigma_2 = 5$, $\sigma_3 = 0.1$,
+$\sigma_4 = 0.05, \dots$ と急減衰しているとする。\\
+　(1) $A_1$, $A_2$(上位 $1$ 項・$2$ 項の近似)の誤差
+$\|A - A_k\|$ をそれぞれ答えよ。\\
+　(2) $k = 50$ で打ち切るとき、保存すべき数値の個数
+($\sigma_i$ と $\vect{u}_i, \vect{v}_i$ の成分の総数)を概算し、
+元の $10^6$ 個と比べよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:pinv-ex9}
+$A = \mat{1 & 2 \\ 2 & 4 \\ 0 & 0}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$
+(問 \ref{q:lsq-ex9})について $A^{+}$ を求め、
+$\vect{x}^* = A^{+}\vect{b}$ が問 \ref{q:lsq-ex9}(2) で求めた
+「ノルム最小の最小二乗解」${}^t\!\left(\frac{3}{25},\ \frac{6}{25}\right)$
+と一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:pinv-ex10}
+$A$ の零でない特異値のうち最小のものを $\sigma_r$ とする。\\
+　(1) $\|A^{+}\| = \dfrac{1}{\sigma_r}$ を示せ
+(ヒント:$A^{+} = V\Sigma^{+}{}^tU$ は $A^{+}$ の特異値分解の形を
+している(並べ替えを除いて)。定理 \ref{thm:svd-norm})。\\
+　(2) $A_{\varepsilon} = \mat{1 & 0 \\ 0 & \varepsilon}$ で
+$\|A_{\varepsilon}^{+}\|$ を求め、$\varepsilon \to 0$ での挙動を
+反例 \ref{hanrei:pinv-discont} の言葉で説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:pinv-ex11}
+$A$ の列が線形独立のとき、$A^{+} = ({}^t\!AA)^{-1}{}^t\!A$ を示せ
+(ヒント:任意の $\vect{b}$ に対し、$A^{+}\vect{b}$ も
+$({}^t\!AA)^{-1}{}^t\!A\vect{b}$ も「ただ一つの最小二乗解」である
+(定理 \ref{thm:lsq-normal}、定理 \ref{thm:pinv-main})。
+すべての $\vect{b}$ で一致する二つの行列は等しい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:pinv-ex12}
+任意の $A = U\Sigma\,{}^tV$ について、次の\textbf{ペンローズの条件}が
+成り立つことを示せ。
+\[
+(1)\ AA^{+}A = A, \qquad (2)\ A^{+}AA^{+} = A^{+}, \qquad
+(3)\ {}^t(AA^{+}) = AA^{+}, \qquad (4)\ {}^t(A^{+}A) = A^{+}A
+\]
+(ヒント:例題 \ref{rei:pinv-proj} の
+$AA^{+} = U(\Sigma\Sigma^{+}){}^tU$ の形を使う。
+$\Sigma\Sigma^{+}\Sigma = \Sigma$, $\Sigma^{+}\Sigma\Sigma^{+} = \Sigma^{+}$
+は対角成分の計算で確かめられる)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:pinv-ex1}}:対角型なので、零でない成分を
+逆数にして転置(例題 \ref{rei:pinv-diag})。
+\item \textbf{問 \ref{q:pinv-ex2}}:階数 $1$ なので
+$A^{+} = \dfrac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1$
+(例題 \ref{rei:pinv-rank1})。
+\item \textbf{問 \ref{q:pinv-ex3}}:$A = (1\ \ 1)$。
+例題 \ref{rei:pinv-minnorm} と同じ手順。
+\item \textbf{問 \ref{q:pinv-ex4}}:$A_1 = \sigma_1\vect{u}_1{}^t\vect{v}_1$。
+誤差は $\sigma_2$(定理 \ref{thm:pinv-eckart})。
+\item \textbf{問 \ref{q:pinv-ex5}}:
+$A^{+} = \frac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1 +
+\frac{1}{\sigma_2}\vect{v}_2{}^t\vect{u}_2$。
+(3) は $A^{+}\vect{b}$ を計算するだけ。
+\item \textbf{問 \ref{q:pinv-ex6}}:問 \ref{q:svd-ex7} の SVD を流用する。
+解の集合 $\{x + y = 1,\ z = 1\}$ の中で最短かも直接確かめられる。
+\item \textbf{問 \ref{q:pinv-ex7}}:$\vect{u}_1 = \vect{e}_1$,
+$\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,1)$。$A - A_1$ が
+$\sigma_2\vect{u}_2{}^t\vect{v}_2$ になることを見る。
+\item \textbf{問 \ref{q:pinv-ex8}}:誤差は次の特異値。
+(2) は $50 \times (1000 + 1000 + 1)$ 個。
+\item \textbf{問 \ref{q:pinv-ex9}}:階数 $1$。$\vect{v}_1, \vect{u}_1$ は
+問 \ref{q:lsq-ex9} の計算から読み取れる。
+\item \textbf{問 \ref{q:pinv-ex10}}:$A^{+}$ の特異値は
+$\frac{1}{\sigma_1}, \dots, \frac{1}{\sigma_r}$ で、最大は
+$\frac{1}{\sigma_r}$。
+\item \textbf{問 \ref{q:pinv-ex11}}:「一意なものが二つの式で書けたら、
+二つの式は等しい」という論法。行列の等式にするには、
+すべての $\vect{b}$(たとえば基本ベクトル)で確かめればよい。
+\item \textbf{問 \ref{q:pinv-ex12}}:すべて
+$U(\cdots){}^tU$ か $V(\cdots){}^tV$ の形に直せば、
+対角行列 $\Sigma, \Sigma^{+}$ の計算に帰着する。
+\end{itemize}
+}
