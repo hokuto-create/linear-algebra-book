@@ -7,7 +7,22 @@
 \chapter{最小二乗法 ― 解けない方程式に最善の答えを}\label{chap:lsq}
 % =====================================================
 
-\section{解のない方程式と向き合う}
+\begin{goal}
+\begin{itemize}
+\item 解のない $A\vect{x} = \vect{b}$ に対し、残差のノルム
+$\|\vect{b} - A\vect{x}\|$ を最小にする\textbf{最小二乗解}を、
+\textbf{正規方程式} ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$ で求められるようになる。
+\item 正規方程式が「$\vect{b}$ を $\mathrm{Im}\,A$ へ正射影せよ」という
+第V部の幾何から出てくることを、証明つきで説明できるようになる。
+\item 回帰直線や多項式の当てはめを、最小二乗問題として定式化して
+解けるようになる。
+\item 「予測値を作る」操作そのものを一つの行列(正射影行列
+$P = A({}^t\!AA)^{-1}{}^t\!A$)にまとめ、その性質
+($P^2 = P$, ${}^t\!P = P$)を使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 解のない方程式と向き合う}
 
 第II部で「解の存在しない連立方程式」を学んだとき、
 われわれはそこで引き返した。しかし現実のデータ解析では、
@@ -24,6 +39,13 @@ $A\vect{x} = \vect{b}$ が解をもたないとき、誤差(残差)のノルム
 を\textbf{最小にする} $\vect{x}$ を求めよ。
 \end{itembox}
 
+「厳密に成り立たせる」ことをあきらめ、「破れ(残差)をできるだけ
+小さくする」ことに目標を変えるのである。残差の\textbf{ノルム}を
+最小化するとは、残差の各成分の\textbf{二乗和}を最小化することにほかならない
+($\|\vect{r}\|^2 = r_1^2 + \cdots + r_m^2$)。「最小二乗法」の
+名の由来である。この最小化を、微分に頼らず\textbf{幾何だけで}
+解いてしまえるのが、第V部で積み上げた内積の理論の力である。
+
 \section{正規方程式 ― 正射影の出番}
 
 $A\vect{x}$ の動ける範囲は、$A$ の列ベクトルが張る部分空間
@@ -35,19 +57,74 @@ $W = \mathrm{Im}\,A$ である。よって問題は
 直交条件を $A$ の各列との内積 $= 0$ として書くと
 ${}^t\!A(\vect{b} - A\vect{x}) = \vect{0}$、すなわち:
 
-\begin{teiri}[正規方程式]
-$\|\vect{b} - A\vect{x}\|$ を最小にする $\vect{x}$ は、
-\[
-{}^t\!A A\,\vect{x} = {}^t\!A\,\vect{b}
-\]
-の解である。$A$ の列が線形独立なら ${}^t\!AA$ は正則で、解はただ一つ
+\begin{teiri}[正規方程式]\label{thm:lsq-normal}
+$m \times n$ 行列 $A$ と $\vect{b} \in \R^m$ に対し、
+$\vect{x} \in \R^n$ について次は同値である。
+\begin{enumerate}
+\item $\vect{x}$ は $\|\vect{b} - A\vect{x}\|$ を最小にする(\textbf{最小二乗解})。
+\item ${}^t\!A A\,\vect{x} = {}^t\!A\,\vect{b}$(\textbf{正規方程式})。
+\end{enumerate}
+正規方程式は($A\vect{x} = \vect{b}$ が解けなくても)\textbf{必ず解をもつ}。
+さらに $A$ の列が線形独立なら ${}^t\!AA$ は正則で、最小二乗解はただ一つ
 $\vect{x} = ({}^t\!AA)^{-1}\,{}^t\!A\,\vect{b}$ に定まる。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$W = \mathrm{Im}\,A$ とおき、$\vect{b}$ の直交分解
+(定理 \ref{thm:gs-decomp})を $\vect{b} = \vect{b}_W + \vect{b}_{\perp}$
+($\vect{b}_W \in W$, $\vect{b}_{\perp} \in W^{\perp}$)とする。
+
+\textbf{(1 $\iff$ $A\vect{x} = \vect{b}_W$)}\
+任意の $\vect{x}$ に対し $A\vect{x} \in W$ で、
+$\vect{b} - A\vect{x} = \vect{b}_{\perp} + (\vect{b}_W - A\vect{x})$ は
+「$W^{\perp}$ の元 $+$ $W$ の元」の和だから、ピタゴラスの定理
+(定理 \ref{thm:inner-pyth})より
+\[
+\|\vect{b} - A\vect{x}\|^2
+= \|\vect{b}_{\perp}\|^2 + \|\vect{b}_W - A\vect{x}\|^2
+\ \ge\ \|\vect{b}_{\perp}\|^2.
+\]
+等号は $A\vect{x} = \vect{b}_W$ のとき、かつそのときに限る。
+$\vect{b}_W \in W = \mathrm{Im}\,A$ だから、これを満たす $\vect{x}$ は
+\textbf{必ず存在}する。
+
+\textbf{($A\vect{x} = \vect{b}_W$ $\iff$ 2)}\
+$A\vect{x} = \vect{b}_W$ なら $\vect{b} - A\vect{x} = \vect{b}_{\perp} \in W^{\perp}$。
+逆に $\vect{b} - A\vect{x} \in W^{\perp}$ なら、
+$\vect{b} = A\vect{x} + (\vect{b} - A\vect{x})$ が
+「$W$ の元 $+$ $W^{\perp}$ の元」の分解になるので、分解の\textbf{一意性}
+(定理 \ref{thm:gs-decomp})より $A\vect{x} = \vect{b}_W$。
+そして「$\vect{b} - A\vect{x} \in W^{\perp}$」は、$W$ の生成系である
+$A$ の各列 $\vect{a}_1, \dots, \vect{a}_n$ と直交すること、すなわち
+${}^t\vect{a}_i(\vect{b} - A\vect{x}) = 0$($i = 1, \dots, n$)と同値であり、
+$n$ 本まとめて書けば ${}^t\!A(\vect{b} - A\vect{x}) = \vect{0}$、
+移項して ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$ である。
+
+\textbf{(列が線形独立なら ${}^t\!AA$ は正則)}\
+${}^t\!AA\vect{x} = \vect{0}$ とすると、左から ${}^t\vect{x}$ を掛けて
+\[
+0 = {}^t\vect{x}\,{}^t\!AA\vect{x} = {}^t(A\vect{x})(A\vect{x}) = \|A\vect{x}\|^2
+\]
+より $A\vect{x} = \vect{0}$。列が線形独立だから $\vect{x} = \vect{0}$。
+すなわち $n$ 次正方行列 ${}^t\!AA$ は $\mathrm{Ker} = \{\vect{0}\}$ をもち、
+正則である(第III部)。 $\blacksquare$
 
 解けない方程式 $A\vect{x} = \vect{b}$ の両辺に ${}^t\!A$ を掛けるだけで、
 \textbf{必ず解ける}方程式に化ける――驚くほど実用的な定理である。
 
-\begin{rei}[回帰直線]
+\begin{chui}
+${}^t\!A$ を掛けるという操作は同値変形ではない(第I部で警告した
+「両辺に行列を掛けると解が増えうる」の典型例である)。増えた解は
+「元の方程式の解」ではなく「残差最小の解」だ、というのが
+定理 \ref{thm:lsq-normal} の主張である。なお、$A\vect{x} = \vect{b}$ が
+運よく解をもつ場合は残差 $\vect{0}$ が最小だから、
+\textbf{最小二乗解 $=$ 通常の解}となり、矛盾は起きない(問 \ref{q:lsq-ex4})。
+また、列が線形従属な場合は最小二乗解が無数に現れる
+(反例 \ref{hanrei:lsq-dependent})。その場合にどれを選ぶかは、
+第 \ref{chap:pinv} 章(擬似逆行列)で決着する。
+\end{chui}
+
+\begin{rei}[回帰直線]\label{rei:lsq-regression}
 データ $(0, 1), (1, 2), (2, 2), (3, 3)$ に直線 $y = a + bx$ を当てはめる。
 各点を代入した $4$ 本の式を行列で書くと
 \[
@@ -86,6 +163,385 @@ $R^2$ が決して下がらないことも幾何的に自明になる
 最小二乗法で当てはめよ。また、残差ベクトルが
 $\vect{1} = \mat{1 \\ 1 \\ 1}$ と直交することを確かめよ。
 \end{mondai}
+
+\section{当てはめは直線に限らない}
+
+「直線の当てはめ」と聞くと適用範囲が狭く感じるかもしれないが、
+最小二乗法が要求するのは、モデルが\textbf{未知パラメータについて}
+線形であることだけである。たとえば放物線 $y = a + bx + cx^2$ を
+データに当てはめる問題は、各データ点 $(x_i, y_i)$ を代入した式
+\[
+a + b x_i + c x_i^2 = y_i \qquad (i = 1, \dots, m)
+\]
+を並べれば、未知数 $(a, b, c)$ についての連立\textbf{一次}方程式
+$A\vect{x} = \vect{b}$ になる($A$ の第 $i$ 行は $(1,\ x_i,\ x_i^2)$)。
+$x^2$ という非線形な項が入っていても、\textbf{係数 $a, b, c$ の入り方は
+一次}だから、正規方程式がそのまま使える(例題 \ref{rei:lsq-parabola})。
+$\sin x$ や $e^x$ を部品にした当てはめも同様である。
+「変数について非線形でも、パラメータについて線形なら最小二乗法」
+――適用範囲は見かけよりずっと広い。
+
+\section{正射影行列 ― 「当てはめ」を一つの行列にまとめる}
+
+列が線形独立な場合、最小二乗解は
+$\vect{x}^* = ({}^t\!AA)^{-1}{}^t\!A\vect{b}$ と閉じた式で書けた。
+このとき「最良の近似点」(回帰でいえば予測値のベクトル)は
+\[
+A\vect{x}^* = A({}^t\!AA)^{-1}{}^t\!A\,\vect{b}
+\]
+である。$\vect{b}$ の左に掛かっている行列に名前をつけよう。
+
+\begin{teiri}[正射影行列]\label{thm:lsq-projmat}
+$A$ を列が線形独立な $m \times n$ 行列とし、
+\[
+P = A({}^t\!AA)^{-1}{}^t\!A
+\]
+($m$ 次正方行列)とおく。このとき:
+\begin{enumerate}
+\item 任意の $\vect{b} \in \R^m$ に対し、$P\vect{b}$ は $\vect{b}$ の
+$W = \mathrm{Im}\,A$ への正射影 $\vect{b}_W$ である。
+\item ${}^t\!P = P$(対称)かつ $P^2 = P$(二度射影しても変わらない)。
+\end{enumerate}
+$P$ を $W$ への\textbf{正射影行列}という。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $\vect{x}^* = ({}^t\!AA)^{-1}{}^t\!A\vect{b}$ は正規方程式の解だから、
+定理 \ref{thm:lsq-normal} の証明で見たとおり
+$A\vect{x}^* = \vect{b}_W$。左辺は $P\vect{b}$ そのものである。
+
+(2) 転置の規則 ${}^t\!(XY) = {}^t Y\,{}^t\!X$ と
+${}^t\!\bigl(({}^t\!AA)^{-1}\bigr) = \bigl({}^t\!({}^t\!AA)\bigr)^{-1}
+= ({}^t\!AA)^{-1}$(対称行列の逆行列は対称)より
+\[
+{}^t\!P = {}^t\!\bigl(A({}^t\!AA)^{-1}{}^t\!A\bigr)
+= A\,{}^t\!\bigl(({}^t\!AA)^{-1}\bigr)\,{}^t\!A = A({}^t\!AA)^{-1}{}^t\!A = P.
+\]
+また、内側の ${}^t\!A A$ が $({}^t\!AA)^{-1}$ と打ち消し合って
+\[
+P^2 = A({}^t\!AA)^{-1}\underbrace{{}^t\!A\,A({}^t\!AA)^{-1}}_{=\,E}{}^t\!A
+= A({}^t\!AA)^{-1}{}^t\!A = P. \qquad\blacksquare
+\]
+
+$P^2 = P$ は「一度 $W$ に落とした点は、もう一度落としても動かない」
+という正射影の幾何を式にしたものである(第V部のスペクトル分解に現れた
+正射影行列 $\vect{u}\,{}^t\vect{u}$ は、$n = 1$ 本の場合の $P$ に
+ほかならない)。統計学ではこの $P$ を\textbf{ハット行列}と呼ぶ
+――データ $\vect{b} = (y_1, \dots, y_m)$ に掛けると予測値
+$\hat{y}_1, \dots, \hat{y}_m$(ハットつきの $y$)が出てくるからである。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[列が線形従属なら最小二乗解は一つに定まらない]\label{hanrei:lsq-dependent}
+「正規方程式は必ず解ける」と「解がただ一つ」は別の主張である。
+\[
+A = \mat{1 & 1 \\ 1 & 1}, \qquad \vect{b} = \mat{1 \\ 0}
+\]
+では、$A$ の列が線形従属で、
+\[
+{}^t\!AA = \mat{2 & 2 \\ 2 & 2}, \qquad {}^t\!A\vect{b} = \mat{1 \\ 1}
+\]
+より正規方程式は $2x + 2y = 1$(2本とも同じ式)。よって最小二乗解は
+直線 $x + y = \dfrac{1}{2}$ 上の\textbf{全点}であり、無数にある。
+実際 $A\vect{x} = (x + y)\mat{1 \\ 1}$ だから、
+$\vect{b}$ との距離は和 $x + y$ だけで決まり、個々の $x, y$ には
+依存しない。${}^t\!AA$ が正則になる(解が一意に定まる)のは、
+定理 \ref{thm:lsq-normal} のとおり\textbf{列が線形独立のとき}に限る。
+\end{hanrei}
+
+\begin{hanrei}[「最良の直線」は当てはめの向きに依存する]\label{hanrei:lsq-swap}
+最小二乗法の回帰直線を「点たちに最も寄り添う、ただ一本の直線」と
+思ってはいけない。最小化しているのはあくまで\textbf{$y$ 方向の}残差
+(縦のずれ)である。データ $(0, 0), (1, 0), (1, 1)$ で確かめよう。
+$y = a + bx$ を当てはめると
+\[
+{}^t\!AA = \mat{3 & 2 \\ 2 & 2}, \quad {}^t\!A\vect{b} = \mat{1 \\ 1}
+\quad\Longrightarrow\quad a = 0,\ b = \frac{1}{2}
+\]
+で $y = \dfrac{1}{2}x$。今度は役割を入れ替えて $x = c + dy$
+(横のずれを最小化)とすると、データは $(y, x)$ の組として
+$(0,0), (0,1), (1,1)$ だから
+\[
+\mat{3 & 1 \\ 1 & 1}\mat{c \\ d} = \mat{2 \\ 1}
+\quad\Longrightarrow\quad c = d = \frac{1}{2}
+\]
+で $x = \dfrac{1}{2} + \dfrac{1}{2}y$、すなわち $y = 2x - 1$。
+同じ $3$ 点から、\textbf{傾きが $4$ 倍違う二本の「最良の直線」}が
+出てきた。どちらも正しい――最小化する残差の向きが違うだけである。
+「何を誤差とみなすか」を決めるのは数学ではなく、データの出どころ
+(どちらの変数に測定誤差があるか)である。
+\end{hanrei}
+
+\section{例題}
+
+正規方程式による当てはめと、正射影の幾何の使い方を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(平均は最小二乗解)]\label{rei:lsq-mean}
+一つの量 $x$ を $3$ 回測定して $1, 2, 4$ を得た。
+「$x = 1$, $x = 2$, $x = 4$」という解のない連立方程式の
+最小二乗解を求めよ。\\
+\textbf{解.}\ 行列で書くと
+$A = \mat{1 \\ 1 \\ 1}$, $\vect{b} = \mat{1 \\ 2 \\ 4}$。
+${}^t\!AA = 3$($1 \times 1$ 行列), ${}^t\!A\vect{b} = 1 + 2 + 4 = 7$
+だから、正規方程式は $3x = 7$ より
+\[
+x^* = \frac{7}{3} = \frac{1 + 2 + 4}{3}.
+\]
+――\textbf{測定値の平均}である。「くり返し測定の平均をとる」という
+日常の作法は、二乗誤差最小の意味での最良の推定だったのである。
+残差は $\mat{1 - 7/3 \\ 2 - 7/3 \\ 4 - 7/3} = \dfrac{1}{3}\mat{-4 \\ -1 \\ 5}$
+で、成分の和が $0$(列 $\vect{1}$ と直交)になっている。
+\end{rei}
+
+\begin{rei}[例題・基本(回帰直線)]\label{rei:lsq-line}
+データ $(0, 1), (1, 3), (2, 4)$ に直線 $y = a + bx$ を当てはめよ。\\
+\textbf{解.}\
+\[
+A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}, \quad \vect{b} = \mat{1 \\ 3 \\ 4}, \quad
+{}^t\!AA = \mat{3 & 3 \\ 3 & 5}, \quad {}^t\!A\vect{b} = \mat{8 \\ 11}.
+\]
+正規方程式 $3a + 3b = 8$, $3a + 5b = 11$ を引き算して $2b = 3$、
+$b = \dfrac{3}{2}$, $a = \dfrac{7}{6}$。回帰直線は
+$y = \dfrac{7}{6} + \dfrac{3}{2}x$ である。
+検算:予測値は $\dfrac{7}{6}, \dfrac{8}{3}, \dfrac{25}{6}$、残差は
+$\mat{-1/6 \\ 1/3 \\ -1/6}$ で、成分の和は $0$、
+$x$ 座標との内積も $0 \cdot \left(-\dfrac{1}{6}\right)
++ 1 \cdot \dfrac{1}{3} + 2 \cdot \left(-\dfrac{1}{6}\right) = 0$。
+残差が $A$ の両方の列と直交している。
+\end{rei}
+
+\begin{rei}[例題・基本(残差の直交性)]\label{rei:lsq-resid}
+$A = \mat{1 & 0 \\ 0 & 1 \\ 1 & 1}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$ の
+最小二乗解を求め、残差が $A$ の各列と直交することを確かめよ。\\
+\textbf{解.}\
+${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$, ${}^t\!A\vect{b} = \mat{2 \\ 2}$。
+正規方程式を解いて $\vect{x}^* = \mat{2/3 \\ 2/3}$。このとき
+\[
+A\vect{x}^* = \mat{2/3 \\ 2/3 \\ 4/3}, \qquad
+\vect{r} = \vect{b} - A\vect{x}^* = \frac{1}{3}\mat{1 \\ 1 \\ -1}.
+\]
+第 $1$ 列との内積は $\dfrac{1}{3}(1 + 0 - 1) = 0$、
+第 $2$ 列との内積は $\dfrac{1}{3}(0 + 1 - 1) = 0$。
+確かに残差は $\mathrm{Im}\,A$ と直交している
+(これが「これ以上改善できない」ことの幾何的な証明書である)。
+\end{rei}
+
+\begin{rei}[例題・標準(放物線の当てはめ)]\label{rei:lsq-parabola}
+データ $(-1, 2), (0, 1), (1, 4)$ に、モデル $y = a + bx^2$ を
+最小二乗法で当てはめよ。\\
+\textbf{解.}\ 各点を代入した式 $a + b x_i^2 = y_i$ を並べると
+\[
+A = \mat{1 & 1 \\ 1 & 0 \\ 1 & 1}, \qquad \vect{b} = \mat{2 \\ 1 \\ 4}
+\]
+($A$ の第 $2$ 列は $x_i^2$ の値)。モデルは $x$ については
+$2$ 次だが、\textbf{未知数 $a, b$ については一次}なので正規方程式が使える:
+\[
+{}^t\!AA = \mat{3 & 2 \\ 2 & 2}, \qquad {}^t\!A\vect{b} = \mat{7 \\ 6}.
+\]
+$3a + 2b = 7$, $2a + 2b = 6$ を引き算して $a = 1$、$b = 2$。
+当てはめた曲線は $y = 1 + 2x^2$ である。
+検算:予測値は $3, 1, 3$、残差は $(-1, 0, 1)$ で、
+$A$ の第 $1$ 列 $(1,1,1)$ とも第 $2$ 列 $(1,0,1)$ とも内積 $0$。
+\end{rei}
+
+\begin{rei}[例題・標準(正射影行列)]\label{rei:lsq-projmat-ex}
+$A = \mat{1 \\ 1 \\ 1}$ に対する正射影行列 $P$ を求め、
+$P\vect{b}$($\vect{b} = {}^t(1, 2, 4)$)を計算せよ。\\
+\textbf{解.}\ ${}^t\!AA = 3$ より
+\[
+P = A \cdot \frac{1}{3} \cdot {}^t\!A
+= \frac{1}{3}\mat{1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1}.
+\]
+${}^t\!P = P$ は見た目から明らか、$P^2 = P$ も
+(各成分を計算すると $\frac{1}{9} \times 3 = \frac{1}{3}$)確かめられる。
+$\vect{b} = {}^t(1, 2, 4)$ に施すと
+\[
+P\vect{b} = \frac{1}{3}\mat{7 \\ 7 \\ 7}
+\]
+――すべての成分が\textbf{平均 $7/3$} のベクトルになる。
+例題 \ref{rei:lsq-mean} の「平均は最小二乗解」を、
+「$\vect{b}$ を対角線方向 $\vect{1}$ の直線に正射影すると
+平均のベクトルになる」と言い換えたことになる。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:${}^t\!AA$ と $A$ の核は一致する)]\label{rei:lsq-kernel}
+任意の $m \times n$ 行列 $A$ について
+$\mathrm{Ker}({}^t\!AA) = \mathrm{Ker}\,A$ を示し、
+$\mathrm{rank}({}^t\!AA) = \mathrm{rank}\,A$ を導け。\\
+\textbf{解.}\ $A\vect{x} = \vect{0}$ なら
+${}^t\!AA\vect{x} = {}^t\!A\vect{0} = \vect{0}$ だから
+$\mathrm{Ker}\,A \subseteq \mathrm{Ker}({}^t\!AA)$。
+逆に ${}^t\!AA\vect{x} = \vect{0}$ なら、左から ${}^t\vect{x}$ を掛けて
+\[
+0 = {}^t\vect{x}\,{}^t\!AA\vect{x} = \|A\vect{x}\|^2
+\]
+より $A\vect{x} = \vect{0}$(ノルムの正値性)。よって両者は一致する。
+${}^t\!AA$ も $A$ も列の本数は $n$ だから、次元定理
+(定理 \ref{thm:dimension})より
+\[
+\mathrm{rank}({}^t\!AA) = n - \dim\mathrm{Ker}({}^t\!AA)
+= n - \dim\mathrm{Ker}\,A = \mathrm{rank}\,A.
+\]
+「${}^t\!A$ を掛けても階数の情報は失われない」――この事実は
+次章以降(QR分解・特異値分解)でもくり返し効いてくる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{最小二乗問題}:$A\vect{x} = \vect{b}$ が解けないとき、
+残差のノルム $\|\vect{b} - A\vect{x}\|$ を最小にする $\vect{x}$ を探す。
+答えは「$\vect{b}$ を $W = \mathrm{Im}\,A$ に正射影せよ」
+(第V部の最良近似)。
+\item 最小二乗解 $\iff$ \textbf{正規方程式} ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$
+(定理 \ref{thm:lsq-normal})。正規方程式は必ず解をもち、
+$A$ の列が線形独立なら解はただ一つ
+$\vect{x}^* = ({}^t\!AA)^{-1}{}^t\!A\vect{b}$。
+\item 残差 $\vect{b} - A\vect{x}^*$ は $\mathrm{Im}\,A$ と\textbf{直交}する
+(検算にも使える)。回帰直線・多項式当てはめなど、
+\textbf{パラメータについて線形}なモデルはすべてこの枠組みで解ける。
+\item \textbf{正射影行列} $P = A({}^t\!AA)^{-1}{}^t\!A$ は
+$\vect{b} \mapsto \vect{b}_W$ を与え、${}^t\!P = P$, $P^2 = P$ を満たす
+(定理 \ref{thm:lsq-projmat})。
+\item 列が線形従属なら最小二乗解は無数にある(反例 \ref{hanrei:lsq-dependent})。
+また回帰直線は $y$ 方向の残差を最小化するもので、$x$ と $y$ の
+役割を入れ替えると別の直線になる(反例 \ref{hanrei:lsq-swap})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:lsq-ex1}
+一つの量を $3$ 回測定して $2, 3, 7$ を得た。解のない連立方程式
+「$x = 2$, $x = 3$, $x = 7$」の最小二乗解を正規方程式で求め、
+残差ベクトルの成分の和が $0$ になることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:lsq-ex2}
+データ $(0, 0), (1, 2), (2, 3)$ に直線 $y = a + bx$ を
+最小二乗法で当てはめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:lsq-ex3}
+連立方程式
+\[
+x + y = 1, \qquad x - y = 1, \qquad x + y = 3
+\]
+は解をもたない。最小二乗解を求め、残差ベクトルが係数行列の
+$2$ つの列と直交することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:lsq-ex4}
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{1 \\ 2 \\ 3}$ について
+正規方程式を解き、得られた $\vect{x}^*$ が $A\vect{x} = \vect{b}$ の
+\textbf{厳密な}解になっている(残差が $\vect{0}$)ことを確かめよ。
+データの言葉でいえば、$3$ 点 $(0,1), (1,2), (2,3)$ が
+一直線上に並んでいる場合である。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex5}
+データ $(0, 0), (1, 1), (2, 3), (3, 4)$ に直線 $y = a + bx$ を
+最小二乗法で当てはめ、残差ベクトルを求めて検算せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex6}
+$A = \mat{1 & 0 \\ 0 & 1 \\ 1 & 1}$(例題 \ref{rei:lsq-resid} の行列)への
+正射影行列 $P = A({}^t\!AA)^{-1}{}^t\!A$ を求め、
+${}^t\!P = P$ と $P^2 = P$ を確かめよ。さらに
+$P\mat{1 \\ 1 \\ 1}$ が例題 \ref{rei:lsq-resid} の $A\vect{x}^*$ と
+一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex7}
+問 \ref{q:lsq} のデータ $(0, 0), (1, 1), (2, 1)$ について、今度は
+$x$ と $y$ の役割を入れ替え、$x = c + dy$ を最小二乗法で当てはめよ。
+得られる直線を $y$ について解いた形に直し、問 \ref{q:lsq} の
+回帰直線 $y = \dfrac{1}{6} + \dfrac{1}{2}x$ と比較せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex8}
+原点を通る直線 $y = kx$ をデータ $(1, 2), (2, 3), (3, 4)$ に
+最小二乗法で当てはめよ(未知数は $k$ の一つだけである)。
+また、残差ベクトルが $\mat{1 \\ 2 \\ 3}$ と直交することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:lsq-ex9}
+$A = \mat{1 & 2 \\ 2 & 4 \\ 0 & 0}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$ について、\\
+　(1) 正規方程式を書き下し、最小二乗解の全体が直線
+$x + 2y = \dfrac{3}{5}$ になることを示せ。\\
+　(2) その中でノルム $\|(x, y)\|$ が最小のものを求めよ
+(この「ノルム最小の最小二乗解」が第 \ref{chap:pinv} 章の主役になる)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:lsq-ex10}
+データ $(x_1, y_1), \dots, (x_m, y_m)$ への直線 $y = a + bx$ の
+当てはめを一般に考える。
+$S_x = \sum x_i$, $S_y = \sum y_i$, $S_{xx} = \sum x_i^2$,
+$S_{xy} = \sum x_i y_i$ とおくとき、正規方程式が
+\[
+\mat{m & S_x \\ S_x & S_{xx}}\mat{a \\ b} = \mat{S_y \\ S_{xy}}
+\]
+となることを示し、$m S_{xx} - S_x^2 \neq 0$ のとき
+\[
+b = \frac{m S_{xy} - S_x S_y}{m S_{xx} - S_x^2}, \qquad
+a = \bar{y} - b\bar{x}
+\quad \left(\bar{x} = \frac{S_x}{m},\ \bar{y} = \frac{S_y}{m}\right)
+\]
+を導け(統計学の教科書に載っている回帰係数の公式である)。
+問 \ref{q:lsq} のデータで検算せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:lsq-ex11}
+任意の $m \times n$ 行列 $A$ について、${}^t\!AA$ は対称かつ半正定値
+(第V部)であることを示せ。さらに、${}^t\!AA$ が正定値であることと
+$A$ の列が線形独立であることが同値であることを示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:lsq-ex12}
+$W = \mathrm{Im}\,A$ とし、$\vect{b} = \vect{b}_W + \vect{b}_{\perp}$ を
+直交分解(定理 \ref{thm:gs-decomp})とする。任意の $\vect{x}$ に対して
+\[
+\|\vect{b} - A\vect{x}\|^2 = \|\vect{b}_{\perp}\|^2 + \|\vect{b}_W - A\vect{x}\|^2
+\]
+が成り立つことを示し、最小二乗解の全体が
+「$A\vect{x} = \vect{b}_W$ の解の全体」と一致することを結論せよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:lsq-ex1}}:$A = {}^t(1, 1, 1)$。正規方程式は
+$3x = (\text{測定値の和})$。
+\item \textbf{問 \ref{q:lsq-ex2}}:${}^t\!AA$, ${}^t\!A\vect{b}$ を作って
+$2$ 元連立を解く。例題 \ref{rei:lsq-line} と同じ手順。
+\item \textbf{問 \ref{q:lsq-ex3}}:$A = \mat{1 & 1 \\ 1 & -1 \\ 1 & 1}$,
+$\vect{b} = {}^t(1, 1, 3)$ とおいて正規方程式。
+\item \textbf{問 \ref{q:lsq-ex4}}:正規方程式を解くと残差が $\vect{0}$ になる。
+「解があるときは最小二乗解 $=$ 通常の解」の確認である。
+\item \textbf{問 \ref{q:lsq-ex5}}:${}^t\!AA = \mat{4 & 6 \\ 6 & 14}$。
+残差の成分の和と、$x$ 座標との内積がともに $0$ なら検算完了。
+\item \textbf{問 \ref{q:lsq-ex6}}:$({}^t\!AA)^{-1} = \dfrac{1}{3}
+\mat{2 & -1 \\ -1 & 2}$。$P$ は $3$ 次正方行列になる。
+\item \textbf{問 \ref{q:lsq-ex7}}:データを $(y, x)$ の組と読み替えて
+同じ手順を踏む。傾きの逆数にはならないことに注意。
+\item \textbf{問 \ref{q:lsq-ex8}}:$A = {}^t(1, 2, 3)$ で ${}^t\!AA = 14$。
+正規方程式は $1$ 本である。
+\item \textbf{問 \ref{q:lsq-ex9}}:列が従属なので反例
+\ref{hanrei:lsq-dependent} と同じ状況。(2) は原点から直線への垂線の足。
+\item \textbf{問 \ref{q:lsq-ex10}}:$A$ の第 $i$ 行は $(1, x_i)$。
+${}^t\!AA$ の成分を書き出すだけである。$b$ はクラメルの公式(第II部)か
+消去法で。
+\item \textbf{問 \ref{q:lsq-ex11}}:対称性は転置の規則。
+${}^t\vect{x}({}^t\!AA)\vect{x} = \|A\vect{x}\|^2$ が鍵
+(例題 \ref{rei:lsq-kernel} と同じ計算)。
+\item \textbf{問 \ref{q:lsq-ex12}}:$\vect{b} - A\vect{x} =
+\vect{b}_{\perp} + (\vect{b}_W - A\vect{x})$ と分けてピタゴラス
+(定理 \ref{thm:inner-pyth})。等号成立の条件を読む。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{QR分解 ― グラム・シュミットの行列表現}\label{chap:qr}

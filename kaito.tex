@@ -7436,6 +7436,165 @@ $\mat{-1/6 \\ 1/3 \\ -1/6}$ で、成分の和は $0$、
 すなわち $\vect{1}$ と直交している。
 
 \bigskip
+\noindent\textbf{問 \ref{q:lsq-ex1}}\quad
+$A = \mat{1 \\ 1 \\ 1}$, $\vect{b} = \mat{2 \\ 3 \\ 7}$ で
+${}^t\!AA = 3$, ${}^t\!A\vect{b} = 12$。正規方程式 $3x = 12$ より
+$x^* = 4$(測定値の平均)。残差は
+$\mat{2 - 4 \\ 3 - 4 \\ 7 - 4} = \mat{-2 \\ -1 \\ 3}$ で、
+成分の和は $-2 - 1 + 3 = 0$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex2}}\quad
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{0 \\ 2 \\ 3}$ より
+\[
+{}^t\!AA = \mat{3 & 3 \\ 3 & 5}, \qquad {}^t\!A\vect{b} = \mat{5 \\ 8}.
+\]
+$3a + 3b = 5$, $3a + 5b = 8$ を引き算して $2b = 3$、
+$b = \dfrac{3}{2}$, $a = \dfrac{1}{6}$。回帰直線は
+$y = \dfrac{1}{6} + \dfrac{3}{2}x$。
+(検算:予測値 $\dfrac{1}{6}, \dfrac{5}{3}, \dfrac{19}{6}$、残差
+$\mat{-1/6 \\ 1/3 \\ -1/6}$ の成分の和は $0$。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex3}}\quad
+$A = \mat{1 & 1 \\ 1 & -1 \\ 1 & 1}$, $\vect{b} = \mat{1 \\ 1 \\ 3}$ より
+\[
+{}^t\!AA = \mat{3 & 1 \\ 1 & 3}, \qquad {}^t\!A\vect{b} = \mat{5 \\ 3}.
+\]
+$3x + y = 5$, $x + 3y = 3$ を解いて $x = \dfrac{3}{2}$, $y = \dfrac{1}{2}$。
+このとき $A\vect{x}^* = \mat{2 \\ 1 \\ 2}$、残差は
+$\vect{r} = \mat{-1 \\ 0 \\ 1}$。第 $1$ 列との内積は $-1 + 0 + 1 = 0$、
+第 $2$ 列との内積は $-1 - 0 + 1 = 0$ で、確かに直交している。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex4}}\quad
+${}^t\!AA = \mat{3 & 3 \\ 3 & 5}$,
+${}^t\!A\vect{b} = \mat{6 \\ 8}$。$3a + 3b = 6$, $3a + 5b = 8$ より
+$b = 1$, $a = 1$。$A\vect{x}^* = \mat{1 \\ 2 \\ 3} = \vect{b}$ で
+残差は $\vect{0}$:$3$ 点が直線 $y = 1 + x$ の上に厳密に乗っているので、
+最小二乗解は通常の解と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex5}}\quad
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2 \\ 1 & 3}$,
+$\vect{b} = \mat{0 \\ 1 \\ 3 \\ 4}$ より
+\[
+{}^t\!AA = \mat{4 & 6 \\ 6 & 14}, \qquad {}^t\!A\vect{b} = \mat{8 \\ 19}.
+\]
+$4a + 6b = 8$ の $3$ 倍から $6a + 14b = 19$ の $2$ 倍を引くと
+$18b - 28b = 24 - 38$、$b = \dfrac{7}{5}$、
+$a = \dfrac{8 - 6 \cdot 7/5}{4} = -\dfrac{1}{10}$。回帰直線は
+$y = -\dfrac{1}{10} + \dfrac{7}{5}x$。予測値は
+$-\dfrac{1}{10}, \dfrac{13}{10}, \dfrac{27}{10}, \dfrac{41}{10}$、残差は
+$\dfrac{1}{10}{}^t(1,\ -3,\ 3,\ -1)$。成分の和は $0$、$x$ 座標との内積も
+$\dfrac{1}{10}(0 - 3 + 6 - 3) = 0$ で検算が通る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex6}}\quad
+$({}^t\!AA)^{-1} = \dfrac{1}{3}\mat{2 & -1 \\ -1 & 2}$ より
+\[
+P = A({}^t\!AA)^{-1}{}^t\!A
+= \frac{1}{3}\mat{2 & -1 \\ -1 & 2 \\ 1 & 1}\mat{1 & 0 & 1 \\ 0 & 1 & 1}
+= \frac{1}{3}\mat{2 & -1 & 1 \\ -1 & 2 & 1 \\ 1 & 1 & 2}.
+\]
+${}^t\!P = P$ は成分の対称性から明らか。$P^2$ の $(1,1)$ 成分は
+$\dfrac{1}{9}(4 + 1 + 1) = \dfrac{2}{3}$ など、全成分を計算すると
+$P^2 = P$ が確かめられる。また
+\[
+P\mat{1 \\ 1 \\ 1} = \frac{1}{3}\mat{2 \\ 2 \\ 4} = \mat{2/3 \\ 2/3 \\ 4/3}
+\]
+で、例題の $A\vect{x}^* = {}^t(2/3,\ 2/3,\ 4/3)$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex7}}\quad
+$(y, x)$ の組は $(0, 0), (1, 1), (1, 2)$。
+$A' = \mat{1 & 0 \\ 1 & 1 \\ 1 & 1}$, $\vect{b}' = \mat{0 \\ 1 \\ 2}$ より
+\[
+{}^t\!A'A' = \mat{3 & 2 \\ 2 & 2}, \qquad {}^t\!A'\vect{b}' = \mat{3 \\ 3}.
+\]
+$3c + 2d = 3$, $2c + 2d = 3$ を引き算して $c = 0$、$d = \dfrac{3}{2}$。
+よって $x = \dfrac{3}{2}y$、$y$ について解くと $y = \dfrac{2}{3}x$。
+問 \ref{q:lsq} の $y = \dfrac{1}{6} + \dfrac{1}{2}x$ とは
+切片も傾きも異なる:最小化する残差の向き($y$ 方向か $x$ 方向か)が
+違うからである(反例 \ref{hanrei:lsq-swap})。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex8}}\quad
+$A = \mat{1 \\ 2 \\ 3}$, $\vect{b} = \mat{2 \\ 3 \\ 4}$ で
+${}^t\!AA = 14$, ${}^t\!A\vect{b} = 2 + 6 + 12 = 20$。
+正規方程式 $14k = 20$ より $k = \dfrac{10}{7}$、直線は
+$y = \dfrac{10}{7}x$。残差は
+\[
+\vect{b} - kA = \mat{2 - 10/7 \\ 3 - 20/7 \\ 4 - 30/7}
+= \frac{1}{7}\mat{4 \\ 1 \\ -2}
+\]
+で、$\mat{1 \\ 2 \\ 3}$ との内積は $\dfrac{1}{7}(4 + 2 - 6) = 0$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex9}}\quad
+　(1) ${}^t\!AA = \mat{5 & 10 \\ 10 & 20}$,
+${}^t\!A\vect{b} = \mat{3 \\ 6}$ で、正規方程式は
+$5x + 10y = 3$ と $10x + 20y = 6$ ――同じ式が $2$ 本並んでいるだけであり、
+最小二乗解の全体は直線 $x + 2y = \dfrac{3}{5}$ である
+($A$ の列が従属なので一意に定まらない)。\\
+　(2) 直線 $x + 2y = \dfrac{3}{5}$ 上で原点に最も近い点は、
+法線方向 $t\mat{1 \\ 2}$ との交点である:$t + 4t = \dfrac{3}{5}$ より
+$t = \dfrac{3}{25}$、求める点は
+$\mat{3/25 \\ 6/25}$(ノルムは $\dfrac{3}{25}\sqrt{5}$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex10}}\quad
+$A$ の第 $i$ 行は $(1,\ x_i)$ だから
+\[
+{}^t\!AA = \mat{\sum 1 & \sum x_i \\ \sum x_i & \sum x_i^2}
+= \mat{m & S_x \\ S_x & S_{xx}}, \qquad
+{}^t\!A\vect{b} = \mat{\sum y_i \\ \sum x_i y_i} = \mat{S_y \\ S_{xy}}.
+\]
+第 $1$ 式 $ma + S_x b = S_y$ を $m$ で割ると $a = \bar{y} - b\bar{x}$。
+これを第 $2$ 式 $S_x a + S_{xx} b = S_{xy}$ に代入して
+\[
+S_x(\bar{y} - b\bar{x}) + S_{xx}b = S_{xy}
+\quad\Longrightarrow\quad
+b\left(S_{xx} - \frac{S_x^2}{m}\right) = S_{xy} - \frac{S_x S_y}{m},
+\]
+両辺を $m$ 倍して $b = \dfrac{m S_{xy} - S_x S_y}{m S_{xx} - S_x^2}$ を得る。
+問 \ref{q:lsq} のデータでは $m = 3$, $S_x = 3$, $S_y = 2$,
+$S_{xx} = 5$, $S_{xy} = 3$ だから
+$b = \dfrac{9 - 6}{15 - 9} = \dfrac{1}{2}$,
+$a = \dfrac{2}{3} - \dfrac{1}{2} \cdot 1 = \dfrac{1}{6}$ で、
+確かに $y = \dfrac{1}{6} + \dfrac{1}{2}x$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex11}}\quad
+\textbf{対称性}:${}^t({}^t\!AA) = {}^t\!A\,{}^t({}^t\!A) = {}^t\!AA$。
+\textbf{半正定値}:任意の $\vect{x}$ に対し
+\[
+{}^t\vect{x}({}^t\!AA)\vect{x} = {}^t(A\vect{x})(A\vect{x})
+= \|A\vect{x}\|^2 \ge 0.
+\]
+\textbf{正定値 $\iff$ 列が線形独立}:
+上式より、正定値とは「$\vect{x} \neq \vect{0}$ ならば
+$\|A\vect{x}\|^2 > 0$、すなわち $A\vect{x} \neq \vect{0}$」ということ。
+これは $\mathrm{Ker}\,A = \{\vect{0}\}$、すなわち $A$ の列が
+線形独立であることと同値である(第III部)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex12}}\quad
+$\vect{b} - A\vect{x} = \vect{b}_{\perp} + (\vect{b}_W - A\vect{x})$ と
+分解する。$\vect{b}_{\perp} \in W^{\perp}$、
+$\vect{b}_W - A\vect{x} \in W$($W$ は部分空間で $A\vect{x} \in W$)だから
+両者は直交し、ピタゴラスの定理より
+\[
+\|\vect{b} - A\vect{x}\|^2
+= \|\vect{b}_{\perp}\|^2 + \|\vect{b}_W - A\vect{x}\|^2.
+\]
+右辺第 $1$ 項は $\vect{x}$ によらない定数だから、左辺が最小になるのは
+第 $2$ 項が最小、すなわち $\|\vect{b}_W - A\vect{x}\| = 0$ が達成できる
+ときで、その条件は $A\vect{x} = \vect{b}_W$。
+$\vect{b}_W \in \mathrm{Im}\,A$ よりこの方程式は解をもつので、
+最小二乗解の全体は「$A\vect{x} = \vect{b}_W$ の解の全体」に一致する。
+
+\bigskip
 \noindent\textbf{問 \ref{q:qr}}\quad
 問 \ref{q:gs} より
 $\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
