@@ -8193,6 +8193,145 @@ $\vect{v} = f_1(\vect{v})\vect{v}_1 + f_2(\vect{v})\vect{v}_2$ となる
 「座標読み取り装置」である。)
 
 \bigskip
+\noindent\textbf{問 \ref{q:dual-ex1}}\quad
+行ベクトルは $\mat{3 & -2}$。
+\[
+f(\vect{u}) = 3 - 4 = -1, \qquad f(\vect{v}) = -3 - 2 = -5.
+\]
+$\vect{u} + \vect{v} = {}^t(0, 3)$ より
+$f(\vect{u} + \vect{v}) = 0 - 6 = -6 = (-1) + (-5)
+= f(\vect{u}) + f(\vect{v})$ で、線形性が確かめられる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex2}}\quad
+$g_1$ の条件は $g_1(\vect{v}_1) = 2a + b = 1$,
+$g_1(\vect{v}_2) = a + b = 0$。引き算して $a = 1$, $b = -1$。
+$g_2$ は $2a + b = 0$, $a + b = 1$ より $a = -1$, $b = 2$。
+\[
+g_1(x, y) = x - y, \qquad g_2(x, y) = -x + 2y.
+\]
+(検算:$P = \mat{2 & 1 \\ 1 & 1}$ の逆行列
+$P^{-1} = \mat{1 & -1 \\ -1 & 2}$ の行と一致する。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex3}}\quad
+$V^{*}$ の基底 $\{\mathrm{ev}_0, \mathrm{ev}_1\}$ は
+基底 $\{p_1, p_2\} = \{1 - x,\ x\}$ の双対基底だから、展開公式より
+$I = I(p_1)\,\mathrm{ev}_0 + I(p_2)\,\mathrm{ev}_1$。係数は
+\[
+I(1 - x) = \int_0^1 (1 - x)\,dx = \frac{1}{2}, \qquad
+I(x) = \int_0^1 x\,dx = \frac{1}{2}
+\]
+なので $I = \dfrac{1}{2}\mathrm{ev}_0 + \dfrac{1}{2}\mathrm{ev}_1$、
+すなわち $\displaystyle\int_0^1 p(x)\,dx = \frac{p(0) + p(1)}{2}$。
+台形公式が「$1$ 次式に対しては厳密に正しい」ことの双対空間による説明である。
+(検算:$p = a + bx$ で左辺 $= a + \dfrac{b}{2}$、右辺
+$= \dfrac{a + (a + b)}{2} = a + \dfrac{b}{2}$。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex4}}\quad
+$\mathrm{tr}(A + B) = (a_{11} + b_{11}) + (a_{22} + b_{22})
+= \mathrm{tr}\,A + \mathrm{tr}\,B$、
+$\mathrm{tr}(cA) = c\,a_{11} + c\,a_{22} = c\,\mathrm{tr}\,A$ で線形形式である。
+係数は
+\[
+\mathrm{tr}(E_{11}) = 1, \quad \mathrm{tr}(E_{12}) = 0, \quad
+\mathrm{tr}(E_{21}) = 0, \quad \mathrm{tr}(E_{22}) = 1
+\]
+(「行ベクトル」は $\mat{1 & 0 & 0 & 1}$)。また
+$\mathrm{tr}\mat{3 & 5 \\ 2 & 7} = 3 + 7 = 10$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex5}}\quad
+$P = \mat{1 & 0 & 1 \\ 1 & 1 & 0 \\ 0 & 1 & 1}$ の逆行列を掃き出しで求めると
+($\det P = 2$)
+\[
+P^{-1} = \frac{1}{2}\mat{1 & 1 & -1 \\ -1 & 1 & 1 \\ 1 & -1 & 1}.
+\]
+その行を読んで
+\[
+g_1(x, y, z) = \frac{x + y - z}{2}, \quad
+g_2(x, y, z) = \frac{-x + y + z}{2}, \quad
+g_3(x, y, z) = \frac{x - y + z}{2}.
+\]
+検算:$g_1(\vect{v}_1) = \dfrac{1 + 1 - 0}{2} = 1$,
+$g_1(\vect{v}_2) = \dfrac{0 + 1 - 1}{2} = 0$,
+$g_1(\vect{v}_3) = \dfrac{1 + 0 - 1}{2} = 0$ など、すべて条件を満たす。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex6}}\quad
+直接計算では
+\[
+(g \circ f)(x, y) = g(x + y,\ y) = 2(x + y) + 3y = 2x + 5y.
+\]
+一方 ${}^t\!A\mat{2 \\ 3} = \mat{1 & 0 \\ 1 & 1}\mat{2 \\ 3}
+= \mat{2 \\ 5}$ で、係数 $2x + 5y$ と一致する
+(行ベクトルなら $\mat{2 & 3}A = \mat{2 & 5}$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex7}}\quad
+$p_{-1}$ は $x = 0, 1$ で零だから $c\,x(x - 1)$ の形。
+$x = -1$ で $1$ になるように $c \cdot (-1)(-2) = 2c = 1$、
+$c = \dfrac{1}{2}$。他も同様に
+\[
+p_{-1}(x) = \frac{x(x - 1)}{2}, \qquad p_0(x) = 1 - x^2, \qquad
+p_1(x) = \frac{x(x + 1)}{2}.
+\]
+検算:$p_0(-1) = 0$, $p_0(0) = 1$, $p_0(1) = 0$;
+$p_1(-1) = 0$, $p_1(0) = 0$, $p_1(1) = 1$。任意の $p \in \R[x]_2$ は
+$p = p(-1)p_{-1} + p(0)p_0 + p(1)p_1$ と復元される
+(ラグランジュ補間)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex8}}\quad
+問 \ref{q:dual} の双対基底 $f_1(x, y) = \dfrac{x + y}{2}$,
+$f_2(x, y) = \dfrac{x - y}{2}$ で展開すると(定理 \ref{thm:dual-basis})
+\[
+f = f(\vect{v}_1)f_1 + f(\vect{v}_2)f_2 = 3f_1 + f_2
+= \frac{3(x + y) + (x - y)}{2} = 2x + y.
+\]
+検算:$f(1, 1) = 3$, $f(1, -1) = 2 - 1 = 1$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex9}}\quad
+$f = ax + by + cz$ が $W$ 上で零になる条件は、生成元での値
+\[
+f\,{}^t(1, 1, 0) = a + b = 0, \qquad f\,{}^t(0, 1, 1) = b + c = 0
+\]
+だけでよい($W$ の元は生成元の線形結合だから)。$b = -a$, $c = a$ より
+\[
+W^{0} = \{\, a(x - y + z) \mid a \in \R \,\} = \langle x - y + z \rangle
+\]
+で $\dim W^{0} = 1 = 3 - 2 = \dim V - \dim W$。
+(一般にも、$W$ の基底を $V$ の基底に延長すれば、$f \in W^{0}$ は
+延長分 $n - k$ 本での値だけが自由なので $\dim W^{0} = n - k$ となる。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex10}}\quad
+($\Rightarrow$)$c_1\vect{v}_1 + \cdots + c_k\vect{v}_k = \vect{0}$ とする。
+両辺に $f_i$ を施すと、線形性と $f_i(\vect{v}_j) = \delta$ 型の条件から
+\[
+0 = f_i(\vect{0}) = c_1 f_i(\vect{v}_1) + \cdots + c_k f_i(\vect{v}_k) = c_i.
+\]
+すべての $c_i = 0$ となるので線形独立である。
+
+($\Leftarrow$)$\vect{v}_1, \dots, \vect{v}_k$ が線形独立なら、基底
+$\vect{v}_1, \dots, \vect{v}_k, \vect{u}_{k+1}, \dots, \vect{u}_n$ に
+延長できる(定理 \ref{thm:dim-extend})。その双対基底の最初の $k$ 個
+$f_1, \dots, f_k$ が求める線形形式である。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex11}}\quad
+$\mathrm{Im}\,f$ は $\R$ の部分空間であり、$\R$ は $1$ 次元だから
+部分空間は $\{0\}$ か $\R$ 自身しかない(定理 \ref{thm:dim-sub})。
+$f$ は零形式でないので $f(\vect{v}) \neq 0$ となる $\vect{v}$ が存在し、
+$\mathrm{Im}\,f \neq \{0\}$、よって $\mathrm{Im}\,f = \R$ で
+$\dim \mathrm{Im}\,f = 1$。次元定理(定理 \ref{thm:dimension})より
+\[
+\dim \mathrm{Ker}\,f = \dim V - \dim \mathrm{Im}\,f = n - 1. \qquad\blacksquare
+\]
+
+\bigskip
 \noindent\textbf{問 \ref{q:quot}}\quad
 $x - y = 0$ かつ $y - z = 0$ より $x = y = z$、すなわち
 $\mathrm{Ker}\,f = \langle \mat{1 \\ 1 \\ 1} \rangle$(次元 $1$)。
@@ -8200,6 +8339,128 @@ $\mathrm{Ker}\,f = \langle \mat{1 \\ 1 \\ 1} \rangle$(次元 $1$)。
 $f(x,y,z) = \mat{p \\ q}$ を満たすので全射、
 $\mathrm{Im}\,f = \R^2$(次元 $2$)。準同型定理の両辺は
 $\dim(\R^3/\mathrm{Ker}\,f) = 3 - 1 = 2 = \dim \mathrm{Im}\,f$ で一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex1}}\quad
+(1) 差は $\mat{5 \\ 3} - \mat{1 \\ 1} = \mat{4 \\ 2} = 2\mat{2 \\ 1} \in W$
+なので\textbf{一致する}。
+(2) 差は $\mat{3 \\ 1} - \mat{0 \\ 1} = \mat{3 \\ 0}$。
+$t\mat{2 \\ 1}$ の形なら $t = \dfrac{3}{2}$ かつ $t = 0$ が必要で不可能。
+よって\textbf{一致しない}。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex2}}\quad
+$\dim(V/W) = \dim V - \dim W = 3 - 1 = 2$。差は
+\[
+\mat{2 \\ 1 \\ 3} - \mat{1 \\ 1 \\ 2} = \mat{1 \\ 0 \\ 1} \in W
+\]
+なので同じ類である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex3}}\quad
+$\mathrm{Ker}\,A$ は $2x + y = 0$ の解空間
+$\langle \mat{1 \\ -2} \rangle$。特殊解 ${}^t(2, 0)$ を使えば、解集合は
+\[
+\mat{2 \\ 0} + \mathrm{Ker}\,A
+\]
+という $\R^2/\mathrm{Ker}\,A$ の一つの類である。
+${}^t(2, 0) - {}^t(0, 4) = {}^t(2, -4) = 2\,{}^t(1, -2) \in \mathrm{Ker}\,A$
+だから、二つの特殊解は同じ類を定める。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex4}}\quad
+$p(0) = 0$ を満たす $1$ 次以下の多項式は $bx$ の形なので
+$W = \langle x \rangle$(基底 $\{x\}$、次元 $1$)。よって
+$\dim(V/W) = 2 - 1 = 1$。また $(x + 2) - 2 = x \in W$ より
+$(x + 2) + W = 2 + W$。
+(一般に $p + W = p(0)(1 + W)$:類を決めるのは定数項だけである。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex5}}\quad
+$\dim(V/W) = 3 - 2 = 1$。
+$\mat{3 \\ 2 \\ 1} - c\vect{e}_1 = a\mat{1 \\ 1 \\ 0} + b\mat{0 \\ 1 \\ 1}$
+とすると、第 $3$ 成分から $b = 1$、第 $2$ 成分から $a + b = 2$ より
+$a = 1$、第 $1$ 成分から $a = 3 - c$ より $c = 2$。よって
+\[
+\mat{3 \\ 2 \\ 1} + W = 2(\vect{e}_1 + W).
+\]
+検算:$\mat{3 \\ 2 \\ 1} - \mat{2 \\ 0 \\ 0} = \mat{1 \\ 2 \\ 1}
+= \mat{1 \\ 1 \\ 0} + \mat{0 \\ 1 \\ 1} \in W$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex6}}\quad
+代表に $t\,{}^t(1, 1)$ を加えて値の変化を見る。
+$F$:$(x + t) - (y + t) = x - y$ で変わらないから well-defined。
+線形性は
+\[
+F\bigl((\vect{u} + W) + (\vect{v} + W)\bigr)
+= (x_1 + x_2) - (y_1 + y_2) = F(\vect{u} + W) + F(\vect{v} + W)
+\]
+とスカラー倍の同様の計算で確かめられる。
+$G$:$(x + t) + (y + t) = x + y + 2t$ で値が変わる。実例として
+$\mat{1 \\ 0} + W = \mat{0 \\ -1} + W$(差 ${}^t(1,1) \in W$)なのに
+$G$ の値は $1$ と $-1$ で異なる。よって well-defined でない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex7}}\quad
+$x - 2y = 0$ より $\mathrm{Ker}\,f = \langle \mat{2 \\ 1} \rangle$
+(次元 $1$)。$f(1, 0) = 1 \neq 0$ だから $\mathrm{Im}\,f = \R$
+(次元 $1$)。準同型定理の両辺の次元は
+$\dim(\R^2/\mathrm{Ker}\,f) = 2 - 1 = 1 = \dim \mathrm{Im}\,f$ で一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex8}}\quad
+$\dim(V/W) = 4 - 3 = 1$。差を計算すると
+\[
+A - K = \mat{1 & 2 \\ 0 & 1} - \mat{0 & 1 \\ -1 & 0}
+= \mat{1 & 1 \\ 1 & 1}
+\]
+は対称行列、すなわち $A - K \in W$。よって $A + W = K + W$ である。
+(任意の行列は対称部分 $+$ 交代部分に分かれるから、類を決めるのは
+交代部分だけであり、$V/W$ は $\{K + W\}$ を基底とする $1$ 次元になる。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex9}}\quad
+$p' = 0$ となる $2$ 次以下の多項式は定数だけなので
+$\mathrm{Ker}\,D = \{\text{定数}\}$(次元 $1$)。
+$D(a + bx + cx^2) = b + 2cx$ で $b, 2c$ は任意の実数を動くから
+$\mathrm{Im}\,D = \R[x]_1$(次元 $2$)。準同型定理より
+\[
+\R[x]_2/\{\text{定数}\} \;\cong\; \R[x]_1,
+\qquad 3 - 1 = 2 \text{ で次元も一致}.
+\]
+対応:$q \in \R[x]_1$ の原始関数の全体($D$ の逆像)は、一つの特殊解
+$p_0$ に対して $p_0 + \{\text{定数}\}$ という\textbf{一つの類}である。
+「原始関数は積分定数 $C$ の差を除いて一意」とは、
+「原始関数の全体が商空間 $\R[x]_2/\{\text{定数}\}$ のただ一つの類を
+なす」ことの言い換えであり、$C$ は類の中で代表を動かす自由度である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex10}}\quad
+(i) $W$ は部分空間だから $\vect{0} \in W$ であり、
+$\vect{v} - \vect{v} = \vect{0} \in W$。よって $\vect{v} \sim \vect{v}$。
+(ii) $\vect{u} - \vect{v} \in W$ なら、スカラー倍で閉じることから
+$(-1)(\vect{u} - \vect{v}) = \vect{v} - \vect{u} \in W$。よって
+$\vect{v} \sim \vect{u}$。
+(iii) $\vect{u} - \vect{v} \in W$ かつ $\vect{v} - \vect{w} \in W$ なら、
+和で閉じることから
+$(\vect{u} - \vect{v}) + (\vect{v} - \vect{w}) = \vect{u} - \vect{w} \in W$。
+よって $\vect{u} \sim \vect{w}$。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:quot-ex11}}\quad
+\textbf{well-defined 性}:$\vect{v} + W = \vect{v}' + W$ とすると
+$\vect{v} - \vect{v}' \in W \subseteq \mathrm{Ker}\,f$ だから
+$f(\vect{v}) - f(\vect{v}') = f(\vect{v} - \vect{v}') = \vect{0}$、
+すなわち $f(\vect{v}) = f(\vect{v}')$。値は代表の取り方によらない。
+\textbf{線形性}:類の演算の定義と $f$ の線形性から
+\[
+\bar{f}\bigl((\vect{u} + W) + (\vect{v} + W)\bigr)
+= f(\vect{u} + \vect{v}) = f(\vect{u}) + f(\vect{v})
+= \bar{f}(\vect{u} + W) + \bar{f}(\vect{v} + W),
+\]
+$\bar{f}\bigl(c(\vect{v} + W)\bigr) = f(c\vect{v}) = c f(\vect{v})
+= c\,\bar{f}(\vect{v} + W)$。 $\blacksquare$
 
 \bigskip
 \noindent\textbf{問 \ref{q:tensor}}\quad
@@ -8211,6 +8472,139 @@ ac = 1, \qquad ad = 0, \qquad bc = 0, \qquad bd = 1.
 $ad = 0$ より $a = 0$ または $d = 0$。$a = 0$ なら $ac = 0 \neq 1$ に矛盾、
 $d = 0$ なら $bd = 0 \neq 1$ に矛盾。よって分解可能でない。
 (係数行列 $\mat{1 & 0 \\ 0 & 1}$ の階数が $2$ であることの直接証明である。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex1}}\quad
+係数は $u_i v_j$ だから
+\[
+\vect{u} \otimes \vect{v} = 2\,\vect{e}_1 \otimes \vect{e}_1
++ 5\,\vect{e}_1 \otimes \vect{e}_2 - 2\,\vect{e}_2 \otimes \vect{e}_1
+- 5\,\vect{e}_2 \otimes \vect{e}_2,
+\]
+係数行列は $\vect{u}\,{}^t\vect{v} = \mat{2 & 5 \\ -2 & -5}$。
+$\det = -10 + 10 = 0$ で零行列ではないから階数 $1$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex2}}\quad
+$T_1$:$\det T_1 = 6 - 6 = 0$ で零行列でないから階数 $1$、分解可能。
+各列は ${}^t(3, 1)$ の $1$ 倍・$2$ 倍なので
+\[
+T_1 = \mat{3 \\ 1}\mat{1 & 2}, \qquad
+t_1 = \mat{3 \\ 1} \otimes \mat{1 \\ 2}.
+\]
+(検算:$u_i v_j = \mat{3 & 6 \\ 1 & 2}$。)
+$T_2$:$\det T_2 = 1 - 0 = 1 \neq 0$ で階数 $2$。
+定理 \ref{thm:tensor-rank1} より分解可能でない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex3}}\quad
+\[
+A \otimes B = \mat{2B & O \\ O & 3B}
+= \mat{2 & 2 & 0 & 0 \\ 0 & 2 & 0 & 0 \\
+0 & 0 & 3 & 3 \\ 0 & 0 & 0 & 3}.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex4}}\quad
+(1) $\dim(\R^3 \otimes \R^4) = 3 \times 4 = 12$。基底は
+$\vect{e}_i \otimes \vect{f}_j$($i = 1, 2, 3$、$j = 1, 2, 3, 4$)の
+$12$ 個である。
+(2) $(\R^2 \otimes \R^2) \otimes \R^2$ の次元は
+$(2 \times 2) \times 2 = 8 = 2^3$。$k$ 個なら $2^k$ で、
+これが量子コンピュータの状態空間が指数的に大きい理由である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex5}}\quad
+基底での値は
+\[
+L(\vect{e}_1 \otimes \vect{e}_1) = 0, \quad
+L(\vect{e}_1 \otimes \vect{e}_2) = 1, \quad
+L(\vect{e}_2 \otimes \vect{e}_1) = -1, \quad
+L(\vect{e}_2 \otimes \vect{e}_2) = 0
+\]
+($B(\vect{e}_i, \vect{e}_j)$ を計算した)。よって
+$L(t) = t_{12} - t_{21}$。
+$\vect{u} \otimes \vect{u}$ の係数行列は $u_i u_j$ で対称
+($t_{12} = t_{21} = u_1 u_2$)だから
+$L(\vect{u} \otimes \vect{u}) = u_1 u_2 - u_2 u_1 = 0$。
+「同じベクトルを二度入れると消える」――次章の外積の交代性である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex6}}\quad
+$\det T = 6 - 4 = 2 \neq 0$ で階数 $2$ だから分解可能でない。
+行ごとに切り分けて
+\[
+T = \mat{2 & 1 \\ 0 & 0} + \mat{0 & 0 \\ 4 & 3}, \qquad
+t = \vect{e}_1 \otimes (2\vect{f}_1 + \vect{f}_2)
++ \vect{e}_2 \otimes (4\vect{f}_1 + 3\vect{f}_2).
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex7}}\quad
+$A\vect{u} = \mat{3 \\ 2}$, $B\vect{v} = \mat{6 \\ 1}$ より
+$(A\vect{u}) \otimes (B\vect{v})$ の係数行列は
+$\mat{3 \\ 2}\mat{6 & 1} = \mat{18 & 3 \\ 12 & 2}$。
+一方 $\vect{u} \otimes \vect{v}$ の係数行列は
+$\mat{3 & 1 \\ 6 & 2}$、縦に並べると ${}^t(3, 1, 6, 2)$ で、
+\[
+(A \otimes B)\mat{3 \\ 1 \\ 6 \\ 2}
+= \mat{2 & 0 & 2 & 0 \\ 0 & 1 & 0 & 1 \\
+0 & 0 & 2 & 0 \\ 0 & 0 & 0 & 1}\mat{3 \\ 1 \\ 6 \\ 2}
+= \mat{18 \\ 3 \\ 12 \\ 2}.
+\]
+行列に並べ直すと $\mat{18 & 3 \\ 12 & 2}$ で一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex8}}\quad
+$s_1$ の係数行列は $\dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$ で階数 $1$
+なので\textbf{もつれていない}。実際
+\[
+s_1 = \frac{1}{\sqrt{2}}(\vect{e}_1 + \vect{e}_2) \otimes
+\frac{1}{\sqrt{2}}(\vect{f}_1 + \vect{f}_2)
+\]
+と分解できる(係数 $\frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}}
+= \frac{1}{2}$)。
+$s_2$ の係数行列は $\dfrac{1}{\sqrt{2}}\mat{1 & 0 \\ 0 & 1}$ で
+階数 $2$ なので\textbf{もつれている}(問 \ref{q:tensor} と同じ状態。
+ベル状態と呼ばれる)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex9}}\quad
+$t = \vect{u}_1 \otimes \vect{v}_1 + \cdots + \vect{u}_k \otimes \vect{v}_k$
+とすると、係数行列は
+$T = \vect{u}_1{}^t\vect{v}_1 + \cdots + \vect{u}_k{}^t\vect{v}_k$。
+$T$ の第 $j$ 列は、各項の第 $j$ 列($\vect{v}_i$ の第 $j$ 成分)$\times
+\vect{u}_i$ の和だから、$\langle \vect{u}_1, \dots, \vect{u}_k \rangle$ に
+属する。よって列空間は $k$ 本のベクトルで張られる空間に含まれ、
+$\mathrm{rank}\,T = (\text{列空間の次元}) \le k$。
+
+逆向きの評価:$2 \times 2$ の例では行ごとの分解が
+「行数 $=$ 階数」個の部品を与えたが、一般には SVD の和形式(第VII部)
+\[
+T = \sigma_1\vect{u}_1{}^t\vect{v}_1 + \cdots
++ \sigma_r\vect{u}_r{}^t\vect{v}_r \qquad (r = \mathrm{rank}\,T)
+\]
+が、ちょうど $\mathrm{rank}\,T$ 個の分解可能テンソルの和を与える。
+下界と合わせて、必要な最小個数は $\mathrm{rank}\,T$ に等しい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex10}}\quad
+基底ベクトル $\vect{e}_i \otimes \vect{f}_j$ は分解可能テンソル
+そのものだから、仮定より $L(\vect{e}_i \otimes \vect{f}_j)
+= L'(\vect{e}_i \otimes \vect{f}_j)$(すべての $i, j$)。
+基底での値が一致する二つの線形写像は等しい
+(定理 \ref{thm:linmap-basis} の一意性)。よって $L = L'$。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex11}}\quad
+$A \otimes B$ の対角ブロック(第 $i$ ブロック)は $a_{ii}B$ であり、
+$A \otimes B$ の対角成分はこれらのブロックの対角成分
+$a_{ii}b_{jj}$ で尽くされる。よって
+\[
+\mathrm{tr}(A \otimes B) = \sum_{i=1}^{n}\sum_{j=1}^{n} a_{ii}b_{jj}
+= \Bigl(\sum_{i} a_{ii}\Bigr)\Bigl(\sum_{j} b_{jj}\Bigr)
+= (\mathrm{tr}\,A)(\mathrm{tr}\,B). \qquad\blacksquare
+\]
 
 \bigskip
 \noindent\textbf{問 \ref{q:wedge}}\quad
@@ -8227,6 +8621,174 @@ $d = 0$ なら $bd = 0 \neq 1$ に矛盾。よって分解可能でない。
 クロス積 $\mat{1 \\ 1 \\ 0} \times \mat{0 \\ 1 \\ 1} = \mat{1 \\ -1 \\ 1}$ と
 符号の対応($\vect{e}_1 \wedge \vect{e}_3$ の成分はクロス積の第 $2$ 成分の
 $-1$ 倍に対応する)を込めて一致している。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex1}}\quad
+\[
+\vect{u} \wedge \vect{v} = (3 \cdot 4 - 1 \cdot 2)\,
+\vect{e}_1 \wedge \vect{e}_2 = 10\,\vect{e}_1 \wedge \vect{e}_2.
+\]
+係数 $10$ は $\det\mat{3 & 2 \\ 1 & 4} = 12 - 2 = 10$ に一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex2}}\quad
+各係数は $u_i v_j - u_j v_i$ で、
+$\vect{e}_1 \wedge \vect{e}_2$:$1 \cdot 3 - 0 \cdot 0 = 3$、
+$\vect{e}_1 \wedge \vect{e}_3$:$1 \cdot 1 - 2 \cdot 0 = 1$、
+$\vect{e}_2 \wedge \vect{e}_3$:$0 \cdot 1 - 2 \cdot 3 = -6$。よって
+\[
+\vect{u} \wedge \vect{v} = 3\,\vect{e}_1 \wedge \vect{e}_2
++ \vect{e}_1 \wedge \vect{e}_3 - 6\,\vect{e}_2 \wedge \vect{e}_3.
+\]
+クロス積は $\vect{u} \times \vect{v} = \mat{0 - 6 \\ 0 - 1 \\ 3 - 0}
+= \mat{-6 \\ -1 \\ 3}$。対応は
+$\vect{e}_2 \wedge \vect{e}_3 \leftrightarrow x$ 成分($-6$)、
+$\vect{e}_1 \wedge \vect{e}_3 \leftrightarrow -y$ 成分($-(-1) = 1$)、
+$\vect{e}_1 \wedge \vect{e}_2 \leftrightarrow z$ 成分($3$)で、
+すべて一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex3}}\quad
+(1) $\dim \Lambda^2 \R^4 = \dbinom{4}{2} = 6$。基底は
+\[
+\vect{e}_1 \wedge \vect{e}_2,\ \vect{e}_1 \wedge \vect{e}_3,\
+\vect{e}_1 \wedge \vect{e}_4,\ \vect{e}_2 \wedge \vect{e}_3,\
+\vect{e}_2 \wedge \vect{e}_4,\ \vect{e}_3 \wedge \vect{e}_4.
+\]
+$\dim \Lambda^3 \R^4 = \dbinom{4}{3} = 4$。
+(2) $5$ 本のウェッジを基底で展開すると、各項の添字は
+$1, \dots, 4$ から $5$ 個選ぶので必ず重複し、交代性ですべて消える。
+(あるいは:$4$ 次元では $5$ 本のベクトルは必ず線形従属
+(定理 \ref{thm:toomany})だから、定理 \ref{thm:wedge-indep} より
+ウェッジは零。)よって $\Lambda^5 \R^4 = \{\vect{0}\}$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex4}}\quad
+双線形性で展開すると
+\[
+(\vect{u} + \vect{v}) \wedge (\vect{u} - \vect{v})
+= \vect{u} \wedge \vect{u} - \vect{u} \wedge \vect{v}
++ \vect{v} \wedge \vect{u} - \vect{v} \wedge \vect{v}
+= -\vect{u} \wedge \vect{v} - \vect{u} \wedge \vect{v}
+= -2\,\vect{u} \wedge \vect{v}
+\]
+($\vect{u} \wedge \vect{u} = \vect{v} \wedge \vect{v} = \vect{0}$、
+$\vect{v} \wedge \vect{u} = -\vect{u} \wedge \vect{v}$)。
+数値検算:$(\vect{e}_1 + \vect{e}_2) \wedge (\vect{e}_1 - \vect{e}_2)
+= (1 \cdot (-1) - 1 \cdot 1)\,\vect{e}_1 \wedge \vect{e}_2
+= -2\,\vect{e}_1 \wedge \vect{e}_2$。幾何的には、平行四辺形の
+\textbf{二本の対角線}が張る平行四辺形の面積は、元の面積のちょうど
+$2$ 倍(向きは反転)ということである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex5}}\quad
+定理 \ref{thm:wedge-det} より係数は
+\[
+\det\mat{1 & 2 & 0 \\ 2 & 1 & 3 \\ 1 & 0 & 2}
+= 1 \cdot (2 - 0) - 2 \cdot (4 - 3) + 0 = 2 - 2 = 0
+\]
+なので $\vect{v}_1 \wedge \vect{v}_2 \wedge \vect{v}_3 = \vect{0}$、
+\textbf{線形従属}である。関係を探すと、
+$c_1\vect{v}_1 + c_2\vect{v}_2 = \vect{v}_3$ は第 $1$ 成分
+$c_1 + 2c_2 = 0$、第 $2$ 成分 $2c_1 + c_2 = 3$ より
+$c_1 = 2$, $c_2 = -1$、第 $3$ 成分も $2 - 0 = 2$ で合う。すなわち
+$\vect{v}_3 = 2\vect{v}_1 - \vect{v}_2$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex6}}\quad
+分配して
+\[
+\omega \wedge \vect{v}
+= (\vect{e}_1 \wedge \vect{e}_2) \wedge \vect{e}_1
++ (\vect{e}_1 \wedge \vect{e}_2) \wedge \vect{e}_3
++ 2(\vect{e}_2 \wedge \vect{e}_3) \wedge \vect{e}_1
++ 2(\vect{e}_2 \wedge \vect{e}_3) \wedge \vect{e}_3.
+\]
+第 $1$ 項と第 $4$ 項は添字の重複で消える。第 $3$ 項は
+$\vect{e}_2 \wedge \vect{e}_3 \wedge \vect{e}_1
+= \vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3$(互換 $2$ 回)なので
+\[
+\omega \wedge \vect{v} = \vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3
++ 2\,\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3
+= 3\,\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex7}}\quad
+$A$ の列:$\mat{2 \\ 1} \wedge \mat{1 \\ 1} = (2 - 1)\,
+\vect{e}_1 \wedge \vect{e}_2$ より $\det A = 1$。
+$B$ の列:$\mat{1 \\ 0} \wedge \mat{3 \\ 1} = (1 - 0)\,
+\vect{e}_1 \wedge \vect{e}_2$ より $\det B = 1$。
+$AB = \mat{2 & 7 \\ 1 & 4}$ の列:
+$\mat{2 \\ 1} \wedge \mat{7 \\ 4} = (8 - 7)\,\vect{e}_1 \wedge \vect{e}_2$
+より $\det(AB) = 1$。確かに $1 = 1 \times 1$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex8}}\quad
+(1) $\omega \wedge \omega$ は $\Lambda^4 \R^3$ の要素だが、その次元は
+$\dbinom{3}{4} = 0$(添字 $4$ 個を $1, 2, 3$ から重複なしに選べない)。
+よって $\Lambda^4 \R^3 = \{\vect{0}\}$ であり、
+$\omega \wedge \omega = \vect{0}$ が自動的に成り立つ。
+$\R^3$ では反例 \ref{hanrei:wedge-indecomp} の障害物が消えるのである。
+(2) 問 \ref{q:wedge}(2) の計算そのものより
+\[
+\omega = (\vect{e}_1 + \vect{e}_2) \wedge (\vect{e}_2 + \vect{e}_3),
+\]
+すなわち $\vect{u} = \vect{e}_1 + \vect{e}_2$,
+$\vect{v} = \vect{e}_2 + \vect{e}_3$ で分解できる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex9}}\quad
+自乗の展開で、$(\vect{e}_1 \wedge \vect{e}_2)$ どうし・
+$(\vect{e}_3 \wedge \vect{e}_4)$ どうしの項は添字の重複で消え、
+交差項が二つ残って(反例 \ref{hanrei:wedge-square} と同じ計算)
+\[
+\omega_c \wedge \omega_c = 2c\,\vect{e}_1 \wedge \vect{e}_2 \wedge
+\vect{e}_3 \wedge \vect{e}_4.
+\]
+$c = 0$ なら $\omega_0 = \vect{e}_1 \wedge \vect{e}_2$ は分解可能である。
+$c \neq 0$ なら $\omega_c \wedge \omega_c \neq \vect{0}$ だが、もし
+$\omega_c = \vect{u} \wedge \vect{v}$ と分解できたとすると
+$\omega_c \wedge \omega_c = \vect{u} \wedge \vect{v} \wedge \vect{u}
+\wedge \vect{v} = \vect{0}$($\vect{u}$ の重複)となって矛盾。よって
+分解可能となるのは $c = 0$ のときに限る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex10}}\quad
+線形従属なら、あるベクトル(番号を付け替えて $\vect{v}_k$ とする)が
+$\vect{v}_k = c_1\vect{v}_1 + \cdots + c_{k-1}\vect{v}_{k-1}$ と書ける。
+これを代入し、最後の変数について双線形(多重線形)性で展開すると
+\[
+\vect{v}_1 \wedge \cdots \wedge \vect{v}_{k-1} \wedge \vect{v}_k
+= \sum_{j=1}^{k-1} c_j\,\vect{v}_1 \wedge \cdots \wedge \vect{v}_{k-1}
+\wedge \vect{v}_j.
+\]
+第 $j$ 項には $\vect{v}_j$ が(途中と末尾の)二箇所に現れる。
+末尾の $\vect{v}_j$ を隣どうしの入れ替え(交代性:符号が反転するだけ)で
+もう一方の $\vect{v}_j$ の隣まで運べば、
+$\vect{v}_j \wedge \vect{v}_j = \vect{0}$ が現れて項全体が消える。
+すべての項が消えるので、ウェッジ積は $\vect{0}$ である。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex11}}\quad
+展開すると
+\[
+\vect{a}_1 \wedge \cdots \wedge \vect{a}_n
+= \sum a_{i_1 1} a_{i_2 2} \cdots a_{i_n n}\,
+\vect{e}_{i_1} \wedge \cdots \wedge \vect{e}_{i_n}
+\]
+で、上三角性より各列の添字は $i_j \le j$ の範囲しか動かない。
+添字が重複する項は交代性で消えるから、生き残る項では
+$i_1, \dots, i_n$ がすべて異なる。$i_1 \le 1$ より $i_1 = 1$。
+$i_2 \le 2$ で $1$ は使用済みだから $i_2 = 2$。以下同様に
+$i_j = j$ と順に確定し、生き残る項は\textbf{対角成分の積}の一項だけ:
+\[
+\vect{a}_1 \wedge \cdots \wedge \vect{a}_n
+= a_{11}a_{22}\cdots a_{nn}\,\vect{e}_1 \wedge \cdots \wedge \vect{e}_n.
+\]
+定理 \ref{thm:wedge-det} と見比べれば
+$\det A = a_{11}a_{22}\cdots a_{nn}$、すなわち三角行列の行列式は
+対角成分の積(定理 \ref{thm:det-tri})の別証明である。 $\blacksquare$
 
 \section*{第IX部}
 
