@@ -541,47 +541,253 @@ $3$ 本の式(うち独立なのは $2$ 本)から成分の比を出し、和で
 \chapter{主成分分析 ― データの中の固有ベクトル}\label{chap:pca}
 % =====================================================
 
-\section{分散を最大にする方向}
+\begin{goal}
+\begin{itemize}
+\item データを\textbf{中心化}して散布行列 $S$ を計算でき、
+「方向 $\vect{u}$ の分散」が二次形式 ${}^t\vect{u}S\vect{u}$ で
+書けることを導出できるようになる。
+\item 「分散最大の方向=最大固有値の固有ベクトル」という
+主成分分析の基本定理を、証明つきで理解する。
+主成分と\textbf{寄与率}を計算できるようになる。
+\item 第 $1$ 主成分への射影と復元によって\textbf{次元削減}を実行でき、
+「捨てた情報量=捨てた固有値の和」を確かめられるようになる。
+\item PCA がデータ行列の特異値分解(第 \ref{chap:svd} 章)に
+ほかならないことを理解する。
+\item 中心化を忘れる・変数の単位に無自覚という、
+実務の二大失敗を反例で知る。
+\end{itemize}
+\end{goal}
 
-$n$ 人について $2$ 科目の得点を測ったデータを、平均を引いて
-(中心化して)偏差ベクトルの組にしたとする。
-\textbf{主成分分析(PCA)}の問いはこうである:
-「データが最も大きくばらつく方向(単位ベクトル $\vect{u}$)はどれか」。
+\section{動機 ― データのばらつく方向を探す}
 
-方向 $\vect{u}$ にデータを正射影したときの分散は、
-分散共分散行列 $S$(対称行列。第V部の深掘り参照)を使って
+$n$ 人について $2$ 科目の得点を測れば、データは $\R^2$ の点の集まりに
+なる。$100$ 項目を測れば $\R^{100}$ の点の集まりである。
+高次元のデータは目で見ることができない。そこで問いを立てる:
+「データが\textbf{最も大きくばらつく方向}(単位ベクトル $\vect{u}$)は
+どれか」。ばらつきの大きい方向はデータの個性が最もよく現れる方向であり、
+その方向への射影だけを残せば、データを $1$ 次元に要約できる。
+これが\textbf{主成分分析(PCA)}の発想である。
+
+答えを先に言えば、この問いは\textbf{対称行列の固有値問題}に帰着し、
+第V部で証明したスペクトル分解が一撃で解決する。
+固有ベクトルという概念が、データ分析の現場でそのまま道具になる
+――本章はその一部始終である。
+
+\section{中心化と散布行列}
+
+まず「ばらつき」を測る土台を作る。ばらつきは平均からのずれで測る
+べきだから、最初に平均を引く。
+
+\begin{teigi}[中心化と散布行列]\label{def:pca-scatter}
+データ $\vect{x}_1, \dots, \vect{x}_n \in \R^p$ の平均ベクトルを
+$\bar{\vect{x}} = \dfrac{1}{n}(\vect{x}_1 + \cdots + \vect{x}_n)$ とし、
+各データから平均を引いたもの
 \[
-(\vect{u} \text{ 方向の分散}) = {}^t\vect{u}\,S\,\vect{u}
+\vect{d}_i = \vect{x}_i - \bar{\vect{x}} \qquad (i = 1, \dots, n)
 \]
-という\textbf{二次形式}で書ける。これを $\|\vect{u}\| = 1$ のもとで
-最大化したい。スペクトル分解が一撃で答える。
+を\textbf{偏差ベクトル}という(平均を引く操作を\textbf{中心化}という。
+偏差ベクトルの総和は $\vect{0}$ になる)。$p$ 次正方行列
+\[
+S = \sum_{i=1}^{n} \vect{d}_i\,{}^t\vect{d}_i
+\]
+を\textbf{散布行列}という。統計学の\textbf{分散共分散行列}
+(第 \ref{chap:spectral} 章末の深掘り)は $S$ の $\dfrac{1}{n}$ 倍
+である。
+\end{teigi}
 
-\begin{teiri}
-対称行列 $S$ の固有値を $\lambda_1 \ge \cdots \ge \lambda_n$、
-対応する正規直交固有ベクトルを $\vect{u}_1, \dots, \vect{u}_n$ とすると、
-$\|\vect{u}\| = 1$ の範囲で ${}^t\vect{u}S\vect{u}$ の最大値は
-$\lambda_1$ であり、$\vect{u} = \vect{u}_1$ で達成される。
+\begin{chui}
+$S$ を $n$ で割るか、$n - 1$ で割るか(統計学の「不偏分散」)、
+割らないままか、は流儀の問題である。正の定数倍は固有ベクトルを
+変えず、固有値を一斉に定数倍するだけなので、
+\textbf{主成分の方向と寄与率はどの流儀でも同じ}になる。
+本章では式の軽い「割らない」$S$ を使う。
+\end{chui}
+
+方向 $\vect{u}$($\|\vect{u}\| = 1$)にデータを正射影したときの
+ばらつきを計算しよう。$\vect{d}_i$ の $\vect{u}$ 方向の成分
+(射影の長さ)は内積 $t_i = {}^t\vect{u}\,\vect{d}_i$ である
+(第 \ref{chap:inner} 章)。その $2$ 乗和が「$\vect{u}$ 方向の分散」
+(の $n$ 倍。以下、単に分散と呼ぶ)である。
+
+\begin{teiri}[方向 $\vect{u}$ の分散は二次形式]\label{thm:pca-quadform}
+\[
+\sum_{i=1}^{n} t_i^2
+= \sum_{i=1}^{n} ({}^t\vect{u}\,\vect{d}_i)^2
+= {}^t\vect{u}\,S\,\vect{u}.
+\]
+すなわち、方向ごとの分散は散布行列 $S$ の定める
+\textbf{二次形式}(第 \ref{chap:quadform} 章)である。
+特に $S$ は対称で、${}^t\vect{u}S\vect{u} \ge 0$
+(半正定値)である。
 \end{teiri}
 
-証明は鮮やかである。$\vect{u}$ を固有ベクトルの基底で
-$\vect{u} = c_1\vect{u}_1 + \cdots + c_n\vect{u}_n$($\sum c_i^2 = 1$)と
-展開すると
+\noindent\textbf{(証明)}\quad
+$t_i = {}^t\vect{u}\,\vect{d}_i$ は数(スカラー)だから
+$t_i^2 = ({}^t\vect{u}\,\vect{d}_i)({}^t\vect{d}_i\,\vect{u})$ と
+書ける(数の転置は自分自身:${}^t\vect{d}_i\,\vect{u}
+= {}^t\vect{u}\,\vect{d}_i$)。よって
 \[
-{}^t\vect{u}S\vect{u} = \lambda_1 c_1^2 + \cdots + \lambda_n c_n^2
-\le \lambda_1(c_1^2 + \cdots + c_n^2) = \lambda_1.
+\sum_i t_i^2
+= \sum_i {}^t\vect{u}\,(\vect{d}_i\,{}^t\vect{d}_i)\,\vect{u}
+= {}^t\vect{u}\Bigl(\sum_i \vect{d}_i\,{}^t\vect{d}_i\Bigr)\vect{u}
+= {}^t\vect{u}\,S\,\vect{u}.
 \]
-等号は $c_1 = \pm 1$、すなわち $\vect{u} = \pm\vect{u}_1$ のとき。
-\textbf{最大固有値の固有ベクトル $\vect{u}_1$ が第 $1$ 主成分}であり、
-それと直交する範囲で分散最大の方向が $\vect{u}_2$(第 $2$ 主成分)、
-以下同様である。全分散に占める $\lambda_i$ の割合
-$\lambda_i / (\lambda_1 + \cdots + \lambda_n)$ を\textbf{寄与率}といい、
-「上位 $k$ 主成分でデータの何割を説明できるか」の指標になる。
+$S$ の対称性は ${}^t(\vect{d}\,{}^t\vect{d}) = \vect{d}\,{}^t\vect{d}$
+の和であることから、半正定値性は左辺が $2$ 乗和であることから従う。
+$\blacksquare$
 
-中心化したデータ行列に第VII部の SVD を施すと、
-$V$ の列がそのまま主成分、特異値の二乗が(定数倍を除き)$\lambda_i$ になる。
+\section{主成分 ― 分散を最大にする方向}
+
+${}^t\vect{u}S\vect{u}$ を $\|\vect{u}\| = 1$ のもとで最大化したい。
+$S$ は対称行列だから、スペクトル分解(第 \ref{chap:spectral} 章)が
+一撃で答える。
+
+\begin{teiri}[分散最大の方向は最大固有値の固有ベクトル]\label{thm:pca-max}
+対称行列 $S$ の固有値を $\lambda_1 \ge \cdots \ge \lambda_p$、
+対応する正規直交固有ベクトルを $\vect{u}_1, \dots, \vect{u}_p$ とすると、
+$\|\vect{u}\| = 1$ の範囲で ${}^t\vect{u}S\vect{u}$ の最大値は
+$\lambda_1$ であり、$\vect{u} = \vect{u}_1$ で達成される。
+さらに、$\vect{u}_1$ と直交する単位ベクトルの範囲での最大値は
+$\lambda_2$ であり、$\vect{u} = \vect{u}_2$ で達成される(以下同様)。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{u}$ を固有ベクトルの正規直交基底で
+$\vect{u} = c_1\vect{u}_1 + \cdots + c_p\vect{u}_p$($\sum c_i^2 = 1$)と
+展開すると、$S\vect{u} = \sum_i c_i\lambda_i \vect{u}_i$ と直交性から
+\[
+{}^t\vect{u}S\vect{u} = \lambda_1 c_1^2 + \cdots + \lambda_p c_p^2
+\le \lambda_1(c_1^2 + \cdots + c_p^2) = \lambda_1.
+\]
+等号は $\lambda_i < \lambda_1$ なる $i$ で $c_i = 0$ のとき、
+特に $\vect{u} = \pm\vect{u}_1$ で達成される。
+後半は、$\vect{u} \perp \vect{u}_1$ という制約が $c_1 = 0$ を意味する
+ことから、同じ評価で
+${}^t\vect{u}S\vect{u} = \lambda_2 c_2^2 + \cdots + \lambda_p c_p^2
+\le \lambda_2$ となり、$\vect{u} = \pm\vect{u}_2$ で等号。 $\blacksquare$
+
+\begin{teigi}[主成分と寄与率]\label{def:pca-contrib}
+$\vect{u}_1$ を\textbf{第 $1$ 主成分}、$\vect{u}_2$ を
+\textbf{第 $2$ 主成分}、以下同様に呼ぶ。全分散に占める割合
+\[
+(\text{第 } i \text{ 主成分の\textbf{寄与率}})
+= \frac{\lambda_i}{\lambda_1 + \cdots + \lambda_p}
+\]
+は「その方向だけでデータのばらつきの何割を説明できるか」の指標である。
+上位 $k$ 個の寄与率の和を\textbf{累積寄与率}という。
+\end{teigi}
+
+\section{次元削減 ― 射影・復元・残差}
+
+第 $1$ 主成分だけでデータを要約するとは、各偏差ベクトルを
+\[
+\vect{d}_i \approx t_i\,\vect{u}_1, \qquad t_i = {}^t\vect{u}_1\vect{d}_i
+\]
+と、直線 $\{c\,\vect{u}_1\}$ への正射影(第 \ref{chap:gs} 章)で
+置き換えることである。$p$ 個の数の組だった $\vect{d}_i$ が、
+ただ一つの数 $t_i$(主成分スコア)で代表される。
+このとき何がどれだけ失われるかも、固有値が完全に教えてくれる。
+
+\begin{teiri}[全分散の分配]\label{thm:pca-decomp}
+記号は定理 \ref{thm:pca-max} のとおりとする。
+\begin{enumerate}
+\item 全分散はすべての固有値の和である:
+$\displaystyle\sum_{i=1}^{n}\|\vect{d}_i\|^2 = \mathrm{tr}\,S
+= \lambda_1 + \cdots + \lambda_p$。
+\item 第 $1$ 主成分で復元したときの残差の総量は、捨てた固有値の和である:
+\[
+\sum_{i=1}^{n} \bigl\|\vect{d}_i - t_i\vect{u}_1\bigr\|^2
+= \lambda_2 + \lambda_3 + \cdots + \lambda_p.
+\]
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+各 $\vect{d}_i$ を正規直交基底 $\vect{u}_1, \dots, \vect{u}_p$ で
+$\vect{d}_i = \sum_j t_{ij}\vect{u}_j$($t_{ij} = {}^t\vect{u}_j\vect{d}_i$)
+と展開する。三平方の定理(正規直交展開のノルム)より
+$\|\vect{d}_i\|^2 = \sum_j t_{ij}^2$。$i$ について足すと、
+定理 \ref{thm:pca-quadform} より
+$\sum_i t_{ij}^2 = {}^t\vect{u}_j S\vect{u}_j = \lambda_j$ だから
+\[
+\sum_i \|\vect{d}_i\|^2 = \sum_j \Bigl(\sum_i t_{ij}^2\Bigr)
+= \lambda_1 + \cdots + \lambda_p.
+\]
+これが $\mathrm{tr}\,S$ に等しいことは、トレースの相似不変性
+(定理 \ref{thm:trace-similar})から
+$\mathrm{tr}\,S = \mathrm{tr}(Q D\,{}^tQ) = \mathrm{tr}\,D$
+($S$ の直交行列による対角化)としても、章末問題 \ref{q:pca-ex12} の
+直接計算でも確かめられる。
+(2)は、残差 $\vect{d}_i - t_{i1}\vect{u}_1 = \sum_{j \ge 2}t_{ij}\vect{u}_j$
+に同じ計算を適用すればよい:
+$\sum_i \sum_{j\ge 2} t_{ij}^2 = \lambda_2 + \cdots + \lambda_p$。
+$\blacksquare$
+
+寄与率が「説明できる割合」と呼ばれる理由がこれである:
+全分散 $\sum\lambda_j$ のうち、第 $1$ 主成分が受け持つのが $\lambda_1$、
+切り捨てられるのが残りの和、という\textbf{完全な会計}が成り立つ。
+
+\section{PCA と特異値分解}
+
+偏差ベクトルを\textbf{行}として積んだ $n \times p$ の
+\textbf{データ行列} $X$(第 $i$ 行が ${}^t\vect{d}_i$)を作ると、
+\[
+{}^tX X = \sum_{i=1}^{n} \vect{d}_i\,{}^t\vect{d}_i = S
+\]
+である。$X$ の特異値分解(第 \ref{chap:svd} 章)を
+$X = U\Sigma\,{}^tV$ とすると
+${}^tXX = V\Sigma^2\,{}^tV$ となるから、
+\textbf{$V$ の列がそのまま主成分 $\vect{u}_j$、特異値の $2$ 乗が
+固有値 $\lambda_j$} になる($\sigma_j^2 = \lambda_j$)。
 \textbf{PCA とはデータ行列の SVD であり、上位 $k$ 主成分への要約とは
-エッカート・ヤングの最良低ランク近似}である――第V部・第VII部の理論が、
-ここで一つの実用手法に合流する。
+エッカート・ヤングの最良低ランク近似(定理 \ref{thm:pinv-eckart})}
+である――第V部・第VII部の理論が、ここで一つの実用手法に合流する。
+実際の数値計算でも、$S$ を作って固有値問題を解くより
+$X$ を直接 SVD するほうが精度がよい(正規方程式より QR 分解が
+安全だったのと同じ事情:第 \ref{chap:lsq} 章)。
+
+\section{落とし穴 ― 二つの反例}
+
+PCA は「計算はできたが答えが無意味」になりやすい手法でもある。
+実務で最も多い二つの失敗を、反例の形で見ておく。
+
+\begin{hanrei}[中心化を忘れると「平均の方向」が出てくる]\label{hanrei:pca-center}
+データ $\mat{9 \\ 1}, \mat{10 \\ 0}, \mat{11 \\ -1}$ を考える。
+平均は $\mat{10 \\ 0}$、偏差ベクトルは
+$\mat{-1 \\ 1}, \mat{0 \\ 0}, \mat{1 \\ -1}$ で、正しい散布行列と
+第 $1$ 主成分は
+\[
+S = \mat{2 & -2 \\ -2 & 2}, \qquad
+\lambda_1 = 4,\ \vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ -1}
+\]
+である(データは傾き $-1$ の直線上に並んでいる)。
+ところが中心化を忘れ、生データのまま
+$M = \sum_i \vect{x}_i\,{}^t\vect{x}_i$ を作ると
+\[
+M = \mat{81 & 9 \\ 9 & 1} + \mat{100 & 0 \\ 0 & 0}
++ \mat{121 & -11 \\ -11 & 1} = \mat{302 & -2 \\ -2 & 2}
+\]
+となり、最大固有値の固有ベクトルはほぼ $\mat{1 \\ 0}$
+(固有値はおよそ $302.0$ と $2.0$)――データの並ぶ方向
+$\mat{1 \\ -1}$ とはまるで違う、\textbf{原点から平均位置へ向かう方向}が
+出てくる。ばらつきではなく「平均が原点からどれだけ遠いか」を
+測ってしまうのである。\textbf{PCA の前の中心化は省略できない}。
+\end{hanrei}
+
+\begin{hanrei}[単位を変えると主成分が変わる]\label{hanrei:pca-scale}
+$2$ 人の偏差ベクトルが、身長(m)と体重(kg)で
+$\mat{0.1 \\ 5}, \mat{-0.1 \\ -5}$ だったとする。データは
+$\mat{0.1 \\ 5}$ 方向の直線上にあるから、第 $1$ 主成分はその方向
+$\mat{1 \\ 50}$(を正規化したもの)――ほぼ\textbf{体重の軸}である。
+ところが身長を cm に変えると偏差は $\mat{10 \\ 5}, \mat{-10 \\ -5}$
+となり、第 $1$ 主成分は $\mat{2 \\ 1}$ 方向――今度は身長が支配する。
+\textbf{同じデータなのに、単位の選び方で主成分が変わってしまった}。
+数値の大きい変数ほど分散が大きく見えるからである。
+単位に意味がない(そろえようがない)ときは、各変数を
+その標準偏差で割って分散を $1$ にそろえてから PCA を行うのが
+標準的な処方である(散布行列の代わりに\textbf{相関行列}を使うことに
+相当する。章末問題 \ref{q:pca-ex10})。
+\end{hanrei}
 
 \begin{itembox}[l]{深掘り:固有顔 ― 高次元データの圧縮の実際}
 顔写真($100 \times 100$ 画素なら $1$ 枚 $= \R^{10000}$ のベクトル)を
@@ -604,6 +810,269 @@ $\mat{-1 \\ -1}, \mat{0 \\ 0}, \mat{1 \\ 1}$ について、
 行列 $S = \sum_i \vect{d}_i\,{}^t\vect{d}_i$ を計算し、
 第 $1$ 主成分の方向と寄与率を求めよ。
 \end{mondai}
+
+\section{例題}
+
+\begin{rei}[例題・基本(中心化と散布行列)]\label{rei:pca-basic1}
+データ $\mat{5 \\ 3}, \mat{7 \\ 7}, \mat{6 \\ 5}$ を中心化し、
+散布行列 $S$ を求めよ。\\
+\textbf{解.}\ 平均は
+$\bar{\vect{x}} = \dfrac{1}{3}\mat{5 + 7 + 6 \\ 3 + 7 + 5} = \mat{6 \\ 5}$。
+偏差ベクトルは
+$\vect{d}_1 = \mat{-1 \\ -2}$, $\vect{d}_2 = \mat{1 \\ 2}$,
+$\vect{d}_3 = \mat{0 \\ 0}$(総和は $\vect{0}$:検算)。
+\[
+S = \mat{1 & 2 \\ 2 & 4} + \mat{1 & 2 \\ 2 & 4} + O
+= \mat{2 & 4 \\ 4 & 8}.
+\]
+なお $\det S = 16 - 16 = 0$ より固有値は $10, 0$
+($\mathrm{tr}\,S = 10$)で、寄与率は $100\%$
+――偏差がすべて $\mat{1 \\ 2}$ の定数倍(一直線上)だからである。
+\end{rei}
+
+\begin{rei}[例題・基本(主成分と寄与率)]\label{rei:pca-basic2}
+散布行列が $S = \mat{3 & 1 \\ 1 & 3}$ のとき、主成分と寄与率を
+すべて求めよ。\\
+\textbf{解.}\ 固有多項式は $\lambda^2 - 6\lambda + 8
+= (\lambda - 4)(\lambda - 2)$ より $\lambda_1 = 4$, $\lambda_2 = 2$。
+固有ベクトルは $\lambda_1 = 4$ で $\mat{1 \\ 1}$、
+$\lambda_2 = 2$ で $\mat{1 \\ -1}$。正規化して
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{2}}\mat{1 \\ -1}.
+\]
+寄与率は第 $1$ 主成分が $\dfrac{4}{4 + 2} = \dfrac{2}{3}$、
+第 $2$ 主成分が $\dfrac{1}{3}$ である。
+\end{rei}
+
+\begin{rei}[例題・基本(方向ごとの分散)]\label{rei:pca-basic3}
+例題 \ref{rei:pca-basic2} の $S = \mat{3 & 1 \\ 1 & 3}$ について、
+$3$ つの方向
+$\vect{e}_1 = \mat{1 \\ 0}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$
+の分散 ${}^t\vect{u}S\vect{u}$ をそれぞれ計算し、比較せよ。\\
+\textbf{解.}\ 順に
+\[
+{}^t\vect{e}_1 S\vect{e}_1 = 3, \qquad
+{}^t\vect{u}_1 S\vect{u}_1 = \frac{3 + 1 + 1 + 3}{2} = 4, \qquad
+{}^t\vect{u}_2 S\vect{u}_2 = \frac{3 - 1 - 1 + 3}{2} = 2.
+\]
+最大の $4$ は第 $1$ 主成分方向で達成され(定理 \ref{thm:pca-max})、
+座標軸方向 $\vect{e}_1$ の分散 $3$ はその中間にある。
+「軸ごとの分散(対角成分)だけを見ていては、
+本当のばらつきの方向は見えない」ことを示す小さな例である。
+\end{rei}
+
+\begin{rei}[例題・標準(PCA の一部始終)]\label{rei:pca-std1}
+$4$ 人の数学・理科の得点データ
+$\mat{8 \\ 7}, \mat{4 \\ 5}, \mat{7 \\ 8}, \mat{5 \\ 4}$
+について、主成分と寄与率をすべて求めよ。\\
+\textbf{解.}\ 平均は $\dfrac{1}{4}\mat{24 \\ 24} = \mat{6 \\ 6}$。
+偏差ベクトルは
+$\mat{2 \\ 1}, \mat{-2 \\ -1}, \mat{1 \\ 2}, \mat{-1 \\ -2}$。
+\[
+S = \mat{4 & 2 \\ 2 & 1} + \mat{4 & 2 \\ 2 & 1}
++ \mat{1 & 2 \\ 2 & 4} + \mat{1 & 2 \\ 2 & 4}
+= \mat{10 & 8 \\ 8 & 10}.
+\]
+固有多項式は $\lambda^2 - 20\lambda + 36 = (\lambda - 18)(\lambda - 2)$
+より $\lambda_1 = 18$, $\lambda_2 = 2$。主成分は
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{2}}\mat{1 \\ -1},
+\]
+寄与率は $\dfrac{18}{20} = 90\%$ と $\dfrac{2}{20} = 10\%$。
+第 $1$ 主成分 $\vect{u}_1$(両科目が同時に増える向き)は「総合力」、
+$\vect{u}_2$ は「数学と理科の差」と解釈できる。
+$1$ 次元(総合力)だけでばらつきの $9$ 割が説明できる。
+\end{rei}
+
+\begin{rei}[例題・標準(次元削減と残差の会計)]\label{rei:pca-std2}
+例題 \ref{rei:pca-std1} のデータについて、各偏差ベクトルの
+主成分スコア $t_i = {}^t\vect{u}_1\vect{d}_i$ と復元
+$t_i\vect{u}_1$ を計算し、残差の総量が $\lambda_2$ に一致すること
+(定理 \ref{thm:pca-decomp})を確かめよ。\\
+\textbf{解.}\ スコアは順に
+\[
+t_1 = \frac{2 + 1}{\sqrt{2}} = \frac{3}{\sqrt{2}}, \quad
+t_2 = -\frac{3}{\sqrt{2}}, \quad
+t_3 = \frac{3}{\sqrt{2}}, \quad
+t_4 = -\frac{3}{\sqrt{2}}.
+\]
+復元は $t_1\vect{u}_1 = \dfrac{3}{2}\mat{1 \\ 1} = \mat{1.5 \\ 1.5}$
+(以下符号違い)。残差は
+\[
+\mat{2 \\ 1} - \mat{1.5 \\ 1.5} = \mat{0.5 \\ -0.5}
+\]
+など、いずれもノルムの $2$ 乗が $0.5$ で、総量は
+$4 \times 0.5 = 2 = \lambda_2$。確かに「捨てた固有値」に一致する。
+また $\sum_i t_i^2 = 4 \cdot \dfrac{9}{2} = 18 = \lambda_1$ で、
+残した分散も勘定が合う。
+\end{rei}
+
+\begin{rei}[例題・標準(SVD としての PCA)]\label{rei:pca-std3}
+例題 \ref{rei:pca-std1} の偏差ベクトルを行として積んだデータ行列
+\[
+X = \mat{2 & 1 \\ -2 & -1 \\ 1 & 2 \\ -1 & -2}
+\]
+について ${}^tXX$ を計算し、$X$ の特異値を求めよ。\\
+\textbf{解.}\
+\[
+{}^tXX = \mat{4 + 4 + 1 + 1 & 2 + 2 + 2 + 2 \\
+2 + 2 + 2 + 2 & 1 + 1 + 4 + 4} = \mat{10 & 8 \\ 8 & 10} = S.
+\]
+特異値は ${}^tXX$ の固有値の正の平方根(第 \ref{chap:svd} 章)だから
+$\sigma_1 = \sqrt{18} = 3\sqrt{2}$, $\sigma_2 = \sqrt{2}$。
+確かに $\sigma_j^2 = \lambda_j$ であり、右特異ベクトル($V$ の列)が
+主成分に一致する。PCA は散布行列を経由せず、
+データ行列の SVD として直接実行できる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item PCA の前処理は\textbf{中心化}(平均を引く)。散布行列
+$S = \sum_i \vect{d}_i{}^t\vect{d}_i$ は対称・半正定値で、
+方向 $\vect{u}$ の分散は二次形式 ${}^t\vect{u}S\vect{u}$ になる
+(定理 \ref{thm:pca-quadform})。
+\item \textbf{分散最大の方向 $=$ 最大固有値の固有ベクトル}
+(定理 \ref{thm:pca-max}。証明は固有ベクトル展開の一撃)。
+第 $2$ 主成分以降は「それまでの主成分と直交する範囲での分散最大」。
+\item \textbf{寄与率} $\lambda_i / \sum_j \lambda_j$ が
+「その方向で説明できる割合」。全分散 $= \mathrm{tr}\,S = \sum_j\lambda_j$、
+第 $1$ 主成分で復元した残差 $= \lambda_2 + \cdots + \lambda_p$ という
+完全な会計が成り立つ(定理 \ref{thm:pca-decomp})。
+\item \textbf{PCA $=$ データ行列の SVD}($\sigma_j^2 = \lambda_j$、
+$V$ の列が主成分)。上位 $k$ 主成分への要約はエッカート・ヤングの
+最良低ランク近似である。
+\item 落とし穴は二つ:\textbf{中心化を忘れる}と平均の方向が出てくる
+(反例 \ref{hanrei:pca-center})、\textbf{単位に無自覚}だと主成分が
+単位の選び方で変わる(反例 \ref{hanrei:pca-scale}。処方は標準化)。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:pca-ex1}
+データ $\mat{3 \\ 7}, \mat{5 \\ 3}, \mat{4 \\ 5}$ を中心化し、
+散布行列 $S$、主成分、寄与率をすべて求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pca-ex2}
+散布行列 $S = \mat{5 & 2 \\ 2 & 2}$ の主成分と寄与率をすべて求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pca-ex3}
+問 \ref{q:pca-ex2} の $S$ について、方向
+$\vect{e}_1, \vect{e}_2$、
+$\vect{u} = \dfrac{1}{\sqrt{5}}\mat{2 \\ 1}$,
+$\vect{v} = \dfrac{1}{\sqrt{5}}\mat{1 \\ -2}$
+の分散 ${}^t\vect{u}S\vect{u}$ をそれぞれ求め、
+定理 \ref{thm:pca-max} と見比べよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pca-ex4}
+$3$ 変数のデータの散布行列が対角行列
+$S = \mat{5 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 2}$ になった。
+主成分と寄与率・累積寄与率をすべて求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pca-ex5}
+データ $\mat{1 \\ 2}, \mat{2 \\ 4}, \mat{3 \\ 6}, \mat{4 \\ 8},
+\mat{5 \\ 10}$ について、中心化・散布行列・主成分・寄与率を求めよ。
+寄与率が示すことをデータの並び方の言葉で説明せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pca-ex6}
+$6$ 個の中心化済みデータ
+\[
+\mat{2 \\ 0}, \mat{0 \\ 2}, \mat{-2 \\ 0}, \mat{0 \\ -2},
+\mat{2 \\ 2}, \mat{-2 \\ -2}
+\]
+について、散布行列・主成分・寄与率を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pca-ex7}
+問 \ref{q:pca-ex6} のデータについて、主成分スコア
+$t_i = {}^t\vect{u}_1\vect{d}_i$ と復元 $t_i\vect{u}_1$ を計算し、
+残差の総量が $\lambda_2$ に一致すること(定理 \ref{thm:pca-decomp})を
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pca-ex8}
+問 \ref{q:pca-ex6} のデータを行として積んだ $6 \times 2$ の
+データ行列 $X$ について、$X$ の特異値を求めよ。また
+$\sigma_1^2 + \sigma_2^2$ が $\sum_i \|\vect{d}_i\|^2$ に一致することを
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:pca-ex9}
+$3$ 変数の散布行列
+$S = \mat{4 & 2 & 0 \\ 2 & 4 & 0 \\ 0 & 0 & 1}$ について、
+主成分と寄与率をすべて求めよ。$3$ 次元のデータを第 $1$・第 $2$ 主成分の
+張る平面に射影すると、ばらつきの何割が保たれるか。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:pca-ex10}
+反例 \ref{hanrei:pca-scale} の偏差ベクトル(m と kg で
+$\mat{0.1 \\ 5}, \mat{-0.1 \\ -5}$)について、次を確かめよ。\\
+　(1) m 単位での第 $1$ 主成分は $\mat{1 \\ 50}$ 方向、
+cm 単位($\mat{10 \\ 5}, \mat{-10 \\ -5}$)では $\mat{2 \\ 1}$ 方向で
+あり、一致しない。\\
+　(2) 各変数をその変数の偏差の $2$ 乗和の平方根で割って
+「標準化」すると、どちらの単位から出発しても偏差ベクトルは
+$\mat{1 \\ 1}, \mat{-1 \\ -1}$(定数倍を除く)となり、
+第 $1$ 主成分は $\dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$ で一致する。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:pca-ex11}
+散布行列 $S = \sum_i \vect{d}_i{}^t\vect{d}_i$ について、
+$S$ が対称であること、任意のベクトル $\vect{u}$ に対して
+${}^t\vect{u}S\vect{u} \ge 0$ であること、
+$S$ の固有値がすべて $0$ 以上であることを証明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:pca-ex12}
+$\mathrm{tr}(\vect{d}\,{}^t\vect{d}) = \|\vect{d}\|^2$ を示し、
+これを使って $\mathrm{tr}\,S = \sum_i \|\vect{d}_i\|^2$
+(定理 \ref{thm:pca-decomp}(1) の前半)を証明せよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:pca-ex1}}:平均を引いて偏差にし、
+$\vect{d}\,{}^t\vect{d}$ を足し上げる。偏差の総和が $\vect{0}$ かどうかが
+検算になる。
+\item \textbf{問 \ref{q:pca-ex2}}:固有値はトレースと行列式から。
+固有ベクトルは正規化まで行う。
+\item \textbf{問 \ref{q:pca-ex3}}:${}^t\vect{u}S\vect{u}$ を成分計算する。
+最大・最小が固有値になっているか見比べる。
+\item \textbf{問 \ref{q:pca-ex4}}:対角行列の固有ベクトルは座標軸方向。
+固有値を大きい順に並べ直す。
+\item \textbf{問 \ref{q:pca-ex5}}:偏差がすべて同一方向の定数倍になる。
+$\det S = 0$ が予告になっている。
+\item \textbf{問 \ref{q:pca-ex6}}:$6$ 個の $\vect{d}\,{}^t\vect{d}$ を
+根気よく足す。対称性から非対角成分に効くのは最後の $2$ 点だけ。
+\item \textbf{問 \ref{q:pca-ex7}}:例題 \ref{rei:pca-std2} と同じ手順。
+スコアの $2$ 乗和が $\lambda_1$ になることも合わせて確かめるとよい。
+\item \textbf{問 \ref{q:pca-ex8}}:${}^tXX = S$ を使えば新しい計算は
+ほとんどない。$\sigma_j^2 = \lambda_j$ と
+定理 \ref{thm:pca-decomp}(1)。
+\item \textbf{問 \ref{q:pca-ex9}}:ブロックに分かれている。
+左上 $2 \times 2$ は例題 \ref{rei:pca-basic2} の型、$z$ 軸は独立。
+\item \textbf{問 \ref{q:pca-ex10}}:偏差が $1$ 方向しかないので、
+第 $1$ 主成分はその方向そのもの。標準化は各成分を割るだけ。
+\item \textbf{問 \ref{q:pca-ex11}}:${}^t(\vect{d}\,{}^t\vect{d})$ の計算、
+${}^t\vect{u}\vect{d}$ が数であること、固有ベクトルを
+${}^t\vect{u}S\vect{u} \ge 0$ に代入すること、の三段構え。
+\item \textbf{問 \ref{q:pca-ex12}}:$\vect{d}\,{}^t\vect{d}$ の
+$(j, j)$ 成分は $d_j^2$。トレースの線形性で和と交換する。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{数値線形代数 ― 計算機の上の線形代数}\label{chap:numerical}
