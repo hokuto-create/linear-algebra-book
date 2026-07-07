@@ -8193,6 +8193,145 @@ $\vect{v} = f_1(\vect{v})\vect{v}_1 + f_2(\vect{v})\vect{v}_2$ となる
 「座標読み取り装置」である。)
 
 \bigskip
+\noindent\textbf{問 \ref{q:dual-ex1}}\quad
+行ベクトルは $\mat{3 & -2}$。
+\[
+f(\vect{u}) = 3 - 4 = -1, \qquad f(\vect{v}) = -3 - 2 = -5.
+\]
+$\vect{u} + \vect{v} = {}^t(0, 3)$ より
+$f(\vect{u} + \vect{v}) = 0 - 6 = -6 = (-1) + (-5)
+= f(\vect{u}) + f(\vect{v})$ で、線形性が確かめられる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex2}}\quad
+$g_1$ の条件は $g_1(\vect{v}_1) = 2a + b = 1$,
+$g_1(\vect{v}_2) = a + b = 0$。引き算して $a = 1$, $b = -1$。
+$g_2$ は $2a + b = 0$, $a + b = 1$ より $a = -1$, $b = 2$。
+\[
+g_1(x, y) = x - y, \qquad g_2(x, y) = -x + 2y.
+\]
+(検算:$P = \mat{2 & 1 \\ 1 & 1}$ の逆行列
+$P^{-1} = \mat{1 & -1 \\ -1 & 2}$ の行と一致する。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex3}}\quad
+$V^{*}$ の基底 $\{\mathrm{ev}_0, \mathrm{ev}_1\}$ は
+基底 $\{p_1, p_2\} = \{1 - x,\ x\}$ の双対基底だから、展開公式より
+$I = I(p_1)\,\mathrm{ev}_0 + I(p_2)\,\mathrm{ev}_1$。係数は
+\[
+I(1 - x) = \int_0^1 (1 - x)\,dx = \frac{1}{2}, \qquad
+I(x) = \int_0^1 x\,dx = \frac{1}{2}
+\]
+なので $I = \dfrac{1}{2}\mathrm{ev}_0 + \dfrac{1}{2}\mathrm{ev}_1$、
+すなわち $\displaystyle\int_0^1 p(x)\,dx = \frac{p(0) + p(1)}{2}$。
+台形公式が「$1$ 次式に対しては厳密に正しい」ことの双対空間による説明である。
+(検算:$p = a + bx$ で左辺 $= a + \dfrac{b}{2}$、右辺
+$= \dfrac{a + (a + b)}{2} = a + \dfrac{b}{2}$。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex4}}\quad
+$\mathrm{tr}(A + B) = (a_{11} + b_{11}) + (a_{22} + b_{22})
+= \mathrm{tr}\,A + \mathrm{tr}\,B$、
+$\mathrm{tr}(cA) = c\,a_{11} + c\,a_{22} = c\,\mathrm{tr}\,A$ で線形形式である。
+係数は
+\[
+\mathrm{tr}(E_{11}) = 1, \quad \mathrm{tr}(E_{12}) = 0, \quad
+\mathrm{tr}(E_{21}) = 0, \quad \mathrm{tr}(E_{22}) = 1
+\]
+(「行ベクトル」は $\mat{1 & 0 & 0 & 1}$)。また
+$\mathrm{tr}\mat{3 & 5 \\ 2 & 7} = 3 + 7 = 10$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex5}}\quad
+$P = \mat{1 & 0 & 1 \\ 1 & 1 & 0 \\ 0 & 1 & 1}$ の逆行列を掃き出しで求めると
+($\det P = 2$)
+\[
+P^{-1} = \frac{1}{2}\mat{1 & 1 & -1 \\ -1 & 1 & 1 \\ 1 & -1 & 1}.
+\]
+その行を読んで
+\[
+g_1(x, y, z) = \frac{x + y - z}{2}, \quad
+g_2(x, y, z) = \frac{-x + y + z}{2}, \quad
+g_3(x, y, z) = \frac{x - y + z}{2}.
+\]
+検算:$g_1(\vect{v}_1) = \dfrac{1 + 1 - 0}{2} = 1$,
+$g_1(\vect{v}_2) = \dfrac{0 + 1 - 1}{2} = 0$,
+$g_1(\vect{v}_3) = \dfrac{1 + 0 - 1}{2} = 0$ など、すべて条件を満たす。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex6}}\quad
+直接計算では
+\[
+(g \circ f)(x, y) = g(x + y,\ y) = 2(x + y) + 3y = 2x + 5y.
+\]
+一方 ${}^t\!A\mat{2 \\ 3} = \mat{1 & 0 \\ 1 & 1}\mat{2 \\ 3}
+= \mat{2 \\ 5}$ で、係数 $2x + 5y$ と一致する
+(行ベクトルなら $\mat{2 & 3}A = \mat{2 & 5}$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex7}}\quad
+$p_{-1}$ は $x = 0, 1$ で零だから $c\,x(x - 1)$ の形。
+$x = -1$ で $1$ になるように $c \cdot (-1)(-2) = 2c = 1$、
+$c = \dfrac{1}{2}$。他も同様に
+\[
+p_{-1}(x) = \frac{x(x - 1)}{2}, \qquad p_0(x) = 1 - x^2, \qquad
+p_1(x) = \frac{x(x + 1)}{2}.
+\]
+検算:$p_0(-1) = 0$, $p_0(0) = 1$, $p_0(1) = 0$;
+$p_1(-1) = 0$, $p_1(0) = 0$, $p_1(1) = 1$。任意の $p \in \R[x]_2$ は
+$p = p(-1)p_{-1} + p(0)p_0 + p(1)p_1$ と復元される
+(ラグランジュ補間)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex8}}\quad
+問 \ref{q:dual} の双対基底 $f_1(x, y) = \dfrac{x + y}{2}$,
+$f_2(x, y) = \dfrac{x - y}{2}$ で展開すると(定理 \ref{thm:dual-basis})
+\[
+f = f(\vect{v}_1)f_1 + f(\vect{v}_2)f_2 = 3f_1 + f_2
+= \frac{3(x + y) + (x - y)}{2} = 2x + y.
+\]
+検算:$f(1, 1) = 3$, $f(1, -1) = 2 - 1 = 1$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex9}}\quad
+$f = ax + by + cz$ が $W$ 上で零になる条件は、生成元での値
+\[
+f\,{}^t(1, 1, 0) = a + b = 0, \qquad f\,{}^t(0, 1, 1) = b + c = 0
+\]
+だけでよい($W$ の元は生成元の線形結合だから)。$b = -a$, $c = a$ より
+\[
+W^{0} = \{\, a(x - y + z) \mid a \in \R \,\} = \langle x - y + z \rangle
+\]
+で $\dim W^{0} = 1 = 3 - 2 = \dim V - \dim W$。
+(一般にも、$W$ の基底を $V$ の基底に延長すれば、$f \in W^{0}$ は
+延長分 $n - k$ 本での値だけが自由なので $\dim W^{0} = n - k$ となる。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex10}}\quad
+($\Rightarrow$)$c_1\vect{v}_1 + \cdots + c_k\vect{v}_k = \vect{0}$ とする。
+両辺に $f_i$ を施すと、線形性と $f_i(\vect{v}_j) = \delta$ 型の条件から
+\[
+0 = f_i(\vect{0}) = c_1 f_i(\vect{v}_1) + \cdots + c_k f_i(\vect{v}_k) = c_i.
+\]
+すべての $c_i = 0$ となるので線形独立である。
+
+($\Leftarrow$)$\vect{v}_1, \dots, \vect{v}_k$ が線形独立なら、基底
+$\vect{v}_1, \dots, \vect{v}_k, \vect{u}_{k+1}, \dots, \vect{u}_n$ に
+延長できる(定理 \ref{thm:dim-extend})。その双対基底の最初の $k$ 個
+$f_1, \dots, f_k$ が求める線形形式である。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:dual-ex11}}\quad
+$\mathrm{Im}\,f$ は $\R$ の部分空間であり、$\R$ は $1$ 次元だから
+部分空間は $\{0\}$ か $\R$ 自身しかない(定理 \ref{thm:dim-sub})。
+$f$ は零形式でないので $f(\vect{v}) \neq 0$ となる $\vect{v}$ が存在し、
+$\mathrm{Im}\,f \neq \{0\}$、よって $\mathrm{Im}\,f = \R$ で
+$\dim \mathrm{Im}\,f = 1$。次元定理(定理 \ref{thm:dimension})より
+\[
+\dim \mathrm{Ker}\,f = \dim V - \dim \mathrm{Im}\,f = n - 1. \qquad\blacksquare
+\]
+
+\bigskip
 \noindent\textbf{問 \ref{q:quot}}\quad
 $x - y = 0$ かつ $y - z = 0$ より $x = y = z$、すなわち
 $\mathrm{Ker}\,f = \langle \mat{1 \\ 1 \\ 1} \rangle$(次元 $1$)。

@@ -15,6 +15,46 @@
 \chapter{双対空間 ― ベクトルを「測る」ものたちの空間}\label{chap:dual}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item 線形形式(ベクトルを入れると数が出てくる線形な装置)の定義と実例を
+知り、$\R^n$ 上の線形形式が\textbf{行ベクトル}と同一視できることを
+説明できるようになる。
+\item 与えられた基底の\textbf{双対基底}を計算できるようになり、
+双対基底が $V^{*}$ の基底になることの証明を理解する。とくに、双対基底の
+係数が\textbf{逆行列の行}から読み取れることを使えるようになる。
+\item 線形写像 $f : V \to W$ から\textbf{双対写像} ${}^tf : W^{*} \to V^{*}$
+が生まれ、その表現行列が\textbf{転置行列}になること
+――第I部以来使い続けてきた転置の「正体」――を理解する。
+\item ベクトルと線形形式の同一視が\textbf{基底の取り方に依存する}ことを、
+反例で説明できるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 「測る側」を主役にする}
+
+本書は第I部の冒頭から、縦に書くベクトル(列)と横に書くベクトル(行)を
+執拗に区別してきた。振り返れば、横書きのものはいつも
+\textbf{「縦ベクトルを数に変える」役回り}で登場している。
+連立一次方程式の $1$ 本の式
+\[
+a_1 x_1 + a_2 x_2 + \cdots + a_n x_n = b
+\]
+は「未知ベクトル $\vect{x}$ をこの係数の装置で測ったら $b$ になれ」
+という条件だし、内積 $\langle \vect{a}, \vect{x} \rangle
+= {}^t\vect{a}\,\vect{x}$(第V部)でも、測る側の $\vect{a}$ は
+転置されて行になってから $\vect{x}$ に作用した。テストの合計点
+(科目ごとの得点ベクトルに配点を掛けて足す)も、買い物の総額も、
+みなこの形である。
+
+本章では、この「測る装置」たちを一括して主役に据える。装置どうしは
+足せるし定数倍もできるから、装置の全体は\textbf{それ自身が一つの
+ベクトル空間}になる――これが双対空間である。そして章の後半では、
+第V部・第VII部で大活躍した転置行列(正規方程式の ${}^t\!AA$、
+直交行列の ${}^tQQ = E$、SVD の $U\Sigma\,{}^tV$)が、
+\textbf{「測る側の世界で $A$ の代理として働く写像」の表現行列}である
+という意味づけに決着をつける。
+
 \section{線形形式と双対空間}
 
 \begin{teigi}[線形形式・双対空間]
@@ -29,6 +69,28 @@ $f : V \to \R$ を $V$ 上の\textbf{線形形式}という。
 $V^{*}$ と書く。
 \end{teigi}
 
+\begin{rei}[線形形式の実例]\label{rei:dual-examples}
+(1) $\R^3$ 上の $f(\vect{x}) = 2x_1 - x_2 + 3x_3$ は線形形式である。
+和とスカラー倍を保つことは、成分ごとの分配法則そのものである。\\
+(2) 多項式の空間 $\R[x]_2$ 上で、「$x = 1$ での値を読む」装置
+$\mathrm{ev}_1(p) = p(1)$ は線形形式である:
+$\mathrm{ev}_1(p + q) = (p + q)(1) = p(1) + q(1)$。
+「積分する」装置 $I(p) = \int_0^1 p(x)\,dx$ も、積分の線形性から
+線形形式である。\\
+(3) $2 \times 2$ 行列の空間 $M_2$ 上で、トレース
+$\mathrm{tr}\,A = a_{11} + a_{22}$ は線形形式である。
+どの例でも「入力はベクトル、出力は $1$ 個の数、そして一次で斉次」が
+共通している。
+\end{rei}
+
+\begin{chui}
+ノルム $\|\vect{v}\|$ は「ベクトルから数」だが線形形式では\textbf{ない}:
+$\vect{v} \neq \vect{0}$ のとき $\|-\vect{v}\| = \|\vect{v}\|
+\neq -\|\vect{v}\|$ となり、スカラー倍を保たない。
+$q(\vect{x}) = x_1^2$ のような二次式も $q(2\vect{x}) = 4q(\vect{x})$ で
+失格である。線形形式は「一次の斉次式」だけである。
+\end{chui}
+
 「ベクトルを入れると数が出てくる装置」たちが、また一つの
 ベクトル空間をなす――この入れ子構造に最初は眩暈がするかもしれないが、
 実例を見れば親しみやすい。$\R^n$ 上の線形形式は、必ず
@@ -36,24 +98,71 @@ $V^{*}$ と書く。
 f(\vect{x}) = a_1 x_1 + a_2 x_2 + \cdots + a_n x_n
 = \mat{a_1 & a_2 & \cdots & a_n} \vect{x}
 \]
-の形をしている(線形性から従う)。すなわち
+の形をしている。実際、$\vect{x} = x_1\vect{e}_1 + \cdots + x_n\vect{e}_n$
+と標準基底で展開して線形性を使えば
+\[
+f(\vect{x}) = x_1 f(\vect{e}_1) + \cdots + x_n f(\vect{e}_n)
+\]
+となるから、$a_i = f(\vect{e}_i)$ と置けばよい。すなわち
 \textbf{$\R^n$ の双対空間の要素とは、行ベクトルのことである}。
 本書でずっと「縦ベクトル(列)」と「横ベクトル(行)」を区別してきたのは、
 記法の趣味ではない。\textbf{列は測られるもの、行は測るもの}という、
 役割の違う二種類の住人だったのである。
+
+\section{双対基底}
+
+$f(\vect{e}_i)$ たちが $f$ を決める、という上の観察は、
+$\R^n$ に限らずどのベクトル空間でも通用する
+(定理 \ref{thm:linmap-basis}:線形写像は基底の行き先で決まる)。
+これを装置の側から言い直すと、「第 $i$ 座標だけを読み取る装置」たちが
+$V^{*}$ の部品一式になる。
 
 \begin{teigi}[双対基底]
 $V$ の基底 $\vect{e}_1, \dots, \vect{e}_n$ に対し、
 \[
 f_i(\vect{e}_j) = \begin{cases} 1 & (i = j) \\ 0 & (i \neq j) \end{cases}
 \]
-で定まる線形形式 $f_1, \dots, f_n$ は $V^{*}$ の基底になる。
-これを\textbf{双対基底}という。したがって $\dim V^{*} = \dim V$。
+で定まる線形形式 $f_1, \dots, f_n$ を、この基底の\textbf{双対基底}という
+(基底の行き先を指定したので、各 $f_i$ は定理 \ref{thm:linmap-basis} により
+一意に定まる)。
 \end{teigi}
 
 $f_i$ は「ベクトルの第 $i$ 座標を読み取る装置」である。
-実際、$\vect{v} = c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ に対し
-$f_i(\vect{v}) = c_i$ となる。
+実際、$\vect{v} = c_1\vect{e}_1 + \cdots + c_n\vect{e}_n$ に対し、線形性から
+$f_i(\vect{v}) = c_1 f_i(\vect{e}_1) + \cdots + c_n f_i(\vect{e}_n) = c_i$
+となる。名前のとおり、双対基底は本当に $V^{*}$ の基底になる。
+
+\begin{teiri}[双対基底は $V^{*}$ の基底である]\label{thm:dual-basis}
+$f_1, \dots, f_n$ は $V^{*}$ の基底である。したがって
+$\dim V^{*} = \dim V$。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{(線形独立)}\ $c_1 f_1 + \cdots + c_n f_n = o$(零形式)とする。
+両辺を $\vect{e}_j$ で評価すると、左辺は $c_j$、右辺は $0$。
+よってすべての $c_j = 0$。
+
+\textbf{(生成)}\ 任意の $f \in V^{*}$ に対し、$c_i = f(\vect{e}_i)$ と置いて
+$g = c_1 f_1 + \cdots + c_n f_n$ を作ると、
+$g(\vect{e}_j) = c_j = f(\vect{e}_j)$ ですべての基底ベクトルの行き先が
+一致するから、定理 \ref{thm:linmap-basis} より $f = g$。すなわち
+\[
+f = f(\vect{e}_1)\,f_1 + \cdots + f(\vect{e}_n)\,f_n
+\]
+と展開できる。展開係数は「$f$ に基底ベクトルを食わせた値」である。
+$\blacksquare$
+
+\begin{chui}
+双対基底の $f_i$ は、相方の $\vect{e}_i$ \textbf{だけでは決まらない}。
+「$\vect{e}_i$ 以外の基底ベクトルをすべて $0$ に送る」という条件が、
+基底の\textbf{残りの全員}に依存するからである。たとえば $\R^2$ の基底
+$\{\vect{e}_1, \vect{e}_2\}$ の双対基底では $f_1(x, y) = x$ だが、
+基底 $\{\vect{e}_1,\ \vect{e}_1 + \vect{e}_2\}$ の双対基底では
+$f_1(x, y) = x - y$ になる($f_1(\vect{e}_1) = 1$,
+$f_1(\vect{e}_1 + \vect{e}_2) = 0$ を解けばよい)。
+第 $2$ の基底ベクトルを取り替えただけで、$\vect{e}_1$ の「相方」まで
+変わるのである。
+\end{chui}
 
 \begin{itembox}[l]{深掘り:価格ベクトルは双対空間の住人である}
 双対空間の最も身近な実例は経済学にある。$n$ 種類の財の数量を並べた
@@ -75,14 +184,377 @@ $\langle \phi | \psi \rangle$ は「双対の要素 $\langle \phi|$ で
 一度この眼鏡をかけると、応用分野の数式の意味が格段に読みやすくなる。
 \end{itembox}
 
-なお、双対の双対 $V^{**}$ は、基底の選択に依存しない自然な方法で
-$V$ 自身と同一視できる($\vect{v}$ に「$f$ を $f(\vect{v})$ にうつす装置」を
-対応させる)。「測るものを測るもの」は元の世界に戻ってくるのである。
-
 \begin{mondai}\label{q:dual}
 $\R^2$ の基底 $\vect{v}_1 = \mat{1 \\ 1}$, $\vect{v}_2 = \mat{1 \\ -1}$ の
 双対基底 $f_1, f_2$ を、$f_i(x, y) = ax + by$ の形で具体的に求めよ。
 \end{mondai}
+
+\section{双対写像 ― 転置行列の正体}
+
+線形写像 $f : V \to W$ があると、$W$ 側の測定装置 $g \in W^{*}$ は、
+「まず $f$ で送ってから測る」ことで $V$ 側の装置に変わる。
+合成 $g \circ f : V \to \R$ は線形写像の合成だから線形であり
+(定理 \ref{thm:linmap-comp})、確かに $V$ 上の線形形式である。
+
+\begin{teigi}[双対写像]\label{def:dual-map}
+線形写像 $f : V \to W$ に対し、
+\[
+({}^tf)(g) = g \circ f \qquad (g \in W^{*})
+\]
+で定まる写像 ${}^tf : W^{*} \to V^{*}$ を $f$ の\textbf{双対写像}という。
+${}^tf$ 自身も線形写像である。実際、任意の $\vect{v} \in V$ で
+\[
+\bigl((g + h) \circ f\bigr)(\vect{v}) = g(f(\vect{v})) + h(f(\vect{v})), \qquad
+\bigl((cg) \circ f\bigr)(\vect{v}) = c\,g(f(\vect{v}))
+\]
+だから、${}^tf(g + h) = {}^tf(g) + {}^tf(h)$、${}^tf(cg) = c\,{}^tf(g)$。
+\end{teigi}
+
+向きに注意してほしい。$f$ は $V$ から $W$ へ進むが、双対写像は
+$W^{*}$ から $V^{*}$ へと\textbf{逆向き}に進む。測る装置は、
+写像をさかのぼって運ばれるのである。記号 ${}^tf$ を使った理由は次の定理にある。
+
+\begin{teiri}[双対写像の表現行列は転置行列]\label{thm:dual-transpose}
+$f : \R^n \to \R^m$ の(標準基底に関する)表現行列を $A$ とすると、
+双対基底に関する ${}^tf : (\R^m)^{*} \to (\R^n)^{*}$ の表現行列は
+${}^t\!A$ である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$g \in (\R^m)^{*}$ を行ベクトル $\vect{w} = \mat{w_1 & \cdots & w_m}$ と
+同一視する($g(\vect{y}) = \vect{w}\vect{y}$)。合成を計算すると
+\[
+\bigl(({}^tf)(g)\bigr)(\vect{x}) = g(A\vect{x}) = \vect{w}(A\vect{x})
+= (\vect{w}A)\vect{x}
+\]
+だから、行ベクトルの言葉では ${}^tf$ は「\textbf{右から $A$ を掛ける}」
+操作 $\vect{w} \mapsto \vect{w}A$ である。双対基底に関する座標は、
+行ベクトルの成分を縦に並べた列だから、座標の変換は
+\[
+{}^t(\vect{w}A) = {}^t\!A\,{}^t\vect{w},
+\]
+すなわち「座標の列に ${}^t\!A$ を掛ける」ことになる。表現行列は座標に
+掛かる行列だった(定理 \ref{thm:repmat-coord})から、
+${}^tf$ の表現行列は ${}^t\!A$ である。 $\blacksquare$
+
+これが\textbf{転置行列の正体}である:${}^t\!A$ とは、
+「測る側の世界で $A$ の代理として働く写像」の行列にほかならない。
+この眼鏡をかけると、本書でくり返し使った等式
+\[
+\langle A\vect{x}, \vect{y} \rangle = \langle \vect{x}, {}^t\!A\vect{y} \rangle
+\quad (\text{第V部})
+\]
+は「$\vect{x}$ を $A$ で送ってから測っても、測る装置を ${}^t\!A$ で
+引き戻してから測っても、結果は同じ」という、双対写像の定義の言い換え
+そのものになる。また第II部の定理 \ref{thm:rank-transpose}
+($\mathrm{rank}\,{}^t\!A = \mathrm{rank}\,A$)は、
+「写像 $f$ とその双対 ${}^tf$ は同じ階数をもつ」と読み直せる。
+
+\section{双対の双対 ― 元の世界に戻る}
+
+双対の双対 $V^{**}$、すなわち「測るものを測るもの」の空間はどうなるか。
+$\vect{v} \in V$ に対して「$f$ を $f(\vect{v})$ にうつす装置」
+$\iota(\vect{v}) : V^{*} \to \R$ を対応させると、
+$\iota(\vect{v})$ は $V^{*}$ 上の線形形式(定義の演算がそう作ってある)
+であり、対応 $\iota : V \to V^{**}$ は線形写像になる。
+しかも $\iota$ は\textbf{単射}である:$\vect{v} \neq \vect{0}$ なら
+$f(\vect{v}) \neq 0$ となる線形形式 $f$ が存在する
+(例題 \ref{rei:dual-sep} の分離補題)から、
+$\iota(\vect{v})$ は零形式でない。定理 \ref{thm:dual-basis} を二回使えば
+$\dim V^{**} = \dim V^{*} = \dim V$ なので、単射線形写像 $\iota$ は
+次元定理(定理 \ref{thm:dimension})により全射でもあり、同型になる。
+「測るものを測るもの」は元の世界に戻ってくるのである。
+
+重要なのは、この同一視 $\iota$ が\textbf{基底を一切選ばずに}作れたこと
+である。$V$ と $V^{*}$ も次元が等しいから同型ではあるが、そちらの
+同一視は基底の取り方に依存する(次節の反例)。
+$V \cong V^{**}$ だけが、誰が作っても同じになる「自然な」同型である。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[ベクトルと線形形式の同一視は基底に依存する]\label{hanrei:dual-ident}
+「$\R^n$ の双対は行ベクトル、つまり成分は同じで向きが違うだけ。
+それなら $V$ と $V^{*}$ は同じものでは?」――この同一視は、
+\textbf{どの基底で成分を読むか}に依存する。基底 $\{\vect{b}_i\}$ を選び、
+「座標が同じもの同士」$\sum c_i \vect{b}_i \mapsto \sum c_i g_i$
+($\{g_i\}$ は双対基底)で対応させてみよう。
+$\R^2$ のベクトル $\vect{v} = \mat{2 \\ 0}$ に対し、
+標準基底 $\{\vect{e}_1, \vect{e}_2\}$ を使うと
+$\vect{v} = 2\vect{e}_1$ の相手は $2f_1$、すなわち $f(x, y) = 2x$ である。
+ところが基底 $\vect{v}_1 = \mat{2 \\ 0}$, $\vect{v}_2 = \mat{0 \\ 1}$ を
+使うと、$\vect{v} = 1 \cdot \vect{v}_1$ の相手は双対基底の $g_1$、
+つまり $g_1(x, y) = \dfrac{x}{2}$ である($g_1(\vect{v}_1) = 1$ に注意)。
+$2x$ と $\dfrac{x}{2}$ ――同じベクトルの「相手」が、基底の選び方で
+$4$ 倍も違ってしまった。基底ベクトルを $2$ 倍すると座標は
+$\dfrac{1}{2}$ 倍、双対基底も $\dfrac{1}{2}$ 倍になる(逆向きに変わる)
+ことが原因である。単位の取り替え(メートル→センチ)で
+財の数量と価格が逆方向に換算されるのと同じ現象であり、
+「列と行はあくまで別世界の住人」と区別しておくのが安全である。
+なお第V部のように\textbf{内積を一つ固定}すれば、
+$\vect{a} \mapsto \langle \vect{a}, \cdot \rangle$ という基底によらない
+同一視が作れる。行と列を無造作に行き来できたのは、
+暗黙に標準内積を使っていたからである。
+\end{hanrei}
+
+\begin{hanrei}[線形従属な組には値を自由に指定できない]\label{hanrei:dual-dep}
+双対基底の構成(基底の行き先を自由に指定する)は、
+\textbf{基底でない組には通用しない}。たとえば
+$\vect{v}_1 = \mat{1 \\ 2}$, $\vect{v}_2 = \mat{2 \\ 4}$ に対し、
+$f(\vect{v}_1) = 1$, $f(\vect{v}_2) = 3$ となる線形形式は存在しない。
+$\vect{v}_2 = 2\vect{v}_1$ だから、線形性より
+$f(\vect{v}_2) = 2f(\vect{v}_1) = 2 \neq 3$ と、値が勝手に決まって
+しまうからである。「基底の行き先は自由、従属な組の行き先は不自由」は
+線形写像一般の鉄則であり、定理 \ref{thm:linmap-basis} が
+「基底」を仮定していたのはこのためである。双対基底の構成が
+基底を要求する理由もここにある。
+\end{hanrei}
+
+\section{例題}
+
+双対基底の計算・線形形式の展開・双対写像を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(行ベクトル表示)]\label{rei:dual-calc}
+$\R^3$ 上の線形形式 $f(x, y, z) = 2x - y + 3z$ を行ベクトルで表し、
+$\vect{u} = {}^t(1, 1, 1)$, $\vect{v} = {}^t(2, 0, -1)$ での値と、
+$f(\vect{u} + \vect{v})$ を求めよ。\\
+\textbf{解.}\ $f$ の行ベクトルは $\mat{2 & -1 & 3}$ である。
+\[
+f(\vect{u}) = 2 - 1 + 3 = 4, \qquad f(\vect{v}) = 4 + 0 - 3 = 1.
+\]
+$\vect{u} + \vect{v} = {}^t(3, 1, 0)$ だから
+$f(\vect{u} + \vect{v}) = 6 - 1 + 0 = 5 = f(\vect{u}) + f(\vect{v})$。
+線形性が数字で確かめられた。
+\end{rei}
+
+\begin{rei}[例題・基本(双対基底の計算)]\label{rei:dual-basis2}
+$\R^2$ の基底 $\vect{v}_1 = \mat{1 \\ 0}$, $\vect{v}_2 = \mat{1 \\ 1}$ の
+双対基底 $g_1, g_2$ を求め、$\vect{w} = \mat{3 \\ 5}$ を
+$\vect{w} = g_1(\vect{w})\vect{v}_1 + g_2(\vect{w})\vect{v}_2$ と
+展開してみよ。\\
+\textbf{解.}\ $g_1(x, y) = ax + by$ に $g_1(\vect{v}_1) = 1$,
+$g_1(\vect{v}_2) = 0$ を課すと $a = 1$, $a + b = 0$ より
+$g_1(x, y) = x - y$。同様に $g_2$ は $a = 0$, $a + b = 1$ より
+$g_2(x, y) = y$。展開係数は
+$g_1(\vect{w}) = 3 - 5 = -2$, $g_2(\vect{w}) = 5$ で、検算すると
+\[
+-2\mat{1 \\ 0} + 5\mat{1 \\ 1} = \mat{3 \\ 5} = \vect{w}
+\]
+となり、確かに座標を読み取れている。
+\end{rei}
+
+\begin{rei}[例題・基本(多項式の空間で)]\label{rei:dual-poly}
+$V = \R[x]_1$($1$ 次以下の多項式)上の線形形式
+$\mathrm{ev}_0(p) = p(0)$, $\mathrm{ev}_1(p) = p(1)$ を考える。
+$\{\mathrm{ev}_0, \mathrm{ev}_1\}$ が双対基底になるような $V$ の基底
+$\{p_1, p_2\}$ を求めよ。\\
+\textbf{解.}\ 条件は $p_1(0) = 1$, $p_1(1) = 0$ と
+$p_2(0) = 0$, $p_2(1) = 1$。$1$ 次式でこれを満たすのは
+\[
+p_1(x) = 1 - x, \qquad p_2(x) = x
+\]
+である。このとき任意の $p \in V$ は
+\[
+p = \mathrm{ev}_0(p)\,p_1 + \mathrm{ev}_1(p)\,p_2
+= p(0)(1 - x) + p(1)\,x
+\]
+と展開される――「両端の値から直線を復元する」補間公式であり、
+双対基底の展開公式(定理 \ref{thm:dual-basis} の証明)の実例になっている。
+\end{rei}
+
+\begin{rei}[例題・標準(双対基底は逆行列の行)]\label{rei:dual-inv}
+$\R^3$ の基底 $\vect{v}_1 = \mat{1 \\ 0 \\ 0}$,
+$\vect{v}_2 = \mat{1 \\ 1 \\ 0}$, $\vect{v}_3 = \mat{1 \\ 1 \\ 1}$ の
+双対基底を求めよ。\\
+\textbf{解.}\ 双対基底 $g_i$ の行ベクトルを縦に積んだ行列を $F$、
+$\vect{v}_j$ を並べた行列を $P = \mat{1 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1}$
+とすると、$(FP)_{ij} = g_i(\vect{v}_j)$ だから、双対基底の条件は
+$FP = E$、すなわち\textbf{$F = P^{-1}$(双対基底は逆行列の行)}である。
+掃き出しで
+\[
+P^{-1} = \mat{1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1}
+\]
+だから、
+\[
+g_1(x, y, z) = x - y, \qquad g_2(x, y, z) = y - z, \qquad
+g_3(x, y, z) = z.
+\]
+検算:$g_1(\vect{v}_1) = 1$, $g_1(\vect{v}_2) = 1 - 1 = 0$,
+$g_1(\vect{v}_3) = 0$ など、すべて条件を満たす。
+第I部の逆行列計算が、そのまま双対基底の計算装置になる。
+\end{rei}
+
+\begin{rei}[例題・標準(双対写像の計算)]\label{rei:dual-map}
+$f : \R^2 \to \R^2$ の表現行列を $A = \mat{1 & 2 \\ 3 & 4}$、
+$g(x, y) = x + y$ とする。$({}^tf)(g) = g \circ f$ を直接計算し、
+その係数が ${}^t\!A$ を掛けて得られることを確かめよ。\\
+\textbf{解.}\ 直接計算では
+\[
+(g \circ f)(x, y) = g(x + 2y,\ 3x + 4y) = (x + 2y) + (3x + 4y) = 4x + 6y.
+\]
+一方、$g$ の係数の列は ${}^t(1, 1)$ で、
+\[
+{}^t\!A\mat{1 \\ 1} = \mat{1 & 3 \\ 2 & 4}\mat{1 \\ 1} = \mat{4 \\ 6}
+\]
+と、確かに $4x + 6y$ の係数が得られる(定理 \ref{thm:dual-transpose})。
+行ベクトルで書けば $\mat{1 & 1}A = \mat{4 & 6}$:
+「右から $A$ を掛ける」操作である。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:分離補題)]\label{rei:dual-sep}
+$\vect{v} \in V$ について、「すべての $f \in V^{*}$ で $f(\vect{v}) = 0$」
+ならば $\vect{v} = \vect{0}$ であることを示せ。\\
+\textbf{解.}\ 対偶を示す。$\vect{v} \neq \vect{0}$ とすると、
+$1$ 本だけの組 $\{\vect{v}\}$ は線形独立だから、基底
+$\vect{v}, \vect{u}_2, \dots, \vect{u}_n$ に延長できる
+(定理 \ref{thm:dim-extend})。その双対基底の第 $1$ 要素 $f_1$ は
+$f_1(\vect{v}) = 1 \neq 0$ を満たす。すなわち $\vect{v} \neq \vect{0}$
+なら、それを検出する測定装置が必ず存在する。
+(この補題が、前節の $\iota : V \to V^{**}$ の単射性の根拠である。)
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item $V$ 上の\textbf{線形形式}(ベクトルを数にうつす線形写像)の全体が
+\textbf{双対空間} $V^{*}$。$\R^n$ の線形形式は\textbf{行ベクトル}
+$\mat{a_1 & \cdots & a_n}$($a_i = f(\vect{e}_i)$)と同一視できる。
+\item 基底 $\vect{e}_1, \dots, \vect{e}_n$ の\textbf{双対基底}
+$f_1, \dots, f_n$($f_i(\vect{e}_j) = \delta$ 型の条件)は $V^{*}$ の
+基底になり(定理 \ref{thm:dual-basis})、$\dim V^{*} = \dim V$。
+$f_i$ は第 $i$ 座標の読み取り装置で、
+$f = \sum f(\vect{e}_i) f_i$ と展開できる。
+$\R^n$ では\textbf{双対基底は $P = (\vect{v}_1\ \cdots\ \vect{v}_n)$ の
+逆行列の行}(例題 \ref{rei:dual-inv})。
+\item 線形写像 $f : V \to W$ の\textbf{双対写像}
+${}^tf : W^{*} \to V^{*}$($g \mapsto g \circ f$)の表現行列は
+\textbf{転置行列} ${}^t\!A$(定理 \ref{thm:dual-transpose})。
+$\langle A\vect{x}, \vect{y} \rangle = \langle \vect{x},
+{}^t\!A\vect{y} \rangle$ はその言い換えである。
+\item $V \cong V^{**}$ は基底によらず自然に成り立つが、
+$V \cong V^{*}$ の同一視は\textbf{基底(または内積)の選択に依存する}
+(反例 \ref{hanrei:dual-ident})。
+\item 双対基底の構成には「基底であること」が必須:従属な組には
+値を自由に指定できない(反例 \ref{hanrei:dual-dep})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:dual-ex1}
+$\R^2$ 上の線形形式 $f(x, y) = 3x - 2y$ を行ベクトルで表せ。また
+$\vect{u} = {}^t(1, 2)$, $\vect{v} = {}^t(-1, 1)$ について
+$f(\vect{u})$, $f(\vect{v})$, $f(\vect{u} + \vect{v})$ を求め、
+線形性を数字で確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:dual-ex2}
+$\R^2$ の基底 $\vect{v}_1 = \mat{2 \\ 1}$, $\vect{v}_2 = \mat{1 \\ 1}$ の
+双対基底 $g_1, g_2$ を $g_i(x, y) = ax + by$ の形で求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:dual-ex3}
+$\R[x]_1$ 上の線形形式 $I(p) = \displaystyle\int_0^1 p(x)\,dx$ を、
+例題 \ref{rei:dual-poly} の $\mathrm{ev}_0, \mathrm{ev}_1$ の線形結合で
+表せ(結果を台形公式と見比べよ)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:dual-ex4}
+$2 \times 2$ 行列の空間 $M_2$ 上のトレース $\mathrm{tr}$ が線形形式で
+あることを確かめ、基底 $E_{11}, E_{12}, E_{21}, E_{22}$
+($E_{ij}$ は $(i,j)$ 成分だけが $1$ の行列)に関する係数
+$\mathrm{tr}(E_{ij})$ をすべて求めよ。また
+$\mathrm{tr}\mat{3 & 5 \\ 2 & 7}$ を計算せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dual-ex5}
+$\R^3$ の基底 $\vect{v}_1 = \mat{1 \\ 1 \\ 0}$,
+$\vect{v}_2 = \mat{0 \\ 1 \\ 1}$, $\vect{v}_3 = \mat{1 \\ 0 \\ 1}$ の
+双対基底を、例題 \ref{rei:dual-inv} の方法(逆行列の行)で求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dual-ex6}
+$f : \R^2 \to \R^2$ の表現行列を $A = \mat{1 & 1 \\ 0 & 1}$、
+$g(x, y) = 2x + 3y$ とする。$({}^tf)(g)$ を合成の直接計算と
+${}^t\!A$ の掛け算の二通りで求め、一致を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dual-ex7}
+$V = \R[x]_2$ 上の三つの線形形式
+$\mathrm{ev}_{-1}(p) = p(-1)$, $\mathrm{ev}_0(p) = p(0)$,
+$\mathrm{ev}_1(p) = p(1)$ に対し、
+$\{\mathrm{ev}_{-1}, \mathrm{ev}_0, \mathrm{ev}_1\}$ が双対基底になる
+$V$ の基底 $\{p_{-1}, p_0, p_1\}$ を求めよ
+(ヒント:$p_{-1}$ は $x = 0, 1$ で零になる $2$ 次式)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:dual-ex8}
+$\R^2$ 上の線形形式 $f$ が $f\mat{1 \\ 1} = 3$,
+$f\mat{1 \\ -1} = 1$ を満たすとき、$f(x, y)$ を求めよ
+(ヒント:問 \ref{q:dual} の双対基底で $f$ を展開する)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:dual-ex9}
+部分空間 $W \subset V$ に対し、$W$ 上で恒等的に零になる線形形式の全体
+\[
+W^{0} = \{\, f \in V^{*} \mid f(\vect{w}) = 0 \ (\forall \vect{w} \in W) \,\}
+\]
+を $W$ の\textbf{零化空間}という。
+$V = \R^3$, $W = \langle {}^t(1, 1, 0),\ {}^t(0, 1, 1) \rangle$ について
+$W^{0}$ を具体的に求め、$\dim W^{0} = \dim V - \dim W$ が成り立つことを
+確かめよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:dual-ex10}
+$\vect{v}_1, \dots, \vect{v}_k \in V$ について、次の同値を示せ:
+$f_i(\vect{v}_j) = \begin{cases} 1 & (i = j) \\ 0 & (i \neq j)\end{cases}$
+を満たす $f_1, \dots, f_k \in V^{*}$ が存在する
+$\iff$ $\vect{v}_1, \dots, \vect{v}_k$ は線形独立である
+(ヒント:$\Leftarrow$ は基底への延長(定理 \ref{thm:dim-extend})と
+双対基底、$\Rightarrow$ は関係式 $\sum c_j \vect{v}_j = \vect{0}$ に
+$f_i$ を施す)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:dual-ex11}
+$V$ を $n$ 次元ベクトル空間、$f \in V^{*}$ を零形式でない線形形式とする。
+$\dim \mathrm{Ker}\,f = n - 1$ を示せ
+(ヒント:次元定理(定理 \ref{thm:dimension})。$\mathrm{Im}\,f$ は
+$\R$ の部分空間である)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:dual-ex1}}:行ベクトルは係数を並べるだけ。
+値は代入して計算する。
+\item \textbf{問 \ref{q:dual-ex2}}:$g_i(\vect{v}_j)$ の $4$ つの条件から
+連立方程式。または $P = \mat{2 & 1 \\ 1 & 1}$ の逆行列の行
+(例題 \ref{rei:dual-inv})。
+\item \textbf{問 \ref{q:dual-ex3}}:$I = I(p_1)\mathrm{ev}_0
++ I(p_2)\mathrm{ev}_1$(定理 \ref{thm:dual-basis} の展開公式を
+$V^{*}$ の基底 $\{\mathrm{ev}_0, \mathrm{ev}_1\}$ に適用)。
+$p_1 = 1 - x$, $p_2 = x$ を積分する。
+\item \textbf{問 \ref{q:dual-ex4}}:トレースの線形性は成分の計算。
+係数は対角の $E_{ij}$ だけが $1$。
+\item \textbf{問 \ref{q:dual-ex5}}:$P = (\vect{v}_1\ \vect{v}_2\ \vect{v}_3)$
+の逆行列を掃き出しで求め、その行を読む。
+\item \textbf{問 \ref{q:dual-ex6}}:例題 \ref{rei:dual-map} と同じ手順。
+行ベクトル $\mat{2 & 3}$ に右から $A$ を掛けてもよい。
+\item \textbf{問 \ref{q:dual-ex7}}:各 $p_i$ は他の $2$ 点で零になる
+$2$ 次式を作り、残る $1$ 点で値 $1$ に正規化する
+(ラグランジュ補間の基本式)。
+\item \textbf{問 \ref{q:dual-ex8}}:$f = 3f_1 + 1f_2$
+($f_1, f_2$ は問 \ref{q:dual} の答え)。
+\item \textbf{問 \ref{q:dual-ex9}}:$f = ax + by + cz$ に
+$2$ つの条件を課して解く。自由度の個数が次元になる。
+\item \textbf{問 \ref{q:dual-ex10}}:両方向とも本文の道具
+(双対基底・線形性)で書ける。
+\item \textbf{問 \ref{q:dual-ex11}}:$f \neq o$ なら
+$\mathrm{Im}\,f \neq \{0\}$。$\R$ の部分空間は $\{0\}$ と $\R$ しかない。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{商空間 ― 「違いを無視する」という構成}\label{chap:quotient}
