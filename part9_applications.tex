@@ -1078,13 +1078,51 @@ $(j, j)$ 成分は $d_j^2$。トレースの線形性で和と交換する。
 \chapter{数値線形代数 ― 計算機の上の線形代数}\label{chap:numerical}
 % =====================================================
 
-\section{有限桁の世界}
+\begin{goal}
+\begin{itemize}
+\item 有限桁の計算では「数学的に同値な式」が「数値的に同等」とは
+限らないことを、桁落ちと小さなピボットの実例で説明できるようになる。
+\item LU 分解を計算し、前進代入・後退代入で連立一次方程式を解ける
+ようになる。「逆行列は作らず分解を使い回す」理由を、計算量とともに
+説明できるようになる。
+\item 条件数 $\kappa(A) = \sigma_1/\sigma_n$ を計算・評価でき、
+「入力の相対誤差が解では最大 $\kappa$ 倍になる」ことを
+証明つきで理解する。行列式の大小が敏感さの指標に\textbf{ならない}ことを
+反例で知る。
+\item べき乗法を実行でき、収束の速さが $|\lambda_2/\lambda_1|$ で
+決まることを証明つきで理解する。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 有限桁の世界}
 
 コンピュータは実数をおよそ $16$ 桁の有限精度でしか持てない。
 このため「数学的に正しい方法」が「数値的に良い方法」とは限らない。
 本書でも既にいくつか出会った:行列式の定義($n!$ 項)は使わず掃き出し法を
-使う(第II部)、固有値は固有方程式を解かず QR 法で求める(第VII部)、
-正規方程式より QR 分解が安全(第VII部)。本章はこの世界の見取り図を与える。
+使う(第II部)、固有値は固有方程式を解かず QR 法で求める
+(第 \ref{chap:qr} 章の深掘り)、正規方程式より QR 分解が安全
+(第 \ref{chap:qr} 章)。本章はこの世界の見取り図を与える。
+
+有限桁で何が起きるかを、電卓サイズの例で一度体験しておこう。
+
+\begin{rei}[桁落ち ― 引き算が精度を食う]\label{rei:num-cancel}
+$\sqrt{101} - 10$ を、$6$ 桁の計算機で求めたい。真の値は
+$0.0498756\cdots$ である。素直に計算すると
+$\sqrt{101} = 10.0499$($6$ 桁)なので
+\[
+\sqrt{101} - 10 = 10.0499 - 10 = 0.0499000
+\]
+――正しいのは $3$ 桁だけである。近い数どうしの引き算では、
+上位の桁が打ち消し合って\textbf{有効数字が一気に減る}
+(\textbf{桁落ち})。ところが、数学的に同値な式
+\[
+\sqrt{101} - 10 = \frac{(\sqrt{101} - 10)(\sqrt{101} + 10)}{\sqrt{101} + 10}
+= \frac{1}{\sqrt{101} + 10} = \frac{1}{20.0499} = 0.0498756
+\]
+で計算すると、同じ $6$ 桁の計算機で $6$ 桁全部が正しい。
+\textbf{式変形は数学では無料だが、数値計算では品質を変える}
+――これが本章を貫く教訓である。
+\end{rei}
 
 \section{LU 分解 ― 掃き出し法の保存形式}
 
@@ -1099,24 +1137,170 @@ $L\vect{y} = \vect{b}$(上から代入)と $U\vect{x} = \vect{y}$(下から代�
 逆行列をあらわに計算することは、実務ではほとんどない
 ($A^{-1}\vect{b}$ と書いてあったら「$LU$ 分解で解け」と読むのが慣わしである)。
 
+\begin{teigi}[LU 分解]\label{def:num-lu}
+正方行列 $A$ を、対角成分がすべて $1$ の下三角行列 $L$ と
+上三角行列 $U$ の積 $A = LU$ に表すことを\textbf{LU 分解}という。
+\end{teigi}
+
+\begin{teiri}[掃き出しが LU 分解を作る]\label{thm:num-lu}
+$A$ の前進消去が行の交換なしに最後まで進む(各段階の
+ピボットが $0$ にならない)とする。消去後の上三角行列を $U$、
+「第 $i$ 行から第 $k$ 行の $m_{ik}$ 倍を引いた」ときの倍率を
+$(i, k)$ 成分($i > k$)に並べ、対角を $1$ とした下三角行列を
+$L$ とすると、$A = LU$ が成り立つ。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+消去の過程を行ごとに振り返る。第 $i$ 行は、消去が終わるまでに
+「それより上の行(消去済み、すなわち $U$ の行)の $m_{ik}$ 倍を
+引く」という操作を $k = 1, \dots, i - 1$ について受け、
+残ったものが $U$ の第 $i$ 行になる。式で書けば
+\[
+(A \text{ の第 } i \text{ 行})
+- \sum_{k < i} m_{ik}\,(U \text{ の第 } k \text{ 行})
+= (U \text{ の第 } i \text{ 行}),
+\]
+移項して
+\[
+(A \text{ の第 } i \text{ 行})
+= \sum_{k < i} m_{ik}\,(U \text{ の第 } k \text{ 行})
++ 1 \cdot (U \text{ の第 } i \text{ 行}).
+\]
+右辺は「$L$ の第 $i$ 行を係数として $U$ の行を線形結合したもの」、
+すなわち積 $LU$ の第 $i$ 行の定義そのものである(行列の積の行読み:
+第 \ref{chap:matmul} 章)。すべての $i$ で成り立つから $A = LU$。
+$\blacksquare$
+
+つまり LU 分解に\textbf{新しい計算は何もない}。掃き出しの倍率
+$m_{ik}$ を、消して捨てる代わりに $L$ に保管するだけである。
+たとえば $A = \mat{2 & 1 \\ 4 & 5}$ では、第 $2$ 行から第 $1$ 行の
+$2$ 倍を引いて $U = \mat{2 & 1 \\ 0 & 3}$、倍率を保管して
+$L = \mat{1 & 0 \\ 2 & 1}$。検算:
+$LU = \mat{2 & 1 \\ 4 & 5} = A$。
+
+\subsection*{計算量 ― なぜ逆行列を作らないのか}
+
+$n$ 次の LU 分解に必要な乗除算はおよそ $\dfrac{n^3}{3}$ 回、
+前進・後退代入は各およそ $\dfrac{n^2}{2}$ 回である。
+一方、逆行列をあらわに求めるにはおよそ $n^3$ 回かかる
+(掃き出しを $n$ 本の右辺について行うことに相当)。
+つまり LU 分解は逆行列のおよそ $3$ 倍速く、しかも
+$2$ 本目以降の右辺は $n^2$ 程度の追加コストで解ける。
+$n = 10^4$ なら $n^3$ と $n^2$ の差は $1$ 万倍
+――「逆行列を作るな、分解せよ」は数値線形代数の第一の合言葉である。
+
+ただし、掃き出しの順序をそのまま信じてよいとは限らない。
+
+\begin{hanrei}[小さなピボットが答えを壊す]\label{hanrei:num-pivot}
+$3$ 桁の計算機(各段階で有効数字 $3$ 桁に丸める)で
+\[
+\left\{
+\begin{array}{rcl}
+10^{-4}x + y &=& 1 \\
+x + y &=& 2
+\end{array}
+\right.
+\]
+を解く。真の解は $x = 1.0001\cdots$, $y = 0.9999\cdots$ である。
+第 $1$ 式のピボット $10^{-4}$ でそのまま消去すると、倍率は
+$m = 10^4$ で、第 $2$ 式は
+\[
+(1 - 10^4)\,y = 2 - 10^4,
+\]
+$3$ 桁に丸めて $-1.00 \times 10^4\,y = -1.00 \times 10^4$、
+すなわち $y = 1.00$。これを第 $1$ 式に戻すと
+$10^{-4}x = 1 - 1.00 = 0$ より $x = 0$
+――真の値 $1.0001$ とは似ても似つかない。
+$y$ のわずかな丸め誤差が、$10^{-4}$ で割られて
+$10^4$ 倍に膨らんだのである。
+\textbf{行を入れ替えてから}消去すると(ピボットは $1$)、倍率は
+$10^{-4}$ で、$3$ 桁計算でも $y = 1.00$, $x = 2 - 1.00 = 1.00$ と
+正しい答えに(丸めの範囲で)到達する。
+\end{hanrei}
+
+\begin{chui}
+反例 \ref{hanrei:num-pivot} の教訓から、実用の LU 分解は
+各段階で\textbf{絶対値最大のピボットを選んで行を交換}する
+(\textbf{部分ピボット選択})。数学的にはどのピボットでも同値だが、
+数値的には「小さい数で割らない」ことが決定的に重要である。
+市販のライブラリの LU 分解はすべてこの形になっている。
+\end{chui}
+
 \section{条件数 ― 問題そのものの敏感さ}
 
-\begin{teigi}[条件数]
+丸め誤差にどれだけ振り回されるかは、アルゴリズムだけでなく
+\textbf{問題そのもの}にも依存する。それを測る量が条件数である。
+
+\begin{teigi}[条件数]\label{def:num-cond}
 正則行列 $A$ の最大特異値と最小特異値の比
 \[
 \kappa(A) = \frac{\sigma_1}{\sigma_n}
 \]
-を $A$ の\textbf{条件数}という。
+を $A$ の\textbf{条件数}という(特異値は第 \ref{chap:svd} 章)。
 \end{teigi}
 
 $A\vect{x} = \vect{b}$ において、入力 $\vect{b}$ の相対誤差は、
-解 $\vect{x}$ では最大 $\kappa(A)$ 倍に拡大されうる
-($A$ は最大 $\sigma_1$ 倍に伸ばし、$A^{-1}$ は最大 $1/\sigma_n$ 倍に
-伸ばすため)。$\kappa$ が $10^{12}$ もあれば、$16$ 桁の計算でも
+解 $\vect{x}$ では最大 $\kappa(A)$ 倍に拡大されうる。
+きちんと述べて証明しよう。
+
+\begin{teiri}[誤差増幅の上限]\label{thm:num-cond}
+$A$ を正則行列、$A\vect{x} = \vect{b} \neq \vect{0}$ とする。
+右辺を $\vect{b} + \delta\vect{b}$ に変えたときの解を
+$\vect{x} + \delta\vect{x}$ とすると、
+\[
+\frac{\|\delta\vect{x}\|}{\|\vect{x}\|}
+\le \kappa(A)\,\frac{\|\delta\vect{b}\|}{\|\vect{b}\|}.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$A(\vect{x} + \delta\vect{x}) = \vect{b} + \delta\vect{b}$ から
+$A\vect{x} = \vect{b}$ を引いて $A\,\delta\vect{x} = \delta\vect{b}$、
+すなわち $\delta\vect{x} = A^{-1}\delta\vect{b}$。
+$A = U\Sigma\,{}^tV$ を特異値分解とすると
+$A^{-1} = V\Sigma^{-1}\,{}^tU$ で、$A^{-1}$ の特異値は
+$1/\sigma_n \ge \cdots \ge 1/\sigma_1$ である。最大の伸び率は
+最大特異値だから(定理 \ref{thm:svd-norm})
+\[
+\|\delta\vect{x}\| = \|A^{-1}\delta\vect{b}\|
+\le \frac{1}{\sigma_n}\|\delta\vect{b}\|.
+\]
+一方 $\|\vect{b}\| = \|A\vect{x}\| \le \sigma_1\|\vect{x}\|$ より
+$\dfrac{1}{\|\vect{x}\|} \le \dfrac{\sigma_1}{\|\vect{b}\|}$。
+二つを掛け合わせて
+\[
+\frac{\|\delta\vect{x}\|}{\|\vect{x}\|}
+\le \frac{\sigma_1}{\sigma_n}\,\frac{\|\delta\vect{b}\|}{\|\vect{b}\|}
+= \kappa(A)\,\frac{\|\delta\vect{b}\|}{\|\vect{b}\|}. \qquad\blacksquare
+\]
+
+$\kappa$ が $10^{12}$ もあれば、$16$ 桁の計算でも
 答えは $4$ 桁しか信用できない。重要なのは、これが\textbf{解法ではなく
 問題自体の性質}だということである。条件数の悪い問題は、
 どんな名アルゴリズムでも救えない――SVD が「問題の健康診断」の
-道具にもなっている。
+道具にもなっている。なお、$\kappa(A) \ge 1$ が常に成り立ち、
+直交行列では $\kappa = 1$(最良)、定数倍では変わらない
+($\kappa(cA) = \kappa(A)$)――例題と章末問題で確かめる。
+
+「行列式が小さいと危険」と思っている読者は多いが、それは正しくない。
+
+\begin{hanrei}[行列式は敏感さの指標にならない]\label{hanrei:num-det}
+$A = \mat{0.1 & 0 \\ 0 & 0.1}$ は $\det A = 0.01$ と小さいが、
+特異値はともに $0.1$ で $\kappa(A) = 1$:\textbf{最良の条件}であり、
+$A\vect{x} = \vect{b}$ は誤差を一切増幅しない(全体が $10$ 倍される
+だけである)。一方
+$B = \mat{1 & 100 \\ 0 & 1}$ は $\det B = 1$ と「健全」に見えるが、
+${}^tBB = \mat{1 & 100 \\ 100 & 10001}$ の固有値は
+$\lambda_1\lambda_2 = (\det B)^2 = 1$, $\lambda_1 + \lambda_2 = 10002$
+より $\lambda_1 \approx 10002$, $\lambda_2 \approx 1/10002$。よって
+$\kappa(B) = \sqrt{\lambda_1/\lambda_2} = \lambda_1 \approx 10^4$
+――みかけの健全さに反して、誤差を $1$ 万倍に増幅しうる。
+実際 $B\vect{x} = \vect{b}$ で $\vect{b} = \mat{1 \\ 0}$ の解は
+$\vect{x} = \mat{1 \\ 0}$ だが、$\vect{b} = \mat{1 \\ 0.01}$ に
+変えると解は $\vect{x} = \mat{0 \\ 0.01}$ に跳ぶ:
+右辺の $1\%$ の変化が解を $100\%$ 変えた。
+\textbf{敏感さを測るのは行列式ではなく特異値の比}である。
+\end{hanrei}
 
 \section{べき乗法 ― 最大固有値だけ欲しいとき}
 
@@ -1124,14 +1308,46 @@ $A\vect{x} = \vect{b}$ において、入力 $\vect{b}$ の相対誤差は、
 最大のものだけ欲しい。そこで、適当な初期ベクトルに
 $A$ を\textbf{ひたすら掛け続ける}:
 \[
-\vect{x}_{k+1} = \frac{A\vect{x}_k}{\|A\vect{x}_k\|}.
+\vect{x}_{k+1} = \frac{A\vect{x}_k}{\|A\vect{x}_k\|}
 \]
-固有ベクトル展開 $\vect{x}_0 = c_1\vect{v}_1 + \cdots + c_n\vect{v}_n$ に
-$A^k$ を施すと $A^k\vect{x}_0 = c_1\lambda_1^k\vect{v}_1 + \cdots$ となり、
-$|\lambda_1| > |\lambda_2|$ なら第 $1$ 項以外は相対的に
-$(\lambda_2/\lambda_1)^k$ の速さで消えていく。
+(分母は桁あふれを防ぐための正規化で、方向には影響しない)。
+
+\begin{teiri}[べき乗法の収束]\label{thm:num-power}
+$A$ は対角化可能で、固有値が
+$|\lambda_1| > |\lambda_2| \ge \cdots \ge |\lambda_n|$ を満たすとする
+(絶対値最大の固有値がただ一つ)。対応する固有ベクトルを
+$\vect{v}_1, \dots, \vect{v}_n$ とし、初期ベクトルの展開
+$\vect{x}_0 = c_1\vect{v}_1 + \cdots + c_n\vect{v}_n$ で
+$c_1 \neq 0$ とする。このとき $A^k\vect{x}_0$ の方向は
+$\vect{v}_1$ の方向に収束し、ずれは $|\lambda_2/\lambda_1|^k$ の
+速さで消える。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$A^k$ は各固有ベクトルを $\lambda_i^k$ 倍するから
+\[
+A^k\vect{x}_0 = c_1\lambda_1^k\vect{v}_1 + \cdots
++ c_n\lambda_n^k\vect{v}_n
+= \lambda_1^k \Bigl( c_1\vect{v}_1
++ \sum_{i \ge 2} c_i \Bigl(\frac{\lambda_i}{\lambda_1}\Bigr)^{k}
+\vect{v}_i \Bigr).
+\]
+各 $i \ge 2$ で $|\lambda_i/\lambda_1| \le |\lambda_2/\lambda_1| < 1$
+だから、括弧内の第 $2$ 項以降は $k \to \infty$ で $\vect{0}$ に
+収束し、その大きさは $|\lambda_2/\lambda_1|^k$ の定数倍で抑えられる。
+全体の定数倍 $\lambda_1^k$ は方向に影響しないので、方向は
+$c_1\vect{v}_1$ の方向に収束する。 $\blacksquare$
+
 \textbf{「最大固有値が長期を支配する」という本書の支配原理を、
 そのままアルゴリズムにした}のがべき乗法である。
+収束後の固有値は、レイリー商
+$\dfrac{{}^t\vect{x}A\vect{x}}{{}^t\vect{x}\vect{x}}$
+(第 \ref{chap:spectral} 章で対称行列について登場した量)で
+見積もるのが定石である。なお、$|\lambda_1| = |\lambda_2|$ のときは
+収束しない(章末問題 \ref{q:num-ex10})し、
+運悪く $c_1 = 0$ を引くと理論上は $\vect{v}_1$ が出てこない
+(実際には丸め誤差が $c_1 \neq 0$ を「注入」してくれるので、
+ほぼ問題にならない)。
 
 \begin{itembox}[l]{深掘り:大規模疎行列の時代}
 ウェブのリンク行列や SNS の友人関係行列は、次元こそ数十億だが、
@@ -1153,6 +1369,258 @@ $\vect{x}_1 = A\vect{x}_0$、$\vect{x}_2 = A\vect{x}_1$ を計算せよ
 (正規化は省略してよい)。$\vect{x}_2$ の方向が、最大固有値 $3$ の
 固有ベクトル $\mat{1 \\ 1}$ の方向に近づいていることを確認せよ。
 \end{mondai}
+
+\section{例題}
+
+\begin{rei}[例題・基本(LU 分解と二度の代入)]\label{rei:num-basic1}
+$A = \mat{2 & 1 \\ 4 & 5}$ を LU 分解し、それを使って
+$A\vect{x} = \mat{3 \\ 9}$ を解け。\\
+\textbf{解.}\ 第 $2$ 行から第 $1$ 行の $2$ 倍を引くと
+$U = \mat{2 & 1 \\ 0 & 3}$、倍率を保管して $L = \mat{1 & 0 \\ 2 & 1}$
+(検算:$LU = A$)。まず $L\vect{y} = \mat{3 \\ 9}$ を上から:
+$y_1 = 3$, $y_2 = 9 - 2 \cdot 3 = 3$。次に
+$U\vect{x} = \mat{3 \\ 3}$ を下から:$3x_2 = 3$ より $x_2 = 1$、
+$2x_1 + 1 = 3$ より $x_1 = 1$。よって $\vect{x} = \mat{1 \\ 1}$
+(検算:$A\vect{x} = \mat{3 \\ 9}$)。
+\end{rei}
+
+\begin{rei}[例題・基本(条件数の計算)]\label{rei:num-basic2}
+$A = \mat{2 & 1 \\ 1 & 2}$ の条件数を求めよ。\\
+\textbf{解.}\ $A$ は対称で、固有値は $3, 1$(固有多項式
+$\lambda^2 - 4\lambda + 3$)。固有値がすべて正の対称行列では
+特異値は固有値に一致する(第 \ref{chap:svd} 章)から
+$\sigma_1 = 3$, $\sigma_2 = 1$、
+\[
+\kappa(A) = \frac{3}{1} = 3.
+\]
+右辺の相対誤差は、解では高々 $3$ 倍にしかならない:良条件である。
+なお $10A$ でも $\dfrac{30}{10} = 3$ で条件数は変わらない
+――スケール全体の大小は敏感さと無関係である。
+\end{rei}
+
+\begin{rei}[例題・基本(べき乗法とレイリー商)]\label{rei:num-basic3}
+$A = \mat{3 & 1 \\ 1 & 3}$(固有値 $4, 2$)に対し、
+$\vect{x}_0 = \mat{1 \\ 0}$ からべき乗法を $2$ 回行い、
+レイリー商で最大固有値を見積もれ(正規化は省略してよい)。\\
+\textbf{解.}\ $\vect{x}_1 = A\vect{x}_0 = \mat{3 \\ 1}$,
+$\vect{x}_2 = A\vect{x}_1 = \mat{10 \\ 6}$。成分比は
+$3 : 1 \to 10 : 6$ と、固有ベクトル $\mat{1 \\ 1}$ の比 $1 : 1$ に
+近づいている(ずれは $(2/4)^k = 2^{-k}$ の速さで減る)。レイリー商は
+$A\vect{x}_2 = \mat{36 \\ 28}$ を使って
+\[
+\frac{{}^t\vect{x}_2 A\vect{x}_2}{{}^t\vect{x}_2\vect{x}_2}
+= \frac{10 \cdot 36 + 6 \cdot 28}{10^2 + 6^2}
+= \frac{528}{136} = 3.88\cdots
+\]
+で、真値 $4$ のよい近似になっている。
+\end{rei}
+
+\begin{rei}[例題・標準($3$ 次の LU 分解と使い回し)]\label{rei:num-std1}
+$A = \mat{2 & 1 & 1 \\ 4 & 3 & 3 \\ 8 & 7 & 9}$ を LU 分解し、
+$A\vect{x} = \mat{4 \\ 10 \\ 24}$ を解け。\\
+\textbf{解.}\ 消去の倍率は $m_{21} = 2$, $m_{31} = 4$、続いて
+$m_{32} = 3$ で、
+\[
+L = \mat{1 & 0 & 0 \\ 2 & 1 & 0 \\ 4 & 3 & 1}, \qquad
+U = \mat{2 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 2}
+\]
+(検算:$LU$ の第 $3$ 行は
+$4(2, 1, 1) + 3(0, 1, 1) + (0, 0, 2) = (8, 7, 9)$)。
+$L\vect{y} = {}^t(4, 10, 24)$ を上から:
+$y_1 = 4$, $y_2 = 10 - 2 \cdot 4 = 2$,
+$y_3 = 24 - 4 \cdot 4 - 3 \cdot 2 = 2$。
+$U\vect{x} = {}^t(4, 2, 2)$ を下から:
+$x_3 = 1$, $x_2 = 2 - 1 = 1$, $x_1 = \dfrac{4 - 1 - 1}{2} = 1$。
+$\vect{x} = {}^t(1, 1, 1)$。
+右辺を取り替えても、掃き出しをやり直す必要はなく、
+$2$ 度の代入($n^2$ 程度)だけで済む――これが分解の使い回しである。
+\end{rei}
+
+\begin{rei}[例題・標準(悪条件の体感)]\label{rei:num-std2}
+$A = \mat{1 & 1 \\ 1 & 1.01}$ について、
+$\vect{b} = \mat{2 \\ 2.01}$ と $\vect{b}' = \mat{2 \\ 2.02}$ に
+対する解を比較し、条件数を見積もれ。\\
+\textbf{解.}\ $\vect{b}$ のとき:引き算して $0.01y = 0.01$ より
+$\vect{x} = \mat{1 \\ 1}$。$\vect{b}'$ のとき:$0.01y = 0.02$ より
+$\vect{x}' = \mat{0 \\ 2}$。右辺の変化は
+$\|\delta\vect{b}\| = 0.01$(相対誤差約 $0.35\%$)なのに、解は
+$\|\delta\vect{x}\| = \|{}^t(-1, 1)\| = \sqrt{2}$
+(相対誤差 $100\%$)も動いた:増幅率はおよそ $280$ 倍である。
+実際、$A$ は対称で固有値は
+$\lambda = \dfrac{2.01 \pm \sqrt{2.01^2 - 0.04}}{2}$、すなわち
+約 $2.005$ と約 $0.0050$ だから
+$\kappa(A) \approx \dfrac{2.005}{0.0050} \approx 4 \times 10^2$。
+観測された増幅 $280$ 倍は上限 $\kappa$ の範囲内である
+(定理 \ref{thm:num-cond})。$2$ 本の方程式がほとんど平行
+――幾何的には「細長いひし形の交点」――であることが、
+この敏感さの正体である。
+\end{rei}
+
+\begin{rei}[例題・標準(直交行列は誤差を増幅しない)]\label{rei:num-std3}
+直交行列 $Q$ の条件数が $1$ であることを示せ。\\
+\textbf{解.}\ 直交行列は長さを保つ(第 \ref{chap:orth} 章):
+$\|Q\vect{x}\| = \|\vect{x}\|$ がすべての $\vect{x}$ で成り立つ。
+よって「単位ベクトルの行き先の長さ」は常に $1$ で、
+最大の伸び率も最小の伸び率も $1$、すなわち
+$\sigma_1 = \sigma_n = 1$ である。したがって $\kappa(Q) = 1$。
+条件数の下限 $\kappa \ge 1$(章末問題 \ref{q:num-ex11})を達成する
+\textbf{最良の行列}が直交行列である。QR 分解(第 \ref{chap:qr} 章)や
+グラム・シュミットの直交化が数値計算で重宝される根本理由がこれで、
+「直交変換で問題を変形しても、問題の敏感さは一切悪化しない」。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item 有限桁の世界では、数学的に同値な式が数値的に同等とは限らない。
+近い数の引き算は\textbf{桁落ち}を起こす(例 \ref{rei:num-cancel})。
+\item \textbf{LU 分解}は掃き出しの倍率を保管したもの
+(定理 \ref{thm:num-lu}:新しい計算はない)。連立方程式は
+$L\vect{y} = \vect{b}$ と $U\vect{x} = \vect{y}$ の二度の代入で解け、
+右辺の取り替えに強い。「逆行列を作るな、分解せよ」
+($n^3$ 対 $n^2$ の差)。小さなピボットは危険で、実用では
+\textbf{部分ピボット選択}を行う(反例 \ref{hanrei:num-pivot})。
+\item \textbf{条件数} $\kappa(A) = \sigma_1/\sigma_n$ は問題自体の
+敏感さで、入力の相対誤差を最大 $\kappa$ 倍に増幅する
+(定理 \ref{thm:num-cond})。$\kappa \ge 1$、直交行列で $\kappa = 1$、
+定数倍で不変。\textbf{行列式の大小は指標にならない}
+(反例 \ref{hanrei:num-det})。
+\item \textbf{べき乗法}は $A$ を掛け続けるだけで最大固有値の
+固有ベクトルを取り出す。収束の速さは $|\lambda_2/\lambda_1|^k$
+(定理 \ref{thm:num-power}:支配原理のアルゴリズム化)。
+固有値はレイリー商で見積もる。
+\item 大規模疎行列では「$A$ を保存する」ことも諦め、
+$\vect{x} \mapsto A\vect{x}$ という操作だけを前提に反復法を設計する。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:num-ex1}
+$A = \mat{3 & 1 \\ 6 & 4}$ を LU 分解し、それを使って
+$A\vect{x} = \mat{5 \\ 14}$ を解け。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:num-ex2}
+問 \ref{q:num-ex1} の LU 分解を\textbf{使い回して}、
+$A\vect{x} = \mat{4 \\ 10}$ を解け(掃き出しをやり直さないこと)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:num-ex3}
+次の行列の条件数を求めよ。\\
+　(1) $D = \mat{10 & 0 \\ 0 & 0.1}$
+　(2) $0.01E$($E$ は $2$ 次単位行列)
+　(3) 回転行列 $R = \mat{\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta}$
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:num-ex4}
+$A = \mat{4 & 1 \\ 1 & 4}$(固有値 $5, 3$)に対し
+$\vect{x}_0 = \mat{1 \\ 0}$ からべき乗法を $2$ 回行い
+(正規化は省略してよい)、レイリー商
+$\dfrac{{}^t\vect{x}_2 A\vect{x}_2}{{}^t\vect{x}_2\vect{x}_2}$ で
+最大固有値を見積もれ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:num-ex5}
+$A = \mat{1 & 2 & 1 \\ 2 & 5 & 3 \\ 1 & 2 & 3}$ を LU 分解し、
+$A\vect{x} = \mat{4 \\ 10 \\ 6}$ を解け。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:num-ex6}
+$A = \mat{1 & 1 \\ 1 & 0.99}$ について、
+$\vect{b} = \mat{2 \\ 1.99}$ のときの解と
+$\vect{b}' = \mat{2 \\ 2}$ のときの解を求めて比較せよ。
+また $A$ の条件数を見積もり、観測された増幅が
+定理 \ref{thm:num-cond} の上限に収まっていることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:num-ex7}
+$A = \mat{1 & 1 \\ 0 & 1}$ の条件数を求めよ
+(ヒント:${}^tAA$ の固有値 $\lambda$ は
+$\lambda_1\lambda_2 = 1$ を満たす。$\kappa = \sqrt{\lambda_1/\lambda_2}
+= \lambda_1$)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:num-ex8}
+$A = \mat{3 & 1 \\ 1 & 3}$ について、レイリー商
+$R(\vect{x}) = \dfrac{{}^t\vect{x}A\vect{x}}{{}^t\vect{x}\vect{x}}$ を
+$\vect{x} = \mat{1 \\ 0}, \mat{1 \\ 1}, \mat{1 \\ -1}$ で計算せよ。
+結果が常に最小固有値と最大固有値の間に収まる理由を、
+定理 \ref{thm:pca-max}(分散最大の方向)を使って説明せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:num-ex9}
+$3$ 桁の計算機(各段階で有効数字 $3$ 桁に丸める)で
+\[
+\left\{
+\begin{array}{rcl}
+10^{-4}x + y &=& 1 \\
+x + 2y &=& 3
+\end{array}
+\right.
+\]
+を、(a) そのままの順序で、(b) 行を入れ替えてから、
+それぞれ前進消去で解け(真の解はおよそ $x = 1.0002$,
+$y = 0.9999$)。結果を比較し、ピボット選択の効果を説明せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:num-ex10}
+$A = \mat{0 & 1 \\ 1 & 0}$ に $\vect{x}_0 = \mat{2 \\ 1}$ から
+べき乗法を適用すると何が起きるか、$\vect{x}_1, \vect{x}_2, \vect{x}_3$
+を計算して観察せよ。収束しない理由を固有値の言葉で述べよ。
+また、$A$ の代わりに $A + E$ を使うと収束することを、
+$A + E$ の固有値を求めて説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:num-ex11}
+正則行列 $A$ について、次を証明せよ。\\
+　(1) $\kappa(A) \ge 1$。\\
+　(2) $c \neq 0$ のとき $\kappa(cA) = \kappa(A)$。\\
+　(3) $\kappa(A^{-1}) = \kappa(A)$。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:num-ex12}
+$A$ を正則行列、$A = U\Sigma\,{}^tV$ をその特異値分解とする。
+$A^{-1} = V\Sigma^{-1}\,{}^tU$ が $A^{-1}$ の特異値分解(の並べ替え)
+であり、$A^{-1}$ の特異値が $\dfrac{1}{\sigma_n} \ge \cdots \ge
+\dfrac{1}{\sigma_1}$ であることを確かめよ
+(定理 \ref{thm:num-cond} の証明で使った事実)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:num-ex1}}:倍率 $m_{21} = 2$ を $L$ に保管。
+$L\vect{y} = \vect{b}$ は上から、$U\vect{x} = \vect{y}$ は下から。
+\item \textbf{問 \ref{q:num-ex2}}:$L, U$ は問 \ref{q:num-ex1} のまま。
+代入だけやり直す。
+\item \textbf{問 \ref{q:num-ex3}}:対角行列の特異値は対角成分の絶対値。
+回転行列は長さを保つ(例題 \ref{rei:num-std3})。
+\item \textbf{問 \ref{q:num-ex4}}:例題 \ref{rei:num-basic3} と同じ手順。
+真値 $5$ と見比べる。
+\item \textbf{問 \ref{q:num-ex5}}:倍率は $m_{21} = 2$, $m_{31} = 1$,
+$m_{32} = 0$。$LU = A$ の検算を忘れずに。
+\item \textbf{問 \ref{q:num-ex6}}:引き算で $y$ を出す。$2$ つの解は
+大きく違うはず。固有値は例題 \ref{rei:num-std2} と同じ要領で近似する。
+\item \textbf{問 \ref{q:num-ex7}}:${}^tAA = \mat{1 & 1 \\ 1 & 2}$ の
+固有多項式から $\lambda_1 = \dfrac{3 + \sqrt{5}}{2}$。
+\item \textbf{問 \ref{q:num-ex8}}:レイリー商は「$\vect{x}$ 方向の
+二次形式の値」。単位ベクトルに直すと ${}^t\vect{u}A\vect{u}$ になる。
+\item \textbf{問 \ref{q:num-ex9}}:反例 \ref{hanrei:num-pivot} と同じ
+筋書き。$3$ 桁への丸めを毎回律儀に行うこと。
+\item \textbf{問 \ref{q:num-ex10}}:$\vect{x}_2$ が $\vect{x}_0$ に
+戻る。$A$ の固有値は $\pm 1$、$A + E$ の固有値は $2, 0$。
+\item \textbf{問 \ref{q:num-ex11}}:すべて特異値の定義
+($\sigma_1 \ge \sigma_n$、$cA$ の特異値は $|c|\sigma_i$、
+問 \ref{q:num-ex12})に帰着する。
+\item \textbf{問 \ref{q:num-ex12}}:$V, U$ が直交行列、
+$\Sigma^{-1}$ が正の対角行列であることを言えばよい。
+大きい順に並べ直すと $1/\sigma_n$ が先頭に来る。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{線形代数の行き先 ― 経済・量子・AI}\label{chap:final}
