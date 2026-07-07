@@ -8474,6 +8474,139 @@ $d = 0$ なら $bd = 0 \neq 1$ に矛盾。よって分解可能でない。
 (係数行列 $\mat{1 & 0 \\ 0 & 1}$ の階数が $2$ であることの直接証明である。)
 
 \bigskip
+\noindent\textbf{問 \ref{q:tensor-ex1}}\quad
+係数は $u_i v_j$ だから
+\[
+\vect{u} \otimes \vect{v} = 2\,\vect{e}_1 \otimes \vect{e}_1
++ 5\,\vect{e}_1 \otimes \vect{e}_2 - 2\,\vect{e}_2 \otimes \vect{e}_1
+- 5\,\vect{e}_2 \otimes \vect{e}_2,
+\]
+係数行列は $\vect{u}\,{}^t\vect{v} = \mat{2 & 5 \\ -2 & -5}$。
+$\det = -10 + 10 = 0$ で零行列ではないから階数 $1$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex2}}\quad
+$T_1$:$\det T_1 = 6 - 6 = 0$ で零行列でないから階数 $1$、分解可能。
+各列は ${}^t(3, 1)$ の $1$ 倍・$2$ 倍なので
+\[
+T_1 = \mat{3 \\ 1}\mat{1 & 2}, \qquad
+t_1 = \mat{3 \\ 1} \otimes \mat{1 \\ 2}.
+\]
+(検算:$u_i v_j = \mat{3 & 6 \\ 1 & 2}$。)
+$T_2$:$\det T_2 = 1 - 0 = 1 \neq 0$ で階数 $2$。
+定理 \ref{thm:tensor-rank1} より分解可能でない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex3}}\quad
+\[
+A \otimes B = \mat{2B & O \\ O & 3B}
+= \mat{2 & 2 & 0 & 0 \\ 0 & 2 & 0 & 0 \\
+0 & 0 & 3 & 3 \\ 0 & 0 & 0 & 3}.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex4}}\quad
+(1) $\dim(\R^3 \otimes \R^4) = 3 \times 4 = 12$。基底は
+$\vect{e}_i \otimes \vect{f}_j$($i = 1, 2, 3$、$j = 1, 2, 3, 4$)の
+$12$ 個である。
+(2) $(\R^2 \otimes \R^2) \otimes \R^2$ の次元は
+$(2 \times 2) \times 2 = 8 = 2^3$。$k$ 個なら $2^k$ で、
+これが量子コンピュータの状態空間が指数的に大きい理由である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex5}}\quad
+基底での値は
+\[
+L(\vect{e}_1 \otimes \vect{e}_1) = 0, \quad
+L(\vect{e}_1 \otimes \vect{e}_2) = 1, \quad
+L(\vect{e}_2 \otimes \vect{e}_1) = -1, \quad
+L(\vect{e}_2 \otimes \vect{e}_2) = 0
+\]
+($B(\vect{e}_i, \vect{e}_j)$ を計算した)。よって
+$L(t) = t_{12} - t_{21}$。
+$\vect{u} \otimes \vect{u}$ の係数行列は $u_i u_j$ で対称
+($t_{12} = t_{21} = u_1 u_2$)だから
+$L(\vect{u} \otimes \vect{u}) = u_1 u_2 - u_2 u_1 = 0$。
+「同じベクトルを二度入れると消える」――次章の外積の交代性である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex6}}\quad
+$\det T = 6 - 4 = 2 \neq 0$ で階数 $2$ だから分解可能でない。
+行ごとに切り分けて
+\[
+T = \mat{2 & 1 \\ 0 & 0} + \mat{0 & 0 \\ 4 & 3}, \qquad
+t = \vect{e}_1 \otimes (2\vect{f}_1 + \vect{f}_2)
++ \vect{e}_2 \otimes (4\vect{f}_1 + 3\vect{f}_2).
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex7}}\quad
+$A\vect{u} = \mat{3 \\ 2}$, $B\vect{v} = \mat{6 \\ 1}$ より
+$(A\vect{u}) \otimes (B\vect{v})$ の係数行列は
+$\mat{3 \\ 2}\mat{6 & 1} = \mat{18 & 3 \\ 12 & 2}$。
+一方 $\vect{u} \otimes \vect{v}$ の係数行列は
+$\mat{3 & 1 \\ 6 & 2}$、縦に並べると ${}^t(3, 1, 6, 2)$ で、
+\[
+(A \otimes B)\mat{3 \\ 1 \\ 6 \\ 2}
+= \mat{2 & 0 & 2 & 0 \\ 0 & 1 & 0 & 1 \\
+0 & 0 & 2 & 0 \\ 0 & 0 & 0 & 1}\mat{3 \\ 1 \\ 6 \\ 2}
+= \mat{18 \\ 3 \\ 12 \\ 2}.
+\]
+行列に並べ直すと $\mat{18 & 3 \\ 12 & 2}$ で一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex8}}\quad
+$s_1$ の係数行列は $\dfrac{1}{2}\mat{1 & 1 \\ 1 & 1}$ で階数 $1$
+なので\textbf{もつれていない}。実際
+\[
+s_1 = \frac{1}{\sqrt{2}}(\vect{e}_1 + \vect{e}_2) \otimes
+\frac{1}{\sqrt{2}}(\vect{f}_1 + \vect{f}_2)
+\]
+と分解できる(係数 $\frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}}
+= \frac{1}{2}$)。
+$s_2$ の係数行列は $\dfrac{1}{\sqrt{2}}\mat{1 & 0 \\ 0 & 1}$ で
+階数 $2$ なので\textbf{もつれている}(問 \ref{q:tensor} と同じ状態。
+ベル状態と呼ばれる)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex9}}\quad
+$t = \vect{u}_1 \otimes \vect{v}_1 + \cdots + \vect{u}_k \otimes \vect{v}_k$
+とすると、係数行列は
+$T = \vect{u}_1{}^t\vect{v}_1 + \cdots + \vect{u}_k{}^t\vect{v}_k$。
+$T$ の第 $j$ 列は、各項の第 $j$ 列($\vect{v}_i$ の第 $j$ 成分)$\times
+\vect{u}_i$ の和だから、$\langle \vect{u}_1, \dots, \vect{u}_k \rangle$ に
+属する。よって列空間は $k$ 本のベクトルで張られる空間に含まれ、
+$\mathrm{rank}\,T = (\text{列空間の次元}) \le k$。
+
+逆向きの評価:$2 \times 2$ の例では行ごとの分解が
+「行数 $=$ 階数」個の部品を与えたが、一般には SVD の和形式(第VII部)
+\[
+T = \sigma_1\vect{u}_1{}^t\vect{v}_1 + \cdots
++ \sigma_r\vect{u}_r{}^t\vect{v}_r \qquad (r = \mathrm{rank}\,T)
+\]
+が、ちょうど $\mathrm{rank}\,T$ 個の分解可能テンソルの和を与える。
+下界と合わせて、必要な最小個数は $\mathrm{rank}\,T$ に等しい。
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex10}}\quad
+基底ベクトル $\vect{e}_i \otimes \vect{f}_j$ は分解可能テンソル
+そのものだから、仮定より $L(\vect{e}_i \otimes \vect{f}_j)
+= L'(\vect{e}_i \otimes \vect{f}_j)$(すべての $i, j$)。
+基底での値が一致する二つの線形写像は等しい
+(定理 \ref{thm:linmap-basis} の一意性)。よって $L = L'$。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:tensor-ex11}}\quad
+$A \otimes B$ の対角ブロック(第 $i$ ブロック)は $a_{ii}B$ であり、
+$A \otimes B$ の対角成分はこれらのブロックの対角成分
+$a_{ii}b_{jj}$ で尽くされる。よって
+\[
+\mathrm{tr}(A \otimes B) = \sum_{i=1}^{n}\sum_{j=1}^{n} a_{ii}b_{jj}
+= \Bigl(\sum_{i} a_{ii}\Bigr)\Bigl(\sum_{j} b_{jj}\Bigr)
+= (\mathrm{tr}\,A)(\mathrm{tr}\,B). \qquad\blacksquare
+\]
+
+\bigskip
 \noindent\textbf{問 \ref{q:wedge}}\quad
 　(1) $\vect{u} \wedge \vect{v} = (1 \cdot 4 - 2 \cdot 3)\,
 \vect{e}_1 \wedge \vect{e}_2 = -2\,\vect{e}_1 \wedge \vect{e}_2$。

@@ -1062,12 +1062,30 @@ $\vect{w} \in W \Rightarrow -\vect{w} \in W$、和で閉じること、の三つ
 \chapter{テンソル積 ― 空間の「掛け算」}\label{chap:tensor}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item テンソル積空間 $V \otimes W$ の定義(次元は\textbf{積}になる)を
+理解し、$\vect{u} \otimes \vect{v}$ の係数を計算できるようになる。
+\item 「双線形写像 $\iff$ テンソル積上の線形写像」の対応(普遍性)を、
+証明つきで理解する。
+\item $\R^m \otimes \R^n$ の要素を $m \times n$ の\textbf{係数行列}と
+同一視し、「分解可能 $\iff$ 階数 $1$ 以下」を判定・証明できるようになる。
+\item クロネッカー積 $A \otimes B$ を計算できるようになる。
+\item $\vect{u} \otimes \vect{v}$ から $\vect{u}, \vect{v}$ の組は
+復元できないこと、$\otimes$ が「成分ごとの対」ではないことを、
+反例で説明できるようになる。
+\end{itemize}
+\end{goal}
+
 \section{動機 ― 双線形性をほどく}
 
 二つの変数のそれぞれについて線形な写像(\textbf{双線形写像})は、
-本書に何度も登場した:内積 $\langle \vect{u}, \vect{v} \rangle$、
-行列の積、二次形式。双線形写像は線形写像ではない
-($\langle 2\vect{u}, 2\vect{v} \rangle = 4\langle \vect{u}, \vect{v} \rangle$)ので、
+本書に何度も登場した:内積 $\langle \vect{u}, \vect{v} \rangle$(第V部)、
+行列の積、二次形式、そして行列式の多重線形性(第II部)。
+双線形写像は線形写像ではない
+($\langle 2\vect{u}, 2\vect{v} \rangle = 4\langle \vect{u}, \vect{v} \rangle$
+で、入力全体を $2$ 倍すると出力は $4$ 倍になる)ので、
+基底の行き先で決まる・表現行列で書ける・核と像で調べる、といった
 これまでの理論がそのままでは使えない。そこで、
 \textbf{双線形を線形に変換する万能の装置}を作る。それがテンソル積である。
 
@@ -1088,24 +1106,97 @@ $(c\vect{u}) \otimes \vect{v} = c(\vect{u} \otimes \vect{v})
 = \vect{u} \otimes (c\vect{v})$。
 \end{teigi}
 
-要点は二つ。第一に\textbf{次元は和でなく積}になる
-($\dim(V \otimes W) = mn$)。第二に、$V \times W$ からの双線形写像と、
-$V \otimes W$ からの\textbf{線形}写像が一対一に対応する
-(双線形写像 $B$ に対し、$\vect{e}_i \otimes \vect{f}_j \mapsto
-B(\vect{e}_i, \vect{f}_j)$ で線形写像が決まる)。
+\begin{rei}[$\vect{u} \otimes \vect{v}$ の係数を計算する]\label{rei:tensor-first}
+$\R^2 \otimes \R^2$ で $\vect{u} = \mat{2 \\ 1}$,
+$\vect{v} = \mat{1 \\ 3}$ とすると、係数は $u_i v_j$ だから
+\[
+\vect{u} \otimes \vect{v}
+= 2\,\vect{e}_1 \otimes \vect{e}_1 + 6\,\vect{e}_1 \otimes \vect{e}_2
++ \vect{e}_2 \otimes \vect{e}_1 + 3\,\vect{e}_2 \otimes \vect{e}_2.
+\]
+係数を行列の形に並べると $\mat{2 & 6 \\ 1 & 3}$ である
+(第 $(i, j)$ 成分が $\vect{e}_i \otimes \vect{e}_j$ の係数)。
+この行列は $\vect{u}\,{}^t\vect{v}$ にほかならない。
+\end{rei}
+
+要点は二つある。第一に\textbf{次元は和でなく積}になる
+($\dim(V \otimes W) = mn$。直和なら $m + n$ だった)。
+第二の要点が、動機で述べた「双線形を線形に変換する」働きである。
+きちんと定理として証明しておこう。
+
+\begin{teiri}[テンソル積の普遍性:双線形 $\iff$ 線形]\label{thm:tensor-univ}
+$U$ を任意のベクトル空間とする。双線形写像 $B : V \times W \to U$ と
+線形写像 $L : V \otimes W \to U$ は、
+\[
+B(\vect{u}, \vect{v}) = L(\vect{u} \otimes \vect{v})
+\qquad (\text{すべての } \vect{u} \in V,\ \vect{v} \in W)
+\]
+という関係によって一対一に対応する。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{($B$ から $L$ を作る)}\ 双線形写像 $B$ が与えられたとする。
+$V \otimes W$ の基底 $\vect{e}_i \otimes \vect{f}_j$ の行き先を
+\[
+L(\vect{e}_i \otimes \vect{f}_j) = B(\vect{e}_i, \vect{f}_j)
+\]
+と指定すれば、線形写像 $L$ がただ一つ決まる
+(定理 \ref{thm:linmap-basis}:基底の行き先が写像を決める)。
+この $L$ が関係式を満たすことを確かめる。
+$\vect{u} = \sum_i u_i \vect{e}_i$, $\vect{v} = \sum_j v_j \vect{f}_j$
+に対し、$B$ の双線形性で展開すると
+\[
+B(\vect{u}, \vect{v}) = \sum_{i,j} u_i v_j\,B(\vect{e}_i, \vect{f}_j)
+= \sum_{i,j} u_i v_j\,L(\vect{e}_i \otimes \vect{f}_j)
+= L\Bigl(\sum_{i,j} u_i v_j\,\vect{e}_i \otimes \vect{f}_j\Bigr)
+= L(\vect{u} \otimes \vect{v}).
+\]
+\textbf{($L$ から $B$ を作る/一対一)}\ 逆に線形写像 $L$ が与えられた
+とき、$B(\vect{u}, \vect{v}) = L(\vect{u} \otimes \vect{v})$ と定めれば、
+$\otimes$ が各変数について線形なので $B$ は双線形である。
+二つの対応が互いに逆であることは、$L$ が基底
+$\vect{e}_i \otimes \vect{f}_j = $($\vect{e}_i$ と $\vect{f}_j$ の
+$\otimes$)での値で決まることから従う。 $\blacksquare$
+
 双線形の問題はテンソル積上の線形の問題に翻訳でき、
-本書の全理論が適用可能になる――これがテンソル積の存在意義である。
+本書の全理論(基底・次元・核と像・表現行列)が適用可能になる
+――これがテンソル積の存在意義である。
 
 \section{$\vect{u} \otimes \vect{v}$ の形に書けないテンソル}
 
 $V \otimes W$ の要素で $\vect{u} \otimes \vect{v}$ の形のものを
 \textbf{分解可能}という。重要なのは、
 \textbf{一般のテンソルは分解可能とは限らない}ことである。
-$\vect{u} \otimes \vect{v}$ の係数 $u_i v_j$ を並べた行列は
-$\vect{u}\,{}^t\vect{v}$ という\textbf{階数 $1$} の行列になるから、
-係数行列の階数が $2$ 以上のテンソルは分解できない
-(第VII部の低ランク近似で活躍した「階数 $1$ の部品」が、
-テンソルの言葉では「分解可能テンソル」だったのである)。
+例 \ref{rei:tensor-first} で見たとおり、$\R^m \otimes \R^n$ の要素
+$t = \sum_{i,j} t_{ij}\,\vect{e}_i \otimes \vect{f}_j$ は
+\textbf{係数行列} $T = (t_{ij})$($m \times n$)と一対一に対応する。
+この対応で、分解可能性は行列の言葉に完全に翻訳される。
+
+\begin{teiri}[分解可能 $\iff$ 係数行列の階数が $1$ 以下]\label{thm:tensor-rank1}
+$t \in \R^m \otimes \R^n$ が分解可能であることと、係数行列 $T$ の
+階数が $1$ 以下であることは同値である。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+($\Rightarrow$)$t = \vect{u} \otimes \vect{v}$ なら
+$t_{ij} = u_i v_j$、すなわち $T = \vect{u}\,{}^t\vect{v}$。
+$T$ の各列は $v_j \vect{u}$ と、$1$ 本のベクトル $\vect{u}$ の定数倍
+だから、列空間の次元は $1$ 以下、すなわち
+$\mathrm{rank}\,T \le 1$(第II部:階数 $=$ 列空間の次元)。
+
+($\Leftarrow$)$\mathrm{rank}\,T = 0$ なら $T = O$ で
+$t = \vect{0} \otimes \vect{0}$。$\mathrm{rank}\,T = 1$ なら
+列空間が $1$ 次元なので、零でないベクトル $\vect{u}$ があって
+$T$ の第 $j$ 列はすべて $v_j \vect{u}$ の形に書ける。係数を集めれば
+$T = \vect{u}\,{}^t\vect{v}$($\vect{v} = {}^t(v_1, \dots, v_n)$)、
+すなわち $t = \vect{u} \otimes \vect{v}$。 $\blacksquare$
+
+係数行列の階数が $2$ 以上のテンソルは分解できない。
+第VII部の低ランク近似で活躍した「階数 $1$ の部品
+$\sigma_i \vect{u}_i{}^t\vect{v}_i$」が、テンソルの言葉では
+「分解可能テンソル」だったのである。SVD の和形式は
+「どんなテンソルも分解可能テンソルの和で書ける(必要な個数 $=$ 階数)」
+という主張だったと言い直せる(章末問題 \ref{q:tensor-ex9})。
 
 \begin{itembox}[l]{深掘り:量子もつれ ― 分解できないテンソルの物理}
 量子力学では、系の状態はベクトル(状態ベクトル)で表され、
@@ -1129,10 +1220,32 @@ $\vect{u}\,{}^t\vect{v}$ という\textbf{階数 $1$} の行列になるから�
 \textbf{線形代数の語彙(階数!)が、そのまま物理の最深部の語彙になっている}。
 \end{itembox}
 
-なお、行列の世界でのテンソル積は\textbf{クロネッカー積}
-($A \otimes B$:$A$ の各成分 $a_{ij}$ を $a_{ij}B$ というブロックに
-置き換えた行列)として実装され、$\dim$ が積になることが
+\section{クロネッカー積 ― 行列のテンソル積}
+
+写像の側にもテンソル積がある。$f : V \to V'$($m' \times m$ 行列 $A$)と
+$g : W \to W'$($n' \times n$ 行列 $B$)から、
+\[
+(f \otimes g)(\vect{u} \otimes \vect{v}) = f(\vect{u}) \otimes g(\vect{v})
+\]
+という写像 $f \otimes g : V \otimes W \to V' \otimes W'$ が決まる。
+その表現行列が\textbf{クロネッカー積} $A \otimes B$:
+$A$ の各成分 $a_{ij}$ を $a_{ij}B$ という\textbf{ブロック}に
+置き換えた $m'n' \times mn$ 行列である。$\dim$ が積になることが、
 ブロックの個数として目に見える。
+
+\begin{rei}[クロネッカー積の計算]\label{rei:tensor-kron}
+$A = \mat{1 & 2 \\ 3 & 4}$, $B = \mat{0 & 1 \\ 1 & 0}$ のとき、
+\[
+A \otimes B = \mat{1 \cdot B & 2 \cdot B \\ 3 \cdot B & 4 \cdot B}
+= \mat{0 & 1 & 0 & 2 \\ 1 & 0 & 2 & 0 \\
+0 & 3 & 0 & 4 \\ 3 & 0 & 4 & 0}.
+\]
+基底の順序は $\vect{e}_1 \otimes \vect{f}_1,\ \vect{e}_1 \otimes \vect{f}_2,\
+\vect{e}_2 \otimes \vect{f}_1,\ \vect{e}_2 \otimes \vect{f}_2$ である
+(係数行列を「行ごとに読み出して縦に並べた」順)。
+$(A \otimes B)(\vect{u} \otimes \vect{v}) = (A\vect{u}) \otimes (B\vect{v})$
+の数値検算は章末問題 \ref{q:tensor-ex7} で行う。
+\end{rei}
 
 \begin{mondai}\label{q:tensor}
 $\R^2 \otimes \R^2$(基底 $\vect{e}_i \otimes \vect{e}_j$、$i, j = 1, 2$)
@@ -1141,6 +1254,288 @@ $t = \vect{e}_1 \otimes \vect{e}_1 + \vect{e}_2 \otimes \vect{e}_2$ が
 分解可能でない(どんな $\vect{u}, \vect{v}$ でも
 $t = \vect{u} \otimes \vect{v}$ と書けない)ことを、係数を比較して示せ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$\vect{u} \otimes \vect{v}$ から $(\vect{u}, \vect{v})$ は復元できない]\label{hanrei:tensor-pair}
+$\otimes$ は「ペアの記録装置」ではない。実際
+\[
+\mat{2 \\ 0} \otimes \mat{1 \\ 1} \quad\text{と}\quad
+\mat{1 \\ 0} \otimes \mat{2 \\ 2}
+\]
+は、どちらも係数行列が $\mat{2 & 2 \\ 0 & 0}$ で、
+\textbf{同じテンソル}である。一般に $c \neq 0$ に対し
+$(c\vect{u}) \otimes \bigl(\frac{1}{c}\vect{v}\bigr) = \vect{u} \otimes \vect{v}$
+だから、積 $u_i v_j$ しか覚えていないテンソルからは、
+掛ける前の二つのベクトルを(定数倍の付け替えを除いてしか)取り出せない。
+「$\vect{u} \otimes \vect{v} = \vect{u}' \otimes \vect{v}' \neq 0$ ならば
+$\vect{u} = \vect{u}'$ かつ $\vect{v} = \vect{v}'$」と思ってはいけない。
+\end{hanrei}
+
+\begin{hanrei}[「和の $\otimes$」は「$\otimes$ の和」ではない]\label{hanrei:tensor-sum}
+線形写像の感覚で
+$(\vect{u}_1 + \vect{u}_2) \otimes (\vect{v}_1 + \vect{v}_2)
+= \vect{u}_1 \otimes \vect{v}_1 + \vect{u}_2 \otimes \vect{v}_2$
+としたくなるが、誤りである。双線形性で正しく展開すると
+\textbf{交差項}が現れる:
+\[
+(\vect{e}_1 + \vect{e}_2) \otimes (\vect{f}_1 + \vect{f}_2)
+= \vect{e}_1 \otimes \vect{f}_1 + \vect{e}_1 \otimes \vect{f}_2
++ \vect{e}_2 \otimes \vect{f}_1 + \vect{e}_2 \otimes \vect{f}_2.
+\]
+係数行列で比べると、左辺は $\mat{1 & 1 \\ 1 & 1}$(階数 $1$:
+分解可能テンソルなのだから当然である)、一方
+$\vect{e}_1 \otimes \vect{f}_1 + \vect{e}_2 \otimes \vect{f}_2$ は
+$\mat{1 & 0 \\ 0 & 1}$(階数 $2$)で、まったく別物である。
+$(a + b)(c + d) \neq ac + bd$ という中学の展開公式の教訓が、
+そのままテンソルの世界でも生きている。
+\end{hanrei}
+
+\section{例題}
+
+係数の計算・分解可能性の判定・双線形写像の翻訳を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(係数行列の計算)]\label{rei:tensor-coef}
+$\vect{u} = \mat{1 \\ -2}$, $\vect{v} = \mat{3 \\ 1}$ について
+$\vect{u} \otimes \vect{v}$ の係数行列を求め、その階数を確かめよ。\\
+\textbf{解.}\ 係数行列は
+\[
+\vect{u}\,{}^t\vect{v} = \mat{1 \\ -2}\mat{3 & 1}
+= \mat{3 & 1 \\ -6 & -2}.
+\]
+第 $2$ 行は第 $1$ 行の $-2$ 倍($\det = -6 + 6 = 0$)だから階数 $1$。
+分解可能テンソルの係数行列は必ず階数 $1$ 以下になる
+(定理 \ref{thm:tensor-rank1})。
+\end{rei}
+
+\begin{rei}[例題・基本(分解可能性の判定)]\label{rei:tensor-decomp}
+係数行列が次で与えられるテンソルは分解可能か。可能なものは
+$\vect{u} \otimes \vect{v}$ の形に分解せよ。
+\[
+T_1 = \mat{2 & 4 \\ 1 & 2}, \qquad T_2 = \mat{1 & 1 \\ 1 & 0}.
+\]
+\textbf{解.}\ $T_1$:$\det T_1 = 4 - 4 = 0$ で、零行列ではないから
+階数 $1$。よって分解可能である。列を見ると第 $2$ 列 $=$ 第 $1$ 列の
+$2$ 倍で、どの列も $\vect{u} = {}^t(2, 1)$ の定数倍(倍率 $1, 2$)。
+したがって
+\[
+T_1 = \mat{2 \\ 1}\mat{1 & 2}, \qquad
+t_1 = \mat{2 \\ 1} \otimes \mat{1 \\ 2}.
+\]
+検算:$u_i v_j$ を並べると $\mat{2 & 4 \\ 1 & 2}$ で一致。\\
+$T_2$:$\det T_2 = 0 - 1 = -1 \neq 0$ だから階数 $2$。
+定理 \ref{thm:tensor-rank1} より\textbf{分解可能でない}。
+\end{rei}
+
+\begin{rei}[例題・基本(クロネッカー積)]\label{rei:tensor-kron2}
+$A = \mat{1 & 2 \\ 0 & 1}$, $B = \mat{1 & 0 \\ 1 & 1}$ の
+$A \otimes B$ を求めよ。\\
+\textbf{解.}\ ブロックごとに
+\[
+A \otimes B = \mat{1 \cdot B & 2 \cdot B \\ 0 \cdot B & 1 \cdot B}
+= \mat{1 & 0 & 2 & 0 \\ 1 & 1 & 2 & 2 \\
+0 & 0 & 1 & 0 \\ 0 & 0 & 1 & 1}.
+\]
+$2 \times 2$ と $2 \times 2$ から $4 \times 4$ ができる:
+次元(サイズ)は足し算でなく\textbf{掛け算}で増える。
+\end{rei}
+
+\begin{rei}[例題・標準(内積はテンソル積の上ではトレース)]\label{rei:tensor-inner}
+$\R^2$ の標準内積 $B(\vect{u}, \vect{v}) = u_1 v_1 + u_2 v_2$ は
+双線形写像である。定理 \ref{thm:tensor-univ} で対応する線形形式
+$L : \R^2 \otimes \R^2 \to \R$ を求め、$L$ が係数行列のどんな量に
+なるかを述べよ。\\
+\textbf{解.}\ 基底での値は
+$L(\vect{e}_i \otimes \vect{e}_j) = B(\vect{e}_i, \vect{e}_j)$、すなわち
+$i = j$ で $1$、$i \neq j$ で $0$。よって
+$t = \sum t_{ij}\,\vect{e}_i \otimes \vect{e}_j$ に対し
+\[
+L(t) = t_{11} + t_{22} = \mathrm{tr}\,T
+\]
+――\textbf{係数行列のトレース}である。検算:分解可能テンソルでは
+$L(\vect{u} \otimes \vect{v}) = \mathrm{tr}(\vect{u}\,{}^t\vect{v})
+= u_1 v_1 + u_2 v_2 = \langle \vect{u}, \vect{v} \rangle$ で、
+確かに内積に戻る。双線形写像(内積)が、テンソル積の上では
+ただの線形写像(トレース)に「ほどけた」。
+\end{rei}
+
+\begin{rei}[例題・標準(階数 $2$ テンソルの分解)]\label{rei:tensor-rank2}
+係数行列 $T = \mat{1 & 2 \\ 3 & 4}$ のテンソル $t$ は分解可能でない
+ことを確かめ、分解可能テンソル\textbf{二つ}の和に書け。\\
+\textbf{解.}\ $\det T = 4 - 6 = -2 \neq 0$ より階数 $2$ だから、
+$1$ 個では書けない(定理 \ref{thm:tensor-rank1})。行ごとに切り分けると
+\[
+T = \mat{1 & 2 \\ 0 & 0} + \mat{0 & 0 \\ 3 & 4}
+\]
+で、各項は階数 $1$。テンソルの言葉に戻せば
+\[
+t = \vect{e}_1 \otimes (\vect{f}_1 + 2\vect{f}_2)
++ \vect{e}_2 \otimes (3\vect{f}_1 + 4\vect{f}_2).
+\]
+一般に、必要な分解可能テンソルの最小個数は係数行列の\textbf{階数}に
+等しい(章末問題 \ref{q:tensor-ex9})。「行列の階数」は、テンソルの
+世界では「部品の個数」という意味をもつのである。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$\otimes$ の零因子はない)]\label{rei:tensor-zero}
+$\vect{u} \otimes \vect{v} = 0$ ならば $\vect{u} = \vect{0}$ または
+$\vect{v} = \vect{0}$ であることを示せ。\\
+\textbf{解.}\ 対偶を示す。$\vect{u} \neq \vect{0}$ かつ
+$\vect{v} \neq \vect{0}$ とすると、$u_i \neq 0$ となる $i$ と
+$v_j \neq 0$ となる $j$ が存在する。このとき
+$\vect{u} \otimes \vect{v}$ の $\vect{e}_i \otimes \vect{f}_j$ 成分は
+$u_i v_j \neq 0$ だから、$\vect{u} \otimes \vect{v} \neq 0$ である。
+(数の積と同じく「零になるのはどちらかが零のときだけ」。
+ただし反例 \ref{hanrei:tensor-pair} のとおり、零でないテンソルの
+分解の一意性は定数倍の分しか成り立たない。)
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{テンソル積} $V \otimes W$:基底 $\vect{e}_i \otimes \vect{f}_j$
+($mn$ 個)をもつベクトル空間で、
+$\vect{u} \otimes \vect{v} = \sum u_i v_j\,\vect{e}_i \otimes \vect{f}_j$。
+\textbf{次元は積} $mn$ になる。
+\item \textbf{普遍性}(定理 \ref{thm:tensor-univ}):双線形写像
+$B : V \times W \to U$ と線形写像 $L : V \otimes W \to U$ が
+$B(\vect{u}, \vect{v}) = L(\vect{u} \otimes \vect{v})$ で一対一対応。
+双線形の問題が線形の理論に翻訳される(内積はトレースになる:
+例題 \ref{rei:tensor-inner})。
+\item $\R^m \otimes \R^n$ の要素は $m \times n$ の\textbf{係数行列}と
+同一視でき、\textbf{分解可能 $\iff$ 階数 $1$ 以下}
+(定理 \ref{thm:tensor-rank1})。階数 $2$ 以上のテンソル
+(例:$\vect{e}_1 \otimes \vect{f}_1 + \vect{e}_2 \otimes \vect{f}_2$)は
+分解できない――量子もつれの数学的正体。
+\item 行列のテンソル積は\textbf{クロネッカー積} $A \otimes B$
+($a_{ij}B$ のブロック行列)で、
+$(A \otimes B)(\vect{u} \otimes \vect{v}) = (A\vect{u}) \otimes (B\vect{v})$。
+\item $\otimes$ はペアの記録ではない:
+$(c\vect{u}) \otimes (\frac{1}{c}\vect{v}) = \vect{u} \otimes \vect{v}$
+(反例 \ref{hanrei:tensor-pair})。また
+「和の $\otimes$」には交差項が出る(反例 \ref{hanrei:tensor-sum})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:tensor-ex1}
+$\vect{u} = \mat{1 \\ -1}$, $\vect{v} = \mat{2 \\ 5}$ について
+$\vect{u} \otimes \vect{v}$ を基底 $\vect{e}_i \otimes \vect{e}_j$ で
+展開し、係数行列の階数が $1$ であることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:tensor-ex2}
+係数行列が次のテンソルについて、分解可能かどうかを判定し、
+分解可能なものは $\vect{u} \otimes \vect{v}$ の形に書け。
+\[
+T_1 = \mat{3 & 6 \\ 1 & 2}, \qquad T_2 = \mat{1 & 0 \\ 1 & 1}.
+\]
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:tensor-ex3}
+$A = \mat{2 & 0 \\ 0 & 3}$, $B = \mat{1 & 1 \\ 0 & 1}$ の
+クロネッカー積 $A \otimes B$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:tensor-ex4}
+(1) $\dim(\R^3 \otimes \R^4)$ を求め、基底を
+$\vect{e}_i \otimes \vect{f}_j$ の形で数え上げよ(個数を言えばよい)。
+(2) $2$ 状態系($2$ 次元)を $3$ 個合わせた合成系の状態空間
+$\R^2 \otimes \R^2 \otimes \R^2$ の次元を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:tensor-ex5}
+双線形写像 $B(\vect{u}, \vect{v}) = u_1 v_2 - u_2 v_1$
+($2$ 次の行列式)に対応する線形形式 $L : \R^2 \otimes \R^2 \to \R$ を、
+基底での値 $L(\vect{e}_i \otimes \vect{e}_j)$ を全部求めることで書き下せ。
+さらに、任意の $\vect{u}$ に対し $L(\vect{u} \otimes \vect{u}) = 0$ と
+なることを確かめよ(この「交代性」が次章の主役になる)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:tensor-ex6}
+係数行列 $T = \mat{2 & 1 \\ 4 & 3}$ のテンソルが分解可能でないことを
+判定し、分解可能テンソル二つの和に書け。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:tensor-ex7}
+$A = \mat{1 & 1 \\ 0 & 1}$, $B = \mat{2 & 0 \\ 0 & 1}$,
+$\vect{u} = \mat{1 \\ 2}$, $\vect{v} = \mat{3 \\ 1}$ について、
+$(A\vect{u}) \otimes (B\vect{v})$ の係数行列と、
+$A \otimes B$ を $\vect{u} \otimes \vect{v}$ の係数(を縦に並べた列)に
+掛けた結果を別々に計算し、
+$(A \otimes B)(\vect{u} \otimes \vect{v}) = (A\vect{u}) \otimes (B\vect{v})$
+を数値で確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:tensor-ex8}
+量子力学の言葉では、合成系の状態が分解可能なら「もつれていない」、
+分解可能でないなら「もつれている」という(本章の深掘り)。次の状態は
+それぞれどちらか、係数行列の階数で判定せよ。
+\[
+s_1 = \frac{1}{2}\bigl(\vect{e}_1 \otimes \vect{f}_1
++ \vect{e}_1 \otimes \vect{f}_2 + \vect{e}_2 \otimes \vect{f}_1
++ \vect{e}_2 \otimes \vect{f}_2\bigr), \qquad
+s_2 = \frac{1}{\sqrt{2}}\bigl(\vect{e}_1 \otimes \vect{f}_1
++ \vect{e}_2 \otimes \vect{f}_2\bigr).
+\]
+もつれていないものは実際に分解してみせよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:tensor-ex9}
+テンソル $t$ の係数行列を $T$ とする。$t$ が分解可能テンソル $k$ 個の
+和で書けるならば $\mathrm{rank}\,T \le k$ であることを示せ
+(ヒント:$T = \vect{u}_1{}^t\vect{v}_1 + \cdots + \vect{u}_k{}^t\vect{v}_k$
+の列空間は $\vect{u}_1, \dots, \vect{u}_k$ の張る空間に含まれる)。
+これと例題 \ref{rei:tensor-rank2} の方法(行ごとの分解)を合わせると、
+「必要な最小個数 $=$ $\mathrm{rank}\,T$」が結論できることを説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:tensor-ex10}
+線形写像 $L, L' : V \otimes W \to U$ が、すべての分解可能テンソルで
+一致する($L(\vect{u} \otimes \vect{v}) = L'(\vect{u} \otimes \vect{v})$)
+ならば、$L = L'$ であることを示せ
+(ヒント:基底 $\vect{e}_i \otimes \vect{f}_j$ は分解可能である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:tensor-ex11}
+$n$ 次正方行列 $A$, $B$ について
+$\mathrm{tr}(A \otimes B) = (\mathrm{tr}\,A)(\mathrm{tr}\,B)$ を示せ
+(ヒント:$A \otimes B$ の対角ブロックは $a_{ii}B$ である)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:tensor-ex1}}:係数行列は $\vect{u}\,{}^t\vect{v}$
+(例題 \ref{rei:tensor-coef})。
+\item \textbf{問 \ref{q:tensor-ex2}}:行列式(または列の比例関係)で
+階数を見る(例題 \ref{rei:tensor-decomp})。
+\item \textbf{問 \ref{q:tensor-ex3}}:$a_{ij}B$ のブロックを並べる
+(例題 \ref{rei:tensor-kron2})。
+\item \textbf{問 \ref{q:tensor-ex4}}:次元は積。$3$ 個なら
+$2 \times 2 \times 2$。
+\item \textbf{問 \ref{q:tensor-ex5}}:$L(\vect{e}_1 \otimes \vect{e}_2) = 1$,
+$L(\vect{e}_2 \otimes \vect{e}_1) = -1$、他は $0$。
+$L(t) = t_{12} - t_{21}$ の形にまとめる。
+\item \textbf{問 \ref{q:tensor-ex6}}:行列式で階数を確認し、
+行ごとに切り分ける(例題 \ref{rei:tensor-rank2})。
+\item \textbf{問 \ref{q:tensor-ex7}}:$A\vect{u}$, $B\vect{v}$ を先に
+計算する。係数の列の並べ方は例 \ref{rei:tensor-kron} の順。
+\item \textbf{問 \ref{q:tensor-ex8}}:係数行列はそれぞれ
+$\frac{1}{2}\mat{1 & 1 \\ 1 & 1}$ と
+$\frac{1}{\sqrt{2}}\mat{1 & 0 \\ 0 & 1}$。
+\item \textbf{問 \ref{q:tensor-ex9}}:「列空間が $k$ 本のベクトルで
+張られる $\Rightarrow$ 次元 $\le k$」(第III部)。
+\item \textbf{問 \ref{q:tensor-ex10}}:線形写像は基底での値で決まる
+(定理 \ref{thm:linmap-basis})。
+\item \textbf{問 \ref{q:tensor-ex11}}:対角成分は対角ブロックの中に
+しかない。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{外積代数 ― 行列式の正体}\label{chap:wedge}
