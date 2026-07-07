@@ -7436,6 +7436,165 @@ $\mat{-1/6 \\ 1/3 \\ -1/6}$ で、成分の和は $0$、
 すなわち $\vect{1}$ と直交している。
 
 \bigskip
+\noindent\textbf{問 \ref{q:lsq-ex1}}\quad
+$A = \mat{1 \\ 1 \\ 1}$, $\vect{b} = \mat{2 \\ 3 \\ 7}$ で
+${}^t\!AA = 3$, ${}^t\!A\vect{b} = 12$。正規方程式 $3x = 12$ より
+$x^* = 4$(測定値の平均)。残差は
+$\mat{2 - 4 \\ 3 - 4 \\ 7 - 4} = \mat{-2 \\ -1 \\ 3}$ で、
+成分の和は $-2 - 1 + 3 = 0$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex2}}\quad
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{0 \\ 2 \\ 3}$ より
+\[
+{}^t\!AA = \mat{3 & 3 \\ 3 & 5}, \qquad {}^t\!A\vect{b} = \mat{5 \\ 8}.
+\]
+$3a + 3b = 5$, $3a + 5b = 8$ を引き算して $2b = 3$、
+$b = \dfrac{3}{2}$, $a = \dfrac{1}{6}$。回帰直線は
+$y = \dfrac{1}{6} + \dfrac{3}{2}x$。
+(検算:予測値 $\dfrac{1}{6}, \dfrac{5}{3}, \dfrac{19}{6}$、残差
+$\mat{-1/6 \\ 1/3 \\ -1/6}$ の成分の和は $0$。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex3}}\quad
+$A = \mat{1 & 1 \\ 1 & -1 \\ 1 & 1}$, $\vect{b} = \mat{1 \\ 1 \\ 3}$ より
+\[
+{}^t\!AA = \mat{3 & 1 \\ 1 & 3}, \qquad {}^t\!A\vect{b} = \mat{5 \\ 3}.
+\]
+$3x + y = 5$, $x + 3y = 3$ を解いて $x = \dfrac{3}{2}$, $y = \dfrac{1}{2}$。
+このとき $A\vect{x}^* = \mat{2 \\ 1 \\ 2}$、残差は
+$\vect{r} = \mat{-1 \\ 0 \\ 1}$。第 $1$ 列との内積は $-1 + 0 + 1 = 0$、
+第 $2$ 列との内積は $-1 - 0 + 1 = 0$ で、確かに直交している。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex4}}\quad
+${}^t\!AA = \mat{3 & 3 \\ 3 & 5}$,
+${}^t\!A\vect{b} = \mat{6 \\ 8}$。$3a + 3b = 6$, $3a + 5b = 8$ より
+$b = 1$, $a = 1$。$A\vect{x}^* = \mat{1 \\ 2 \\ 3} = \vect{b}$ で
+残差は $\vect{0}$:$3$ 点が直線 $y = 1 + x$ の上に厳密に乗っているので、
+最小二乗解は通常の解と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex5}}\quad
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2 \\ 1 & 3}$,
+$\vect{b} = \mat{0 \\ 1 \\ 3 \\ 4}$ より
+\[
+{}^t\!AA = \mat{4 & 6 \\ 6 & 14}, \qquad {}^t\!A\vect{b} = \mat{8 \\ 19}.
+\]
+$4a + 6b = 8$ の $3$ 倍から $6a + 14b = 19$ の $2$ 倍を引くと
+$18b - 28b = 24 - 38$、$b = \dfrac{7}{5}$、
+$a = \dfrac{8 - 6 \cdot 7/5}{4} = -\dfrac{1}{10}$。回帰直線は
+$y = -\dfrac{1}{10} + \dfrac{7}{5}x$。予測値は
+$-\dfrac{1}{10}, \dfrac{13}{10}, \dfrac{27}{10}, \dfrac{41}{10}$、残差は
+$\dfrac{1}{10}{}^t(1,\ -3,\ 3,\ -1)$。成分の和は $0$、$x$ 座標との内積も
+$\dfrac{1}{10}(0 - 3 + 6 - 3) = 0$ で検算が通る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex6}}\quad
+$({}^t\!AA)^{-1} = \dfrac{1}{3}\mat{2 & -1 \\ -1 & 2}$ より
+\[
+P = A({}^t\!AA)^{-1}{}^t\!A
+= \frac{1}{3}\mat{2 & -1 \\ -1 & 2 \\ 1 & 1}\mat{1 & 0 & 1 \\ 0 & 1 & 1}
+= \frac{1}{3}\mat{2 & -1 & 1 \\ -1 & 2 & 1 \\ 1 & 1 & 2}.
+\]
+${}^t\!P = P$ は成分の対称性から明らか。$P^2$ の $(1,1)$ 成分は
+$\dfrac{1}{9}(4 + 1 + 1) = \dfrac{2}{3}$ など、全成分を計算すると
+$P^2 = P$ が確かめられる。また
+\[
+P\mat{1 \\ 1 \\ 1} = \frac{1}{3}\mat{2 \\ 2 \\ 4} = \mat{2/3 \\ 2/3 \\ 4/3}
+\]
+で、例題の $A\vect{x}^* = {}^t(2/3,\ 2/3,\ 4/3)$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex7}}\quad
+$(y, x)$ の組は $(0, 0), (1, 1), (1, 2)$。
+$A' = \mat{1 & 0 \\ 1 & 1 \\ 1 & 1}$, $\vect{b}' = \mat{0 \\ 1 \\ 2}$ より
+\[
+{}^t\!A'A' = \mat{3 & 2 \\ 2 & 2}, \qquad {}^t\!A'\vect{b}' = \mat{3 \\ 3}.
+\]
+$3c + 2d = 3$, $2c + 2d = 3$ を引き算して $c = 0$、$d = \dfrac{3}{2}$。
+よって $x = \dfrac{3}{2}y$、$y$ について解くと $y = \dfrac{2}{3}x$。
+問 \ref{q:lsq} の $y = \dfrac{1}{6} + \dfrac{1}{2}x$ とは
+切片も傾きも異なる:最小化する残差の向き($y$ 方向か $x$ 方向か)が
+違うからである(反例 \ref{hanrei:lsq-swap})。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex8}}\quad
+$A = \mat{1 \\ 2 \\ 3}$, $\vect{b} = \mat{2 \\ 3 \\ 4}$ で
+${}^t\!AA = 14$, ${}^t\!A\vect{b} = 2 + 6 + 12 = 20$。
+正規方程式 $14k = 20$ より $k = \dfrac{10}{7}$、直線は
+$y = \dfrac{10}{7}x$。残差は
+\[
+\vect{b} - kA = \mat{2 - 10/7 \\ 3 - 20/7 \\ 4 - 30/7}
+= \frac{1}{7}\mat{4 \\ 1 \\ -2}
+\]
+で、$\mat{1 \\ 2 \\ 3}$ との内積は $\dfrac{1}{7}(4 + 2 - 6) = 0$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex9}}\quad
+　(1) ${}^t\!AA = \mat{5 & 10 \\ 10 & 20}$,
+${}^t\!A\vect{b} = \mat{3 \\ 6}$ で、正規方程式は
+$5x + 10y = 3$ と $10x + 20y = 6$ ――同じ式が $2$ 本並んでいるだけであり、
+最小二乗解の全体は直線 $x + 2y = \dfrac{3}{5}$ である
+($A$ の列が従属なので一意に定まらない)。\\
+　(2) 直線 $x + 2y = \dfrac{3}{5}$ 上で原点に最も近い点は、
+法線方向 $t\mat{1 \\ 2}$ との交点である:$t + 4t = \dfrac{3}{5}$ より
+$t = \dfrac{3}{25}$、求める点は
+$\mat{3/25 \\ 6/25}$(ノルムは $\dfrac{3}{25}\sqrt{5}$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex10}}\quad
+$A$ の第 $i$ 行は $(1,\ x_i)$ だから
+\[
+{}^t\!AA = \mat{\sum 1 & \sum x_i \\ \sum x_i & \sum x_i^2}
+= \mat{m & S_x \\ S_x & S_{xx}}, \qquad
+{}^t\!A\vect{b} = \mat{\sum y_i \\ \sum x_i y_i} = \mat{S_y \\ S_{xy}}.
+\]
+第 $1$ 式 $ma + S_x b = S_y$ を $m$ で割ると $a = \bar{y} - b\bar{x}$。
+これを第 $2$ 式 $S_x a + S_{xx} b = S_{xy}$ に代入して
+\[
+S_x(\bar{y} - b\bar{x}) + S_{xx}b = S_{xy}
+\quad\Longrightarrow\quad
+b\left(S_{xx} - \frac{S_x^2}{m}\right) = S_{xy} - \frac{S_x S_y}{m},
+\]
+両辺を $m$ 倍して $b = \dfrac{m S_{xy} - S_x S_y}{m S_{xx} - S_x^2}$ を得る。
+問 \ref{q:lsq} のデータでは $m = 3$, $S_x = 3$, $S_y = 2$,
+$S_{xx} = 5$, $S_{xy} = 3$ だから
+$b = \dfrac{9 - 6}{15 - 9} = \dfrac{1}{2}$,
+$a = \dfrac{2}{3} - \dfrac{1}{2} \cdot 1 = \dfrac{1}{6}$ で、
+確かに $y = \dfrac{1}{6} + \dfrac{1}{2}x$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex11}}\quad
+\textbf{対称性}:${}^t({}^t\!AA) = {}^t\!A\,{}^t({}^t\!A) = {}^t\!AA$。
+\textbf{半正定値}:任意の $\vect{x}$ に対し
+\[
+{}^t\vect{x}({}^t\!AA)\vect{x} = {}^t(A\vect{x})(A\vect{x})
+= \|A\vect{x}\|^2 \ge 0.
+\]
+\textbf{正定値 $\iff$ 列が線形独立}:
+上式より、正定値とは「$\vect{x} \neq \vect{0}$ ならば
+$\|A\vect{x}\|^2 > 0$、すなわち $A\vect{x} \neq \vect{0}$」ということ。
+これは $\mathrm{Ker}\,A = \{\vect{0}\}$、すなわち $A$ の列が
+線形独立であることと同値である(第III部)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:lsq-ex12}}\quad
+$\vect{b} - A\vect{x} = \vect{b}_{\perp} + (\vect{b}_W - A\vect{x})$ と
+分解する。$\vect{b}_{\perp} \in W^{\perp}$、
+$\vect{b}_W - A\vect{x} \in W$($W$ は部分空間で $A\vect{x} \in W$)だから
+両者は直交し、ピタゴラスの定理より
+\[
+\|\vect{b} - A\vect{x}\|^2
+= \|\vect{b}_{\perp}\|^2 + \|\vect{b}_W - A\vect{x}\|^2.
+\]
+右辺第 $1$ 項は $\vect{x}$ によらない定数だから、左辺が最小になるのは
+第 $2$ 項が最小、すなわち $\|\vect{b}_W - A\vect{x}\| = 0$ が達成できる
+ときで、その条件は $A\vect{x} = \vect{b}_W$。
+$\vect{b}_W \in \mathrm{Im}\,A$ よりこの方程式は解をもつので、
+最小二乗解の全体は「$A\vect{x} = \vect{b}_W$ の解の全体」に一致する。
+
+\bigskip
 \noindent\textbf{問 \ref{q:qr}}\quad
 問 \ref{q:gs} より
 $\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}$,
@@ -7450,6 +7609,201 @@ $r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle$,
 $r_{22} = \|\vect{b}_2\|$。$QR = A$ を確かめよ。)
 
 \bigskip
+\noindent\textbf{問 \ref{q:qr-ex1}}\quad
+$2$ つの列の内積は $1 - 1 = 0$ で、はじめから直交している。
+よって直交化は不要で、正規化するだけ:
+\[
+Q = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}, \qquad
+R = \mat{\sqrt{2} & 0 \\ 0 & \sqrt{2}}.
+\]
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = 0$ だから
+$R$ は対角行列になる。「$R$ の非対角成分 $=$ 列どうしの斜め具合の記録」
+である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex2}}\quad
+$\vect{a}_1 = \mat{0 \\ 3}$ より $r_{11} = 3$,
+$\vect{u}_1 = \mat{0 \\ 1}$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = 4$、
+$\vect{b}_2 = \mat{2 \\ 4} - 4\mat{0 \\ 1} = \mat{2 \\ 0}$、
+$r_{22} = 2$, $\vect{u}_2 = \mat{1 \\ 0}$。よって
+\[
+A = \mat{0 & 1 \\ 1 & 0}\mat{3 & 4 \\ 0 & 2}.
+\]
+$|\det A| = |0 \cdot 4 - 2 \cdot 3| = 6 = 3 \cdot 2 = r_{11}r_{22}$ で一致。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex3}}\quad
+$\vect{a}_1 = \vect{e}_1$ より $r_{11} = 1$, $\vect{u}_1 = \vect{e}_1$。
+$r_{12} = 1$、
+$\vect{b}_2 = \mat{1 \\ 3 \\ 4} - \vect{e}_1 = \mat{0 \\ 3 \\ 4}$、
+$r_{22} = 5$, $\vect{u}_2 = \dfrac{1}{5}\mat{0 \\ 3 \\ 4}$。よって
+\[
+Q = \mat{1 & 0 \\ 0 & 3/5 \\ 0 & 4/5}, \qquad R = \mat{1 & 1 \\ 0 & 5}.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex4}}\quad
+${}^t\!Q\vect{b} = \mat{\langle \vect{b}, \vect{u}_1 \rangle \\
+\langle \vect{b}, \vect{u}_2 \rangle} = \mat{2 \\ (15 + 20)/5}
+= \mat{2 \\ 7}$。$R\vect{x} = \mat{2 \\ 7}$ を下から解いて
+$5x_2 = 7$ より $x_2 = \dfrac{7}{5}$、$x_1 + x_2 = 2$ より
+$x_1 = \dfrac{3}{5}$。
+(検算:${}^t\!AA = \mat{1 & 1 \\ 1 & 26}$,
+${}^t\!A\vect{b} = \mat{2 \\ 37}$ で、
+$\dfrac{3}{5} + 26 \cdot \dfrac{7}{5} = \dfrac{185}{5} = 37$。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex5}}\quad
+$r_{11} = \|\vect{a}_1\| = \sqrt{5}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{5}}\mat{2 \\ 1}$。
+$r_{12} = \dfrac{2 + 2}{\sqrt{5}} = \dfrac{4}{\sqrt{5}}$、
+\[
+\vect{b}_2 = \mat{1 \\ 2} - \frac{4}{5}\mat{2 \\ 1}
+= \frac{1}{5}\mat{-3 \\ 6}, \qquad
+r_{22} = \frac{3}{\sqrt{5}}, \quad
+\vect{u}_2 = \frac{1}{\sqrt{5}}\mat{-1 \\ 2}.
+\]
+よって
+\[
+A = \frac{1}{\sqrt{5}}\mat{2 & -1 \\ 1 & 2}
+\mat{\sqrt{5} & 4/\sqrt{5} \\ 0 & 3/\sqrt{5}}.
+\]
+$\det Q = \dfrac{4 + 1}{5} = 1$(回転)、
+$r_{11}r_{22} = \sqrt{5} \cdot \dfrac{3}{\sqrt{5}} = 3 = |\det A|$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex6}}\quad
+$\vect{a}_1 = {}^t(1,1,1)$ より $r_{11} = \sqrt{3}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{3}}{}^t(1,1,1)$。
+$r_{12} = \dfrac{0 + 1 + 2}{\sqrt{3}} = \sqrt{3}$、
+$\vect{b}_2 = {}^t(0,1,2) - {}^t(1,1,1) = {}^t(-1,0,1)$、
+$r_{22} = \sqrt{2}$, $\vect{u}_2 = \dfrac{1}{\sqrt{2}}{}^t(-1,0,1)$。
+右辺は
+\[
+{}^t\!Q\vect{b} = \mat{2/\sqrt{3} \\ 1/\sqrt{2}}.
+\]
+下から解くと $\sqrt{2}\,x_2 = \dfrac{1}{\sqrt{2}}$ より
+$x_2 = \dfrac{1}{2}$、第 $1$ 行 $\sqrt{3}\,x_1 + \sqrt{3}\,x_2
+= \dfrac{2}{\sqrt{3}}$ を $\sqrt{3}$ で割って
+$x_1 = \dfrac{2}{3} - \dfrac{1}{2} = \dfrac{1}{6}$。
+確かに $a = \dfrac{1}{6}$, $b = \dfrac{1}{2}$ が再現された。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex7}}\quad
+$\vect{u}_3 = {}^t(x, y, z)$ が $\vect{u}_1 = \vect{e}_1$ と直交する
+条件は $x = 0$、$\vect{u}_2$ と直交する条件は $3y + 4z = 0$。
+ノルム $1$ に正規化して
+\[
+\vect{u}_3 = \pm\mat{0 \\ -4/5 \\ 3/5}, \qquad
+\text{たとえば}\quad
+\mat{1 & 0 & 0 \\ 0 & 3/5 & -4/5 \\ 0 & 4/5 & 3/5}
+\]
+が求める直交行列である(符号はどちらでもよい)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex8}}\quad
+\[
+P = \vect{u}_1{}^t\vect{u}_1 + \vect{u}_2{}^t\vect{u}_2
+= \mat{1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0}
++ \frac{1}{25}\mat{0 & 0 & 0 \\ 0 & 9 & 12 \\ 0 & 12 & 16}
+= \mat{1 & 0 & 0 \\ 0 & 9/25 & 12/25 \\ 0 & 12/25 & 16/25}.
+\]
+$P\vect{b} = {}^t\!\left(2,\ \dfrac{45 + 60}{25},\ \dfrac{60 + 80}{25}\right)
+= {}^t\!\left(2,\ \dfrac{21}{5},\ \dfrac{28}{5}\right)$。一方、
+問 \ref{q:qr-ex4} の $\vect{x}^* = {}^t\!(3/5,\ 7/5)$ に対し
+\[
+A\vect{x}^* = \mat{3/5 + 7/5 \\ 3 \cdot 7/5 \\ 4 \cdot 7/5}
+= \mat{2 \\ 21/5 \\ 28/5}
+\]
+で一致する(どちらも $\vect{b}$ の $\mathrm{Im}\,A$ への正射影である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex9}}\quad
+$\vect{a}_1 = \mat{a \\ c}$ より $r_{11} = \sqrt{a^2 + c^2}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{a^2 + c^2}}\mat{a \\ c}$、
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle
+= \dfrac{ab + cd}{\sqrt{a^2 + c^2}}$。
+$\vect{b}_2 = \vect{a}_2 - r_{12}\vect{u}_1$ は $\vect{u}_1$ と直交する
+から、ピタゴラスの定理より
+\[
+r_{22}^2 = \|\vect{b}_2\|^2 = \|\vect{a}_2\|^2 - r_{12}^2
+= (b^2 + d^2) - \frac{(ab + cd)^2}{a^2 + c^2}
+= \frac{(a^2 + c^2)(b^2 + d^2) - (ab + cd)^2}{a^2 + c^2}.
+\]
+分子を展開すると
+$a^2d^2 + b^2c^2 - 2abcd = (ad - bc)^2$ となるので
+$r_{22} = \dfrac{|ad - bc|}{\sqrt{a^2 + c^2}}$。
+検算:$A = \mat{3 & 1 \\ 4 & 3}$ では $r_{11} = 5$,
+$r_{12} = \dfrac{3 + 12}{5} = 3$,
+$r_{22} = \dfrac{|9 - 4|}{5} = 1$ で、例 \ref{rei:qr-2x2} と一致する。
+(なお $r_{22}$ の式は $|\det A| = r_{11}r_{22}$ の再確認にもなっている。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex10}}\quad
+問 \ref{q:qr-ex5} と同じ計算で
+\[
+Q = \frac{1}{\sqrt{5}}\mat{2 & -1 \\ 1 & 2}, \qquad
+R = \mat{\sqrt{5} & 3/\sqrt{5} \\ 0 & 1/\sqrt{5}}
+\]
+($r_{12} = \dfrac{2 + 1}{\sqrt{5}} = \dfrac{3}{\sqrt{5}}$,
+$\vect{b}_2 = {}^t(-1/5,\ 2/5)$, $r_{22} = \dfrac{1}{\sqrt{5}}$)。よって
+\[
+A_1 = RQ = \frac{1}{\sqrt{5}}
+\mat{\sqrt{5} & 3/\sqrt{5} \\ 0 & 1/\sqrt{5}}\mat{2 & -1 \\ 1 & 2}
+= \frac{1}{5}\mat{13 & 1 \\ 1 & 2}
+= \mat{2.6 & 0.2 \\ 0.2 & 0.4}.
+\]
+　(1) $A = QR$ の両辺に左から ${}^t\!Q$ を掛けると
+$R = {}^t\!QA$。よって $A_1 = RQ = {}^t\!QAQ = Q^{-1}AQ$ で、
+$A_1$ は $A$ と相似、固有値は等しい。検算:
+$\mathrm{tr}\,A_1 = 2.6 + 0.4 = 3 = \mathrm{tr}\,A$,
+$\det A_1 = \dfrac{26 - 1}{25} = 1 = \det A$。\\
+　(2) 対角成分 $2.6,\ 0.4$ は固有値 $2.618\ldots,\ 0.382\ldots$ の
+よい近似になっており、非対角成分は $1$ から $0.2$ へと
+$5$ 分の $1$ に縮んだ。この操作を反復すると非対角成分が
+$0$ に向かい、対角に固有値が並んでいく(QR法)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex11}}\quad
+$T$ の列を $\vect{t}_1, \dots, \vect{t}_n$ とする。
+上三角なので $\vect{t}_1 = {}^t(t_{11}, 0, \dots, 0)$。
+ノルム $1$ と $t_{11} > 0$ より $t_{11} = 1$、
+すなわち $\vect{t}_1 = \vect{e}_1$。次に
+$\vect{t}_2 = {}^t(t_{12}, t_{22}, 0, \dots, 0)$ は
+$\vect{t}_1 = \vect{e}_1$ と直交するから $t_{12} = 0$、
+ノルム $1$ と $t_{22} > 0$ から $t_{22} = 1$、
+すなわち $\vect{t}_2 = \vect{e}_2$。以下同様に、第 $j$ 列は
+$\vect{e}_1, \dots, \vect{e}_{j-1}$ との直交性で上の成分がすべて $0$、
+ノルムと符号で $t_{jj} = 1$ となり、$\vect{t}_j = \vect{e}_j$。
+よって $T = E$ である。
+
+一意性:$A = QR = Q'R'$($A$ は正則な正方行列)とすると、
+$T = R'R^{-1}$ は上三角どうしの積で上三角、対角成分は
+$\dfrac{r'_{jj}}{r_{jj}} > 0$。一方 $QR = Q'R'$ より
+$T = R'R^{-1} = {}^t\!Q'Q$ で、直交行列どうしの積だから直交行列。
+前半より $T = E$、すなわち $R' = R$, $Q' = Q$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex12}}\quad
+QR 分解の第 $j$ 列の式
+$\vect{a}_j = r_{1j}\vect{u}_1 + \cdots + r_{jj}\vect{u}_j$ で、
+$\vect{u}_1, \dots, \vect{u}_j$ は正規直交系だから、
+ピタゴラスの定理より
+\[
+\|\vect{a}_j\|^2 = r_{1j}^2 + \cdots + r_{jj}^2 \ \ge\ r_{jj}^2,
+\qquad\text{すなわち}\quad r_{jj} \le \|\vect{a}_j\|.
+\]
+辺々を掛け合わせ、定理 \ref{thm:qr-det} を使うと
+\[
+|\det A| = r_{11}\cdots r_{nn} \le \|\vect{a}_1\| \cdots \|\vect{a}_n\|.
+\]
+等号成立は各 $j$ で $r_{ij} = 0$($i < j$)のとき、すなわち
+$A$ の列が\textbf{互いに直交する}とき。幾何的には、
+「辺の長さを決めたとき、平行体の体積が最大になるのは直方体のとき」
+という直観の証明である。
+
+\bigskip
 \noindent\textbf{問 \ref{q:svd}}\quad
 ${}^t\!AA = \mat{1 & 0 \\ 0 & 4}$ の固有値は $4, 1$(すでに対角)。
 $\vect{v}_1 = \mat{0 \\ 1}$, $\vect{v}_2 = \mat{1 \\ 0}$,
@@ -7459,8 +7813,177 @@ $\vect{u}_2 = A\vect{v}_2/1 = \mat{0 \\ 1}$。よって
 \[
 A = \mat{1 & 0 \\ 0 & 1}\mat{2 & 0 \\ 0 & 1}\mat{0 & 1 \\ 1 & 0}.
 \]
-($最後の行列は {}^tV$。「軸を入れ替えてから、各軸を $2$ 倍・$1$ 倍する」
+(最後の行列は ${}^tV$。「軸を入れ替えてから、各軸を $2$ 倍・$1$ 倍する」
 変換だと読める。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex1}}\quad
+${}^t\!AA = \mat{9 & 0 \\ 0 & 4}$ はすでに対角で、固有値は $9, 4$。
+大きい順に $\vect{v}_1 = \vect{e}_1$, $\vect{v}_2 = \vect{e}_2$($V = E$)、
+$\sigma_1 = 3$, $\sigma_2 = 2$。
+$\vect{u}_1 = A\vect{e}_1/3 = {}^t(1, 0, 0)$,
+$\vect{u}_2 = A\vect{e}_2/2 = {}^t(0, 0, 1)$、
+残りは $\vect{u}_3 = {}^t(0, 1, 0)$。よって
+\[
+A = \mat{1 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 0}
+\mat{3 & 0 \\ 0 & 2 \\ 0 & 0} E.
+\]
+(検算:$U\Sigma$ の列は $3\vect{u}_1 = {}^t(3,0,0)$,
+$2\vect{u}_2 = {}^t(0,0,2)$ で $A$ の列と一致。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex2}}\quad
+${}^t\!AA = \mat{4 & 0 \\ 0 & 9}$ の固有値は $9, 4$。大きい順に
+$\vect{v}_1 = \vect{e}_2$, $\vect{v}_2 = \vect{e}_1$、
+$\sigma_1 = 3$, $\sigma_2 = 2$。
+$\vect{u}_1 = A\vect{e}_2/3 = \vect{e}_1$,
+$\vect{u}_2 = A\vect{e}_1/2 = \vect{e}_2$。よって
+\[
+A = E\mat{3 & 0 \\ 0 & 2}\mat{0 & 1 \\ 1 & 0}.
+\]
+(問 \ref{q:svd} と同じく「軸の入れ替え $+$ 伸縮」である。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex3}}\quad
+${}^t\!AA = \mat{5 & 10 \\ 10 & 20}$ の固有値は $25, 0$(階数 $1$)。
+$\sigma_1 = 5$,
+$\vect{v}_1 = \dfrac{1}{\sqrt{5}}\mat{1 \\ 2}$,
+$\vect{v}_2 = \dfrac{1}{\sqrt{5}}\mat{-2 \\ 1}$。
+$\vect{u}_1 = \dfrac{A\vect{v}_1}{5}
+= \dfrac{1}{5\sqrt{5}}\mat{10 \\ 5} = \dfrac{1}{\sqrt{5}}\mat{2 \\ 1}$、
+直交する $\vect{u}_2 = \dfrac{1}{\sqrt{5}}\mat{-1 \\ 2}$ を補って
+\[
+U = \frac{1}{\sqrt{5}}\mat{2 & -1 \\ 1 & 2}, \quad
+\Sigma = \mat{5 & 0 \\ 0 & 0}, \quad
+V = \frac{1}{\sqrt{5}}\mat{1 & -2 \\ 2 & 1}.
+\]
+検算:$\sigma_1\vect{u}_1{}^t\vect{v}_1 = 5 \cdot \dfrac{1}{5}
+\mat{2 & 4 \\ 1 & 2} = A$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex4}}\quad
+$A$ は対称で固有値 $4, 2$(ともに正)だから、直交対角化が
+そのまま SVD になる:
+\[
+A = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}\mat{4 & 0 \\ 0 & 2}
+\cdot\frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}
+\qquad (U = V,\ \sigma_1 = 4,\ \sigma_2 = 2).
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex5}}\quad
+${}^t\!AA = \mat{3 & 3 \\ 3 & 3}$ の固有値は $6, 0$ だから
+$\sigma_1 = \sqrt{6}$、
+$\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$。
+$A\vect{v}_1 = \dfrac{2}{\sqrt{2}}{}^t(1, 1, 1) = \sqrt{2}\,{}^t(1,1,1)$ より
+$\vect{u}_1 = \dfrac{\sqrt{2}}{\sqrt{6}}\mat{1 \\ 1 \\ 1}
+= \dfrac{1}{\sqrt{3}}\mat{1 \\ 1 \\ 1}$。このとき
+\[
+\sigma_1\vect{u}_1{}^t\vect{v}_1
+= \sqrt{6}\cdot\frac{1}{\sqrt{3}}\cdot\frac{1}{\sqrt{2}}
+\mat{1 \\ 1 \\ 1}\mat{1 & 1}
+= 1 \cdot \mat{1 & 1 \\ 1 & 1 \\ 1 & 1} = A.
+\]
+階数 $1$ の行列は「特異値 $1$ 個 $\times$ 外積 $1$ 個」で書き切れる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex6}}\quad
+${}^t\!AA = \mat{2 & 1 \\ 1 & 1}$ の固有多項式は
+$\lambda^2 - 3\lambda + 1 = 0$、固有値は $\dfrac{3 \pm \sqrt{5}}{2}$。
+$\left(\dfrac{1 + \sqrt{5}}{2}\right)^2 = \dfrac{6 + 2\sqrt{5}}{4}
+= \dfrac{3 + \sqrt{5}}{2}$ に注意して
+\[
+\sigma_1 = \frac{1 + \sqrt{5}}{2}, \qquad \sigma_2 = \frac{\sqrt{5} - 1}{2},
+\qquad
+\sigma_1\sigma_2 = \frac{5 - 1}{4} = 1 = |\det A|.
+\]
+固有値 $1$(重解)は「向きの変わらない方向 $\vect{e}_2$
+での伸縮率」しか測っていない。この行列はせん断で、
+斜め方向のベクトルを最大 $\sigma_1 \approx 1.618$ 倍まで伸ばす
+――その情報は特異値にしか現れない。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex7}}\quad
+${}^t\!AA = \mat{1 & 1 & 0 \\ 1 & 1 & 0 \\ 0 & 0 & 4}$ の固有値は
+$4, 2, 0$。大きい順に
+\[
+\vect{v}_1 = \mat{0 \\ 0 \\ 1}, \quad
+\vect{v}_2 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \quad
+\vect{v}_3 = \frac{1}{\sqrt{2}}\mat{1 \\ -1 \\ 0}, \qquad
+\sigma_1 = 2,\ \sigma_2 = \sqrt{2}.
+\]
+$\vect{u}_1 = A\vect{v}_1/2 = \mat{0 \\ 1}$,
+$\vect{u}_2 = A\vect{v}_2/\sqrt{2}
+= \dfrac{1}{\sqrt{2}}\cdot\dfrac{1}{\sqrt{2}}\mat{2 \\ 0} = \mat{1 \\ 0}$。
+よって
+\[
+A = \mat{0 & 1 \\ 1 & 0}\mat{2 & 0 & 0 \\ 0 & \sqrt{2} & 0}\,{}^tV.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex8}}\quad
+　(1) 問 \ref{q:svd-ex4} より $\sigma_1 = 4$ だから $\|A\| = 4$。
+達成するのは $\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$
+(実際 $A\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{4 \\ 4}$ のノルムは $4$)。\\
+　(2) $A\vect{e}_1 = \mat{3 \\ 1}$ で
+$\|A\vect{e}_1\| = \sqrt{10} \approx 3.16 \le 4$。\\
+　(3) 展開式 $\|A\vect{x}\|^2 = 16c_1^2 + 4c_2^2 \ge 4(c_1^2 + c_2^2)$
+より、単位ベクトルでの最小値は $\sigma_2 = 2$
+($\vect{x} = \vect{v}_2$ で達成)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex9}}\quad
+積の行列式より $\det A = \det U \cdot \det\Sigma \cdot \det{}^tV$。
+直交行列では $(\det U)^2 = \det({}^t\!UU) = 1$ だから
+$\det U = \pm 1$、$\det {}^tV = \det V = \pm 1$。
+$\det\Sigma = \sigma_1\cdots\sigma_n$ なので、絶対値をとって
+$|\det A| = \sigma_1\cdots\sigma_n$。
+反例 \ref{hanrei:svd-eigen} の行列では
+$\sigma_1\sigma_2 = \dfrac{(1 + \sqrt{5})(\sqrt{5} - 1)}{4} = 1$ で、
+確かに $|\det A| = 1$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex10}}\quad
+　(1) ${}^tQQ = E$ の固有値はすべて $1$ だから、特異値は
+$\sqrt{1} = 1$ ばかりである。\\
+　(2) 特異値がすべて $1$ なら $\Sigma = E$ で
+$A = U E\,{}^tV = U{}^tV$。直交行列の積は直交行列
+(${}^t(U{}^tV)(U{}^tV) = V{}^tUU{}^tV = E$)だから $A$ は直交行列。\\
+　(3) ${}^t(cA)(cA) = c^2\,{}^t\!AA$ の固有値は $c^2\lambda_i$ だから、
+特異値は $\sqrt{c^2\lambda_i} = c\sigma_i$($c > 0$)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex11}}\quad
+${}^tV V = E$ に注意して
+\[
+A\,{}^t\!A = (U\Sigma{}^tV)(V\,{}^t\Sigma\,{}^tU)
+= U(\Sigma\,{}^t\Sigma)\,{}^tU.
+\]
+$\Sigma\,{}^t\Sigma$ は $m$ 次の対角行列で、対角成分は
+$\sigma_1^2, \dots, \sigma_r^2$ と $0$($m - r$ 個)。
+よって $A\,{}^t\!A$ の固有値は $\sigma_i^2$ と $0$ たちである。
+一方 ${}^t\!AA = V({}^t\Sigma\,\Sigma){}^tV$ の固有値は
+$\sigma_i^2$ と $0$($n - r$ 個)。零でない固有値は
+どちらも $\sigma_1^2, \dots, \sigma_r^2$ で一致するから、
+特異値はどちらの行列から作っても同じである
+($0$ の個数、すなわち行列のサイズだけが違う)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:svd-ex12}}\quad
+$A$ の列を $\vect{a}_1, \dots, \vect{a}_n$ とすると、
+${}^t\!A\vect{x}$ の第 $i$ 成分は $\langle \vect{a}_i, \vect{x} \rangle$
+である。よって
+\[
+{}^t\!A\vect{x} = \vect{0}
+\iff \text{すべての } i \text{ で } \langle \vect{a}_i, \vect{x} \rangle = 0
+\iff \vect{x} \perp \langle \vect{a}_1, \dots, \vect{a}_n \rangle
+= \mathrm{Im}\,A
+\]
+(生成系のすべてと直交すれば、その線形結合のすべてと直交する)。
+すなわち $\mathrm{Ker}\,{}^t\!A = (\mathrm{Im}\,A)^{\perp}$。
+次元は、$\dim W + \dim W^{\perp} = m$(第V部、問 \ref{q:gs-ex10} の
+一般化)に $W = \mathrm{Im}\,A$($\dim = r$)を当てはめて
+$\dim(\mathrm{Im}\,A)^{\perp} = m - r$ である。
 
 \bigskip
 \noindent\textbf{問 \ref{q:pinv}}\quad
@@ -7477,6 +8000,184 @@ A^{+} = V\mat{1/\sqrt{2} & 0 \\ 0 & 0}{}^tU
 $x + y = 1$(第 $2$ 成分の誤差 $1$ は消せない)。
 最小二乗解の全体は直線 $x + y = 1$ であり、その中で原点に最も近い点は
 $\mat{1/2 \\ 1/2}$。確かに $\vect{x}^{*}$ と一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex1}}\quad
+零でない対角成分を逆数にして転置し
+\[
+A^{+} = \mat{1/3 & 0 & 0 \\ 0 & 0 & 1/2}.
+\]
+$AA^{+} = \mat{1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}$(対角の正射影行列)
+だから
+\[
+AA^{+}A = \mat{1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1}
+\mat{3 & 0 \\ 0 & 0 \\ 0 & 2} = \mat{3 & 0 \\ 0 & 0 \\ 0 & 2} = A.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex2}}\quad
+問 \ref{q:svd-ex3} より $\sigma_1 = 5$,
+$\vect{v}_1 = \dfrac{1}{\sqrt{5}}\mat{1 \\ 2}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{5}}\mat{2 \\ 1}$(階数 $1$)。よって
+\[
+A^{+} = \frac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1
+= \frac{1}{5}\cdot\frac{1}{5}\mat{1 \\ 2}\mat{2 & 1}
+= \frac{1}{25}\mat{2 & 1 \\ 4 & 2}.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex3}}\quad
+$A = \mat{1 & 1}$ について ${}^t\!AA = \mat{1 & 1 \\ 1 & 1}$ の固有値は
+$2, 0$ だから $\sigma_1 = \sqrt{2}$,
+$\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{u}_1 = A\vect{v}_1/\sqrt{2} = 1$。
+\[
+A^{+} = \frac{1}{\sqrt{2}}\vect{v}_1 = \frac{1}{2}\mat{1 \\ 1}, \qquad
+\vect{x}^* = A^{+}(4) = \mat{2 \\ 2}.
+\]
+$\|\vect{x}^*\| = 2\sqrt{2} \approx 2.83$ に対し
+$\|{}^t(4, 0)\| = 4$:確かに $\vect{x}^*$ の方が小さい
+(直線 $x + y = 4$ 上で原点に最も近いのは法線方向の点 ${}^t(2,2)$ である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex4}}\quad
+固有値 $3, 1$(ともに正)と固有ベクトル
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}{}^t(1, 1)$ より
+\[
+A_1 = 3 \cdot \frac{1}{2}\mat{1 \\ 1}\mat{1 & 1}
+= \frac{3}{2}\mat{1 & 1 \\ 1 & 1}, \qquad
+A - A_1 = \frac{1}{2}\mat{1 & -1 \\ -1 & 1}.
+\]
+$A - A_1 = 1 \cdot \vect{u}_2{}^t\vect{v}_2$
+($\vect{u}_2 = \vect{v}_2 = \frac{1}{\sqrt{2}}{}^t(1, -1)$)だから
+$\|A - A_1\| = \sigma_2 = 1$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex5}}\quad
+　(1) 例題 \ref{rei:svd-wide} の SVD($\sigma_1 = \sqrt{2}$,
+$\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,0,1)$, $\vect{u}_1 = {}^t(1,0)$;
+$\sigma_2 = 1$, $\vect{v}_2 = {}^t(0,1,0)$, $\vect{u}_2 = {}^t(0,1)$)より
+\[
+A^{+} = \frac{1}{\sqrt{2}}\vect{v}_1{}^t\vect{u}_1
++ \vect{v}_2{}^t\vect{u}_2
+= \mat{1/2 & 0 \\ 0 & 1 \\ 1/2 & 0}.
+\]
+　(2) $AA^{+} = \mat{1/2 + 1/2 & 0 \\ 0 & 1} = E$。\\
+　(3) $\vect{x}^* = A^{+}\mat{2 \\ 3} = \mat{1 \\ 3 \\ 1}$。
+検算:$A\vect{x}^* = \mat{1 + 1 \\ 3} = \mat{2 \\ 3}$(厳密な解)。
+解の全体は $x + z = 2$, $y = 3$ で、$x^2 + z^2$ が最小になるのは
+$x = z = 1$ のとき:確かにノルム最小である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex6}}\quad
+問 \ref{q:svd-ex7} の SVD($\sigma_1 = 2$, $\vect{v}_1 = \vect{e}_3$,
+$\vect{u}_1 = {}^t(0,1)$;$\sigma_2 = \sqrt{2}$,
+$\vect{v}_2 = \frac{1}{\sqrt{2}}{}^t(1,1,0)$, $\vect{u}_2 = {}^t(1,0)$)より
+\[
+A^{+} = \frac{1}{2}\vect{v}_1{}^t\vect{u}_1
++ \frac{1}{\sqrt{2}}\vect{v}_2{}^t\vect{u}_2
+= \mat{0 & 0 \\ 0 & 0 \\ 0 & 1/2} + \mat{1/2 & 0 \\ 1/2 & 0 \\ 0 & 0}
+= \mat{1/2 & 0 \\ 1/2 & 0 \\ 0 & 1/2}.
+\]
+$\vect{x}^* = A^{+}\mat{1 \\ 2} = \mat{1/2 \\ 1/2 \\ 1}$。
+検算:$A\vect{x}^* = \mat{1/2 + 1/2 \\ 2} = \mat{1 \\ 2}$。
+解の全体は $x + y = 1$, $2z = 2$ で、$x^2 + y^2$ 最小は
+$x = y = \dfrac{1}{2}$:ノルム最小の解である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex7}}\quad
+例題 \ref{rei:svd-2x2} より $\sigma_1 = 4\sqrt{2}$,
+$\vect{u}_1 = {}^t(1, 0)$, $\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1, 1)$。
+\[
+A_1 = 4\sqrt{2}\cdot\frac{1}{\sqrt{2}}\mat{1 \\ 0}\mat{1 & 1}
+= \mat{4 & 4 \\ 0 & 0}, \qquad
+A - A_1 = \mat{0 & 0 \\ -3 & 3}.
+\]
+$A - A_1 = 3\sqrt{2}\cdot\mat{0 \\ -1}\cdot\frac{1}{\sqrt{2}}\mat{1 & -1}
+= \sigma_2\vect{u}_2{}^t\vect{v}_2$ だから
+$\|A - A_1\| = \sigma_2 = 3\sqrt{2}$ である
+(幾何的には、楕円の長軸方向の作用だけを残した近似である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex8}}\quad
+　(1) $\|A - A_1\| = \sigma_2 = 5$,
+$\|A - A_2\| = \sigma_3 = 0.1$:$2$ 項も取れば、
+作用素ノルムの意味で誤差は $\sigma_1$ の $200$ 分の $1$($0.5\%$)まで
+落ちる。\\
+　(2) $1$ 項あたり $\sigma_i$($1$ 個)と
+$\vect{u}_i \in \R^{1000}$, $\vect{v}_i \in \R^{1000}$ だから、
+$k = 50$ で $50 \times (1000 + 1000 + 1) = 100050 \approx 10^5$ 個。
+元の $10^6$ 個の約 $1$ 割で済む(深掘りで述べた画像圧縮の勘定である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex9}}\quad
+問 \ref{q:lsq-ex9} の行列は階数 $1$ で、${}^t\!AA = \mat{5 & 10 \\ 10 & 20}$
+の固有値は $25, 0$。$\sigma_1 = 5$,
+$\vect{v}_1 = \dfrac{1}{\sqrt{5}}\mat{1 \\ 2}$,
+$\vect{u}_1 = \dfrac{A\vect{v}_1}{5}
+= \dfrac{1}{\sqrt{5}}\mat{1 \\ 2 \\ 0}$。よって
+\[
+A^{+} = \frac{1}{5}\vect{v}_1{}^t\vect{u}_1
+= \frac{1}{25}\mat{1 & 2 & 0 \\ 2 & 4 & 0}, \qquad
+\vect{x}^* = A^{+}\mat{1 \\ 1 \\ 1}
+= \frac{1}{25}\mat{3 \\ 6} = \mat{3/25 \\ 6/25}
+\]
+で、問 \ref{q:lsq-ex9}(2) の答えと一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex10}}\quad
+　(1) $A^{+} = V\Sigma^{+}\,{}^tU$ は「直交行列 × 対角型 × 直交行列の
+転置」の形だから(特異値を大きい順に並べ替えれば)$A^{+}$ の
+特異値分解であり、$A^{+}$ の特異値は
+$\dfrac{1}{\sigma_1}, \dots, \dfrac{1}{\sigma_r}$。最大のものは
+$\dfrac{1}{\sigma_r}$ だから、定理 \ref{thm:svd-norm} より
+$\|A^{+}\| = \dfrac{1}{\sigma_r}$。\\
+　(2) $A_{\varepsilon}$ の特異値は $1, \varepsilon$ だから
+$\|A_{\varepsilon}^{+}\| = \dfrac{1}{\varepsilon} \to \infty$
+($\varepsilon \to 0$)。階数が $2$ から $1$ に落ちる瞬間に
+$A^{+}$ が跳ぶ(反例 \ref{hanrei:pinv-discont})のは、
+最小特異値 $\sigma_r \to 0$ が $\|A^{+}\|$ を発散させるからである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex11}}\quad
+列が線形独立なら、任意の $\vect{b}$ に対して最小二乗解はただ一つで、
+定理 \ref{thm:lsq-normal} よりそれは
+$({}^t\!AA)^{-1}{}^t\!A\vect{b}$ である。一方、定理 \ref{thm:pinv-main}
+より $A^{+}\vect{b}$ は最小二乗解(の中でノルム最小のもの)だから、
+最小二乗解が一つしかない今の場合、両者は同じベクトルである:
+\[
+A^{+}\vect{b} = ({}^t\!AA)^{-1}{}^t\!A\,\vect{b}
+\qquad (\text{すべての } \vect{b} \in \R^m).
+\]
+$\vect{b}$ に基本ベクトル $\vect{e}_1, \dots, \vect{e}_m$ を代入すると
+両辺の行列の各列が一致するから、行列として
+$A^{+} = ({}^t\!AA)^{-1}{}^t\!A$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:pinv-ex12}}\quad
+${}^tVV = E$, ${}^tUU = E$ を使ってすべてを対角行列の計算に帰着する。
+まず対角成分を見ると、$\Sigma\Sigma^{+}\Sigma$ の第 $i$ 対角成分は
+$\sigma_i \cdot \frac{1}{\sigma_i} \cdot \sigma_i = \sigma_i$($i \le r$)、
+それ以外は $0$ だから $\Sigma\Sigma^{+}\Sigma = \Sigma$。同様に
+$\Sigma^{+}\Sigma\Sigma^{+} = \Sigma^{+}$。よって
+\[
+(1)\ AA^{+}A = U\Sigma\,{}^tV \cdot V\Sigma^{+}{}^tU \cdot U\Sigma\,{}^tV
+= U(\Sigma\Sigma^{+}\Sigma){}^tV = U\Sigma\,{}^tV = A,
+\]
+\[
+(2)\ A^{+}AA^{+} = V(\Sigma^{+}\Sigma\Sigma^{+}){}^tU
+= V\Sigma^{+}{}^tU = A^{+}.
+\]
+　(3)(4) 例題 \ref{rei:pinv-proj} より
+$AA^{+} = U(\Sigma\Sigma^{+}){}^tU$, $A^{+}A = V(\Sigma^{+}\Sigma){}^tV$
+で、$\Sigma\Sigma^{+}$, $\Sigma^{+}\Sigma$ は対角行列(対称)だから
+\[
+{}^t(AA^{+}) = {}^t\!\bigl(U(\Sigma\Sigma^{+}){}^tU\bigr)
+= U\,{}^t(\Sigma\Sigma^{+})\,{}^tU = U(\Sigma\Sigma^{+}){}^tU = AA^{+},
+\]
+$A^{+}A$ も同様。以上でペンローズの四条件がすべて確かめられた
+(実はこの四条件を満たす行列は $A^{+}$ ただ一つであることが知られており、
+擬似逆行列の「SVD によらない定義」として使われる)。
 
 \section*{第VIII部}
 

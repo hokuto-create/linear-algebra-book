@@ -7,7 +7,22 @@
 \chapter{最小二乗法 ― 解けない方程式に最善の答えを}\label{chap:lsq}
 % =====================================================
 
-\section{解のない方程式と向き合う}
+\begin{goal}
+\begin{itemize}
+\item 解のない $A\vect{x} = \vect{b}$ に対し、残差のノルム
+$\|\vect{b} - A\vect{x}\|$ を最小にする\textbf{最小二乗解}を、
+\textbf{正規方程式} ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$ で求められるようになる。
+\item 正規方程式が「$\vect{b}$ を $\mathrm{Im}\,A$ へ正射影せよ」という
+第V部の幾何から出てくることを、証明つきで説明できるようになる。
+\item 回帰直線や多項式の当てはめを、最小二乗問題として定式化して
+解けるようになる。
+\item 「予測値を作る」操作そのものを一つの行列(正射影行列
+$P = A({}^t\!AA)^{-1}{}^t\!A$)にまとめ、その性質
+($P^2 = P$, ${}^t\!P = P$)を使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 解のない方程式と向き合う}
 
 第II部で「解の存在しない連立方程式」を学んだとき、
 われわれはそこで引き返した。しかし現実のデータ解析では、
@@ -24,6 +39,13 @@ $A\vect{x} = \vect{b}$ が解をもたないとき、誤差(残差)のノルム
 を\textbf{最小にする} $\vect{x}$ を求めよ。
 \end{itembox}
 
+「厳密に成り立たせる」ことをあきらめ、「破れ(残差)をできるだけ
+小さくする」ことに目標を変えるのである。残差の\textbf{ノルム}を
+最小化するとは、残差の各成分の\textbf{二乗和}を最小化することにほかならない
+($\|\vect{r}\|^2 = r_1^2 + \cdots + r_m^2$)。「最小二乗法」の
+名の由来である。この最小化を、微分に頼らず\textbf{幾何だけで}
+解いてしまえるのが、第V部で積み上げた内積の理論の力である。
+
 \section{正規方程式 ― 正射影の出番}
 
 $A\vect{x}$ の動ける範囲は、$A$ の列ベクトルが張る部分空間
@@ -35,19 +57,74 @@ $W = \mathrm{Im}\,A$ である。よって問題は
 直交条件を $A$ の各列との内積 $= 0$ として書くと
 ${}^t\!A(\vect{b} - A\vect{x}) = \vect{0}$、すなわち:
 
-\begin{teiri}[正規方程式]
-$\|\vect{b} - A\vect{x}\|$ を最小にする $\vect{x}$ は、
-\[
-{}^t\!A A\,\vect{x} = {}^t\!A\,\vect{b}
-\]
-の解である。$A$ の列が線形独立なら ${}^t\!AA$ は正則で、解はただ一つ
+\begin{teiri}[正規方程式]\label{thm:lsq-normal}
+$m \times n$ 行列 $A$ と $\vect{b} \in \R^m$ に対し、
+$\vect{x} \in \R^n$ について次は同値である。
+\begin{enumerate}
+\item $\vect{x}$ は $\|\vect{b} - A\vect{x}\|$ を最小にする(\textbf{最小二乗解})。
+\item ${}^t\!A A\,\vect{x} = {}^t\!A\,\vect{b}$(\textbf{正規方程式})。
+\end{enumerate}
+正規方程式は($A\vect{x} = \vect{b}$ が解けなくても)\textbf{必ず解をもつ}。
+さらに $A$ の列が線形独立なら ${}^t\!AA$ は正則で、最小二乗解はただ一つ
 $\vect{x} = ({}^t\!AA)^{-1}\,{}^t\!A\,\vect{b}$ に定まる。
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$W = \mathrm{Im}\,A$ とおき、$\vect{b}$ の直交分解
+(定理 \ref{thm:gs-decomp})を $\vect{b} = \vect{b}_W + \vect{b}_{\perp}$
+($\vect{b}_W \in W$, $\vect{b}_{\perp} \in W^{\perp}$)とする。
+
+\textbf{(1 $\iff$ $A\vect{x} = \vect{b}_W$)}\
+任意の $\vect{x}$ に対し $A\vect{x} \in W$ で、
+$\vect{b} - A\vect{x} = \vect{b}_{\perp} + (\vect{b}_W - A\vect{x})$ は
+「$W^{\perp}$ の元 $+$ $W$ の元」の和だから、ピタゴラスの定理
+(定理 \ref{thm:inner-pyth})より
+\[
+\|\vect{b} - A\vect{x}\|^2
+= \|\vect{b}_{\perp}\|^2 + \|\vect{b}_W - A\vect{x}\|^2
+\ \ge\ \|\vect{b}_{\perp}\|^2.
+\]
+等号は $A\vect{x} = \vect{b}_W$ のとき、かつそのときに限る。
+$\vect{b}_W \in W = \mathrm{Im}\,A$ だから、これを満たす $\vect{x}$ は
+\textbf{必ず存在}する。
+
+\textbf{($A\vect{x} = \vect{b}_W$ $\iff$ 2)}\
+$A\vect{x} = \vect{b}_W$ なら $\vect{b} - A\vect{x} = \vect{b}_{\perp} \in W^{\perp}$。
+逆に $\vect{b} - A\vect{x} \in W^{\perp}$ なら、
+$\vect{b} = A\vect{x} + (\vect{b} - A\vect{x})$ が
+「$W$ の元 $+$ $W^{\perp}$ の元」の分解になるので、分解の\textbf{一意性}
+(定理 \ref{thm:gs-decomp})より $A\vect{x} = \vect{b}_W$。
+そして「$\vect{b} - A\vect{x} \in W^{\perp}$」は、$W$ の生成系である
+$A$ の各列 $\vect{a}_1, \dots, \vect{a}_n$ と直交すること、すなわち
+${}^t\vect{a}_i(\vect{b} - A\vect{x}) = 0$($i = 1, \dots, n$)と同値であり、
+$n$ 本まとめて書けば ${}^t\!A(\vect{b} - A\vect{x}) = \vect{0}$、
+移項して ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$ である。
+
+\textbf{(列が線形独立なら ${}^t\!AA$ は正則)}\
+${}^t\!AA\vect{x} = \vect{0}$ とすると、左から ${}^t\vect{x}$ を掛けて
+\[
+0 = {}^t\vect{x}\,{}^t\!AA\vect{x} = {}^t(A\vect{x})(A\vect{x}) = \|A\vect{x}\|^2
+\]
+より $A\vect{x} = \vect{0}$。列が線形独立だから $\vect{x} = \vect{0}$。
+すなわち $n$ 次正方行列 ${}^t\!AA$ は $\mathrm{Ker} = \{\vect{0}\}$ をもち、
+正則である(第III部)。 $\blacksquare$
 
 解けない方程式 $A\vect{x} = \vect{b}$ の両辺に ${}^t\!A$ を掛けるだけで、
 \textbf{必ず解ける}方程式に化ける――驚くほど実用的な定理である。
 
-\begin{rei}[回帰直線]
+\begin{chui}
+${}^t\!A$ を掛けるという操作は同値変形ではない(第I部で警告した
+「両辺に行列を掛けると解が増えうる」の典型例である)。増えた解は
+「元の方程式の解」ではなく「残差最小の解」だ、というのが
+定理 \ref{thm:lsq-normal} の主張である。なお、$A\vect{x} = \vect{b}$ が
+運よく解をもつ場合は残差 $\vect{0}$ が最小だから、
+\textbf{最小二乗解 $=$ 通常の解}となり、矛盾は起きない(問 \ref{q:lsq-ex4})。
+また、列が線形従属な場合は最小二乗解が無数に現れる
+(反例 \ref{hanrei:lsq-dependent})。その場合にどれを選ぶかは、
+第 \ref{chap:pinv} 章(擬似逆行列)で決着する。
+\end{chui}
+
+\begin{rei}[回帰直線]\label{rei:lsq-regression}
 データ $(0, 1), (1, 2), (2, 2), (3, 3)$ に直線 $y = a + bx$ を当てはめる。
 各点を代入した $4$ 本の式を行列で書くと
 \[
@@ -87,33 +164,541 @@ $R^2$ が決して下がらないことも幾何的に自明になる
 $\vect{1} = \mat{1 \\ 1 \\ 1}$ と直交することを確かめよ。
 \end{mondai}
 
+\section{当てはめは直線に限らない}
+
+「直線の当てはめ」と聞くと適用範囲が狭く感じるかもしれないが、
+最小二乗法が要求するのは、モデルが\textbf{未知パラメータについて}
+線形であることだけである。たとえば放物線 $y = a + bx + cx^2$ を
+データに当てはめる問題は、各データ点 $(x_i, y_i)$ を代入した式
+\[
+a + b x_i + c x_i^2 = y_i \qquad (i = 1, \dots, m)
+\]
+を並べれば、未知数 $(a, b, c)$ についての連立\textbf{一次}方程式
+$A\vect{x} = \vect{b}$ になる($A$ の第 $i$ 行は $(1,\ x_i,\ x_i^2)$)。
+$x^2$ という非線形な項が入っていても、\textbf{係数 $a, b, c$ の入り方は
+一次}だから、正規方程式がそのまま使える(例題 \ref{rei:lsq-parabola})。
+$\sin x$ や $e^x$ を部品にした当てはめも同様である。
+「変数について非線形でも、パラメータについて線形なら最小二乗法」
+――適用範囲は見かけよりずっと広い。
+
+\section{正射影行列 ― 「当てはめ」を一つの行列にまとめる}
+
+列が線形独立な場合、最小二乗解は
+$\vect{x}^* = ({}^t\!AA)^{-1}{}^t\!A\vect{b}$ と閉じた式で書けた。
+このとき「最良の近似点」(回帰でいえば予測値のベクトル)は
+\[
+A\vect{x}^* = A({}^t\!AA)^{-1}{}^t\!A\,\vect{b}
+\]
+である。$\vect{b}$ の左に掛かっている行列に名前をつけよう。
+
+\begin{teiri}[正射影行列]\label{thm:lsq-projmat}
+$A$ を列が線形独立な $m \times n$ 行列とし、
+\[
+P = A({}^t\!AA)^{-1}{}^t\!A
+\]
+($m$ 次正方行列)とおく。このとき:
+\begin{enumerate}
+\item 任意の $\vect{b} \in \R^m$ に対し、$P\vect{b}$ は $\vect{b}$ の
+$W = \mathrm{Im}\,A$ への正射影 $\vect{b}_W$ である。
+\item ${}^t\!P = P$(対称)かつ $P^2 = P$(二度射影しても変わらない)。
+\end{enumerate}
+$P$ を $W$ への\textbf{正射影行列}という。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+(1) $\vect{x}^* = ({}^t\!AA)^{-1}{}^t\!A\vect{b}$ は正規方程式の解だから、
+定理 \ref{thm:lsq-normal} の証明で見たとおり
+$A\vect{x}^* = \vect{b}_W$。左辺は $P\vect{b}$ そのものである。
+
+(2) 転置の規則 ${}^t\!(XY) = {}^t Y\,{}^t\!X$ と
+${}^t\!\bigl(({}^t\!AA)^{-1}\bigr) = \bigl({}^t\!({}^t\!AA)\bigr)^{-1}
+= ({}^t\!AA)^{-1}$(対称行列の逆行列は対称)より
+\[
+{}^t\!P = {}^t\!\bigl(A({}^t\!AA)^{-1}{}^t\!A\bigr)
+= A\,{}^t\!\bigl(({}^t\!AA)^{-1}\bigr)\,{}^t\!A = A({}^t\!AA)^{-1}{}^t\!A = P.
+\]
+また、内側の ${}^t\!A A$ が $({}^t\!AA)^{-1}$ と打ち消し合って
+\[
+P^2 = A({}^t\!AA)^{-1}\underbrace{{}^t\!A\,A({}^t\!AA)^{-1}}_{=\,E}{}^t\!A
+= A({}^t\!AA)^{-1}{}^t\!A = P. \qquad\blacksquare
+\]
+
+$P^2 = P$ は「一度 $W$ に落とした点は、もう一度落としても動かない」
+という正射影の幾何を式にしたものである(第V部のスペクトル分解に現れた
+正射影行列 $\vect{u}\,{}^t\vect{u}$ は、$n = 1$ 本の場合の $P$ に
+ほかならない)。統計学ではこの $P$ を\textbf{ハット行列}と呼ぶ
+――データ $\vect{b} = (y_1, \dots, y_m)$ に掛けると予測値
+$\hat{y}_1, \dots, \hat{y}_m$(ハットつきの $y$)が出てくるからである。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[列が線形従属なら最小二乗解は一つに定まらない]\label{hanrei:lsq-dependent}
+「正規方程式は必ず解ける」と「解がただ一つ」は別の主張である。
+\[
+A = \mat{1 & 1 \\ 1 & 1}, \qquad \vect{b} = \mat{1 \\ 0}
+\]
+では、$A$ の列が線形従属で、
+\[
+{}^t\!AA = \mat{2 & 2 \\ 2 & 2}, \qquad {}^t\!A\vect{b} = \mat{1 \\ 1}
+\]
+より正規方程式は $2x + 2y = 1$(2本とも同じ式)。よって最小二乗解は
+直線 $x + y = \dfrac{1}{2}$ 上の\textbf{全点}であり、無数にある。
+実際 $A\vect{x} = (x + y)\mat{1 \\ 1}$ だから、
+$\vect{b}$ との距離は和 $x + y$ だけで決まり、個々の $x, y$ には
+依存しない。${}^t\!AA$ が正則になる(解が一意に定まる)のは、
+定理 \ref{thm:lsq-normal} のとおり\textbf{列が線形独立のとき}に限る。
+\end{hanrei}
+
+\begin{hanrei}[「最良の直線」は当てはめの向きに依存する]\label{hanrei:lsq-swap}
+最小二乗法の回帰直線を「点たちに最も寄り添う、ただ一本の直線」と
+思ってはいけない。最小化しているのはあくまで\textbf{$y$ 方向の}残差
+(縦のずれ)である。データ $(0, 0), (1, 0), (1, 1)$ で確かめよう。
+$y = a + bx$ を当てはめると
+\[
+{}^t\!AA = \mat{3 & 2 \\ 2 & 2}, \quad {}^t\!A\vect{b} = \mat{1 \\ 1}
+\quad\Longrightarrow\quad a = 0,\ b = \frac{1}{2}
+\]
+で $y = \dfrac{1}{2}x$。今度は役割を入れ替えて $x = c + dy$
+(横のずれを最小化)とすると、データは $(y, x)$ の組として
+$(0,0), (0,1), (1,1)$ だから
+\[
+\mat{3 & 1 \\ 1 & 1}\mat{c \\ d} = \mat{2 \\ 1}
+\quad\Longrightarrow\quad c = d = \frac{1}{2}
+\]
+で $x = \dfrac{1}{2} + \dfrac{1}{2}y$、すなわち $y = 2x - 1$。
+同じ $3$ 点から、\textbf{傾きが $4$ 倍違う二本の「最良の直線」}が
+出てきた。どちらも正しい――最小化する残差の向きが違うだけである。
+「何を誤差とみなすか」を決めるのは数学ではなく、データの出どころ
+(どちらの変数に測定誤差があるか)である。
+\end{hanrei}
+
+\section{例題}
+
+正規方程式による当てはめと、正射影の幾何の使い方を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(平均は最小二乗解)]\label{rei:lsq-mean}
+一つの量 $x$ を $3$ 回測定して $1, 2, 4$ を得た。
+「$x = 1$, $x = 2$, $x = 4$」という解のない連立方程式の
+最小二乗解を求めよ。\\
+\textbf{解.}\ 行列で書くと
+$A = \mat{1 \\ 1 \\ 1}$, $\vect{b} = \mat{1 \\ 2 \\ 4}$。
+${}^t\!AA = 3$($1 \times 1$ 行列), ${}^t\!A\vect{b} = 1 + 2 + 4 = 7$
+だから、正規方程式は $3x = 7$ より
+\[
+x^* = \frac{7}{3} = \frac{1 + 2 + 4}{3}.
+\]
+――\textbf{測定値の平均}である。「くり返し測定の平均をとる」という
+日常の作法は、二乗誤差最小の意味での最良の推定だったのである。
+残差は $\mat{1 - 7/3 \\ 2 - 7/3 \\ 4 - 7/3} = \dfrac{1}{3}\mat{-4 \\ -1 \\ 5}$
+で、成分の和が $0$(列 $\vect{1}$ と直交)になっている。
+\end{rei}
+
+\begin{rei}[例題・基本(回帰直線)]\label{rei:lsq-line}
+データ $(0, 1), (1, 3), (2, 4)$ に直線 $y = a + bx$ を当てはめよ。\\
+\textbf{解.}\
+\[
+A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}, \quad \vect{b} = \mat{1 \\ 3 \\ 4}, \quad
+{}^t\!AA = \mat{3 & 3 \\ 3 & 5}, \quad {}^t\!A\vect{b} = \mat{8 \\ 11}.
+\]
+正規方程式 $3a + 3b = 8$, $3a + 5b = 11$ を引き算して $2b = 3$、
+$b = \dfrac{3}{2}$, $a = \dfrac{7}{6}$。回帰直線は
+$y = \dfrac{7}{6} + \dfrac{3}{2}x$ である。
+検算:予測値は $\dfrac{7}{6}, \dfrac{8}{3}, \dfrac{25}{6}$、残差は
+$\mat{-1/6 \\ 1/3 \\ -1/6}$ で、成分の和は $0$、
+$x$ 座標との内積も $0 \cdot \left(-\dfrac{1}{6}\right)
++ 1 \cdot \dfrac{1}{3} + 2 \cdot \left(-\dfrac{1}{6}\right) = 0$。
+残差が $A$ の両方の列と直交している。
+\end{rei}
+
+\begin{rei}[例題・基本(残差の直交性)]\label{rei:lsq-resid}
+$A = \mat{1 & 0 \\ 0 & 1 \\ 1 & 1}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$ の
+最小二乗解を求め、残差が $A$ の各列と直交することを確かめよ。\\
+\textbf{解.}\
+${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$, ${}^t\!A\vect{b} = \mat{2 \\ 2}$。
+正規方程式を解いて $\vect{x}^* = \mat{2/3 \\ 2/3}$。このとき
+\[
+A\vect{x}^* = \mat{2/3 \\ 2/3 \\ 4/3}, \qquad
+\vect{r} = \vect{b} - A\vect{x}^* = \frac{1}{3}\mat{1 \\ 1 \\ -1}.
+\]
+第 $1$ 列との内積は $\dfrac{1}{3}(1 + 0 - 1) = 0$、
+第 $2$ 列との内積は $\dfrac{1}{3}(0 + 1 - 1) = 0$。
+確かに残差は $\mathrm{Im}\,A$ と直交している
+(これが「これ以上改善できない」ことの幾何的な証明書である)。
+\end{rei}
+
+\begin{rei}[例題・標準(放物線の当てはめ)]\label{rei:lsq-parabola}
+データ $(-1, 2), (0, 1), (1, 4)$ に、モデル $y = a + bx^2$ を
+最小二乗法で当てはめよ。\\
+\textbf{解.}\ 各点を代入した式 $a + b x_i^2 = y_i$ を並べると
+\[
+A = \mat{1 & 1 \\ 1 & 0 \\ 1 & 1}, \qquad \vect{b} = \mat{2 \\ 1 \\ 4}
+\]
+($A$ の第 $2$ 列は $x_i^2$ の値)。モデルは $x$ については
+$2$ 次だが、\textbf{未知数 $a, b$ については一次}なので正規方程式が使える:
+\[
+{}^t\!AA = \mat{3 & 2 \\ 2 & 2}, \qquad {}^t\!A\vect{b} = \mat{7 \\ 6}.
+\]
+$3a + 2b = 7$, $2a + 2b = 6$ を引き算して $a = 1$、$b = 2$。
+当てはめた曲線は $y = 1 + 2x^2$ である。
+検算:予測値は $3, 1, 3$、残差は $(-1, 0, 1)$ で、
+$A$ の第 $1$ 列 $(1,1,1)$ とも第 $2$ 列 $(1,0,1)$ とも内積 $0$。
+\end{rei}
+
+\begin{rei}[例題・標準(正射影行列)]\label{rei:lsq-projmat-ex}
+$A = \mat{1 \\ 1 \\ 1}$ に対する正射影行列 $P$ を求め、
+$P\vect{b}$($\vect{b} = {}^t(1, 2, 4)$)を計算せよ。\\
+\textbf{解.}\ ${}^t\!AA = 3$ より
+\[
+P = A \cdot \frac{1}{3} \cdot {}^t\!A
+= \frac{1}{3}\mat{1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1}.
+\]
+${}^t\!P = P$ は見た目から明らか、$P^2 = P$ も
+(各成分を計算すると $\frac{1}{9} \times 3 = \frac{1}{3}$)確かめられる。
+$\vect{b} = {}^t(1, 2, 4)$ に施すと
+\[
+P\vect{b} = \frac{1}{3}\mat{7 \\ 7 \\ 7}
+\]
+――すべての成分が\textbf{平均 $7/3$} のベクトルになる。
+例題 \ref{rei:lsq-mean} の「平均は最小二乗解」を、
+「$\vect{b}$ を対角線方向 $\vect{1}$ の直線に正射影すると
+平均のベクトルになる」と言い換えたことになる。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:${}^t\!AA$ と $A$ の核は一致する)]\label{rei:lsq-kernel}
+任意の $m \times n$ 行列 $A$ について
+$\mathrm{Ker}({}^t\!AA) = \mathrm{Ker}\,A$ を示し、
+$\mathrm{rank}({}^t\!AA) = \mathrm{rank}\,A$ を導け。\\
+\textbf{解.}\ $A\vect{x} = \vect{0}$ なら
+${}^t\!AA\vect{x} = {}^t\!A\vect{0} = \vect{0}$ だから
+$\mathrm{Ker}\,A \subseteq \mathrm{Ker}({}^t\!AA)$。
+逆に ${}^t\!AA\vect{x} = \vect{0}$ なら、左から ${}^t\vect{x}$ を掛けて
+\[
+0 = {}^t\vect{x}\,{}^t\!AA\vect{x} = \|A\vect{x}\|^2
+\]
+より $A\vect{x} = \vect{0}$(ノルムの正値性)。よって両者は一致する。
+${}^t\!AA$ も $A$ も列の本数は $n$ だから、次元定理
+(定理 \ref{thm:dimension})より
+\[
+\mathrm{rank}({}^t\!AA) = n - \dim\mathrm{Ker}({}^t\!AA)
+= n - \dim\mathrm{Ker}\,A = \mathrm{rank}\,A.
+\]
+「${}^t\!A$ を掛けても階数の情報は失われない」――この事実は
+次章以降(QR分解・特異値分解)でもくり返し効いてくる。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{最小二乗問題}:$A\vect{x} = \vect{b}$ が解けないとき、
+残差のノルム $\|\vect{b} - A\vect{x}\|$ を最小にする $\vect{x}$ を探す。
+答えは「$\vect{b}$ を $W = \mathrm{Im}\,A$ に正射影せよ」
+(第V部の最良近似)。
+\item 最小二乗解 $\iff$ \textbf{正規方程式} ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$
+(定理 \ref{thm:lsq-normal})。正規方程式は必ず解をもち、
+$A$ の列が線形独立なら解はただ一つ
+$\vect{x}^* = ({}^t\!AA)^{-1}{}^t\!A\vect{b}$。
+\item 残差 $\vect{b} - A\vect{x}^*$ は $\mathrm{Im}\,A$ と\textbf{直交}する
+(検算にも使える)。回帰直線・多項式当てはめなど、
+\textbf{パラメータについて線形}なモデルはすべてこの枠組みで解ける。
+\item \textbf{正射影行列} $P = A({}^t\!AA)^{-1}{}^t\!A$ は
+$\vect{b} \mapsto \vect{b}_W$ を与え、${}^t\!P = P$, $P^2 = P$ を満たす
+(定理 \ref{thm:lsq-projmat})。
+\item 列が線形従属なら最小二乗解は無数にある(反例 \ref{hanrei:lsq-dependent})。
+また回帰直線は $y$ 方向の残差を最小化するもので、$x$ と $y$ の
+役割を入れ替えると別の直線になる(反例 \ref{hanrei:lsq-swap})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:lsq-ex1}
+一つの量を $3$ 回測定して $2, 3, 7$ を得た。解のない連立方程式
+「$x = 2$, $x = 3$, $x = 7$」の最小二乗解を正規方程式で求め、
+残差ベクトルの成分の和が $0$ になることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:lsq-ex2}
+データ $(0, 0), (1, 2), (2, 3)$ に直線 $y = a + bx$ を
+最小二乗法で当てはめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:lsq-ex3}
+連立方程式
+\[
+x + y = 1, \qquad x - y = 1, \qquad x + y = 3
+\]
+は解をもたない。最小二乗解を求め、残差ベクトルが係数行列の
+$2$ つの列と直交することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:lsq-ex4}
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{1 \\ 2 \\ 3}$ について
+正規方程式を解き、得られた $\vect{x}^*$ が $A\vect{x} = \vect{b}$ の
+\textbf{厳密な}解になっている(残差が $\vect{0}$)ことを確かめよ。
+データの言葉でいえば、$3$ 点 $(0,1), (1,2), (2,3)$ が
+一直線上に並んでいる場合である。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex5}
+データ $(0, 0), (1, 1), (2, 3), (3, 4)$ に直線 $y = a + bx$ を
+最小二乗法で当てはめ、残差ベクトルを求めて検算せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex6}
+$A = \mat{1 & 0 \\ 0 & 1 \\ 1 & 1}$(例題 \ref{rei:lsq-resid} の行列)への
+正射影行列 $P = A({}^t\!AA)^{-1}{}^t\!A$ を求め、
+${}^t\!P = P$ と $P^2 = P$ を確かめよ。さらに
+$P\mat{1 \\ 1 \\ 1}$ が例題 \ref{rei:lsq-resid} の $A\vect{x}^*$ と
+一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex7}
+問 \ref{q:lsq} のデータ $(0, 0), (1, 1), (2, 1)$ について、今度は
+$x$ と $y$ の役割を入れ替え、$x = c + dy$ を最小二乗法で当てはめよ。
+得られる直線を $y$ について解いた形に直し、問 \ref{q:lsq} の
+回帰直線 $y = \dfrac{1}{6} + \dfrac{1}{2}x$ と比較せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:lsq-ex8}
+原点を通る直線 $y = kx$ をデータ $(1, 2), (2, 3), (3, 4)$ に
+最小二乗法で当てはめよ(未知数は $k$ の一つだけである)。
+また、残差ベクトルが $\mat{1 \\ 2 \\ 3}$ と直交することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:lsq-ex9}
+$A = \mat{1 & 2 \\ 2 & 4 \\ 0 & 0}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$ について、\\
+　(1) 正規方程式を書き下し、最小二乗解の全体が直線
+$x + 2y = \dfrac{3}{5}$ になることを示せ。\\
+　(2) その中でノルム $\|(x, y)\|$ が最小のものを求めよ
+(この「ノルム最小の最小二乗解」が第 \ref{chap:pinv} 章の主役になる)。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:lsq-ex10}
+データ $(x_1, y_1), \dots, (x_m, y_m)$ への直線 $y = a + bx$ の
+当てはめを一般に考える。
+$S_x = \sum x_i$, $S_y = \sum y_i$, $S_{xx} = \sum x_i^2$,
+$S_{xy} = \sum x_i y_i$ とおくとき、正規方程式が
+\[
+\mat{m & S_x \\ S_x & S_{xx}}\mat{a \\ b} = \mat{S_y \\ S_{xy}}
+\]
+となることを示し、$m S_{xx} - S_x^2 \neq 0$ のとき
+\[
+b = \frac{m S_{xy} - S_x S_y}{m S_{xx} - S_x^2}, \qquad
+a = \bar{y} - b\bar{x}
+\quad \left(\bar{x} = \frac{S_x}{m},\ \bar{y} = \frac{S_y}{m}\right)
+\]
+を導け(統計学の教科書に載っている回帰係数の公式である)。
+問 \ref{q:lsq} のデータで検算せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:lsq-ex11}
+任意の $m \times n$ 行列 $A$ について、${}^t\!AA$ は対称かつ半正定値
+(第V部)であることを示せ。さらに、${}^t\!AA$ が正定値であることと
+$A$ の列が線形独立であることが同値であることを示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:lsq-ex12}
+$W = \mathrm{Im}\,A$ とし、$\vect{b} = \vect{b}_W + \vect{b}_{\perp}$ を
+直交分解(定理 \ref{thm:gs-decomp})とする。任意の $\vect{x}$ に対して
+\[
+\|\vect{b} - A\vect{x}\|^2 = \|\vect{b}_{\perp}\|^2 + \|\vect{b}_W - A\vect{x}\|^2
+\]
+が成り立つことを示し、最小二乗解の全体が
+「$A\vect{x} = \vect{b}_W$ の解の全体」と一致することを結論せよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:lsq-ex1}}:$A = {}^t(1, 1, 1)$。正規方程式は
+$3x = (\text{測定値の和})$。
+\item \textbf{問 \ref{q:lsq-ex2}}:${}^t\!AA$, ${}^t\!A\vect{b}$ を作って
+$2$ 元連立を解く。例題 \ref{rei:lsq-line} と同じ手順。
+\item \textbf{問 \ref{q:lsq-ex3}}:$A = \mat{1 & 1 \\ 1 & -1 \\ 1 & 1}$,
+$\vect{b} = {}^t(1, 1, 3)$ とおいて正規方程式。
+\item \textbf{問 \ref{q:lsq-ex4}}:正規方程式を解くと残差が $\vect{0}$ になる。
+「解があるときは最小二乗解 $=$ 通常の解」の確認である。
+\item \textbf{問 \ref{q:lsq-ex5}}:${}^t\!AA = \mat{4 & 6 \\ 6 & 14}$。
+残差の成分の和と、$x$ 座標との内積がともに $0$ なら検算完了。
+\item \textbf{問 \ref{q:lsq-ex6}}:$({}^t\!AA)^{-1} = \dfrac{1}{3}
+\mat{2 & -1 \\ -1 & 2}$。$P$ は $3$ 次正方行列になる。
+\item \textbf{問 \ref{q:lsq-ex7}}:データを $(y, x)$ の組と読み替えて
+同じ手順を踏む。傾きの逆数にはならないことに注意。
+\item \textbf{問 \ref{q:lsq-ex8}}:$A = {}^t(1, 2, 3)$ で ${}^t\!AA = 14$。
+正規方程式は $1$ 本である。
+\item \textbf{問 \ref{q:lsq-ex9}}:列が従属なので反例
+\ref{hanrei:lsq-dependent} と同じ状況。(2) は原点から直線への垂線の足。
+\item \textbf{問 \ref{q:lsq-ex10}}:$A$ の第 $i$ 行は $(1, x_i)$。
+${}^t\!AA$ の成分を書き出すだけである。$b$ はクラメルの公式(第II部)か
+消去法で。
+\item \textbf{問 \ref{q:lsq-ex11}}:対称性は転置の規則。
+${}^t\vect{x}({}^t\!AA)\vect{x} = \|A\vect{x}\|^2$ が鍵
+(例題 \ref{rei:lsq-kernel} と同じ計算)。
+\item \textbf{問 \ref{q:lsq-ex12}}:$\vect{b} - A\vect{x} =
+\vect{b}_{\perp} + (\vect{b}_W - A\vect{x})$ と分けてピタゴラス
+(定理 \ref{thm:inner-pyth})。等号成立の条件を読む。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{QR分解 ― グラム・シュミットの行列表現}\label{chap:qr}
 % =====================================================
 
-\begin{teiri}[QR分解]
+\begin{goal}
+\begin{itemize}
+\item 列が線形独立な行列が $A = QR$($Q$ の列は正規直交系、$R$ は
+対角成分が正の上三角行列)と\textbf{ただ一通り}に分解できることを、
+存在(グラム・シュミットの計算記録)と一意性の証明つきで理解する。
+\item $2 \times 2$ や $3 \times 2$ の行列の QR 分解を手計算で
+求められるようになる。
+\item QR 分解を使って最小二乗問題を $R\vect{x} = {}^t\!Q\vect{b}$ の
+\textbf{後退代入}に帰着できるようになる。
+\item 正方行列では $Q$ が直交行列になり、
+$|\det A| = r_{11}r_{22}\cdots r_{nn}$ が成り立つことを使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 「計算の記録」を行列の等式にする}
+
+第V部のグラム・シュミットの直交化法は、与えられた列ベクトルの組を
+正規直交系に作り替える\textbf{手続き}だった。本章はその手続きの
+計算結果を、$A = QR$ という一本の\textbf{行列の等式}として書き留める。
+たったそれだけのことが、驚くほど役に立つ。
+
+本書ではすでに、行列を「よい形の積」に割る操作に何度も出会っている。
+対角化 $A = PDP^{-1}$(第IV部)、直交対角化 $A = U D\,{}^t U$(第V部)、
+ジョルダン標準形(第VI部)――いずれも、複雑な行列を
+「性質のよくわかる部品の積」に分解することで、べき乗や微分方程式が
+一気に解けた。このような書き換えを\textbf{行列の分解}と総称する。
+QR分解はその仲間で、部品は「直交(回転・鏡映の仲間)」と
+「上三角(下から順に解ける)」である。理論の主役というより
+\textbf{計算の主役}であり、次章の特異値分解と並んで、
+数値計算ソフトウェアの心臓部で毎日動いている。
+
+\section{QR分解 ― 存在と一意性}
+
+\begin{teiri}[QR分解]\label{thm:qr-main}
 列が線形独立な $m \times n$ 行列 $A$ は、
 \[
 A = QR
 \]
 ($Q$ は列が正規直交系の $m \times n$ 行列、$R$ は対角成分が正の
-$n$ 次上三角行列)の形にただ一通りに分解できる。
+$n$ 次上三角行列)の形に\textbf{ただ一通り}に分解できる。
 \end{teiri}
 
 新しい定理に見えるが、正体は\textbf{グラム・シュミットの直交化法の
 計算記録}である。$A$ の列を直交化して得た正規直交系を $Q$ の列とし、
 「元の各列が、直交化済みベクトルのどんな線形結合だったか」の係数を
 $R$ に書き留める。$j$ 番目の列は $1, \dots, j$ 番目の直交ベクトルだけで
-書けるから、$R$ は自動的に上三角になる。
+書けるから、$R$ は自動的に上三角になる。以下、これを証明の形に直す。
 
-QR分解を使うと、最小二乗問題が見通しよく解ける。
+\noindent\textbf{(証明)}\quad
+\textbf{(存在)}\ $A$ の列を $\vect{a}_1, \dots, \vect{a}_n$ とし、
+グラム・シュミットの直交化法(定理 \ref{thm:gs-main})を適用して
+正規直交系 $\vect{u}_1, \dots, \vect{u}_n$ を作る。手続きの式
+\[
+\vect{b}_j = \vect{a}_j - \sum_{i=1}^{j-1}
+\langle \vect{a}_j, \vect{u}_i \rangle \vect{u}_i, \qquad
+\vect{u}_j = \frac{\vect{b}_j}{\|\vect{b}_j\|}
+\]
+を $\vect{a}_j$ について解き直すと
+\[
+\vect{a}_j = \langle \vect{a}_j, \vect{u}_1 \rangle \vect{u}_1 + \cdots
++ \langle \vect{a}_j, \vect{u}_{j-1} \rangle \vect{u}_{j-1}
++ \|\vect{b}_j\|\,\vect{u}_j.
+\]
+そこで $Q = (\vect{u}_1 \ \cdots \ \vect{u}_n)$、$R$ の $(i, j)$ 成分を
+\[
+r_{ij} = \langle \vect{a}_j, \vect{u}_i \rangle \ (i < j), \qquad
+r_{jj} = \|\vect{b}_j\| \ (> 0), \qquad
+r_{ij} = 0 \ (i > j)
+\]
+と定めれば、上の式は「$A$ の第 $j$ 列 $=$ $QR$ の第 $j$ 列」を
+意味するから $A = QR$ である($\vect{b}_j \neq \vect{0}$、すなわち
+$r_{jj} > 0$ が保証されるのは列が線形独立だからである。
+反例 \ref{hanrei:gs-dependent} 参照)。
+
+\textbf{(一意性)}\ $A = QR = Q'R'$ と二通りに分解できたとし、
+$Q, Q'$ の列を $\vect{q}_i, \vect{q}'_i$、$R, R'$ の成分を
+$r_{ij}, r'_{ij}$ とする。左の列から順に一致を示す。
+第 $1$ 列を比べると $\vect{a}_1 = r_{11}\vect{q}_1 = r'_{11}\vect{q}'_1$。
+ノルムをとると($\|\vect{q}_1\| = \|\vect{q}'_1\| = 1$ より)
+$r_{11} = r'_{11} = \|\vect{a}_1\|$、よって $\vect{q}_1 = \vect{q}'_1$。
+次に、第 $j - 1$ 列までで $\vect{q}_i = \vect{q}'_i$($i < j$)が
+示せたとする。第 $j$ 列は
+\[
+\vect{a}_j = \sum_{i=1}^{j-1} r_{ij}\vect{q}_i + r_{jj}\vect{q}_j
+= \sum_{i=1}^{j-1} r'_{ij}\vect{q}_i + r'_{jj}\vect{q}'_j.
+\]
+$\vect{q}_i$($i < j$)との内積をとると、$\vect{q}_j$ も $\vect{q}'_j$ も
+$\vect{q}_i$ と直交する($Q'$ の列どうしの直交性と
+$\vect{q}_i = \vect{q}'_i$)から、$r_{ij} = \langle \vect{a}_j, \vect{q}_i
+\rangle = r'_{ij}$。残った項を比べて
+$r_{jj}\vect{q}_j = r'_{jj}\vect{q}'_j$、ノルムをとって
+$r_{jj} = r'_{jj} > 0$、よって $\vect{q}_j = \vect{q}'_j$。
+帰納的にすべての列が一致し、$Q = Q'$, $R = R'$ である。 $\blacksquare$
+
+\begin{rei}[$2 \times 2$ の QR 分解]\label{rei:qr-2x2}
+$A = \mat{3 & 1 \\ 4 & 3}$ を分解する。
+$\vect{a}_1 = \mat{3 \\ 4}$ のノルムは $5$ だから
+$\vect{u}_1 = \dfrac{1}{5}\mat{3 \\ 4}$, $r_{11} = 5$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle
+= \dfrac{3 + 12}{5} = 3$ を使って
+\[
+\vect{b}_2 = \mat{1 \\ 3} - 3 \cdot \frac{1}{5}\mat{3 \\ 4}
+= \frac{1}{5}\mat{-4 \\ 3}, \qquad r_{22} = \|\vect{b}_2\| = 1.
+\]
+よって
+\[
+A = QR = \frac{1}{5}\mat{3 & -4 \\ 4 & 3}\mat{5 & 3 \\ 0 & 1}.
+\]
+検算:$QR$ の第 $2$ 列は
+$3\vect{u}_1 + 1 \cdot \vect{u}_2 = \dfrac{1}{5}\mat{9 - 4 \\ 12 + 3}
+= \mat{1 \\ 3}$ で一致する。$Q$ は回転行列
+(第V部:$\det Q = \frac{9 + 16}{25} = 1$)である。
+\end{rei}
+
+\section{QR分解で最小二乗法を解く}
+
+QR分解を使うと、前章の最小二乗問題が見通しよく解ける。
 $A = QR$ を正規方程式に代入すると ${}^t\!Q Q = E$ により
 \[
 {}^t\!R R \vect{x} = {}^t\!R\,{}^t\!Q\,\vect{b}
 \quad\Longrightarrow\quad
 R\vect{x} = {}^t\!Q\,\vect{b}
 \]
-となり、$R$ が上三角なので\textbf{下から順に代入するだけ}で解ける。
+となり($R$ は正則なので ${}^t\!R$ で割ってよい)、$R$ が上三角なので
+\textbf{下から順に代入するだけ}で解ける。逆行列 $({}^t\!AA)^{-1}$ を
+作る必要がそもそもなくなるのである。
+
+\begin{rei}[QR 経由の最小二乗法]\label{rei:qr-lsq}
+$A = \mat{1 & 1 \\ 1 & 0 \\ 0 & 1}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$ の
+最小二乗解を求める。直交化すると
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \quad
+\vect{b}_2 = \mat{1 \\ 0 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+= \frac{1}{2}\mat{1 \\ -1 \\ 2}, \quad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ -1 \\ 2}
+\]
+で、$r_{11} = \sqrt{2}$, $r_{12} = \dfrac{1}{\sqrt{2}}$,
+$r_{22} = \dfrac{\sqrt{6}}{2}$。右辺は
+\[
+{}^t\!Q\vect{b} = \mat{\langle \vect{b}, \vect{u}_1 \rangle \\
+\langle \vect{b}, \vect{u}_2 \rangle}
+= \mat{2/\sqrt{2} \\ 2/\sqrt{6}}.
+\]
+$R\vect{x} = {}^t\!Q\vect{b}$ を下から解くと、第 $2$ 行
+$\dfrac{\sqrt{6}}{2}x_2 = \dfrac{2}{\sqrt{6}}$ より $x_2 = \dfrac{2}{3}$、
+第 $1$ 行 $\sqrt{2}\,x_1 + \dfrac{1}{\sqrt{2}} \cdot \dfrac{2}{3}
+= \dfrac{2}{\sqrt{2}}$ の両辺を $\sqrt{2}$ で割って
+$x_1 + \dfrac{1}{3} = 1$、$x_1 = \dfrac{2}{3}$。
+最小二乗解は $\vect{x}^* = {}^t\!\left(\dfrac{2}{3},\ \dfrac{2}{3}\right)$
+(正規方程式 ${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$,
+${}^t\!A\vect{b} = \mat{2 \\ 2}$ を解いても同じ答えになる)。
+\end{rei}
 
 \begin{itembox}[l]{深掘り:数値計算の世界では QR が主役である}
 理論上は正規方程式 ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$ で十分だが、
@@ -123,7 +708,8 @@ R\vect{x} = {}^t\!Q\,\vect{b}
 実用ソフトウェア(統計パッケージの回帰計算など)の内部では
 QR 経由の解法が標準である。さらに、QR分解を反復する
 \textbf{QR法}は、固有値を数値的に求める現代の標準アルゴリズムでもある
-(固有方程式を解く方法は $5$ 次以上で代数的に破綻するし、数値的にも悪い)。
+(固有方程式を解く方法は $5$ 次以上で代数的に破綻するし、数値的にも悪い。
+その入り口を章末問題 \ref{q:qr-ex10} で体験できる)。
 第II部の深掘り「定義と計算法は別物」の好例が、ここにもある。
 \end{itembox}
 
@@ -132,11 +718,360 @@ $A = \mat{1 & 1 \\ 0 & 1 \\ 1 & 0}$ の QR 分解を求めよ
 (列の直交化は問 \ref{q:gs} で実行済みである。それを流用してよい)。
 \end{mondai}
 
+\section{正方行列の場合 ― 直交行列 × 上三角、そして行列式}
+
+$A$ が $n$ 次正方で正則(列が線形独立)なら、$Q$ も $n$ 次正方になり、
+列が正規直交系の正方行列、すなわち\textbf{直交行列}である(第V部)。
+「どんな正則行列も、直交行列と上三角行列の積」――これは
+行列式とも美しく噛み合う。
+
+\begin{teiri}[QR分解と行列式]\label{thm:qr-det}
+正則な $n$ 次正方行列 $A = QR$ について
+\[
+|\det A| = r_{11}\,r_{22} \cdots r_{nn}.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+積の行列式(第II部)より $\det A = \det Q \cdot \det R$。
+直交行列では ${}^t\!QQ = E$ の両辺の行列式をとると
+$(\det Q)^2 = 1$、すなわち $\det Q = \pm 1$。また上三角行列の行列式は
+対角成分の積 $r_{11}\cdots r_{nn}$(第II部)で、これは正である。
+絶対値をとって主張を得る。 $\blacksquare$
+
+第II部で「行列式は平行体の体積(の符号つき版)」と学んだ。
+この定理はその言い換えである:$r_{jj} = \|\vect{b}_j\|$ は
+「$j$ 番目の辺のうち、それまでの辺と直交する成分(高さ)」だから、
+$\prod r_{jj}$ は「底辺 × 高さ × …」をくり返した体積計算に
+ほかならない。行列式・直交化・体積という三つの話題が、
+QR分解の上で一つに結ばれる(章末問題 \ref{q:qr-ex12} では、
+ここから\textbf{アダマールの不等式}が一行で出ることを見る)。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[列が線形従属だと、この形の QR 分解は存在しない]\label{hanrei:qr-dependent}
+$A = \mat{1 & 2 \\ 1 & 2}$(第 $2$ 列は第 $1$ 列の $2$ 倍)が
+$A = QR$($Q$ の列は正規直交系、$R$ は対角成分が\textbf{正}の上三角)と
+分解できたとする。$Q$ の列は正規直交系だから線形独立で、$R$ は
+対角成分が正の三角行列だから正則。すると $A$ の列は
+「線形独立なベクトルの組に正則行列を掛けたもの」となり
+線形独立のはず――しかし実際は従属であり、矛盾する。
+グラム・シュミットの手続きの側でも、$\vect{b}_2 = \vect{0}$ となって
+正規化で止まる(反例 \ref{hanrei:gs-dependent})。
+定理 \ref{thm:qr-main} の仮定「列が線形独立」は飾りではない。
+\end{hanrei}
+
+\begin{hanrei}[「対角成分が正」を外すと一意性が崩れる]\label{hanrei:qr-sign}
+単位行列 $E$($2$ 次)は
+\[
+E = E \cdot E
+= \mat{-1 & 0 \\ 0 & 1}\mat{-1 & 0 \\ 0 & 1}
+\]
+と\textbf{二通り}に「直交行列 × 上三角行列」に書ける
+($\mat{-1 & 0 \\ 0 & 1}$ は鏡映で直交行列、同時に対角行列なので
+上三角でもある)。二つ目の分解は $r_{11} = -1 < 0$ なので、
+定理 \ref{thm:qr-main} の条件「対角成分が正」に反する。
+つまりこの条件は、各 $\vect{u}_j$ の\textbf{向きの選び方}
+($\pm$ の任意性)を一つに固定するための約束であり、
+これを外すと分解は($\pm$ の分だけ)複数現れる。
+一意性を支えているのが不等式 $r_{jj} > 0$ だという点は、
+証明の「ノルムをとって $r_{jj} = r'_{jj}$」の段で確かめられる。
+\end{hanrei}
+
+\section{例題}
+
+QR 分解の計算と、最小二乗法・行列式への応用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本($2 \times 2$ の分解)]\label{rei:qr-basic2x2}
+$A = \mat{1 & 2 \\ 1 & 0}$ の QR 分解を求めよ。\\
+\textbf{解.}\ $\vect{a}_1 = \mat{1 \\ 1}$ より $r_{11} = \sqrt{2}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = \dfrac{2}{\sqrt{2}}
+= \sqrt{2}$、
+\[
+\vect{b}_2 = \mat{2 \\ 0} - \sqrt{2} \cdot \frac{1}{\sqrt{2}}\mat{1 \\ 1}
+= \mat{1 \\ -1}, \qquad r_{22} = \sqrt{2},\quad
+\vect{u}_2 = \frac{1}{\sqrt{2}}\mat{1 \\ -1}.
+\]
+よって
+\[
+A = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}\mat{\sqrt{2} & \sqrt{2} \\ 0 & \sqrt{2}}.
+\]
+検算:第 $2$ 列は $\sqrt{2}\vect{u}_1 + \sqrt{2}\vect{u}_2
+= \mat{1 \\ 1} + \mat{1 \\ -1} = \mat{2 \\ 0}$。
+また $|\det A| = |0 - 2| = 2 = \sqrt{2} \cdot \sqrt{2}$
+(定理 \ref{thm:qr-det})。
+\end{rei}
+
+\begin{rei}[例題・基本($3 \times 2$ の分解)]\label{rei:qr-basic3x2}
+$A = \mat{1 & 2 \\ 0 & 3 \\ 0 & 4}$ の QR 分解を求めよ。\\
+\textbf{解.}\ $\vect{a}_1 = \vect{e}_1$ はすでに単位ベクトルなので
+$r_{11} = 1$, $\vect{u}_1 = \vect{e}_1$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = 2$、
+\[
+\vect{b}_2 = \mat{2 \\ 3 \\ 4} - 2\mat{1 \\ 0 \\ 0} = \mat{0 \\ 3 \\ 4},
+\qquad r_{22} = 5, \quad \vect{u}_2 = \frac{1}{5}\mat{0 \\ 3 \\ 4}.
+\]
+よって
+\[
+A = QR = \mat{1 & 0 \\ 0 & 3/5 \\ 0 & 4/5}\mat{1 & 2 \\ 0 & 5}.
+\]
+「第 $1$ 列の方向を残し、第 $2$ 列からその成分を取り除いて正規化した」
+という直交化の履歴が、$R$ にそのまま記録されている。
+\end{rei}
+
+\begin{rei}[例題・基本(QR で最小二乗)]\label{rei:qr-lsq-ex}
+例題 \ref{rei:qr-basic3x2} の $A$ と $\vect{b} = \mat{1 \\ 5 \\ 5}$ に
+対する最小二乗解を、$R\vect{x} = {}^t\!Q\vect{b}$ で求めよ。\\
+\textbf{解.}\
+\[
+{}^t\!Q\vect{b} = \mat{\langle \vect{b}, \vect{u}_1 \rangle \\
+\langle \vect{b}, \vect{u}_2 \rangle}
+= \mat{1 \\ (15 + 20)/5} = \mat{1 \\ 7}.
+\]
+$R\vect{x} = \mat{1 \\ 7}$ を下から解く:第 $2$ 行 $5x_2 = 7$ より
+$x_2 = \dfrac{7}{5}$、第 $1$ 行 $x_1 + 2x_2 = 1$ より
+$x_1 = 1 - \dfrac{14}{5} = -\dfrac{9}{5}$。
+検算:正規方程式は ${}^t\!AA = \mat{1 & 2 \\ 2 & 29}$,
+${}^t\!A\vect{b} = \mat{1 \\ 37}$ で、
+$2 \cdot \left(-\dfrac{9}{5}\right) + 29 \cdot \dfrac{7}{5}
+= \dfrac{-18 + 203}{5} = 37$ が成り立つ。
+\end{rei}
+
+\begin{rei}[例題・標準($3 \times 3$ の分解と行列式)]\label{rei:qr-3x3}
+$A = \mat{1 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 1}$ の QR 分解を求め、
+定理 \ref{thm:qr-det} を検証せよ。\\
+\textbf{解.}\ 第 $1$・第 $2$ 列の直交化は例題 \ref{rei:qr-lsq} と同じ計算で
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ -1 \\ 2}, \qquad
+r_{11} = \sqrt{2},\ r_{12} = \frac{1}{\sqrt{2}},\ r_{22} = \frac{\sqrt{6}}{2}.
+\]
+第 $3$ 列 $\vect{a}_3 = {}^t(0, 1, 1)$ は
+$r_{13} = \langle \vect{a}_3, \vect{u}_1 \rangle = \dfrac{1}{\sqrt{2}}$,
+$r_{23} = \langle \vect{a}_3, \vect{u}_2 \rangle = \dfrac{1}{\sqrt{6}}$ で、
+\[
+\vect{b}_3 = \mat{0 \\ 1 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+- \frac{1}{6}\mat{1 \\ -1 \\ 2} = \frac{2}{3}\mat{-1 \\ 1 \\ 1},
+\qquad r_{33} = \|\vect{b}_3\| = \frac{2}{\sqrt{3}}, \quad
+\vect{u}_3 = \frac{1}{\sqrt{3}}\mat{-1 \\ 1 \\ 1}.
+\]
+よって $Q = (\vect{u}_1\ \vect{u}_2\ \vect{u}_3)$,
+$R = \mat{\sqrt{2} & 1/\sqrt{2} & 1/\sqrt{2} \\
+0 & \sqrt{6}/2 & 1/\sqrt{6} \\ 0 & 0 & 2/\sqrt{3}}$。
+検証:$r_{11}r_{22}r_{33} = \sqrt{2} \cdot \dfrac{\sqrt{6}}{2}
+\cdot \dfrac{2}{\sqrt{3}} = \sqrt{\dfrac{2 \cdot 6 \cdot 4}{4 \cdot 3}} = 2$
+で、直接計算した $\det A = -2$ の絶対値と一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(${}^t\!AA = {}^t\!RR$)]\label{rei:qr-cholesky}
+$A = QR$ のとき ${}^t\!AA = {}^t\!RR$ が成り立つことを示し、
+例題 \ref{rei:qr-basic3x2} の行列で数値的に確かめよ。\\
+\textbf{解.}\ ${}^t\!QQ = E$ を使うだけである:
+\[
+{}^t\!AA = {}^t\!(QR)(QR) = {}^t\!R\,{}^t\!QQ\,R = {}^t\!RR.
+\]
+例題 \ref{rei:qr-basic3x2} では
+\[
+{}^t\!RR = \mat{1 & 0 \\ 2 & 5}\mat{1 & 2 \\ 0 & 5}
+= \mat{1 & 2 \\ 2 & 29}, \qquad
+{}^t\!AA = \mat{1 & 2 \\ 2 & 29}
+\]
+で確かに一致する。対称正定値行列 ${}^t\!AA$ が
+「三角行列とその転置の積」に書けるというこの形は
+\textbf{コレスキー分解}と呼ばれ、数値計算で多用される。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:正射影行列は $Q\,{}^t\!Q$)]\label{rei:qr-proj}
+列が線形独立な $A = QR$ について、$W = \mathrm{Im}\,A$ への
+正射影行列(定理 \ref{thm:lsq-projmat})が
+\[
+P = A({}^t\!AA)^{-1}{}^t\!A = Q\,{}^t\!Q
+\]
+と簡単になることを示せ。\\
+\textbf{解.}\ 例題 \ref{rei:qr-cholesky} より ${}^t\!AA = {}^t\!RR$ で、
+$R$ は正則だから $({}^t\!AA)^{-1} = ({}^t\!RR)^{-1} = R^{-1}({}^t\!R)^{-1}$
+(積の逆行列は順序を入れ替えた逆行列の積)。代入して
+\[
+P = QR \cdot R^{-1}({}^t\!R)^{-1} \cdot {}^t\!R\,{}^t\!Q = Q\,{}^t\!Q.
+\]
+$Q\,{}^t\!Q = \vect{u}_1{}^t\vect{u}_1 + \cdots + \vect{u}_n{}^t\vect{u}_n$
+だから、これは「正規直交基底の各方向への正射影の和」
+(定理 \ref{thm:gs-decomp} の公式の行列版)にほかならない。
+逆行列の計算が消えてしまうのが QR 分解の御利益である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item 列が線形独立な行列は $A = QR$($Q$:列が正規直交系、
+$R$:対角成分が正の上三角)と\textbf{ただ一通り}に分解できる
+(定理 \ref{thm:qr-main})。存在はグラム・シュミットの
+\textbf{計算記録}、一意性は列を左から順に比べれば出る。
+\item $r_{jj} = \|\vect{b}_j\|$(直交化の途中で出る「高さ」)、
+$r_{ij} = \langle \vect{a}_j, \vect{u}_i \rangle$($i < j$)。
+列が従属なら $\vect{b}_j = \vect{0}$ が現れ、この形の分解は存在しない
+(反例 \ref{hanrei:qr-dependent})。
+\item 最小二乗問題は $R\vect{x} = {}^t\!Q\vect{b}$ の\textbf{後退代入}に
+帰着し、数値計算では正規方程式より安定である。
+また ${}^t\!AA = {}^t\!RR$、正射影行列は $P = Q\,{}^t\!Q$。
+\item 正方行列では $Q$ は直交行列で、
+$|\det A| = r_{11}\cdots r_{nn}$(定理 \ref{thm:qr-det}:
+「底辺 × 高さ」の体積計算の行列版)。
+\item 「対角成分が正」は向きの任意性を固定するための条件で、
+外すと一意性が崩れる(反例 \ref{hanrei:qr-sign})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:qr-ex1}
+$A = \mat{1 & 1 \\ 1 & -1}$ の QR 分解を求めよ。
+$R$ が対角行列になるのはなぜか、一言で説明せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:qr-ex2}
+$A = \mat{0 & 2 \\ 3 & 4}$ の QR 分解を求め、
+$|\det A| = r_{11}r_{22}$(定理 \ref{thm:qr-det})を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:qr-ex3}
+$A = \mat{1 & 1 \\ 0 & 3 \\ 0 & 4}$ の QR 分解を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:qr-ex4}
+問 \ref{q:qr-ex3} の分解を使い、$\vect{b} = \mat{2 \\ 5 \\ 5}$ に対する
+最小二乗解を $R\vect{x} = {}^t\!Q\vect{b}$ で求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex5}
+$A = \mat{2 & 1 \\ 1 & 2}$ の QR 分解を求め、
+$\det Q = 1$(回転)であることと、
+$r_{11}r_{22} = |\det A| = 3$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex6}
+問 \ref{q:lsq} のデータ $(0,0), (1,1), (2,1)$ の当てはめ行列
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{0 \\ 1 \\ 1}$ について
+QR 分解を求め、$R\vect{x} = {}^t\!Q\vect{b}$ を解いて、
+問 \ref{q:lsq} の答え $a = \dfrac{1}{6}$, $b = \dfrac{1}{2}$ が
+再現されることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex7}
+問 \ref{q:qr-ex3} の $Q$ の $2$ 本の列に、第 $3$ の列
+$\vect{u}_3$ を補って $3$ 次の直交行列を作れ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex8}
+問 \ref{q:qr-ex3} の $A$ について、正射影行列 $P = Q\,{}^t\!Q$
+(例題 \ref{rei:qr-proj})を計算せよ。さらに
+$P\vect{b}$($\vect{b} = {}^t(2, 5, 5)$)が、
+問 \ref{q:qr-ex4} の最小二乗解 $\vect{x}^*$ に対する $A\vect{x}^*$ と
+一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:qr-ex9}
+第 $1$ 列が零でない一般の $2$ 次正方行列
+$A = \mat{a & b \\ c & d}$ について、QR 分解の $R$ が
+\[
+R = \mat{\sqrt{a^2 + c^2} & \dfrac{ab + cd}{\sqrt{a^2 + c^2}} \\[2mm]
+0 & \dfrac{|ad - bc|}{\sqrt{a^2 + c^2}}}
+\]
+となることを示せ($A$ は正則とする)。
+例 \ref{rei:qr-2x2} の $A = \mat{3 & 1 \\ 4 & 3}$ で検算せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:qr-ex10}
+(QR法の入り口)$A = \mat{2 & 1 \\ 1 & 1}$ を QR 分解し、
+積の順序を入れ替えた $A_1 = RQ$ を計算せよ。\\
+　(1) $A_1 = {}^t\!QAQ$ を示し、$A_1$ が $A$ と相似
+(同じ固有値をもつ)であることを確かめよ
+(トレースと行列式で検算せよ)。\\
+　(2) $A$ の固有値は $\dfrac{3 \pm \sqrt{5}}{2} \approx 2.618,\ 0.382$
+である。$A_1$ の対角成分と見比べ、非対角成分の大きさが
+どう変わったかを観察せよ(この操作をくり返すと対角行列に近づいていく
+――これが固有値計算の標準アルゴリズム「QR法」である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:qr-ex11}
+直交行列 $T$ が上三角で、対角成分がすべて正ならば、$T = E$ である
+ことを示せ(ヒント:第 $1$ 列から順に。各列はノルム $1$ で、
+先に確定した列と直交する)。この事実から定理 \ref{thm:qr-main} の
+一意性をもう一度導け($A = QR = Q'R'$ が正方の場合に、
+$T = R'R^{-1}$ を考えよ。上三角行列の逆行列と積が上三角であることは
+使ってよい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:qr-ex12}
+(アダマールの不等式)正則な $n$ 次正方行列 $A$ の列を
+$\vect{a}_1, \dots, \vect{a}_n$ とすると
+\[
+|\det A| \le \|\vect{a}_1\| \|\vect{a}_2\| \cdots \|\vect{a}_n\|
+\]
+が成り立つことを、QR 分解を使って示せ(ヒント:
+$\vect{a}_j = r_{1j}\vect{u}_1 + \cdots + r_{jj}\vect{u}_j$ と
+ピタゴラスの定理から $r_{jj} \le \|\vect{a}_j\|$)。
+等号が成り立つのはどんなときか。幾何的には何を意味するか。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:qr-ex1}}:$2$ つの列がはじめから直交している。
+正規化するだけでよい。
+\item \textbf{問 \ref{q:qr-ex2}}:$r_{11} = \|\vect{a}_1\| = 3$。
+$\vect{u}_1$ は $\vect{e}_2$ になる。
+\item \textbf{問 \ref{q:qr-ex3}}:例題 \ref{rei:qr-basic3x2} と同じ型。
+$\vect{a}_1$ はすでに単位ベクトル。
+\item \textbf{問 \ref{q:qr-ex4}}:${}^t\!Q\vect{b}$ の成分は
+$\langle \vect{b}, \vect{u}_i \rangle$。下の行から解く。
+\item \textbf{問 \ref{q:qr-ex5}}:$r_{11} = \sqrt{5}$。分数の根号は
+最後に整理する。
+\item \textbf{問 \ref{q:qr-ex6}}:$\vect{u}_1 = \dfrac{1}{\sqrt{3}}
+{}^t(1,1,1)$、$\vect{b}_2 = {}^t(-1, 0, 1)$。
+\item \textbf{問 \ref{q:qr-ex7}}:$\vect{u}_1, \vect{u}_2$ の両方と
+直交する単位ベクトルを探す(連立方程式か、成分の観察で)。
+\item \textbf{問 \ref{q:qr-ex8}}:$P = \vect{u}_1{}^t\vect{u}_1 +
+\vect{u}_2{}^t\vect{u}_2$。$A\vect{x}^*$ は問 \ref{q:qr-ex4} の答えを使う。
+\item \textbf{問 \ref{q:qr-ex9}}:定義どおり直交化する。
+$\|\vect{b}_2\|$ の計算で $(ab + cd)^2$ を展開し、
+$(a^2 + c^2)(b^2 + d^2) - (ab + cd)^2 = (ad - bc)^2$ を使う。
+\item \textbf{問 \ref{q:qr-ex10}}:$A = QR$ なら $R = {}^t\!QA$ だから
+$RQ = {}^t\!QAQ$。相似なら固有値・トレース・行列式は不変(第III部・第IV部)。
+\item \textbf{問 \ref{q:qr-ex11}}:第 $1$ 列は ${}^t(t_{11}, 0, \dots, 0)$ で
+ノルム $1$、$t_{11} > 0$ より $t_{11} = 1$。第 $2$ 列は第 $1$ 列と直交…と
+順に進む。後半は $Q' \,T = Q$ の形にして、$T$ が直交かつ上三角・対角正に
+なることを確かめる。
+\item \textbf{問 \ref{q:qr-ex12}}:$\|\vect{a}_j\|^2 = r_{1j}^2 + \cdots
++ r_{jj}^2 \ge r_{jj}^2$。辺々掛けて定理 \ref{thm:qr-det} を使う。
+等号は $R$ が対角、すなわち列がもともと直交するとき。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{特異値分解(SVD) ― すべての行列のための分解}\label{chap:svd}
 % =====================================================
 
-\section{対角化の限界を超える}
+\begin{goal}
+\begin{itemize}
+\item \textbf{任意の} $m \times n$ 行列が $A = U\Sigma\,{}^tV$
+($U, V$ は直交行列、$\Sigma$ は特異値を並べた対角型)と分解できることを、
+${}^t\!AA$ の直交対角化による\textbf{存在証明}つきで理解する。
+\item 小さい行列($2 \times 2$、$2 \times 3$ 程度)の特異値分解を
+手計算で求められるようになる。
+\item 「回転 → 軸ごとの伸縮 → 回転」という幾何的な意味と、
+特異値が\textbf{階数}と\textbf{最大伸び率}(作用素ノルム)を
+測っていることを説明できるようになる。
+\item 特異値と固有値の違い(と、対称行列での関係)を、
+具体例で言えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 対角化の限界を超える}
 
 固有値理論には前提があった:行列は\textbf{正方}でなければならず、
 美しい結論(直交対角化)は\textbf{対称}行列に限られた。
@@ -144,7 +1079,16 @@ $A = \mat{1 & 1 \\ 0 & 1 \\ 1 & 0}$ の QR 分解を求めよ
 任意の $m \times n$ 行列に通用する分解はないか
 ――答えが特異値分解である。
 
-\begin{teiri}[特異値分解]
+種はすでに手の中にある。$A$ 自身は長方形で対角化のしようがないが、
+${}^t\!AA$ は\textbf{必ず $n$ 次の対称行列}になり(前々章)、
+スペクトル定理(第V部)が全力で使える。
+「$A$ を直接調べる代わりに ${}^t\!AA$ を調べる」――
+最小二乗法で正規方程式を作ったのと同じ一手が、
+今度は分解定理を生み出す。
+
+\section{特異値分解 ― 存在の証明}
+
+\begin{teiri}[特異値分解]\label{thm:svd-main}
 任意の $m \times n$ 行列 $A$(階数 $r$)は、
 \[
 A = U \Sigma\, {}^t V
@@ -159,15 +1103,74 @@ $\Sigma$ は対角の位置に
 
 構成は対称行列の理論に帰着する。${}^t\!AA$ は $n$ 次の対称行列で、
 しかも ${}^t\vect{x}({}^t\!AA)\vect{x} = \|A\vect{x}\|^2 \ge 0$ だから
-固有値はすべて非負である(第V部の言葉で\textbf{半正定値})。そこで
+固有値はすべて非負である(第V部の言葉で\textbf{半正定値}。
+問 \ref{q:lsq-ex11} で証明済み)。方針は
 \begin{enumerate}
 \item ${}^t\!AA$ を直交対角化し、固有ベクトルを $V$ の列、
 固有値の正の平方根 $\sigma_i = \sqrt{\lambda_i}$ を特異値とする。
 \item $\vect{u}_i = A\vect{v}_i / \sigma_i$($i \le r$)とすると、
 これらは自動的に正規直交系になり、$U$ の列(の最初の $r$ 本)が得られる。
 \end{enumerate}
+の二段である。以下、これがすべてうまくいくことを確かめる。
 
-\begin{rei}
+\noindent\textbf{(証明)}\quad
+\textbf{第 1 段(${}^t\!AA$ の対角化)}\
+スペクトル定理(定理 \ref{thm:spec-main})により、${}^t\!AA$ の
+正規直交固有ベクトル $\vect{v}_1, \dots, \vect{v}_n$ と固有値
+$\lambda_1 \ge \cdots \ge \lambda_n \ge 0$(非負は半正定値性による)が
+とれる。$V = (\vect{v}_1 \ \cdots \ \vect{v}_n)$ は直交行列である。
+ここで $\mathrm{Ker}({}^t\!AA) = \mathrm{Ker}\,A$
+(例題 \ref{rei:lsq-kernel})より
+$\mathrm{rank}({}^t\!AA) = \mathrm{rank}\,A = r$ であり、
+${}^t\!AA$ は対角行列 $D = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$ と
+相似、階数は相似で不変(第III部)だから、
+$\lambda_i$ のうち\textbf{正のものはちょうど $r$ 個}:
+$\lambda_1 \ge \cdots \ge \lambda_r > 0 = \lambda_{r+1} = \cdots = \lambda_n$。
+そこで $\sigma_i = \sqrt{\lambda_i}$($i \le r$)とおく。
+
+\textbf{第 2 段($U$ の構成)}\ まず、すべての $i, j$ に対して
+\[
+\langle A\vect{v}_i, A\vect{v}_j \rangle
+= {}^t\vect{v}_i\,({}^t\!AA)\vect{v}_j
+= \lambda_j \langle \vect{v}_i, \vect{v}_j \rangle
+= \begin{cases} \lambda_i & (i = j) \\ 0 & (i \neq j) \end{cases}
+\]
+が成り立つ。とくに $i > r$ では $\|A\vect{v}_i\|^2 = \lambda_i = 0$、
+すなわち $A\vect{v}_i = \vect{0}$。$i \le r$ に対して
+$\vect{u}_i = A\vect{v}_i / \sigma_i$ とおくと、上の計算から
+\[
+\langle \vect{u}_i, \vect{u}_j \rangle
+= \frac{\langle A\vect{v}_i, A\vect{v}_j \rangle}{\sigma_i \sigma_j}
+= \begin{cases} \lambda_i / \sigma_i^2 = 1 & (i = j) \\ 0 & (i \neq j)
+\end{cases}
+\]
+となり、$\vect{u}_1, \dots, \vect{u}_r$ は $\R^m$ の正規直交系である。
+これを $\R^m$ の正規直交基底 $\vect{u}_1, \dots, \vect{u}_m$ に延長し
+(不足分の基底を補ってグラム・シュミット。第V部)、
+$U = (\vect{u}_1 \ \cdots \ \vect{u}_m)$ とおくと $U$ は直交行列。
+
+\textbf{第 3 段(等式の確認)}\ $V$ が直交行列だから、
+$A = U\Sigma\,{}^tV$ は $AV = U\Sigma$ と同値である。
+両辺を列ごとに比べると、第 $j$ 列は
+\[
+A\vect{v}_j = \begin{cases} \sigma_j \vect{u}_j & (j \le r) \\
+\vect{0} & (j > r) \end{cases}
+\]
+という主張であり、$j \le r$ は $\vect{u}_j$ の定義そのもの、
+$j > r$ は第 2 段の $A\vect{v}_j = \vect{0}$ である。よって
+$A = U\Sigma\,{}^tV$。 $\blacksquare$
+
+\begin{chui}
+証明が示すとおり、$V$・$\Sigma$・$U$ の作り方はそのまま
+\textbf{計算手順}になっている:${}^t\!AA$ の固有値・固有ベクトルを求め、
+$\sigma_i = \sqrt{\lambda_i}$、$\vect{u}_i = A\vect{v}_i/\sigma_i$、
+足りない $\vect{u}_i$ は直交するように補う。特異値の組は $A$ から
+一意に定まるが、$U, V$ には(固有ベクトルの選び方の分だけ)
+自由度が残る。なお ${}^t\!AA$ は $n$ 次、$A\,{}^t\!A$ は $m$ 次だが、
+どちらから作っても同じ特異値が得られる(章末問題 \ref{q:svd-ex11})。
+\end{chui}
+
+\begin{rei}\label{rei:svd-first}
 $A = \mat{1 & 1 \\ 0 & 0}$。
 ${}^t\!AA = \mat{1 & 1 \\ 1 & 1}$ の固有値は $2, 0$、固有ベクトルは
 $\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
@@ -179,7 +1182,7 @@ $\vect{u}_2 = \mat{0 \\ 1}$ を補えば
 A = \mat{1 & 0 \\ 0 & 1}\mat{\sqrt{2} & 0 \\ 0 & 0}
 \cdot \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}
 \]
-($最後の行列は {}^tV$)。展開して元に戻ることを確かめてほしい。
+(最後の行列は ${}^tV$)。展開して元に戻ることを確かめてほしい。
 \end{rei}
 
 \section{幾何的な意味 ― すべての線形写像は「回して、伸ばして、回す」}
@@ -208,9 +1211,434 @@ SVD は\textbf{スペクトル定理の、全行列への拡張}なのである�
 $A = \mat{0 & 2 \\ 1 & 0}$ の特異値分解を求めよ。
 \end{mondai}
 
+\section{特異値は何を測るか ― 階数と最大伸び率}
+
+特異値分解は、$A$ の重要な情報をすべて「読み取り可能な形」で
+陳列してくれる。まず\textbf{階数}である。
+
+\begin{teiri}[特異値分解から読み取れる部分空間]\label{thm:svd-rank}
+$A = U\Sigma\,{}^tV$(階数 $r$)について:
+\begin{enumerate}
+\item 特異値の個数 $r$ は $\mathrm{rank}\,A$ に等しい。
+\item $\mathrm{Im}\,A = \langle \vect{u}_1, \dots, \vect{u}_r \rangle$,
+\quad $\mathrm{Ker}\,A = \langle \vect{v}_{r+1}, \dots, \vect{v}_n \rangle$。
+\end{enumerate}
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+任意の $\vect{x} \in \R^n$ を正規直交基底で
+$\vect{x} = c_1\vect{v}_1 + \cdots + c_n\vect{v}_n$ と展開すると、
+$A\vect{v}_j = \sigma_j\vect{u}_j$($j \le r$)、
+$A\vect{v}_j = \vect{0}$($j > r$)より
+\[
+A\vect{x} = c_1\sigma_1\vect{u}_1 + \cdots + c_r\sigma_r\vect{u}_r.
+\tag{$*$}
+\]
+係数 $c_i\sigma_i$($i \le r$)は $c_i$ を動かせば任意の値をとれるから
+$\mathrm{Im}\,A = \langle \vect{u}_1, \dots, \vect{u}_r \rangle$
+(次元 $r$、これが $\mathrm{rank}\,A = r$ の再確認である)。また
+$\vect{u}_1, \dots, \vect{u}_r$ は線形独立だから、$(*)$ が $\vect{0}$ に
+なるのは $c_1 = \cdots = c_r = 0$ のとき、すなわち $\vect{x}$ が
+$\vect{v}_{r+1}, \dots, \vect{v}_n$ の線形結合のときに限る。 $\blacksquare$
+
+次に「大きさ」である。第IV部・第VI部で、行列のべきの長期挙動を
+最大固有値が支配することを見たが、\textbf{一回掛けたときにベクトルが
+最大何倍に伸びるか}を測るのは、固有値ではなく特異値である。
+
+\begin{teigi}[作用素ノルム]\label{def:svd-norm}
+$m \times n$ 行列 $A$ に対し
+\[
+\|A\| = \max_{\vect{x} \neq \vect{0}} \frac{\|A\vect{x}\|}{\|\vect{x}\|}
+\]
+(単位ベクトルの行き先のノルムの最大値)を $A$ の
+\textbf{作用素ノルム}という。
+\end{teigi}
+
+\begin{teiri}[最大の伸び率は $\sigma_1$]\label{thm:svd-norm}
+$\|A\| = \sigma_1$(最大特異値)。最大値は $\vect{x} = \vect{v}_1$ で
+達成される。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+$\vect{x} = c_1\vect{v}_1 + \cdots + c_n\vect{v}_n$ とすると、
+$(*)$ と $\vect{u}_i$ の正規直交性(ピタゴラスの定理)より
+\[
+\|A\vect{x}\|^2 = \sigma_1^2 c_1^2 + \cdots + \sigma_r^2 c_r^2
+\le \sigma_1^2 (c_1^2 + \cdots + c_n^2) = \sigma_1^2 \|\vect{x}\|^2
+\]
+($\|\vect{x}\|^2 = c_1^2 + \cdots + c_n^2$ も正規直交展開のピタゴラス)。
+よってつねに $\|A\vect{x}\| \le \sigma_1\|\vect{x}\|$。
+一方 $\vect{x} = \vect{v}_1$ では
+$\|A\vect{v}_1\| = \|\sigma_1\vect{u}_1\| = \sigma_1$ となり、
+比の最大値 $\sigma_1$ が実際に達成される。 $\blacksquare$
+
+単位球面の像である楕円体の\textbf{最長の主軸の長さ}が $\sigma_1$
+――幾何の言葉に直せば当たり前の主張だが、この「行列の大きさ」は
+誤差評価の基本量であり、次章のエッカート・ヤングの定理でも
+「近さ」を測る物差しとして働く。
+
+\begin{itembox}[l]{深掘り:四つの基本部分空間 ― SVD は全部見せてくれる}
+$m \times n$ 行列 $A$ には、四つの部分空間が付随する:
+$\mathrm{Im}\,A$ と $\mathrm{Ker}\,{}^t\!A$($\R^m$ の中)、
+$\mathrm{Im}\,{}^t\!A$ と $\mathrm{Ker}\,A$($\R^n$ の中)。
+${}^t\!A\vect{x} = \vect{0}$ とは「$\vect{x}$ が $A$ のすべての列と直交する」
+ことだから、
+\[
+\mathrm{Ker}\,{}^t\!A = (\mathrm{Im}\,A)^{\perp}, \qquad
+\text{同様に} \quad \mathrm{Ker}\,A = (\mathrm{Im}\,{}^t\!A)^{\perp}
+\]
+が成り立つ(章末問題 \ref{q:svd-ex12})。SVD の基底はこの四つを
+一挙に与える:$\vect{u}_1, \dots, \vect{u}_r$ が $\mathrm{Im}\,A$、
+残りの $\vect{u}_{r+1}, \dots, \vect{u}_m$ がその直交補空間
+$\mathrm{Ker}\,{}^t\!A$、$\vect{v}_1, \dots, \vect{v}_r$ が
+$\mathrm{Im}\,{}^t\!A$、残りが $\mathrm{Ker}\,A$ である。
+第II部の「行 rank $=$ 列 rank」も、この対称な絵の中では
+$\vect{v}$ 側と $\vect{u}$ 側の本数がともに $r$ であることとして
+一目で見える。連立方程式の可解性(第II部)、次元定理(第III部)、
+直交補空間(第V部)――本書の主要定理たちが、
+一枚の分解の中に同居しているのである。
+\end{itembox}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[特異値は固有値(の絶対値)ではない]\label{hanrei:svd-eigen}
+$A = \mat{1 & 1 \\ 0 & 1}$ の固有値は $1, 1$(重解)である。
+一方 ${}^t\!AA = \mat{1 & 1 \\ 1 & 2}$ の固有値は
+$\lambda^2 - 3\lambda + 1 = 0$ より $\dfrac{3 \pm \sqrt{5}}{2}$ で、
+特異値は
+\[
+\sigma_1 = \sqrt{\frac{3 + \sqrt{5}}{2}} = \frac{1 + \sqrt{5}}{2} \approx 1.618,
+\qquad
+\sigma_2 = \frac{\sqrt{5} - 1}{2} \approx 0.618
+\]
+($\bigl(\frac{1 + \sqrt{5}}{2}\bigr)^2 = \frac{3 + \sqrt{5}}{2}$ に注意。
+黄金比である)。固有値がすべて $1$ なのに、この行列はベクトルを
+最大 $1.6$ 倍以上に伸ばす($\|A\| = \sigma_1 > 1$)。
+固有値は「向きを保つ方向の伸縮率」しか見ておらず、
+\textbf{斜めに歪ませる作用の強さは特異値でしか測れない}。
+なお $\sigma_1\sigma_2 = 1 = |\det A|$ は成り立っている
+(章末問題 \ref{q:svd-ex9})。
+\end{hanrei}
+
+\begin{hanrei}[対称行列でも、SVD $=$ 直交対角化とは限らない]\label{hanrei:svd-symmetric}
+本文で「対称で固有値が非負なら SVD は直交対角化と一致する」と
+述べた。\textbf{非負}の条件は外せない。
+$A = \mat{2 & 0 \\ 0 & -1}$ はすでに対角(直交対角化済み)だが、
+対角成分に $-1 < 0$ があるので、これはそのままでは SVD ではない
+($\Sigma$ の対角成分は非負と決めてある)。特異値は
+${}^t\!AA = \mat{4 & 0 \\ 0 & 1}$ より $\sigma_1 = 2, \sigma_2 = 1$、
+すなわち\textbf{固有値の絶対値} $|2|, |-1|$ であり、SVD の一例は
+\[
+A = \underbrace{\mat{1 & 0 \\ 0 & -1}}_{U}
+\underbrace{\mat{2 & 0 \\ 0 & 1}}_{\Sigma}
+\underbrace{\mat{1 & 0 \\ 0 & 1}}_{{}^tV}
+\]
+と $U \neq V$ になる(符号の反転を $U$ が引き受けた)。
+対称行列では $\sigma_i = |\lambda_i|$ だが、負の固有値がある限り
+$U = V$ とはできないのである。
+\end{hanrei}
+
+\section{例題}
+
+特異値分解の計算を、正方・長方・対称の各型で練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(階数 $1$ の分解)]\label{rei:svd-rank1}
+$A = \mat{1 & 2 \\ 2 & 4}$ の特異値分解を求めよ。\\
+\textbf{解.}\ ${}^t\!AA = \mat{5 & 10 \\ 10 & 20}$ の固有多項式は
+$\lambda^2 - 25\lambda = 0$ より固有値 $25, 0$。よって
+$\sigma_1 = 5$(階数 $1$)。固有ベクトルは
+$\vect{v}_1 = \dfrac{1}{\sqrt{5}}\mat{1 \\ 2}$,
+$\vect{v}_2 = \dfrac{1}{\sqrt{5}}\mat{-2 \\ 1}$。
+\[
+\vect{u}_1 = \frac{A\vect{v}_1}{5}
+= \frac{1}{5\sqrt{5}}\mat{5 \\ 10} = \frac{1}{\sqrt{5}}\mat{1 \\ 2},
+\qquad \vect{u}_2 = \frac{1}{\sqrt{5}}\mat{-2 \\ 1}
+\ (\vect{u}_1 \text{ に直交するように補う}).
+\]
+よって $U = V = \dfrac{1}{\sqrt{5}}\mat{1 & -2 \\ 2 & 1}$,
+$\Sigma = \mat{5 & 0 \\ 0 & 0}$。
+検算:$\sigma_1\vect{u}_1{}^t\vect{v}_1
+= 5 \cdot \dfrac{1}{5}\mat{1 & 2 \\ 2 & 4} = A$。
+\end{rei}
+
+\begin{rei}[例題・基本(長方形の行列)]\label{rei:svd-wide}
+$A = \mat{1 & 0 & 1 \\ 0 & 1 & 0}$ の特異値分解を求めよ。\\
+\textbf{解.}\ ${}^t\!AA = \mat{1 & 0 & 1 \\ 0 & 1 & 0 \\ 1 & 0 & 1}$。
+固有値を求めると $2, 1, 0$ で(検算:トレース $3 = 2 + 1 + 0$)、
+正規直交固有ベクトルは
+\[
+\vect{v}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 0 \\ 1}, \qquad
+\vect{v}_2 = \mat{0 \\ 1 \\ 0}, \qquad
+\vect{v}_3 = \frac{1}{\sqrt{2}}\mat{1 \\ 0 \\ -1}.
+\]
+$\sigma_1 = \sqrt{2}$, $\sigma_2 = 1$($r = 2$)。
+\[
+\vect{u}_1 = \frac{A\vect{v}_1}{\sqrt{2}}
+= \frac{1}{\sqrt{2}}\cdot\frac{1}{\sqrt{2}}\mat{2 \\ 0} = \mat{1 \\ 0},
+\qquad \vect{u}_2 = \frac{A\vect{v}_2}{1} = \mat{0 \\ 1}.
+\]
+よって $U = E$($2$ 次単位行列)、
+$\Sigma = \mat{\sqrt{2} & 0 & 0 \\ 0 & 1 & 0}$、
+${}^tV$ は $\vect{v}_i$ を行に並べた行列である。
+\end{rei}
+
+\begin{rei}[例題・基本(半正定値対称なら SVD $=$ 直交対角化)]\label{rei:svd-sym}
+$A = \mat{2 & 1 \\ 1 & 2}$ の特異値分解を求めよ。\\
+\textbf{解.}\ $A$ は対称で、固有値は $3, 1$(いずれも正なので半正定値)、
+正規直交固有ベクトルは
+$\dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$, $\dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$。
+固有値が非負だから、直交対角化 $A = UD\,{}^tU$ がそのまま SVD になる:
+\[
+U = V = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}, \qquad
+\Sigma = \mat{3 & 0 \\ 0 & 1}, \qquad \sigma_1 = 3,\ \sigma_2 = 1.
+\]
+${}^t\!AA = A^2$ の固有値が $9, 1$ であることからも
+$\sigma_1 = 3, \sigma_2 = 1$ が確かめられる。
+\end{rei}
+
+\begin{rei}[例題・標準(フルサイズの $2 \times 2$)]\label{rei:svd-2x2}
+$A = \mat{4 & 4 \\ -3 & 3}$ の特異値分解を求めよ。\\
+\textbf{解.}\
+\[
+{}^t\!AA = \mat{16 + 9 & 16 - 9 \\ 16 - 9 & 16 + 9} = \mat{25 & 7 \\ 7 & 25}.
+\]
+固有値は $25 \pm 7 = 32, 18$(この形の行列は第IV部以来おなじみ)、
+固有ベクトルは $\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{v}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$。特異値は
+$\sigma_1 = \sqrt{32} = 4\sqrt{2}$, $\sigma_2 = \sqrt{18} = 3\sqrt{2}$。
+\[
+\vect{u}_1 = \frac{A\vect{v}_1}{4\sqrt{2}}
+= \frac{1}{4\sqrt{2}}\cdot\frac{1}{\sqrt{2}}\mat{8 \\ 0} = \mat{1 \\ 0},
+\qquad
+\vect{u}_2 = \frac{A\vect{v}_2}{3\sqrt{2}}
+= \frac{1}{3\sqrt{2}}\cdot\frac{1}{\sqrt{2}}\mat{0 \\ -6} = \mat{0 \\ -1}.
+\]
+よって
+\[
+A = \mat{1 & 0 \\ 0 & -1}\mat{4\sqrt{2} & 0 \\ 0 & 3\sqrt{2}}
+\cdot\frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}.
+\]
+検算:$\sigma_1\sigma_2 = 4\sqrt{2}\cdot 3\sqrt{2} = 24 = |\det A|
+= |12 - (-12)|$。単位円は、主軸の長さ $4\sqrt{2}, 3\sqrt{2}$ の
+楕円にうつる。
+\end{rei}
+
+\begin{rei}[例題・標準(縦長の行列と $U$ の補完)]\label{rei:svd-tall}
+$A = \mat{1 & 1 \\ 1 & 0 \\ 0 & 1}$ の特異値分解を求めよ。\\
+\textbf{解.}\ ${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$ の固有値は $3, 1$
+(例題 \ref{rei:svd-sym})だから $\sigma_1 = \sqrt{3}$, $\sigma_2 = 1$、
+$\vect{v}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$,
+$\vect{v}_2 = \dfrac{1}{\sqrt{2}}\mat{1 \\ -1}$。
+\[
+\vect{u}_1 = \frac{A\vect{v}_1}{\sqrt{3}}
+= \frac{1}{\sqrt{6}}\mat{2 \\ 1 \\ 1}, \qquad
+\vect{u}_2 = \frac{A\vect{v}_2}{1} = \frac{1}{\sqrt{2}}\mat{0 \\ 1 \\ -1}.
+\]
+$3$ 本目は $\vect{u}_1, \vect{u}_2$ の両方に直交する単位ベクトル:
+連立 $2x + y + z = 0$, $y - z = 0$ を解いて
+$\vect{u}_3 = \dfrac{1}{\sqrt{3}}\mat{-1 \\ 1 \\ 1}$。
+$\Sigma = \mat{\sqrt{3} & 0 \\ 0 & 1 \\ 0 & 0}$ とすれば
+$A = U\Sigma\,{}^tV$ である。
+検算:$AV$ の第 $1$ 列は $A\vect{v}_1 = \dfrac{1}{\sqrt{2}}
+{}^t(2, 1, 1) = \sqrt{3}\,\vect{u}_1$。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:転置と逆行列の特異値)]\label{rei:svd-transpose}
+$A = U\Sigma\,{}^tV$ とする。次を示せ。\\
+　(1) ${}^t\!A = V\,{}^t\Sigma\,{}^tU$ は ${}^t\!A$ の特異値分解である。
+とくに $A$ と ${}^t\!A$ の特異値は一致する。\\
+　(2) $A$ が正則な $n$ 次正方行列なら、$A^{-1} = V\Sigma^{-1}\,{}^tU$ で、
+$A^{-1}$ の特異値は $\dfrac{1}{\sigma_n} \ge \cdots \ge \dfrac{1}{\sigma_1}$
+である。\\
+\textbf{解.}\
+　(1) $A = U\Sigma\,{}^tV$ の転置をとると(積の転置は順序を逆に)
+${}^t\!A = V\,{}^t\Sigma\,{}^tU$。$V$, $U$ は直交行列、${}^t\Sigma$ は
+$\Sigma$ と同じ対角成分をもつ $n \times m$ の対角型だから、
+これは ${}^t\!A$ の特異値分解の形そのものであり、特異値は共通である。\\
+　(2) $A$ が正則なら $r = n$ で $\Sigma$ は正則な対角行列。
+直交行列の逆行列は転置だから
+\[
+A^{-1} = ({}^tV)^{-1}\Sigma^{-1}U^{-1} = V\Sigma^{-1}\,{}^tU.
+\]
+$\Sigma^{-1}$ の対角成分は $\dfrac{1}{\sigma_1} \le \cdots \le
+\dfrac{1}{\sigma_n}$ で、大きい順に並べ直せば(列の順序の入れ替え)
+$A^{-1}$ の特異値は $\dfrac{1}{\sigma_n}, \dots, \dfrac{1}{\sigma_1}$。
+つまり\textbf{$A$ が最も潰す方向が、$A^{-1}$ では最も伸びる方向}になる。
+$\|A^{-1}\| = 1/\sigma_n$ は「$A\vect{x} = \vect{b}$ の解が
+$\vect{b}$ の誤差にどれだけ敏感か」の尺度であり、QR 分解の深掘りに
+登場した\textbf{条件数}の正体は $\sigma_1/\sigma_n$ である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{任意の} $m \times n$ 行列は $A = U\Sigma\,{}^tV$
+($U, V$:直交行列、$\Sigma$:特異値 $\sigma_1 \ge \cdots \ge \sigma_r > 0$
+の対角型)と分解できる(定理 \ref{thm:svd-main})。
+存在証明は「${}^t\!AA$ をスペクトル定理で直交対角化 →
+$\sigma_i = \sqrt{\lambda_i}$, $\vect{u}_i = A\vect{v}_i/\sigma_i$」。
+\item 幾何:どんな線形写像も\textbf{回転 → 軸ごとの伸縮 → 回転}。
+単位球面は楕円体にうつり、主軸の長さが特異値。
+\item 特異値の個数 $=$ \textbf{階数}。
+$\mathrm{Im}\,A = \langle \vect{u}_1, \dots, \vect{u}_r \rangle$,
+$\mathrm{Ker}\,A = \langle \vect{v}_{r+1}, \dots, \vect{v}_n \rangle$
+(定理 \ref{thm:svd-rank})。最大の伸び率は
+$\|A\| = \sigma_1$(定理 \ref{thm:svd-norm})。
+\item 特異値 $\neq$ 固有値(反例 \ref{hanrei:svd-eigen})。
+対称行列では $\sigma_i = |\lambda_i|$ で、固有値がすべて非負のときに
+限り SVD は直交対角化と一致する(反例 \ref{hanrei:svd-symmetric})。
+\item ${}^t\!A$ の特異値は $A$ と同じ。正則行列では
+$A^{-1} = V\Sigma^{-1}{}^tU$、条件数は $\sigma_1/\sigma_n$
+(例題 \ref{rei:svd-transpose})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:svd-ex1}
+$A = \mat{3 & 0 \\ 0 & 0 \\ 0 & 2}$ の特異値分解を求めよ
+(固有ベクトルの計算は不要である。特異値の\textbf{並べ方}に注意)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:svd-ex2}
+$A = \mat{0 & 3 \\ 2 & 0}$ の特異値分解を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:svd-ex3}
+$A = \mat{2 & 4 \\ 1 & 2}$ の特異値分解を求めよ(階数に注意)。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:svd-ex4}
+$A = \mat{3 & 1 \\ 1 & 3}$ の特異値分解を求めよ
+(対称であることを活用してよい)。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:svd-ex5}
+$A = \mat{1 & 1 \\ 1 & 1 \\ 1 & 1}$ について、特異値と
+$\vect{u}_1, \vect{v}_1$ を求め、$A = \sigma_1\vect{u}_1{}^t\vect{v}_1$
+と書けることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:svd-ex6}
+$A = \mat{1 & 0 \\ 1 & 1}$ の特異値を求め、
+$\sigma_1\sigma_2 = |\det A|$ を確かめよ。
+また、この行列の固有値(重解 $1$)と特異値が一致しない理由を、
+反例 \ref{hanrei:svd-eigen} の言葉で説明せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:svd-ex7}
+$A = \mat{1 & 1 & 0 \\ 0 & 0 & 2}$ の特異値分解を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:svd-ex8}
+$A = \mat{3 & 1 \\ 1 & 3}$(問 \ref{q:svd-ex4})について、\\
+　(1) $\|A\|$ と、それを達成する単位ベクトルを一組挙げよ。\\
+　(2) $\vect{x} = \vect{e}_1$ に対する $\|A\vect{e}_1\|$ を計算し、
+$\|A\|$ 以下であることを確かめよ。\\
+　(3) 単位ベクトルの行き先のノルムの\textbf{最小値}はいくらか。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:svd-ex9}
+正則な $n$ 次正方行列 $A = U\Sigma\,{}^tV$ について
+$|\det A| = \sigma_1\sigma_2\cdots\sigma_n$ を示せ
+(ヒント:直交行列の行列式は $\pm 1$)。
+反例 \ref{hanrei:svd-eigen} の行列で検算せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:svd-ex10}
+　(1) 直交行列 $Q$ の特異値がすべて $1$ であることを示せ。\\
+　(2) 逆に、特異値がすべて $1$ の正方行列は直交行列であることを示せ。\\
+　(3) $c > 0$ に対し、$cA$ の特異値は $A$ の特異値の $c$ 倍で
+あることを示せ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:svd-ex11}
+$A = U\Sigma\,{}^tV$ のとき $A\,{}^t\!A = U(\Sigma\,{}^t\Sigma)\,{}^tU$ を
+示し、${}^t\!AA$ の固有値(の非零部分)と $A\,{}^t\!A$ の固有値
+(の非零部分)が一致すること――すなわち、特異値は
+${}^t\!AA$($n$ 次)と $A\,{}^t\!A$($m$ 次)の\textbf{どちらから
+作っても同じ}であること――を結論せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:svd-ex12}
+任意の $m \times n$ 行列 $A$ について
+$\mathrm{Ker}\,{}^t\!A = (\mathrm{Im}\,A)^{\perp}$ を示せ
+(ヒント:${}^t\!A\vect{x} = \vect{0}$ を「$\vect{x}$ と $A$ の各列との
+内積がすべて $0$」と読み替える)。さらに次元を数えて
+$\dim(\mathrm{Im}\,A)^{\perp} = m - r$ を確かめよ。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:svd-ex1}}:${}^t\!AA$ はすでに対角。
+$\sigma_1 = 3 \ge \sigma_2 = 2$ の順になるよう $\vect{v}_1 = \vect{e}_1$
+から並べ、$\vect{u}_i = A\vect{v}_i/\sigma_i$、最後に $\vect{u}_3$ を補う。
+\item \textbf{問 \ref{q:svd-ex2}}:${}^t\!AA = \mathrm{diag}(4, 9)$。
+大きい方が先頭になるよう $\vect{v}_1 = \vect{e}_2$ とする。
+\item \textbf{問 \ref{q:svd-ex3}}:例題 \ref{rei:svd-rank1} と同型
+(階数 $1$)。${}^t\!AA$ の固有値は $25, 0$。
+\item \textbf{問 \ref{q:svd-ex4}}:固有値 $4, 2$ はともに正なので、
+直交対角化がそのまま SVD になる(例題 \ref{rei:svd-sym})。
+\item \textbf{問 \ref{q:svd-ex5}}:${}^t\!AA = \mat{3 & 3 \\ 3 & 3}$、
+固有値 $6, 0$。外積(階数 $1$ 行列)の形まで書き下す。
+\item \textbf{問 \ref{q:svd-ex6}}:${}^t\!AA = \mat{2 & 1 \\ 1 & 1}$ の
+固有値は $\dfrac{3 \pm \sqrt{5}}{2}$。
+$\sqrt{\frac{3+\sqrt{5}}{2}} = \frac{1+\sqrt{5}}{2}$ に気づくと平方根が外れる。
+\item \textbf{問 \ref{q:svd-ex7}}:${}^t\!AA$ の固有値は $4, 2, 0$。
+例題 \ref{rei:svd-wide} と同じ型である。
+\item \textbf{問 \ref{q:svd-ex8}}:定理 \ref{thm:svd-norm}。
+最小値は展開式で $c_1 = 0$ とおくとよい($\sigma_2$ になる)。
+\item \textbf{問 \ref{q:svd-ex9}}:積の行列式と
+$(\det U)^2 = (\det V)^2 = 1$。検算は $\sigma_1\sigma_2 =
+\frac{(1+\sqrt{5})(\sqrt{5}-1)}{4} = 1$。
+\item \textbf{問 \ref{q:svd-ex10}}:(1) ${}^tQQ = E$ の固有値。
+(2) $\Sigma = E$ なら $A = U\,{}^tV$。直交行列の積は直交行列。
+(3) ${}^t(cA)(cA) = c^2\,{}^t\!AA$ の固有値は $c^2\lambda_i$。
+\item \textbf{問 \ref{q:svd-ex11}}:${}^t({}^tV) = V$ と
+${}^tVV = E$ に注意して $A\,{}^t\!A$ を計算する。
+$\Sigma\,{}^t\Sigma$ と ${}^t\Sigma\,\Sigma$ の対角成分はどちらも
+$\sigma_i^2$(サイズと $0$ の個数だけが違う)。
+\item \textbf{問 \ref{q:svd-ex12}}:${}^t\!A\vect{x}$ の第 $i$ 成分は
+$\langle \vect{a}_i, \vect{x} \rangle$($\vect{a}_i$ は $A$ の第 $i$ 列)。
+「すべての列と直交 $=$ 列の張る空間と直交」。次元は
+定理 \ref{thm:gs-decomp} の後の $\dim W + \dim W^{\perp} = m$ を使う。
+\end{itemize}
+}
+
 % =====================================================
 \chapter{低ランク近似と擬似逆行列}\label{chap:pinv}
 % =====================================================
+
+\begin{goal}
+\begin{itemize}
+\item SVD の\textbf{和形式} $A = \sum_i \sigma_i\vect{u}_i{}^t\vect{v}_i$ を
+理解し、上位 $k$ 項で打ち切った $A_k$ が「階数 $k$ 以下で最良の近似」
+であること(\textbf{エッカート・ヤングの定理})を、証明つきで理解する。
+\item \textbf{擬似逆行列} $A^{+} = V\Sigma^{+}{}^tU$ を定義から計算でき、
+$\vect{x}^* = A^{+}\vect{b}$ が「ノルム最小の最小二乗解」である
+ことの証明を理解する。
+\item 「解が一意・無数・なし」の三つの場合が、$A^{+}$ によって
+一つの公式に統一されるさまを、具体例で確かめられるようになる。
+\item $AA^{+}$, $A^{+}A$ が正射影行列になることなど、
+$A^{+}$ の基本性質を使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 分解を「使う」:削る、そして解く}
+
+前章で、どんな行列も $A = U\Sigma\,{}^tV$ と分解できることを証明した。
+最終章となる本章は、この分解を\textbf{使う}章である。使い道は二つ。
+一つは\textbf{削る}こと:特異値の小さい部品を捨てて、
+巨大な行列を少ないデータで近似する(データ圧縮・次元削減)。
+もう一つは\textbf{解く}こと:第I部以来くり返し向き合ってきた
+$A\vect{x} = \vect{b}$ に、解が一意でも・無数でも・存在しなくても通用する
+「ただ一つの公式の答え」を与える(擬似逆行列)。
+どちらも、特異値分解が $A$ の情報を\textbf{重要度順に}
+($\sigma_1 \ge \sigma_2 \ge \cdots$)並べてくれることの恩恵である。
 
 \section{低ランク近似 ― データ圧縮の数学}
 
@@ -219,16 +1647,89 @@ SVD は和の形にも書ける(スペクトル分解の類似):
 A = \sigma_1 \vect{u}_1{}^t\vect{v}_1 + \sigma_2 \vect{u}_2{}^t\vect{v}_2
 + \cdots + \sigma_r \vect{u}_r{}^t\vect{v}_r.
 \]
+実際、右辺を任意の $\vect{v}_j$ に施すと、${}^t\vect{v}_i\vect{v}_j$ は
+$i = j$ のとき $1$、それ以外は $0$ だから、結果は
+$\sigma_j\vect{u}_j$($j \le r$)または $\vect{0}$($j > r$)となり、
+$A\vect{v}_j$ と一致する。基底での行き先がすべて一致するから
+両辺は等しい(第III部:線形写像は基底の行き先で決まる)。
+
 各項 $\vect{u}_i{}^t\vect{v}_i$ は階数 $1$ の行列であり、
 $A$ は「階数 $1$ の部品 $r$ 個の、重み $\sigma_i$ 付きの重ね合わせ」である。
 特異値は大きい順に並んでいるから、\textbf{上位 $k$ 項で打ち切れば、
-$A$ のよい近似が得られる}はずである。実際、次が成り立つ。
+$A$ のよい近似が得られる}はずである。「良さ」を前章の作用素ノルム
+(定義 \ref{def:svd-norm})で測ると、これが\textbf{最良}であることまで
+証明できる。
 
-\begin{teiri}[エッカート・ヤングの定理]
-上位 $k$ 項の和 $A_k = \sigma_1\vect{u}_1{}^t\vect{v}_1 + \cdots +
-\sigma_k\vect{u}_k{}^t\vect{v}_k$ は、
-\textbf{階数 $k$ 以下のすべての行列の中で $A$ に最も近い}。
+\begin{teiri}[エッカート・ヤングの定理]\label{thm:pinv-eckart}
+$A$ の上位 $k$ 項の和($k < r$)
+\[
+A_k = \sigma_1\vect{u}_1{}^t\vect{v}_1 + \cdots +
+\sigma_k\vect{u}_k{}^t\vect{v}_k
+\]
+は、階数 $k$ 以下のすべての行列の中で $A$ に最も近い。すなわち、
+階数 $k$ 以下の任意の $m \times n$ 行列 $B$ に対して
+\[
+\|A - A_k\| = \sigma_{k+1} \le \|A - B\|.
+\]
 \end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{(誤差の値)}\ 差をとると
+\[
+A - A_k = \sigma_{k+1}\vect{u}_{k+1}{}^t\vect{v}_{k+1} + \cdots
++ \sigma_r\vect{u}_r{}^t\vect{v}_r
+\]
+で、これは「特異値 $\sigma_{k+1} \ge \cdots \ge \sigma_r$ をもつ行列の
+和形式」そのものである。よって定理 \ref{thm:svd-norm}(作用素ノルム
+$=$ 最大特異値)より $\|A - A_k\| = \sigma_{k+1}$。
+
+\textbf{(これより良くはできない)}\ $B$ を階数 $k$ 以下の任意の行列と
+する。次元定理(定理 \ref{thm:dimension})より
+$\dim \mathrm{Ker}\,B = n - \mathrm{rank}\,B \ge n - k$。
+一方 $W' = \langle \vect{v}_1, \dots, \vect{v}_{k+1} \rangle$ は
+$k + 1$ 次元である。$\mathrm{Ker}\,B$ の基底($n - k$ 本以上)と
+$W'$ の基底($k + 1$ 本)を合わせると $n + 1$ 本以上の
+$\R^n$ のベクトルになるから線形従属(第II部)であり、自明でない関係式
+\[
+\underbrace{a_1\vect{p}_1 + \cdots}_{\mathrm{Ker}\,B \text{ の基底の結合}}
++ \underbrace{b_1\vect{q}_1 + \cdots}_{W' \text{ の基底の結合}} = \vect{0}
+\]
+が存在する。$\vect{x} = a_1\vect{p}_1 + \cdots = -(b_1\vect{q}_1 + \cdots)$
+とおくと、もし $\vect{x} = \vect{0}$ なら各基底の線形独立性から
+係数がすべて $0$ となり矛盾するので、$\vect{x} \neq \vect{0}$。
+この $\vect{x}$ は $\mathrm{Ker}\,B$ と $W'$ の\textbf{両方}に属する。
+正規化して $\|\vect{x}\| = 1$ としてよい。
+$\vect{x} \in W'$ を $\vect{x} = c_1\vect{v}_1 + \cdots +
+c_{k+1}\vect{v}_{k+1}$($c_1^2 + \cdots + c_{k+1}^2 = 1$)と展開すると、
+$B\vect{x} = \vect{0}$ だから
+\[
+\|(A - B)\vect{x}\|^2 = \|A\vect{x}\|^2
+= \sigma_1^2 c_1^2 + \cdots + \sigma_{k+1}^2 c_{k+1}^2
+\ \ge\ \sigma_{k+1}^2 (c_1^2 + \cdots + c_{k+1}^2) = \sigma_{k+1}^2
+\]
+(2 番目の等号は定理 \ref{thm:svd-norm} の証明と同じ展開)。
+作用素ノルムは「単位ベクトルの行き先のノルムの最大値」だから
+$\|A - B\| \ge \|(A - B)\vect{x}\| \ge \sigma_{k+1}$。 $\blacksquare$
+
+\begin{rei}[階数 $1$ 近似]\label{rei:pinv-rank1approx}
+$A = \mat{3 & 1 \\ 1 & 3}$(問 \ref{q:svd-ex4}:半正定値対称なので
+特異値は固有値 $4, 2$ に一致し、
+$\vect{u}_1 = \vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1, 1)$)の
+最良の階数 $1$ 近似は
+\[
+A_1 = 4 \cdot \frac{1}{\sqrt{2}}\mat{1 \\ 1} \cdot
+\frac{1}{\sqrt{2}}\mat{1 & 1} = \mat{2 & 2 \\ 2 & 2},
+\qquad
+A - A_1 = \mat{1 & -1 \\ -1 & 1}
+\]
+で、誤差は $\|A - A_1\| = \sigma_2 = 2$
+($A - A_1 = 2 \cdot \frac{1}{2}\mat{1 & -1 \\ -1 & 1}$ は
+特異値 $2$ の階数 $1$ 行列)。
+たとえば「左上の $2 \times 2$ だけ残す」ような素朴な階数 $1$ 近似
+$B = \mat{3 & 1 \\ 0 & 0}$ では
+$A - B = \mat{0 & 0 \\ 1 & 3}$ の特異値が $\sqrt{10}$ となり、
+誤差 $\sqrt{10} \approx 3.16 > 2$。定理のとおり $A_1$ には勝てない。
+\end{rei}
 
 \begin{itembox}[l]{深掘り:画像圧縮・主成分分析・推薦システム}
 $1000 \times 1000$ 画素のモノクロ画像は $100$ 万個の数からなる行列だが、
@@ -257,17 +1758,19 @@ $\vect{v}_1$ は「データが最も大きくばらつく方向」(第 $1$ 主�
 $A\vect{x} = \vect{b}$ の解は「一意・無数・なし」の三択だった。
 擬似逆行列は、\textbf{三つの場合すべてに、ただ一つの標準的な答え}を与える。
 
-\begin{teigi}[ムーア・ペンローズの擬似逆行列]
+\begin{teigi}[ムーア・ペンローズの擬似逆行列]\label{def:pinv}
 $A = U\Sigma{}^tV$ に対し、$\Sigma$ の零でない対角成分を逆数にして
-転置した行列を $\Sigma^{+}$ とし、
+転置した行列($n \times m$)を $\Sigma^{+}$ とし、
 \[
 A^{+} = V\,\Sigma^{+}\,{}^t U
 \]
 を $A$ の\textbf{擬似逆行列}という($A$ が正則なら $A^{+} = A^{-1}$ に一致する)。
 \end{teigi}
 
-\begin{teiri}
-$\vect{x}^{*} = A^{+}\vect{b}$ は、
+\begin{teiri}[擬似逆行列の解くもの]\label{thm:pinv-main}
+$\vect{x}^{*} = A^{+}\vect{b}$ は、$\|\vect{b} - A\vect{x}\|$ を
+最小にする $\vect{x}$(最小二乗解)の中で、
+ノルム $\|\vect{x}\|$ が\textbf{最小のただ一つのもの}である。とくに:
 \begin{enumerate}
 \item 解が一意に存在するなら、その解そのもの。
 \item 解が存在しないなら、残差 $\|\vect{b} - A\vect{x}\|$ を最小にする
@@ -277,16 +1780,398 @@ $\vect{x}^{*} = A^{+}\vect{b}$ は、
 \end{enumerate}
 \end{teiri}
 
+\noindent\textbf{(証明)}\quad
+すべてを SVD の座標で見ると一望できる。
+$\vect{u}_1, \dots, \vect{u}_m$ は $\R^m$ の、
+$\vect{v}_1, \dots, \vect{v}_n$ は $\R^n$ の正規直交基底だから、
+\[
+\vect{b} = \beta_1\vect{u}_1 + \cdots + \beta_m\vect{u}_m
+\quad (\beta_i = \langle \vect{b}, \vect{u}_i \rangle), \qquad
+\vect{x} = \xi_1\vect{v}_1 + \cdots + \xi_n\vect{v}_n
+\]
+と展開できる。$A\vect{v}_j = \sigma_j\vect{u}_j$($j \le r$)、
+$A\vect{v}_j = \vect{0}$($j > r$)だから
+$A\vect{x} = \sum_{i \le r} \sigma_i\xi_i\vect{u}_i$ で、
+ピタゴラスの定理より
+\[
+\|\vect{b} - A\vect{x}\|^2
+= \sum_{i=1}^{r}(\beta_i - \sigma_i\xi_i)^2
++ \sum_{i=r+1}^{m}\beta_i^2.
+\]
+第 $2$ 群は $\vect{x}$ に無関係な定数。第 $1$ 群は
+$\xi_i = \beta_i/\sigma_i$($i \le r$)と選べば $0$ にでき、
+それ以外の選び方では正になる。よって
+\[
+\vect{x} \text{ が最小二乗解}
+\iff \xi_i = \frac{\beta_i}{\sigma_i} \ (i = 1, \dots, r)
+\]
+であり、$\xi_{r+1}, \dots, \xi_n$ は\textbf{自由}である
+(自由度が残る $\iff r < n \iff$ 解が無数)。
+最小二乗解のノルムは
+\[
+\|\vect{x}\|^2 = \sum_{i=1}^{r}\left(\frac{\beta_i}{\sigma_i}\right)^2
++ \sum_{i=r+1}^{n}\xi_i^2
+\]
+だから、$\xi_{r+1} = \cdots = \xi_n = 0$ と選んだときに限り最小になる。
+その唯一の元は
+\[
+\vect{x}^* = \sum_{i=1}^{r}\frac{\beta_i}{\sigma_i}\vect{v}_i
+\]
+である。一方、$A^{+}\vect{b} = V\Sigma^{+}({}^tU\vect{b})$ を計算すると、
+${}^tU\vect{b}$ の成分は $\beta_i$、$\Sigma^{+}$ はそれを
+$\beta_i/\sigma_i$($i \le r$)に変えて残りを $0$ にし、
+$V$ はそれらを係数として $\vect{v}_i$ を束ねるから、
+$A^{+}\vect{b} = \sum_{i \le r}(\beta_i/\sigma_i)\vect{v}_i
+= \vect{x}^*$。
+主張 1〜3 はこの特別な場合である:解が存在するなら残差の最小値は
+$0$ で最小二乗解 $=$ 通常の解(1, 3)、存在しないなら残差最小の解の中で
+ノルム最小(2, 3)。とくに解が一意なら、それが唯一の最小二乗解だから
+$\vect{x}^*$ と一致する(1)。 $\blacksquare$
+
 「解けないなら最も近くへ、答えが多すぎるなら最も慎ましいものを」
 ――第I部で三つに割れた世界が、一つの式 $\vect{x}^* = A^{+}\vect{b}$ に
 統一された。実際の数値計算ライブラリで連立方程式や回帰を解くとき、
 内部で動いているのはまさにこの SVD 経由の擬似逆行列である。
 
 \begin{mondai}\label{q:pinv}
-$A = \mat{1 & 1 \\ 0 & 0}$(本章の例で SVD 済み)について、\\
+$A = \mat{1 & 1 \\ 0 & 0}$(例 \ref{rei:svd-first} で SVD 済み)について、\\
 　(1) $A^{+}$ を求めよ。\\
 　(2) 解の存在しない方程式 $A\vect{x} = \mat{1 \\ 1}$ に対し
 $\vect{x}^{*} = A^{+}\mat{1 \\ 1}$ を計算し、これが
 最小二乗解の中でノルム最小のものになっていることを
 (最小二乗解の全体を求めて)確かめよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[$(AB)^{+} = B^{+}A^{+}$ は一般には成り立たない]\label{hanrei:pinv-product}
+逆行列の公式 $(AB)^{-1} = B^{-1}A^{-1}$ の類似を期待したくなるが、
+擬似逆行列では崩れる。
+$A = \mat{1 & 0}$($1 \times 2$)、$B = \mat{1 \\ 1}$($2 \times 1$)と
+すると $AB = (1)$($1 \times 1$)で $(AB)^{+} = (1)$。一方、
+$A$ の特異値分解は $\sigma_1 = 1$, $\vect{u}_1 = 1$,
+$\vect{v}_1 = {}^t(1, 0)$ だから $A^{+} = \mat{1 \\ 0}$、
+$B$ は $\sigma_1 = \sqrt{2}$, $\vect{v}_1 = 1$,
+$\vect{u}_1 = \frac{1}{\sqrt{2}}{}^t(1, 1)$ だから
+$B^{+} = \frac{1}{2}\mat{1 & 1}$。よって
+\[
+B^{+}A^{+} = \frac{1}{2}\mat{1 & 1}\mat{1 \\ 0} = \left(\frac{1}{2}\right)
+\neq (1) = (AB)^{+}.
+\]
+擬似逆行列は「最小二乗 $+$ ノルム最小」という\textbf{最適化の答え}で
+あって、代数的な逆数ではない。逆行列の公式を無反省に流用しては
+いけないのである($A$ が正則な場合に限れば
+$(AB)^{-1} = B^{-1}A^{-1}$ は健在である)。
+\end{hanrei}
+
+\begin{hanrei}[擬似逆行列は入力の小さな変化に対して連続でない]\label{hanrei:pinv-discont}
+$\varepsilon > 0$ に対し
+\[
+A_{\varepsilon} = \mat{1 & 0 \\ 0 & \varepsilon}
+\quad\Longrightarrow\quad
+A_{\varepsilon}^{+} = A_{\varepsilon}^{-1}
+= \mat{1 & 0 \\ 0 & 1/\varepsilon}
+\]
+は、$\varepsilon \to 0$ で右下の成分が\textbf{発散}する。ところが
+$\varepsilon = 0$ の行列そのものの擬似逆行列は
+\[
+A_0 = \mat{1 & 0 \\ 0 & 0}
+\quad\Longrightarrow\quad
+A_0^{+} = \mat{1 & 0 \\ 0 & 0}
+\]
+と、いたって穏やかである。原因は\textbf{階数の急落}
+($\mathrm{rank}\,A_{\varepsilon} = 2$ が $\varepsilon = 0$ で突然 $1$ に
+落ちる)にある。実務データの行列は誤差のせいで「厳密には階数が
+落ちていないが、特異値が非常に小さい」状態になりがちで、
+$1/\sigma$ が誤差を巨大に増幅してしまう。そこで実際の数値計算では、
+\textbf{小さな特異値を $0$ とみなして切り捨ててから} $A^{+}$ を作る
+(前節の低ランク近似がここでも働く)。
+\end{hanrei}
+
+\section{例題}
+
+擬似逆行列の計算と、低ランク近似・最小二乗法との連携を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本(対角型の擬似逆行列)]\label{rei:pinv-diag}
+$A = \mat{2 & 0 \\ 0 & 3 \\ 0 & 0}$ の $A^{+}$ を求め、
+$\vect{b} = {}^t(2, 3, 5)$ に対する $\vect{x}^* = A^{+}\vect{b}$ を
+計算せよ。\\
+\textbf{解.}\ $A$ はすでに「対角型」なので $U = E_3$, $V = E_2$,
+$\Sigma = A$ とみなせる($\sigma_1 = 3 \ge \sigma_2 = 2$ の順序に
+こだわるなら列を並べ替えるが、結果は同じ)。零でない対角成分を
+逆数にして転置し
+\[
+A^{+} = \mat{1/2 & 0 & 0 \\ 0 & 1/3 & 0}, \qquad
+\vect{x}^* = A^{+}\mat{2 \\ 3 \\ 5} = \mat{1 \\ 1}.
+\]
+残差は $\vect{b} - A\vect{x}^* = {}^t(0, 0, 5)$ で、
+$\mathrm{Im}\,A$(第 $3$ 成分が $0$ の平面)と直交している。
+届かない第 $3$ 成分だけをあきらめた、最小二乗の答えである。
+\end{rei}
+
+\begin{rei}[例題・基本(階数 $1$ の擬似逆行列)]\label{rei:pinv-rank1}
+$A = \mat{1 & 2 \\ 2 & 4}$(例題 \ref{rei:svd-rank1}:$\sigma_1 = 5$,
+$\vect{u}_1 = \vect{v}_1 = \frac{1}{\sqrt{5}}{}^t(1, 2)$)の $A^{+}$ を
+求め、$AA^{+}A = A$ を確かめよ。\\
+\textbf{解.}\ 和形式で書けば $A = \sigma_1\vect{u}_1{}^t\vect{v}_1$ に
+対して $A^{+} = \dfrac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1$ だから
+\[
+A^{+} = \frac{1}{5}\cdot\frac{1}{5}\mat{1 \\ 2}\mat{1 & 2}
+= \frac{1}{25}\mat{1 & 2 \\ 2 & 4} = \frac{1}{25}A.
+\]
+検算:$A^2 = \mat{5 & 10 \\ 10 & 20} = 5A$ だから
+\[
+AA^{+}A = \frac{1}{25}A^3 = \frac{1}{25}\cdot 5 \cdot A^2 = \frac{1}{25}
+\cdot 25A = A.
+\]
+「逆行列もどき」の等式 $AA^{+}A = A$ は任意の行列で成り立つ
+(章末問題 \ref{q:pinv-ex12})。
+\end{rei}
+
+\begin{rei}[例題・基本(ノルム最小の解)]\label{rei:pinv-minnorm}
+方程式 $x + 2y = 5$(解は無数)の解のうちノルム最小のものを、
+擬似逆行列で求めよ。\\
+\textbf{解.}\ $A = \mat{1 & 2}$($1 \times 2$)について
+${}^t\!AA = \mat{1 & 2 \\ 2 & 4}$ の固有値は $5, 0$ だから
+$\sigma_1 = \sqrt{5}$, $\vect{v}_1 = \frac{1}{\sqrt{5}}{}^t(1, 2)$、
+$\vect{u}_1 = A\vect{v}_1/\sqrt{5} = 1$。よって
+\[
+A^{+} = \frac{1}{\sqrt{5}}\vect{v}_1 \cdot 1 = \frac{1}{5}\mat{1 \\ 2},
+\qquad
+\vect{x}^* = A^{+}(5) = \mat{1 \\ 2}.
+\]
+検算:$1 + 2 \cdot 2 = 5$ で確かに解であり、直線 $x + 2y = 5$ 上で
+原点に最も近い点(法線方向 ${}^t(1,2)$ 上の点)になっている。
+\end{rei}
+
+\begin{rei}[例題・標準(列独立な場合:二つの経路で同じ答え)]\label{rei:pinv-fullcol}
+$A = \mat{1 & 1 \\ 1 & 0 \\ 0 & 1}$ について $A^{+}$ を
+(i) SVD(例題 \ref{rei:svd-tall})から、
+(ii) 公式 $({}^t\!AA)^{-1}{}^t\!A$(章末問題 \ref{q:pinv-ex11})から
+求め、一致することを確かめよ。\\
+\textbf{解.}\ (i) $\sigma_1 = \sqrt{3}$, $\sigma_2 = 1$,
+$\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,1)$,
+$\vect{v}_2 = \frac{1}{\sqrt{2}}{}^t(1,-1)$,
+$\vect{u}_1 = \frac{1}{\sqrt{6}}{}^t(2,1,1)$,
+$\vect{u}_2 = \frac{1}{\sqrt{2}}{}^t(0,1,-1)$ より
+\[
+A^{+} = \frac{1}{\sqrt{3}}\vect{v}_1{}^t\vect{u}_1
++ \frac{1}{1}\vect{v}_2{}^t\vect{u}_2
+= \frac{1}{6}\mat{2 & 1 & 1 \\ 2 & 1 & 1}
++ \frac{1}{2}\mat{0 & 1 & -1 \\ 0 & -1 & 1}
+= \frac{1}{3}\mat{1 & 2 & -1 \\ 1 & -1 & 2}.
+\]
+(ii) ${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$,
+$({}^t\!AA)^{-1} = \dfrac{1}{3}\mat{2 & -1 \\ -1 & 2}$ より
+\[
+({}^t\!AA)^{-1}{}^t\!A = \frac{1}{3}\mat{2 & -1 \\ -1 & 2}
+\mat{1 & 1 & 0 \\ 1 & 0 & 1} = \frac{1}{3}\mat{1 & 2 & -1 \\ 1 & -1 & 2}
+\]
+で一致する。$\vect{b} = {}^t(1,1,1)$ なら
+$\vect{x}^* = \frac{1}{3}{}^t(1 + 2 - 1,\ 1 - 1 + 2)
+= {}^t(2/3,\ 2/3)$ ――例題 \ref{rei:qr-lsq} で QR 分解から求めた
+最小二乗解と同じ答えである。正規方程式・QR・SVD のどの道を通っても、
+着く場所は一つしかない。
+\end{rei}
+
+\begin{rei}[例題・標準(解が無数の最小二乗:第 \ref{chap:lsq} 章の宿題)]\label{rei:pinv-dependent2}
+$A = \mat{1 & 1 \\ 1 & 1}$, $\vect{b} = \mat{1 \\ 0}$
+(反例 \ref{hanrei:lsq-dependent}:最小二乗解は直線
+$x + y = \frac{1}{2}$ 全体だった)について
+$\vect{x}^* = A^{+}\vect{b}$ を求め、定理 \ref{thm:pinv-main} の
+主張を確かめよ。\\
+\textbf{解.}\ ${}^t\!AA = \mat{2 & 2 \\ 2 & 2}$ の固有値は $4, 0$ だから
+$\sigma_1 = 2$, $\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,1)$、
+$\vect{u}_1 = A\vect{v}_1/2 = \frac{1}{\sqrt{2}}{}^t(1,1)$。よって
+\[
+A^{+} = \frac{1}{2}\vect{v}_1{}^t\vect{u}_1
+= \frac{1}{4}\mat{1 & 1 \\ 1 & 1}, \qquad
+\vect{x}^* = A^{+}\mat{1 \\ 0} = \mat{1/4 \\ 1/4}.
+\]
+$\vect{x}^*$ は $x + y = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$ を
+満たすから確かに最小二乗解の一つで、しかも直線
+$x + y = \frac{1}{2}$ 上で原点に最も近い点である。
+第 \ref{chap:lsq} 章で「どれを選ぶかは第 \ref{chap:pinv} 章で決着する」と
+予告した宿題が、これで果たされた。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$AA^{+}$ と $A^{+}A$ は正射影行列)]\label{rei:pinv-proj}
+$A = U\Sigma\,{}^tV$(階数 $r$)について、次を示せ。
+\[
+AA^{+} = \vect{u}_1{}^t\vect{u}_1 + \cdots + \vect{u}_r{}^t\vect{u}_r,
+\qquad
+A^{+}A = \vect{v}_1{}^t\vect{v}_1 + \cdots + \vect{v}_r{}^t\vect{v}_r.
+\]
+すなわち $AA^{+}$ は $\mathrm{Im}\,A$ への、$A^{+}A$ は
+$\mathrm{Im}\,{}^t\!A$ への正射影行列である。\\
+\textbf{解.}\ ${}^tVV = E$ より
+\[
+AA^{+} = U\Sigma\,{}^tV \cdot V\Sigma^{+}{}^tU = U(\Sigma\Sigma^{+}){}^tU.
+\]
+$\Sigma\Sigma^{+}$ は $m$ 次の対角行列で、対角成分は
+$\sigma_i \cdot \frac{1}{\sigma_i} = 1$($i \le r$)と $0$($i > r$)。
+よって $U(\Sigma\Sigma^{+}){}^tU = \sum_{i \le r}\vect{u}_i{}^t\vect{u}_i$
+であり、これは正規直交系 $\vect{u}_1, \dots, \vect{u}_r$ の張る空間
+$= \mathrm{Im}\,A$(定理 \ref{thm:svd-rank})への正射影行列である
+(定理 \ref{thm:gs-decomp} の公式の行列版。例題 \ref{rei:qr-proj} と
+同じ形)。$A^{+}A = V(\Sigma^{+}\Sigma){}^tV$ も同様で、
+$\mathrm{Im}\,{}^t\!A = \langle \vect{v}_1, \dots, \vect{v}_r \rangle$
+(第 \ref{chap:svd} 章の深掘り)への正射影行列になる。
+「$AA^{+}$ は単位行列に届かないが、届く範囲($\mathrm{Im}\,A$)では
+単位行列として働く」――擬似逆行列の「擬似」の中身である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item SVD の\textbf{和形式}:$A = \sum_{i=1}^{r}\sigma_i\vect{u}_i
+{}^t\vect{v}_i$(階数 $1$ の部品の重み付き重ね合わせ)。
+上位 $k$ 項の $A_k$ は\textbf{階数 $k$ 以下で最良の近似}で、誤差は
+$\|A - A_k\| = \sigma_{k+1}$(エッカート・ヤングの定理
+\ref{thm:pinv-eckart})。これが画像圧縮・主成分分析・推薦システムの
+数学的基盤である。
+\item \textbf{擬似逆行列} $A^{+} = V\Sigma^{+}{}^tU$。
+$\vect{x}^* = A^{+}\vect{b}$ は「最小二乗解の中でノルム最小の
+ただ一つのもの」(定理 \ref{thm:pinv-main}):解が一意ならその解、
+なければ最小二乗解、多すぎればノルム最小のもの。
+\item 列が線形独立なら $A^{+} = ({}^t\!AA)^{-1}{}^t\!A$
+(正規方程式の公式と一致)。$AA^{+}$ は $\mathrm{Im}\,A$ への、
+$A^{+}A$ は $\mathrm{Im}\,{}^t\!A$ への\textbf{正射影行列}
+(例題 \ref{rei:pinv-proj})。また $AA^{+}A = A$ が常に成り立つ。
+\item ただし $(AB)^{+} = B^{+}A^{+}$ は一般に不成立
+(反例 \ref{hanrei:pinv-product})。また $A^{+}$ は階数が落ちる点で
+\textbf{不連続}で、小さな特異値は誤差を増幅する
+(反例 \ref{hanrei:pinv-discont}。実務では小さな特異値を切り捨てる)。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:pinv-ex1}
+$A = \mat{3 & 0 \\ 0 & 0 \\ 0 & 2}$(問 \ref{q:svd-ex1})の $A^{+}$ を
+求め、$AA^{+}A = A$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pinv-ex2}
+$A = \mat{2 & 4 \\ 1 & 2}$(問 \ref{q:svd-ex3})の $A^{+}$ を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pinv-ex3}
+方程式 $x + y = 4$ の解のうちノルム最小のものを擬似逆行列で求め、
+別の解 ${}^t(4, 0)$ とノルムを比較せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:pinv-ex4}
+$A = \mat{2 & 1 \\ 1 & 2}$(特異値 $3, 1$。例題 \ref{rei:svd-sym})の
+最良の階数 $1$ 近似 $A_1$ を求め、誤差 $\|A - A_1\|$ を答えよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex5}
+$A = \mat{1 & 0 & 1 \\ 0 & 1 & 0}$(例題 \ref{rei:svd-wide})について、\\
+　(1) $A^{+}$ を求めよ。\\
+　(2) $AA^{+} = E$($2$ 次単位行列)を確かめよ(行が線形独立なら
+$A^{+}$ は「右逆行列」になる)。\\
+　(3) $A\vect{x} = \mat{2 \\ 3}$ のノルム最小の解を求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex6}
+$A = \mat{1 & 1 & 0 \\ 0 & 0 & 2}$(問 \ref{q:svd-ex7})について
+$A^{+}$ を求め、$A\vect{x} = \mat{1 \\ 2}$ のノルム最小の解が
+${}^t\!\left(\frac{1}{2},\ \frac{1}{2},\ 1\right)$ であることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex7}
+$A = \mat{4 & 4 \\ -3 & 3}$(例題 \ref{rei:svd-2x2})の最良の階数 $1$
+近似 $A_1$ を求め、誤差 $\|A - A_1\|$ が $\sigma_2 = 3\sqrt{2}$ に
+なることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:pinv-ex8}
+ある $1000 \times 1000$ の画像(行列)の特異値が、
+$\sigma_1 = 20$, $\sigma_2 = 5$, $\sigma_3 = 0.1$,
+$\sigma_4 = 0.05, \dots$ と急減衰しているとする。\\
+　(1) $A_1$, $A_2$(上位 $1$ 項・$2$ 項の近似)の誤差
+$\|A - A_k\|$ をそれぞれ答えよ。\\
+　(2) $k = 50$ で打ち切るとき、保存すべき数値の個数
+($\sigma_i$ と $\vect{u}_i, \vect{v}_i$ の成分の総数)を概算し、
+元の $10^6$ 個と比べよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:pinv-ex9}
+$A = \mat{1 & 2 \\ 2 & 4 \\ 0 & 0}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$
+(問 \ref{q:lsq-ex9})について $A^{+}$ を求め、
+$\vect{x}^* = A^{+}\vect{b}$ が問 \ref{q:lsq-ex9}(2) で求めた
+「ノルム最小の最小二乗解」${}^t\!\left(\frac{3}{25},\ \frac{6}{25}\right)$
+と一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:pinv-ex10}
+$A$ の零でない特異値のうち最小のものを $\sigma_r$ とする。\\
+　(1) $\|A^{+}\| = \dfrac{1}{\sigma_r}$ を示せ
+(ヒント:$A^{+} = V\Sigma^{+}{}^tU$ は $A^{+}$ の特異値分解の形を
+している(並べ替えを除いて)。定理 \ref{thm:svd-norm})。\\
+　(2) $A_{\varepsilon} = \mat{1 & 0 \\ 0 & \varepsilon}$ で
+$\|A_{\varepsilon}^{+}\|$ を求め、$\varepsilon \to 0$ での挙動を
+反例 \ref{hanrei:pinv-discont} の言葉で説明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:pinv-ex11}
+$A$ の列が線形独立のとき、$A^{+} = ({}^t\!AA)^{-1}{}^t\!A$ を示せ
+(ヒント:任意の $\vect{b}$ に対し、$A^{+}\vect{b}$ も
+$({}^t\!AA)^{-1}{}^t\!A\vect{b}$ も「ただ一つの最小二乗解」である
+(定理 \ref{thm:lsq-normal}、定理 \ref{thm:pinv-main})。
+すべての $\vect{b}$ で一致する二つの行列は等しい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:pinv-ex12}
+任意の $A = U\Sigma\,{}^tV$ について、次の\textbf{ペンローズの条件}が
+成り立つことを示せ。
+\[
+(1)\ AA^{+}A = A, \qquad (2)\ A^{+}AA^{+} = A^{+}, \qquad
+(3)\ {}^t(AA^{+}) = AA^{+}, \qquad (4)\ {}^t(A^{+}A) = A^{+}A
+\]
+(ヒント:例題 \ref{rei:pinv-proj} の
+$AA^{+} = U(\Sigma\Sigma^{+}){}^tU$ の形を使う。
+$\Sigma\Sigma^{+}\Sigma = \Sigma$, $\Sigma^{+}\Sigma\Sigma^{+} = \Sigma^{+}$
+は対角成分の計算で確かめられる)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:pinv-ex1}}:対角型なので、零でない成分を
+逆数にして転置(例題 \ref{rei:pinv-diag})。
+\item \textbf{問 \ref{q:pinv-ex2}}:階数 $1$ なので
+$A^{+} = \dfrac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1$
+(例題 \ref{rei:pinv-rank1})。
+\item \textbf{問 \ref{q:pinv-ex3}}:$A = (1\ \ 1)$。
+例題 \ref{rei:pinv-minnorm} と同じ手順。
+\item \textbf{問 \ref{q:pinv-ex4}}:$A_1 = \sigma_1\vect{u}_1{}^t\vect{v}_1$。
+誤差は $\sigma_2$(定理 \ref{thm:pinv-eckart})。
+\item \textbf{問 \ref{q:pinv-ex5}}:
+$A^{+} = \frac{1}{\sigma_1}\vect{v}_1{}^t\vect{u}_1 +
+\frac{1}{\sigma_2}\vect{v}_2{}^t\vect{u}_2$。
+(3) は $A^{+}\vect{b}$ を計算するだけ。
+\item \textbf{問 \ref{q:pinv-ex6}}:問 \ref{q:svd-ex7} の SVD を流用する。
+解の集合 $\{x + y = 1,\ z = 1\}$ の中で最短かも直接確かめられる。
+\item \textbf{問 \ref{q:pinv-ex7}}:$\vect{u}_1 = \vect{e}_1$,
+$\vect{v}_1 = \frac{1}{\sqrt{2}}{}^t(1,1)$。$A - A_1$ が
+$\sigma_2\vect{u}_2{}^t\vect{v}_2$ になることを見る。
+\item \textbf{問 \ref{q:pinv-ex8}}:誤差は次の特異値。
+(2) は $50 \times (1000 + 1000 + 1)$ 個。
+\item \textbf{問 \ref{q:pinv-ex9}}:階数 $1$。$\vect{v}_1, \vect{u}_1$ は
+問 \ref{q:lsq-ex9} の計算から読み取れる。
+\item \textbf{問 \ref{q:pinv-ex10}}:$A^{+}$ の特異値は
+$\frac{1}{\sigma_1}, \dots, \frac{1}{\sigma_r}$ で、最大は
+$\frac{1}{\sigma_r}$。
+\item \textbf{問 \ref{q:pinv-ex11}}:「一意なものが二つの式で書けたら、
+二つの式は等しい」という論法。行列の等式にするには、
+すべての $\vect{b}$(たとえば基本ベクトル)で確かめればよい。
+\item \textbf{問 \ref{q:pinv-ex12}}:すべて
+$U(\cdots){}^tU$ か $V(\cdots){}^tV$ の形に直せば、
+対角行列 $\Sigma, \Sigma^{+}$ の計算に帰着する。
+\end{itemize}
+}
