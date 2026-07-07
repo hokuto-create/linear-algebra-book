@@ -8622,6 +8622,174 @@ $a_{ii}b_{jj}$ で尽くされる。よって
 符号の対応($\vect{e}_1 \wedge \vect{e}_3$ の成分はクロス積の第 $2$ 成分の
 $-1$ 倍に対応する)を込めて一致している。
 
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex1}}\quad
+\[
+\vect{u} \wedge \vect{v} = (3 \cdot 4 - 1 \cdot 2)\,
+\vect{e}_1 \wedge \vect{e}_2 = 10\,\vect{e}_1 \wedge \vect{e}_2.
+\]
+係数 $10$ は $\det\mat{3 & 2 \\ 1 & 4} = 12 - 2 = 10$ に一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex2}}\quad
+各係数は $u_i v_j - u_j v_i$ で、
+$\vect{e}_1 \wedge \vect{e}_2$:$1 \cdot 3 - 0 \cdot 0 = 3$、
+$\vect{e}_1 \wedge \vect{e}_3$:$1 \cdot 1 - 2 \cdot 0 = 1$、
+$\vect{e}_2 \wedge \vect{e}_3$:$0 \cdot 1 - 2 \cdot 3 = -6$。よって
+\[
+\vect{u} \wedge \vect{v} = 3\,\vect{e}_1 \wedge \vect{e}_2
++ \vect{e}_1 \wedge \vect{e}_3 - 6\,\vect{e}_2 \wedge \vect{e}_3.
+\]
+クロス積は $\vect{u} \times \vect{v} = \mat{0 - 6 \\ 0 - 1 \\ 3 - 0}
+= \mat{-6 \\ -1 \\ 3}$。対応は
+$\vect{e}_2 \wedge \vect{e}_3 \leftrightarrow x$ 成分($-6$)、
+$\vect{e}_1 \wedge \vect{e}_3 \leftrightarrow -y$ 成分($-(-1) = 1$)、
+$\vect{e}_1 \wedge \vect{e}_2 \leftrightarrow z$ 成分($3$)で、
+すべて一致する。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex3}}\quad
+(1) $\dim \Lambda^2 \R^4 = \dbinom{4}{2} = 6$。基底は
+\[
+\vect{e}_1 \wedge \vect{e}_2,\ \vect{e}_1 \wedge \vect{e}_3,\
+\vect{e}_1 \wedge \vect{e}_4,\ \vect{e}_2 \wedge \vect{e}_3,\
+\vect{e}_2 \wedge \vect{e}_4,\ \vect{e}_3 \wedge \vect{e}_4.
+\]
+$\dim \Lambda^3 \R^4 = \dbinom{4}{3} = 4$。
+(2) $5$ 本のウェッジを基底で展開すると、各項の添字は
+$1, \dots, 4$ から $5$ 個選ぶので必ず重複し、交代性ですべて消える。
+(あるいは:$4$ 次元では $5$ 本のベクトルは必ず線形従属
+(定理 \ref{thm:toomany})だから、定理 \ref{thm:wedge-indep} より
+ウェッジは零。)よって $\Lambda^5 \R^4 = \{\vect{0}\}$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex4}}\quad
+双線形性で展開すると
+\[
+(\vect{u} + \vect{v}) \wedge (\vect{u} - \vect{v})
+= \vect{u} \wedge \vect{u} - \vect{u} \wedge \vect{v}
++ \vect{v} \wedge \vect{u} - \vect{v} \wedge \vect{v}
+= -\vect{u} \wedge \vect{v} - \vect{u} \wedge \vect{v}
+= -2\,\vect{u} \wedge \vect{v}
+\]
+($\vect{u} \wedge \vect{u} = \vect{v} \wedge \vect{v} = \vect{0}$、
+$\vect{v} \wedge \vect{u} = -\vect{u} \wedge \vect{v}$)。
+数値検算:$(\vect{e}_1 + \vect{e}_2) \wedge (\vect{e}_1 - \vect{e}_2)
+= (1 \cdot (-1) - 1 \cdot 1)\,\vect{e}_1 \wedge \vect{e}_2
+= -2\,\vect{e}_1 \wedge \vect{e}_2$。幾何的には、平行四辺形の
+\textbf{二本の対角線}が張る平行四辺形の面積は、元の面積のちょうど
+$2$ 倍(向きは反転)ということである。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex5}}\quad
+定理 \ref{thm:wedge-det} より係数は
+\[
+\det\mat{1 & 2 & 0 \\ 2 & 1 & 3 \\ 1 & 0 & 2}
+= 1 \cdot (2 - 0) - 2 \cdot (4 - 3) + 0 = 2 - 2 = 0
+\]
+なので $\vect{v}_1 \wedge \vect{v}_2 \wedge \vect{v}_3 = \vect{0}$、
+\textbf{線形従属}である。関係を探すと、
+$c_1\vect{v}_1 + c_2\vect{v}_2 = \vect{v}_3$ は第 $1$ 成分
+$c_1 + 2c_2 = 0$、第 $2$ 成分 $2c_1 + c_2 = 3$ より
+$c_1 = 2$, $c_2 = -1$、第 $3$ 成分も $2 - 0 = 2$ で合う。すなわち
+$\vect{v}_3 = 2\vect{v}_1 - \vect{v}_2$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex6}}\quad
+分配して
+\[
+\omega \wedge \vect{v}
+= (\vect{e}_1 \wedge \vect{e}_2) \wedge \vect{e}_1
++ (\vect{e}_1 \wedge \vect{e}_2) \wedge \vect{e}_3
++ 2(\vect{e}_2 \wedge \vect{e}_3) \wedge \vect{e}_1
++ 2(\vect{e}_2 \wedge \vect{e}_3) \wedge \vect{e}_3.
+\]
+第 $1$ 項と第 $4$ 項は添字の重複で消える。第 $3$ 項は
+$\vect{e}_2 \wedge \vect{e}_3 \wedge \vect{e}_1
+= \vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3$(互換 $2$ 回)なので
+\[
+\omega \wedge \vect{v} = \vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3
++ 2\,\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3
+= 3\,\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex7}}\quad
+$A$ の列:$\mat{2 \\ 1} \wedge \mat{1 \\ 1} = (2 - 1)\,
+\vect{e}_1 \wedge \vect{e}_2$ より $\det A = 1$。
+$B$ の列:$\mat{1 \\ 0} \wedge \mat{3 \\ 1} = (1 - 0)\,
+\vect{e}_1 \wedge \vect{e}_2$ より $\det B = 1$。
+$AB = \mat{2 & 7 \\ 1 & 4}$ の列:
+$\mat{2 \\ 1} \wedge \mat{7 \\ 4} = (8 - 7)\,\vect{e}_1 \wedge \vect{e}_2$
+より $\det(AB) = 1$。確かに $1 = 1 \times 1$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex8}}\quad
+(1) $\omega \wedge \omega$ は $\Lambda^4 \R^3$ の要素だが、その次元は
+$\dbinom{3}{4} = 0$(添字 $4$ 個を $1, 2, 3$ から重複なしに選べない)。
+よって $\Lambda^4 \R^3 = \{\vect{0}\}$ であり、
+$\omega \wedge \omega = \vect{0}$ が自動的に成り立つ。
+$\R^3$ では反例 \ref{hanrei:wedge-indecomp} の障害物が消えるのである。
+(2) 問 \ref{q:wedge}(2) の計算そのものより
+\[
+\omega = (\vect{e}_1 + \vect{e}_2) \wedge (\vect{e}_2 + \vect{e}_3),
+\]
+すなわち $\vect{u} = \vect{e}_1 + \vect{e}_2$,
+$\vect{v} = \vect{e}_2 + \vect{e}_3$ で分解できる。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex9}}\quad
+自乗の展開で、$(\vect{e}_1 \wedge \vect{e}_2)$ どうし・
+$(\vect{e}_3 \wedge \vect{e}_4)$ どうしの項は添字の重複で消え、
+交差項が二つ残って(反例 \ref{hanrei:wedge-square} と同じ計算)
+\[
+\omega_c \wedge \omega_c = 2c\,\vect{e}_1 \wedge \vect{e}_2 \wedge
+\vect{e}_3 \wedge \vect{e}_4.
+\]
+$c = 0$ なら $\omega_0 = \vect{e}_1 \wedge \vect{e}_2$ は分解可能である。
+$c \neq 0$ なら $\omega_c \wedge \omega_c \neq \vect{0}$ だが、もし
+$\omega_c = \vect{u} \wedge \vect{v}$ と分解できたとすると
+$\omega_c \wedge \omega_c = \vect{u} \wedge \vect{v} \wedge \vect{u}
+\wedge \vect{v} = \vect{0}$($\vect{u}$ の重複)となって矛盾。よって
+分解可能となるのは $c = 0$ のときに限る。
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex10}}\quad
+線形従属なら、あるベクトル(番号を付け替えて $\vect{v}_k$ とする)が
+$\vect{v}_k = c_1\vect{v}_1 + \cdots + c_{k-1}\vect{v}_{k-1}$ と書ける。
+これを代入し、最後の変数について双線形(多重線形)性で展開すると
+\[
+\vect{v}_1 \wedge \cdots \wedge \vect{v}_{k-1} \wedge \vect{v}_k
+= \sum_{j=1}^{k-1} c_j\,\vect{v}_1 \wedge \cdots \wedge \vect{v}_{k-1}
+\wedge \vect{v}_j.
+\]
+第 $j$ 項には $\vect{v}_j$ が(途中と末尾の)二箇所に現れる。
+末尾の $\vect{v}_j$ を隣どうしの入れ替え(交代性:符号が反転するだけ)で
+もう一方の $\vect{v}_j$ の隣まで運べば、
+$\vect{v}_j \wedge \vect{v}_j = \vect{0}$ が現れて項全体が消える。
+すべての項が消えるので、ウェッジ積は $\vect{0}$ である。 $\blacksquare$
+
+\bigskip
+\noindent\textbf{問 \ref{q:wedge-ex11}}\quad
+展開すると
+\[
+\vect{a}_1 \wedge \cdots \wedge \vect{a}_n
+= \sum a_{i_1 1} a_{i_2 2} \cdots a_{i_n n}\,
+\vect{e}_{i_1} \wedge \cdots \wedge \vect{e}_{i_n}
+\]
+で、上三角性より各列の添字は $i_j \le j$ の範囲しか動かない。
+添字が重複する項は交代性で消えるから、生き残る項では
+$i_1, \dots, i_n$ がすべて異なる。$i_1 \le 1$ より $i_1 = 1$。
+$i_2 \le 2$ で $1$ は使用済みだから $i_2 = 2$。以下同様に
+$i_j = j$ と順に確定し、生き残る項は\textbf{対角成分の積}の一項だけ:
+\[
+\vect{a}_1 \wedge \cdots \wedge \vect{a}_n
+= a_{11}a_{22}\cdots a_{nn}\,\vect{e}_1 \wedge \cdots \wedge \vect{e}_n.
+\]
+定理 \ref{thm:wedge-det} と見比べれば
+$\det A = a_{11}a_{22}\cdots a_{nn}$、すなわち三角行列の行列式は
+対角成分の積(定理 \ref{thm:det-tri})の別証明である。 $\blacksquare$
+
 \section*{第IX部}
 
 \noindent\textbf{問 \ref{q:markov}}\quad

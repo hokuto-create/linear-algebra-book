@@ -1541,10 +1541,39 @@ $\frac{1}{\sqrt{2}}\mat{1 & 0 \\ 0 & 1}$。
 \chapter{外積代数 ― 行列式の正体}\label{chap:wedge}
 % =====================================================
 
+\begin{goal}
+\begin{itemize}
+\item ウェッジ積を双線形性と交代性で展開して計算でき、
+$\Lambda^k V$ の基底と次元 $\binom{n}{k}$ を数えられるようになる。
+\item $n$ 本の列ベクトルのウェッジが行列式を吐き出すこと
+($\vect{u}_1 \wedge \cdots \wedge \vect{u}_n = (\det A)\,
+\vect{e}_1 \wedge \cdots \wedge \vect{e}_n$)を、証明つきで理解する。
+\item 「$\vect{v}_1 \wedge \cdots \wedge \vect{v}_k \neq \vect{0}$
+$\iff$ $\vect{v}_1, \dots, \vect{v}_k$ は線形独立」を証明つきで理解し、
+独立性の判定に使えるようになる。
+\item 行列式の\textbf{基底によらない定義}を理解し、
+$\det(AB) = \det A \cdot \det B$ の「一行証明」を再現できるようになる。
+\item $\vect{u} \wedge \vect{u} = \vect{0}$ が「$1$ 次(ベクトル)」限定の
+規則であること、分解可能でない $2$ ベクトルが存在すること(反例)を知る。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 面積を代数に組み込む}
+
+第II部で行列式を定義したとき、その心は「多重線形性・交代性・正規化」の
+三性質だった。証明の主役はいつも「列の重複は許さない、入れ替えは符号」
+という規則である。前章で「双線形性を組み込んだ空間」(テンソル積)を
+作れたのだから、今度は\textbf{交代性まで組み込んだ空間}を作れるはずである。
+そこでは、面積や体積(の符号つきの量)が\textbf{積の計算規則そのもの}に
+なり、行列式は「定義するもの」ではなく「勝手に現れるもの」になる。
+本書第I部以来の旧友・行列式の正体を、最後に一番高い場所から見届けよう。
+
 \section{交代性を組み込んだ積}
 
 テンソル積 $\vect{u} \otimes \vect{v}$ に
 \textbf{交代性}(入れ替えると符号が反転する)を要求した積を考える。
+前章の章末問題 \ref{q:tensor-ex5} で見た「同じベクトルを二度入れると
+消える」双線形写像(行列式)が、この積の原型である。
 
 \begin{teigi}[外積(ウェッジ積)]
 ベクトル $\vect{u}, \vect{v} \in V$ に対し、双線形かつ
@@ -1575,6 +1604,98 @@ $\vect{e}_2 \wedge \vect{e}_1 = -\vect{e}_1 \wedge \vect{e}_2$ と
 符号が付く――第II部で行列式の定義に込めた「列の重複は許さない、
 入れ替えは符号」という規則が、\textbf{積の代数規則として}実装されているからである。
 
+この現象は $2$ 次に限らない。$n$ 本のウェッジは、
+第II部の行列式の定義(定義 \ref{def:detn})を\textbf{そっくり再生産する}。
+
+\begin{teiri}[$n$ 本の列のウェッジは行列式を吐き出す]\label{thm:wedge-det}
+$n$ 次正方行列 $A = (a_{ij})$ の列ベクトルを
+$\vect{u}_1, \dots, \vect{u}_n$($\vect{u}_j = \sum_i a_{ij}\vect{e}_i$)
+とすると、
+\[
+\vect{u}_1 \wedge \vect{u}_2 \wedge \cdots \wedge \vect{u}_n
+= (\det A)\; \vect{e}_1 \wedge \vect{e}_2 \wedge \cdots \wedge \vect{e}_n.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+各 $\vect{u}_j$ を基底で展開し、双線形性(多重線形性)で開くと
+\[
+\vect{u}_1 \wedge \cdots \wedge \vect{u}_n
+= \sum_{i_1, \dots, i_n} a_{i_1 1}a_{i_2 2}\cdots a_{i_n n}\;
+\vect{e}_{i_1} \wedge \cdots \wedge \vect{e}_{i_n}
+\]
+となる(各列から添字を一つずつ選ぶ、全 $n^n$ 通りの和)。
+添字に\textbf{重複がある項は交代性により消える}。残るのは
+$(i_1, \dots, i_n)$ が $1, \dots, n$ の並べ替え、すなわち置換
+$\tau$($\tau(j) = i_j$)になっている項だけである。その項では、
+互換(隣どうしの入れ替え)をくり返して添字を昇順に直すと、
+入れ替えのたびに符号が反転するから
+\[
+\vect{e}_{\tau(1)} \wedge \cdots \wedge \vect{e}_{\tau(n)}
+= \mathrm{sgn}(\tau)\; \vect{e}_1 \wedge \cdots \wedge \vect{e}_n
+\]
+(符号が互換への分解の仕方によらないことは、第II部の偶奇の不変性
+(定理 \ref{thm:perm-parity})が保証する)。よって
+\[
+\vect{u}_1 \wedge \cdots \wedge \vect{u}_n
+= \Bigl(\sum_{\tau \in S_n} \mathrm{sgn}(\tau)\,
+a_{\tau(1)1}a_{\tau(2)2}\cdots a_{\tau(n)n}\Bigr)
+\vect{e}_1 \wedge \cdots \wedge \vect{e}_n.
+\]
+括弧の中は $\det {}^t\!A$ の定義式であり、転置不変性
+(定理 \ref{thm:det-props}(1))より $\det A$ に等しい。 $\blacksquare$
+
+第II部では「置換の全列挙」という形で天下り的に与えた行列式の定義式が、
+ここでは\textbf{交代性の積の展開計算として自動的に生成された}。
+「なぜあの式だったのか」への、これが代数からの答えである。
+
+\section{ウェッジ積による線形独立性の判定}
+
+ウェッジ積の威力は、行列式の再生産にとどまらない。
+\textbf{本数が次元より少ない場合}にも、独立性をそのまま判定できる。
+
+\begin{teiri}[ウェッジ積と線形独立性]\label{thm:wedge-indep}
+$n$ 次元ベクトル空間 $V$ のベクトル $\vect{v}_1, \dots, \vect{v}_k$
+($k \le n$)について、
+\[
+\vect{v}_1 \wedge \cdots \wedge \vect{v}_k \neq \vect{0}
+\iff \vect{v}_1, \dots, \vect{v}_k \text{ は線形独立}.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+\textbf{(従属 $\Rightarrow$ 零)}\ 従属なら、どれか(番号を付け替えて
+$\vect{v}_k$ とする)が残りの線形結合で
+$\vect{v}_k = c_1\vect{v}_1 + \cdots + c_{k-1}\vect{v}_{k-1}$ と書ける。
+代入して展開すると
+\[
+\vect{v}_1 \wedge \cdots \wedge \vect{v}_{k-1} \wedge \vect{v}_k
+= \sum_{j=1}^{k-1} c_j\,
+\vect{v}_1 \wedge \cdots \wedge \vect{v}_{k-1} \wedge \vect{v}_j
+\]
+で、各項には $\vect{v}_j$ が\textbf{二度}現れる。互換で二つを隣まで
+運べば(符号が付くだけである)、$\vect{v}_j \wedge \vect{v}_j = \vect{0}$
+により各項は消える。よって全体は $\vect{0}$。
+
+\textbf{(独立 $\Rightarrow$ 零でない)}\ 独立なら、基底
+$\vect{v}_1, \dots, \vect{v}_k, \vect{v}_{k+1}, \dots, \vect{v}_n$ に
+延長できる(定理 \ref{thm:dim-extend})。基底を並べた行列 $P$
+(第 $j$ 列が $\vect{v}_j$ の座標)は正則だから、
+定理 \ref{thm:wedge-det} より
+\[
+\vect{v}_1 \wedge \cdots \wedge \vect{v}_n
+= (\det P)\,\vect{e}_1 \wedge \cdots \wedge \vect{e}_n \neq \vect{0}
+\quad (\det P \neq 0).
+\]
+もし $\vect{v}_1 \wedge \cdots \wedge \vect{v}_k = \vect{0}$ なら、
+残りをウェッジした左辺全体も $\vect{0}$ になって矛盾する。よって
+$\vect{v}_1 \wedge \cdots \wedge \vect{v}_k \neq \vect{0}$。 $\blacksquare$
+
+第II部の「行列式 $\neq 0 \iff$ 列が独立」は $k = n$ の場合である。
+$k < n$ では、$\binom{n}{k}$ 個の係数のうち\textbf{一つでも}零でなければ
+独立と分かる(係数は $k$ 本を並べた行列の $k$ 次の小行列式たちに
+一致する)。
+
 \section{行列式の最終的な定義}
 
 一般に $\dim \Lambda^n V = \binom{n}{n} = 1$、すなわち
@@ -1584,7 +1705,7 @@ $\vect{u}_1 \wedge \cdots \wedge \vect{u}_n \mapsto
 f(\vect{u}_1) \wedge \cdots \wedge f(\vect{u}_n)$ という線形変換を誘導するが、
 $1$ 次元空間の線形変換は\textbf{ある定数倍}でしかありえない。
 
-\begin{teiri}[行列式の基底によらない定義]
+\begin{teiri}[行列式の基底によらない定義]\label{thm:wedge-detdef}
 線形変換 $f$ が $\Lambda^n V$ 上に誘導する「定数倍」の定数が、
 $f$ の行列式である:
 \[
@@ -1593,12 +1714,50 @@ f(\vect{u}_1) \wedge \cdots \wedge f(\vect{u}_n)
 \]
 \end{teiri}
 
+\noindent\textbf{(証明)}\quad
+誘導された変換は $1$ 次元空間 $\Lambda^n V$ の線形変換だから、
+ある定数 $c$ による定数倍である(上の観察)。$c$ を求めるために、
+基底 $\vect{e}_1, \dots, \vect{e}_n$ に関する $f$ の表現行列を $A$
+として、基底のウェッジに施してみる。$f(\vect{e}_j)$ は $A$ の第 $j$ 列を
+座標にもつから、定理 \ref{thm:wedge-det} より
+\[
+f(\vect{e}_1) \wedge \cdots \wedge f(\vect{e}_n)
+= (\det A)\,\vect{e}_1 \wedge \cdots \wedge \vect{e}_n,
+\]
+すなわち $c = \det A$。$\vect{e}_1 \wedge \cdots \wedge \vect{e}_n$ は
+$\Lambda^n V$ の基底(零でない)だから、任意の
+$\vect{u}_1 \wedge \cdots \wedge \vect{u}_n$ はその定数倍であり、
+定数倍写像は全体で同じ $c$ を掛ける。 $\blacksquare$
+
+注目すべきは、定数 $c$ の\textbf{定義そのもの}(誘導変換の倍率)には
+基底が一切登場しないことである。どの基底で計算しても
+$c = \det(\text{表現行列})$ になるのだから、\textbf{表現行列の行列式は
+基底の取り替えで変わらない}(相似不変性
+$\det(P^{-1}AP) = \det A$)ことが、計算なしで従う
+――トレース(定理 \ref{thm:trace-similar})と並ぶ相似不変量としての
+行列式の正体である。さらに、次のおまけが付いてくる。
+
+\begin{teiri}[積の行列式・再訪]\label{thm:wedge-detprod}
+$\det(fg) = \det f \cdot \det g$。行列でいえば
+$\det(AB) = \det A \cdot \det B$(第II部の定理 \ref{thm:det-prod})。
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+合成 $fg$(先に $g$、続いて $f$)を施すと
+\[
+f(g(\vect{u}_1)) \wedge \cdots \wedge f(g(\vect{u}_n))
+= (\det f)\; g(\vect{u}_1) \wedge \cdots \wedge g(\vect{u}_n)
+= (\det f)(\det g)\; \vect{u}_1 \wedge \cdots \wedge \vect{u}_n.
+\]
+「合成変換の誘導する定数倍は、定数倍の積」――これだけである。
+$\blacksquare$
+
 これが行列式の「正体」である。第II部の深掘りで、行列式は
 多重線形・交代・正規化の三性質で一意に特徴づけられると述べた。
 外積代数は、その三性質を\textbf{代数構造として作り付けた空間}であり、
 だから行列式が定義から自動的に流れ出てくる。
-$\det(fg) = \det f \cdot \det g$ も、「合成変換の誘導する定数倍は
-定数倍の積」という一行で証明が終わる。基底も成分も置換も使わない。
+$\det(AB) = \det A \cdot \det B$ の第II部での証明(基本変形による)と
+上の一行証明を見比べてほしい。基底も成分も置換も使っていない。
 第I部で $ad - bc$ という謎の式として出会った行列式の、
 これが最も高い場所から見た姿である。
 
@@ -1629,3 +1788,324 @@ $\vect{v} = \vect{e}_2 + \vect{e}_3$ の外積 $\vect{u} \wedge \vect{v}$ を、
 基底 $\vect{e}_1 \wedge \vect{e}_2$, $\vect{e}_1 \wedge \vect{e}_3$,
 $\vect{e}_2 \wedge \vect{e}_3$ で展開せよ。
 \end{mondai}
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[「同じものの積は零」はベクトル限定の規則である]\label{hanrei:wedge-square}
+$\vect{u} \wedge \vect{u} = \vect{0}$ を「$\wedge$ ではいつでも自乗が
+消える」と一般化してはいけない。$\R^4$ の $2$ ベクトル
+\[
+\omega = \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_3 \wedge \vect{e}_4
+\in \Lambda^2 \R^4
+\]
+の「自乗」を展開すると
+\[
+\omega \wedge \omega
+= \underbrace{(\vect{e}_1 \wedge \vect{e}_2) \wedge
+(\vect{e}_1 \wedge \vect{e}_2)}_{=\,\vect{0}\ (\vect{e}_1 \text{が重複})}
++ (\vect{e}_1 \wedge \vect{e}_2) \wedge (\vect{e}_3 \wedge \vect{e}_4)
++ (\vect{e}_3 \wedge \vect{e}_4) \wedge (\vect{e}_1 \wedge \vect{e}_2)
++ \underbrace{(\vect{e}_3 \wedge \vect{e}_4) \wedge
+(\vect{e}_3 \wedge \vect{e}_4)}_{=\,\vect{0}}.
+\]
+真ん中の二項のうち後者は、$\vect{e}_1$ を先頭まで運ぶのに互換 $2$ 回、
+続いて $\vect{e}_2$ を $2$ 番目まで運ぶのに互換 $2$ 回、計 $4$ 回
+(符号は $(-1)^4 = +1$)で
+$\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3 \wedge \vect{e}_4$ に
+直るから、
+\[
+\omega \wedge \omega = 2\,\vect{e}_1 \wedge \vect{e}_2 \wedge
+\vect{e}_3 \wedge \vect{e}_4 \neq \vect{0}.
+\]
+交代性 $\vect{u} \wedge \vect{v} = -\vect{v} \wedge \vect{u}$ は
+\textbf{$1$ 次のベクトルどうし}の規則である。$2$ ベクトルどうしは、
+互換が偶数回($2 \times 2 = 4$ 回)必要なので、符号が打ち消して
+\textbf{可換}になり($\alpha \wedge \beta = \beta \wedge \alpha$)、
+自乗は消えなくてよいのである。
+\end{hanrei}
+
+\begin{hanrei}[分解可能でない $2$ ベクトル]\label{hanrei:wedge-indecomp}
+前章のテンソルと同じく、$\Lambda^2 V$ の要素も
+$\vect{u} \wedge \vect{v}$ の形(\textbf{分解可能}:幾何的には
+「一枚の平行四辺形」)とは限らない。上の
+$\omega = \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_3 \wedge \vect{e}_4
+\in \Lambda^2\R^4$ がその例である。もし
+$\omega = \vect{u} \wedge \vect{v}$ と書けたなら、
+\[
+\omega \wedge \omega = \vect{u} \wedge \vect{v} \wedge \vect{u} \wedge
+\vect{v} = \vect{0}
+\]
+($\vect{u}$ が二度現れるから)のはずだが、反例
+\ref{hanrei:wedge-square} で見たとおり $\omega \wedge \omega \neq
+\vect{0}$。矛盾するので $\omega$ は分解可能でない。
+$xy$ 平面の面積素と $zw$ 平面の面積素の和は、どんな一枚の
+平行四辺形でも表せない――$4$ 次元ならではの現象である
+($\R^3$ では零でない $2$ ベクトルはすべて分解可能:章末問題
+\ref{q:wedge-ex8})。「$\omega \wedge \omega \neq \vect{0}$ なら
+分解不能」というこの判定法は、前章の「係数行列の階数」による判定の
+外積代数版といえる。
+\end{hanrei}
+
+\section{例題}
+
+ウェッジ積の展開計算・独立性判定・行列式との連携を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本($\R^2$ での計算)]\label{rei:wedge-r2}
+$\vect{u} = \mat{2 \\ 5}$, $\vect{v} = \mat{1 \\ 3}$ の
+$\vect{u} \wedge \vect{v}$ を求め、行列式と見比べよ。\\
+\textbf{解.}\ 本文の公式($ad - bc$ 型)より
+\[
+\vect{u} \wedge \vect{v} = (2 \cdot 3 - 5 \cdot 1)\,
+\vect{e}_1 \wedge \vect{e}_2 = \vect{e}_1 \wedge \vect{e}_2.
+\]
+係数 $1$ は $\det\mat{2 & 1 \\ 5 & 3} = 6 - 5 = 1$、すなわち
+$\vect{u}, \vect{v}$ の張る平行四辺形の符号つき面積である。
+\end{rei}
+
+\begin{rei}[例題・基本($\R^3$ での展開とクロス積)]\label{rei:wedge-r3}
+$\vect{u} = \mat{1 \\ 2 \\ 0}$, $\vect{v} = \mat{0 \\ 1 \\ 1}$ の
+$\vect{u} \wedge \vect{v}$ を基底
+$\vect{e}_1 \wedge \vect{e}_2, \vect{e}_1 \wedge \vect{e}_3,
+\vect{e}_2 \wedge \vect{e}_3$ で展開し、クロス積
+$\vect{u} \times \vect{v}$ と見比べよ。\\
+\textbf{解.}\ $\vect{u} = \vect{e}_1 + 2\vect{e}_2$,
+$\vect{v} = \vect{e}_2 + \vect{e}_3$ を展開すると
+\[
+\vect{u} \wedge \vect{v}
+= \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_1 \wedge \vect{e}_3
++ 2\,\vect{e}_2 \wedge \vect{e}_2 + 2\,\vect{e}_2 \wedge \vect{e}_3
+= \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_1 \wedge \vect{e}_3
++ 2\,\vect{e}_2 \wedge \vect{e}_3.
+\]
+一方 $\vect{u} \times \vect{v} = \mat{2 \cdot 1 - 0 \cdot 1 \\
+0 \cdot 0 - 1 \cdot 1 \\ 1 \cdot 1 - 2 \cdot 0} = \mat{2 \\ -1 \\ 1}$。
+深掘りの対応($\vect{e}_2 \wedge \vect{e}_3 \leftrightarrow x$ 成分、
+$\vect{e}_1 \wedge \vect{e}_3 \leftrightarrow -y$ 成分、
+$\vect{e}_1 \wedge \vect{e}_2 \leftrightarrow z$ 成分)のとおり、
+係数 $(2, -(-1), 1) = (2, 1, 1)$ が過不足なく対応している。
+\end{rei}
+
+\begin{rei}[例題・基本($3$ 本のウェッジ)]\label{rei:wedge-triple}
+$\vect{u} = \mat{1 \\ 0 \\ 1}$, $\vect{v} = \mat{0 \\ 1 \\ 1}$,
+$\vect{w} = \mat{1 \\ 1 \\ 0}$ の
+$\vect{u} \wedge \vect{v} \wedge \vect{w}$ を求めよ。\\
+\textbf{解.}\ まず
+$\vect{u} \wedge \vect{v} = (\vect{e}_1 + \vect{e}_3) \wedge
+(\vect{e}_2 + \vect{e}_3)
+= \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_1 \wedge \vect{e}_3
+- \vect{e}_2 \wedge \vect{e}_3$
+($\vect{e}_3 \wedge \vect{e}_2 = -\vect{e}_2 \wedge \vect{e}_3$)。
+これに $\vect{w} = \vect{e}_1 + \vect{e}_2$ をウェッジすると、
+重複添字の項が消えて
+\[
+\vect{u} \wedge \vect{v} \wedge \vect{w}
+= \vect{e}_1 \wedge \vect{e}_3 \wedge \vect{e}_2
+- \vect{e}_2 \wedge \vect{e}_3 \wedge \vect{e}_1
+= -\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3
+- \vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3
+= -2\,\vect{e}_1 \wedge \vect{e}_2 \wedge \vect{e}_3.
+\]
+検算:定理 \ref{thm:wedge-det} より係数は
+$\det\mat{1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 0}$ のはずで、サラスの方法で
+$0 + 0 + 0 - 1 - 1 - 0 = -2$。一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(独立性のウェッジ判定)]\label{rei:wedge-indep2}
+次の組は線形独立か、ウェッジ積で判定せよ。
+\[
+(1)\ \vect{v}_1 = \mat{1 \\ 2 \\ 3},\ \vect{v}_2 = \mat{2 \\ 4 \\ 6},
+\qquad
+(2)\ \vect{v}_1 = \mat{1 \\ 1 \\ 0},\ \vect{v}_2 = \mat{1 \\ 0 \\ 1}.
+\]
+\textbf{解.}\ $2$ 本のウェッジの係数は
+$\vect{e}_i \wedge \vect{e}_j$($i < j$)成分が $u_i v_j - u_j v_i$。\\
+(1) $\vect{e}_1 \wedge \vect{e}_2$:$1 \cdot 4 - 2 \cdot 2 = 0$、
+$\vect{e}_1 \wedge \vect{e}_3$:$1 \cdot 6 - 3 \cdot 2 = 0$、
+$\vect{e}_2 \wedge \vect{e}_3$:$2 \cdot 6 - 3 \cdot 4 = 0$。
+$\vect{v}_1 \wedge \vect{v}_2 = \vect{0}$ なので\textbf{線形従属}
+(実際 $\vect{v}_2 = 2\vect{v}_1$)。\\
+(2) $\vect{e}_1 \wedge \vect{e}_2$:$1 \cdot 0 - 1 \cdot 1 = -1 \neq 0$。
+一つでも零でない係数があれば
+$\vect{v}_1 \wedge \vect{v}_2 \neq \vect{0}$、よって\textbf{線形独立}
+(定理 \ref{thm:wedge-indep})。残りの係数を計算するまでもない。
+\end{rei}
+
+\begin{rei}[例題・標準($\det(AB)$ をウェッジで見る)]\label{rei:wedge-detprod2}
+$A = \mat{1 & 2 \\ 3 & 4}$, $B = \mat{0 & 1 \\ 1 & 1}$ について、
+$\det A$, $\det B$, $\det(AB)$ をすべてウェッジ積の計算で求め、
+定理 \ref{thm:wedge-detprod} を数値で確かめよ。\\
+\textbf{解.}\ $A$ の列のウェッジ:
+$\mat{1 \\ 3} \wedge \mat{2 \\ 4} = (4 - 6)\,\vect{e}_1 \wedge \vect{e}_2$
+より $\det A = -2$。$B$ の列のウェッジ:
+$\mat{0 \\ 1} \wedge \mat{1 \\ 1} = (0 - 1)\,\vect{e}_1 \wedge \vect{e}_2$
+より $\det B = -1$。積は
+$AB = \mat{2 & 3 \\ 4 & 7}$ で、
+$\mat{2 \\ 4} \wedge \mat{3 \\ 7} = (14 - 12)\,\vect{e}_1 \wedge \vect{e}_2$
+より $\det(AB) = 2$。確かに $2 = (-2) \times (-1)$。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:$2$ 本の場合の判定定理)]\label{rei:wedge-two}
+定理 \ref{thm:wedge-indep} の $k = 2$ の場合、すなわち
+「$\vect{u} \wedge \vect{v} = \vect{0} \iff \vect{u}, \vect{v}$ は
+線形従属」を、定理を引用せずに直接示せ。\\
+\textbf{解.}\ ($\Leftarrow$)従属なら一方が他方の定数倍(または一方が
+$\vect{0}$)で、$\vect{v} = c\vect{u}$ とすれば
+$\vect{u} \wedge \vect{v} = c(\vect{u} \wedge \vect{u}) = \vect{0}$。
+($\Rightarrow$)対偶を示す。独立なら基底
+$\vect{u}, \vect{v}, \vect{w}_3, \dots, \vect{w}_n$ に延長でき
+(定理 \ref{thm:dim-extend})、この基底を列に並べた行列 $P$ は正則。
+定理 \ref{thm:wedge-det} より
+\[
+\vect{u} \wedge \vect{v} \wedge \vect{w}_3 \wedge \cdots \wedge \vect{w}_n
+= (\det P)\,\vect{e}_1 \wedge \cdots \wedge \vect{e}_n \neq \vect{0}.
+\]
+$\vect{u} \wedge \vect{v} = \vect{0}$ ならこの左辺も $\vect{0}$ に
+なってしまうから、$\vect{u} \wedge \vect{v} \neq \vect{0}$。
+(幾何でいえば「面積が零 $\iff$ 二本が同一直線上」である。)
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item \textbf{外積(ウェッジ積)}:双線形かつ交代
+($\vect{u} \wedge \vect{v} = -\vect{v} \wedge \vect{u}$、とくに
+$\vect{u} \wedge \vect{u} = \vect{0}$)な積。$\Lambda^k V$ の基底は
+添字が昇順の $\vect{e}_{i_1} \wedge \cdots \wedge \vect{e}_{i_k}$ で、
+次元は $\binom{n}{k}$。
+\item $n$ 本の列のウェッジは行列式を吐き出す:
+$\vect{u}_1 \wedge \cdots \wedge \vect{u}_n = (\det A)\,
+\vect{e}_1 \wedge \cdots \wedge \vect{e}_n$(定理 \ref{thm:wedge-det})。
+第II部の置換による定義式は、交代性の展開計算が自動生成していた。
+\item \textbf{独立性の判定}:$\vect{v}_1 \wedge \cdots \wedge \vect{v}_k
+\neq \vect{0} \iff$ 線形独立(定理 \ref{thm:wedge-indep})。
+「行列式 $\neq 0 \iff$ 正則」の $k < n$ への拡張である。
+\item \textbf{行列式の基底によらない定義}(定理 \ref{thm:wedge-detdef}):
+$\det f$ とは $f$ が $1$ 次元空間 $\Lambda^n V$ に誘導する定数倍の定数。
+相似不変性 $\det(P^{-1}AP) = \det A$ と
+$\det(AB) = \det A \cdot \det B$(定理 \ref{thm:wedge-detprod})が
+計算なしで従う。
+\item $\Lambda^2 \R^3$ はクロス積と対応する(深掘り)。また
+$2$ ベクトルどうしのウェッジは\textbf{可換}で、
+$\omega \wedge \omega \neq \vect{0}$ となる $\omega$ が $\R^4$ に存在する
+(反例 \ref{hanrei:wedge-square})。そのような $\omega$ は
+\textbf{分解可能でない}(反例 \ref{hanrei:wedge-indecomp})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:wedge-ex1}
+$\vect{u} = \mat{3 \\ 1}$, $\vect{v} = \mat{2 \\ 4}$ の
+$\vect{u} \wedge \vect{v}$ を求め、係数が
+$\det\mat{3 & 2 \\ 1 & 4}$ に一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:wedge-ex2}
+$\vect{u} = \mat{1 \\ 0 \\ 2}$, $\vect{v} = \mat{0 \\ 3 \\ 1}$ の
+$\vect{u} \wedge \vect{v}$ を基底
+$\vect{e}_1 \wedge \vect{e}_2, \vect{e}_1 \wedge \vect{e}_3,
+\vect{e}_2 \wedge \vect{e}_3$ で展開し、クロス積
+$\vect{u} \times \vect{v}$ との対応を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:wedge-ex3}
+(1) $\dim \Lambda^2 \R^4$ と $\dim \Lambda^3 \R^4$ を求め、
+$\Lambda^2 \R^4$ の基底を列挙せよ。
+(2) $\Lambda^5 \R^4 = \{\vect{0}\}$ となる理由を、
+交代性(または定理 \ref{thm:wedge-indep})を使って説明せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:wedge-ex4}
+$(\vect{u} + \vect{v}) \wedge (\vect{u} - \vect{v})
+= -2\,\vect{u} \wedge \vect{v}$ を展開して示せ。また
+$\vect{u} = \vect{e}_1$, $\vect{v} = \vect{e}_2$ で数値検算し、
+平行四辺形の言葉でこの等式の意味を述べよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:wedge-ex5}
+$\vect{v}_1 = \mat{1 \\ 2 \\ 1}$, $\vect{v}_2 = \mat{2 \\ 1 \\ 0}$,
+$\vect{v}_3 = \mat{0 \\ 3 \\ 2}$ が線形独立かどうかを
+$\vect{v}_1 \wedge \vect{v}_2 \wedge \vect{v}_3$ の計算
+(定理 \ref{thm:wedge-det})で判定せよ。従属の場合は、
+実際の線形関係も見つけよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:wedge-ex6}
+$\omega = \vect{e}_1 \wedge \vect{e}_2 + 2\,\vect{e}_2 \wedge \vect{e}_3
+\in \Lambda^2 \R^3$ と $\vect{v} = \vect{e}_1 + \vect{e}_3$ について、
+$\omega \wedge \vect{v}$ を計算せよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:wedge-ex7}
+$A = \mat{2 & 1 \\ 1 & 1}$, $B = \mat{1 & 3 \\ 0 & 1}$ について
+$\det A$, $\det B$, $\det(AB)$ をすべて列ベクトルのウェッジ積で求め、
+$\det(AB) = \det A \cdot \det B$ を数値で確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:wedge-ex8}
+(1) 任意の $\omega \in \Lambda^2 \R^3$ について
+$\omega \wedge \omega = \vect{0}$ となる理由を述べよ
+(ヒント:$\omega \wedge \omega$ はどの空間の要素か)。
+(2) $\omega = \vect{e}_1 \wedge \vect{e}_2 + \vect{e}_1 \wedge \vect{e}_3
++ \vect{e}_2 \wedge \vect{e}_3$ を $\vect{u} \wedge \vect{v}$ の形に
+分解せよ(ヒント:問 \ref{q:wedge}(2))。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:wedge-ex9}
+実数 $c$ に対し $\omega_c = \vect{e}_1 \wedge \vect{e}_2
++ c\,\vect{e}_3 \wedge \vect{e}_4 \in \Lambda^2 \R^4$ とおく。
+$\omega_c \wedge \omega_c$ を計算し、$\omega_c$ が分解可能となるのは
+$c = 0$ のときに限ることを示せ
+(反例 \ref{hanrei:wedge-indecomp} の論法を使う)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:wedge-ex10}
+$\vect{v}_1, \dots, \vect{v}_k$ が線形従属ならば
+$\vect{v}_1 \wedge \cdots \wedge \vect{v}_k = \vect{0}$ であることを、
+定理 \ref{thm:wedge-indep} を引用せずに、交代性と双線形性だけから
+証明せよ。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:wedge-ex11}
+$A$ を $n$ 次\textbf{上三角行列}(対角より下が $0$:第 $j$ 列は
+$\vect{a}_j = \sum_{i \le j} a_{ij}\vect{e}_i$)とする。ウェッジ積の
+展開で、
+$\vect{a}_1 \wedge \cdots \wedge \vect{a}_n = a_{11}a_{22}\cdots a_{nn}\,
+\vect{e}_1 \wedge \cdots \wedge \vect{e}_n$ を示せ
+(第II部の定理 \ref{thm:det-tri}(三角行列の行列式)の別証明になる。
+ヒント:各列から選ぶ添字 $i_j \le j$ がすべて異なるためには
+$i_1 = 1, i_2 = 2, \dots$ と決まってしまう)。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:wedge-ex1}}:$ad - bc$ 型の公式
+(例題 \ref{rei:wedge-r2})。
+\item \textbf{問 \ref{q:wedge-ex2}}:各係数は $u_i v_j - u_j v_i$。
+対応は例題 \ref{rei:wedge-r3} の表のとおり。
+\item \textbf{問 \ref{q:wedge-ex3}}:次元は二項係数。$5$ 本のベクトルは
+$4$ 次元では必ず従属。
+\item \textbf{問 \ref{q:wedge-ex4}}:双線形性で展開し、
+$\vect{u} \wedge \vect{u} = \vect{v} \wedge \vect{v} = \vect{0}$ と
+交代性を使う。
+\item \textbf{問 \ref{q:wedge-ex5}}:係数は $3$ 次の行列式。零になったら
+$c_1\vect{v}_1 + c_2\vect{v}_2 = \vect{v}_3$ を成分で解く。
+\item \textbf{問 \ref{q:wedge-ex6}}:分配して、添字が重複する項を消す。
+残った項を昇順に直す(例題 \ref{rei:wedge-triple})。
+\item \textbf{問 \ref{q:wedge-ex7}}:例題 \ref{rei:wedge-detprod2} と
+同じ手順。
+\item \textbf{問 \ref{q:wedge-ex8}}:(1) $\Lambda^4 \R^3$ の次元は
+$\binom{3}{4} = 0$。(2) 問 \ref{q:wedge}(2) の計算結果がそのまま答え。
+\item \textbf{問 \ref{q:wedge-ex9}}:交差項が $2c\,\vect{e}_1 \wedge
+\vect{e}_2 \wedge \vect{e}_3 \wedge \vect{e}_4$。分解可能なら自乗が
+消えるはず、という論法。
+\item \textbf{問 \ref{q:wedge-ex10}}:定理 \ref{thm:wedge-indep} の
+証明前半を自分の手で再現する。
+\item \textbf{問 \ref{q:wedge-ex11}}:展開の生き残りが一項しかないことを、
+添字の条件($i_j \le j$ かつすべて異なる)から追い込む。
+\end{itemize}
+}
