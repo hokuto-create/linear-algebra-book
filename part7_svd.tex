@@ -547,29 +547,158 @@ ${}^t\vect{x}({}^t\!AA)\vect{x} = \|A\vect{x}\|^2$ が鍵
 \chapter{QR分解 ― グラム・シュミットの行列表現}\label{chap:qr}
 % =====================================================
 
-\begin{teiri}[QR分解]
+\begin{goal}
+\begin{itemize}
+\item 列が線形独立な行列が $A = QR$($Q$ の列は正規直交系、$R$ は
+対角成分が正の上三角行列)と\textbf{ただ一通り}に分解できることを、
+存在(グラム・シュミットの計算記録)と一意性の証明つきで理解する。
+\item $2 \times 2$ や $3 \times 2$ の行列の QR 分解を手計算で
+求められるようになる。
+\item QR 分解を使って最小二乗問題を $R\vect{x} = {}^t\!Q\vect{b}$ の
+\textbf{後退代入}に帰着できるようになる。
+\item 正方行列では $Q$ が直交行列になり、
+$|\det A| = r_{11}r_{22}\cdots r_{nn}$ が成り立つことを使えるようになる。
+\end{itemize}
+\end{goal}
+
+\section{動機 ― 「計算の記録」を行列の等式にする}
+
+第V部のグラム・シュミットの直交化法は、与えられた列ベクトルの組を
+正規直交系に作り替える\textbf{手続き}だった。本章はその手続きの
+計算結果を、$A = QR$ という一本の\textbf{行列の等式}として書き留める。
+たったそれだけのことが、驚くほど役に立つ。
+
+本書ではすでに、行列を「よい形の積」に割る操作に何度も出会っている。
+対角化 $A = PDP^{-1}$(第IV部)、直交対角化 $A = U D\,{}^t U$(第V部)、
+ジョルダン標準形(第VI部)――いずれも、複雑な行列を
+「性質のよくわかる部品の積」に分解することで、べき乗や微分方程式が
+一気に解けた。このような書き換えを\textbf{行列の分解}と総称する。
+QR分解はその仲間で、部品は「直交(回転・鏡映の仲間)」と
+「上三角(下から順に解ける)」である。理論の主役というより
+\textbf{計算の主役}であり、次章の特異値分解と並んで、
+数値計算ソフトウェアの心臓部で毎日動いている。
+
+\section{QR分解 ― 存在と一意性}
+
+\begin{teiri}[QR分解]\label{thm:qr-main}
 列が線形独立な $m \times n$ 行列 $A$ は、
 \[
 A = QR
 \]
 ($Q$ は列が正規直交系の $m \times n$ 行列、$R$ は対角成分が正の
-$n$ 次上三角行列)の形にただ一通りに分解できる。
+$n$ 次上三角行列)の形に\textbf{ただ一通り}に分解できる。
 \end{teiri}
 
 新しい定理に見えるが、正体は\textbf{グラム・シュミットの直交化法の
 計算記録}である。$A$ の列を直交化して得た正規直交系を $Q$ の列とし、
 「元の各列が、直交化済みベクトルのどんな線形結合だったか」の係数を
 $R$ に書き留める。$j$ 番目の列は $1, \dots, j$ 番目の直交ベクトルだけで
-書けるから、$R$ は自動的に上三角になる。
+書けるから、$R$ は自動的に上三角になる。以下、これを証明の形に直す。
 
-QR分解を使うと、最小二乗問題が見通しよく解ける。
+\noindent\textbf{(証明)}\quad
+\textbf{(存在)}\ $A$ の列を $\vect{a}_1, \dots, \vect{a}_n$ とし、
+グラム・シュミットの直交化法(定理 \ref{thm:gs-main})を適用して
+正規直交系 $\vect{u}_1, \dots, \vect{u}_n$ を作る。手続きの式
+\[
+\vect{b}_j = \vect{a}_j - \sum_{i=1}^{j-1}
+\langle \vect{a}_j, \vect{u}_i \rangle \vect{u}_i, \qquad
+\vect{u}_j = \frac{\vect{b}_j}{\|\vect{b}_j\|}
+\]
+を $\vect{a}_j$ について解き直すと
+\[
+\vect{a}_j = \langle \vect{a}_j, \vect{u}_1 \rangle \vect{u}_1 + \cdots
++ \langle \vect{a}_j, \vect{u}_{j-1} \rangle \vect{u}_{j-1}
++ \|\vect{b}_j\|\,\vect{u}_j.
+\]
+そこで $Q = (\vect{u}_1 \ \cdots \ \vect{u}_n)$、$R$ の $(i, j)$ 成分を
+\[
+r_{ij} = \langle \vect{a}_j, \vect{u}_i \rangle \ (i < j), \qquad
+r_{jj} = \|\vect{b}_j\| \ (> 0), \qquad
+r_{ij} = 0 \ (i > j)
+\]
+と定めれば、上の式は「$A$ の第 $j$ 列 $=$ $QR$ の第 $j$ 列」を
+意味するから $A = QR$ である($\vect{b}_j \neq \vect{0}$、すなわち
+$r_{jj} > 0$ が保証されるのは列が線形独立だからである。
+反例 \ref{hanrei:gs-dependent} 参照)。
+
+\textbf{(一意性)}\ $A = QR = Q'R'$ と二通りに分解できたとし、
+$Q, Q'$ の列を $\vect{q}_i, \vect{q}'_i$、$R, R'$ の成分を
+$r_{ij}, r'_{ij}$ とする。左の列から順に一致を示す。
+第 $1$ 列を比べると $\vect{a}_1 = r_{11}\vect{q}_1 = r'_{11}\vect{q}'_1$。
+ノルムをとると($\|\vect{q}_1\| = \|\vect{q}'_1\| = 1$ より)
+$r_{11} = r'_{11} = \|\vect{a}_1\|$、よって $\vect{q}_1 = \vect{q}'_1$。
+次に、第 $j - 1$ 列までで $\vect{q}_i = \vect{q}'_i$($i < j$)が
+示せたとする。第 $j$ 列は
+\[
+\vect{a}_j = \sum_{i=1}^{j-1} r_{ij}\vect{q}_i + r_{jj}\vect{q}_j
+= \sum_{i=1}^{j-1} r'_{ij}\vect{q}_i + r'_{jj}\vect{q}'_j.
+\]
+$\vect{q}_i$($i < j$)との内積をとると、$\vect{q}_j$ も $\vect{q}'_j$ も
+$\vect{q}_i$ と直交する($Q'$ の列どうしの直交性と
+$\vect{q}_i = \vect{q}'_i$)から、$r_{ij} = \langle \vect{a}_j, \vect{q}_i
+\rangle = r'_{ij}$。残った項を比べて
+$r_{jj}\vect{q}_j = r'_{jj}\vect{q}'_j$、ノルムをとって
+$r_{jj} = r'_{jj} > 0$、よって $\vect{q}_j = \vect{q}'_j$。
+帰納的にすべての列が一致し、$Q = Q'$, $R = R'$ である。 $\blacksquare$
+
+\begin{rei}[$2 \times 2$ の QR 分解]\label{rei:qr-2x2}
+$A = \mat{3 & 1 \\ 4 & 3}$ を分解する。
+$\vect{a}_1 = \mat{3 \\ 4}$ のノルムは $5$ だから
+$\vect{u}_1 = \dfrac{1}{5}\mat{3 \\ 4}$, $r_{11} = 5$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle
+= \dfrac{3 + 12}{5} = 3$ を使って
+\[
+\vect{b}_2 = \mat{1 \\ 3} - 3 \cdot \frac{1}{5}\mat{3 \\ 4}
+= \frac{1}{5}\mat{-4 \\ 3}, \qquad r_{22} = \|\vect{b}_2\| = 1.
+\]
+よって
+\[
+A = QR = \frac{1}{5}\mat{3 & -4 \\ 4 & 3}\mat{5 & 3 \\ 0 & 1}.
+\]
+検算:$QR$ の第 $2$ 列は
+$3\vect{u}_1 + 1 \cdot \vect{u}_2 = \dfrac{1}{5}\mat{9 - 4 \\ 12 + 3}
+= \mat{1 \\ 3}$ で一致する。$Q$ は回転行列
+(第V部:$\det Q = \frac{9 + 16}{25} = 1$)である。
+\end{rei}
+
+\section{QR分解で最小二乗法を解く}
+
+QR分解を使うと、前章の最小二乗問題が見通しよく解ける。
 $A = QR$ を正規方程式に代入すると ${}^t\!Q Q = E$ により
 \[
 {}^t\!R R \vect{x} = {}^t\!R\,{}^t\!Q\,\vect{b}
 \quad\Longrightarrow\quad
 R\vect{x} = {}^t\!Q\,\vect{b}
 \]
-となり、$R$ が上三角なので\textbf{下から順に代入するだけ}で解ける。
+となり($R$ は正則なので ${}^t\!R$ で割ってよい)、$R$ が上三角なので
+\textbf{下から順に代入するだけ}で解ける。逆行列 $({}^t\!AA)^{-1}$ を
+作る必要がそもそもなくなるのである。
+
+\begin{rei}[QR 経由の最小二乗法]\label{rei:qr-lsq}
+$A = \mat{1 & 1 \\ 1 & 0 \\ 0 & 1}$, $\vect{b} = \mat{1 \\ 1 \\ 1}$ の
+最小二乗解を求める。直交化すると
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \quad
+\vect{b}_2 = \mat{1 \\ 0 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+= \frac{1}{2}\mat{1 \\ -1 \\ 2}, \quad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ -1 \\ 2}
+\]
+で、$r_{11} = \sqrt{2}$, $r_{12} = \dfrac{1}{\sqrt{2}}$,
+$r_{22} = \dfrac{\sqrt{6}}{2}$。右辺は
+\[
+{}^t\!Q\vect{b} = \mat{\langle \vect{b}, \vect{u}_1 \rangle \\
+\langle \vect{b}, \vect{u}_2 \rangle}
+= \mat{2/\sqrt{2} \\ 2/\sqrt{6}}.
+\]
+$R\vect{x} = {}^t\!Q\vect{b}$ を下から解くと、第 $2$ 行
+$\dfrac{\sqrt{6}}{2}x_2 = \dfrac{2}{\sqrt{6}}$ より $x_2 = \dfrac{2}{3}$、
+第 $1$ 行 $\sqrt{2}\,x_1 + \dfrac{1}{\sqrt{2}} \cdot \dfrac{2}{3}
+= \dfrac{2}{\sqrt{2}}$ の両辺を $\sqrt{2}$ で割って
+$x_1 + \dfrac{1}{3} = 1$、$x_1 = \dfrac{2}{3}$。
+最小二乗解は $\vect{x}^* = {}^t\!\left(\dfrac{2}{3},\ \dfrac{2}{3}\right)$
+(正規方程式 ${}^t\!AA = \mat{2 & 1 \\ 1 & 2}$,
+${}^t\!A\vect{b} = \mat{2 \\ 2}$ を解いても同じ答えになる)。
+\end{rei}
 
 \begin{itembox}[l]{深掘り:数値計算の世界では QR が主役である}
 理論上は正規方程式 ${}^t\!AA\vect{x} = {}^t\!A\vect{b}$ で十分だが、
@@ -579,7 +708,8 @@ R\vect{x} = {}^t\!Q\,\vect{b}
 実用ソフトウェア(統計パッケージの回帰計算など)の内部では
 QR 経由の解法が標準である。さらに、QR分解を反復する
 \textbf{QR法}は、固有値を数値的に求める現代の標準アルゴリズムでもある
-(固有方程式を解く方法は $5$ 次以上で代数的に破綻するし、数値的にも悪い)。
+(固有方程式を解く方法は $5$ 次以上で代数的に破綻するし、数値的にも悪い。
+その入り口を章末問題 \ref{q:qr-ex10} で体験できる)。
 第II部の深掘り「定義と計算法は別物」の好例が、ここにもある。
 \end{itembox}
 
@@ -587,6 +717,340 @@ QR 経由の解法が標準である。さらに、QR分解を反復する
 $A = \mat{1 & 1 \\ 0 & 1 \\ 1 & 0}$ の QR 分解を求めよ
 (列の直交化は問 \ref{q:gs} で実行済みである。それを流用してよい)。
 \end{mondai}
+
+\section{正方行列の場合 ― 直交行列 × 上三角、そして行列式}
+
+$A$ が $n$ 次正方で正則(列が線形独立)なら、$Q$ も $n$ 次正方になり、
+列が正規直交系の正方行列、すなわち\textbf{直交行列}である(第V部)。
+「どんな正則行列も、直交行列と上三角行列の積」――これは
+行列式とも美しく噛み合う。
+
+\begin{teiri}[QR分解と行列式]\label{thm:qr-det}
+正則な $n$ 次正方行列 $A = QR$ について
+\[
+|\det A| = r_{11}\,r_{22} \cdots r_{nn}.
+\]
+\end{teiri}
+
+\noindent\textbf{(証明)}\quad
+積の行列式(第II部)より $\det A = \det Q \cdot \det R$。
+直交行列では ${}^t\!QQ = E$ の両辺の行列式をとると
+$(\det Q)^2 = 1$、すなわち $\det Q = \pm 1$。また上三角行列の行列式は
+対角成分の積 $r_{11}\cdots r_{nn}$(第II部)で、これは正である。
+絶対値をとって主張を得る。 $\blacksquare$
+
+第II部で「行列式は平行体の体積(の符号つき版)」と学んだ。
+この定理はその言い換えである:$r_{jj} = \|\vect{b}_j\|$ は
+「$j$ 番目の辺のうち、それまでの辺と直交する成分(高さ)」だから、
+$\prod r_{jj}$ は「底辺 × 高さ × …」をくり返した体積計算に
+ほかならない。行列式・直交化・体積という三つの話題が、
+QR分解の上で一つに結ばれる(章末問題 \ref{q:qr-ex12} では、
+ここから\textbf{アダマールの不等式}が一行で出ることを見る)。
+
+\section{反例 ― ありがちな誤解を正す}
+
+\begin{hanrei}[列が線形従属だと、この形の QR 分解は存在しない]\label{hanrei:qr-dependent}
+$A = \mat{1 & 2 \\ 1 & 2}$(第 $2$ 列は第 $1$ 列の $2$ 倍)が
+$A = QR$($Q$ の列は正規直交系、$R$ は対角成分が\textbf{正}の上三角)と
+分解できたとする。$Q$ の列は正規直交系だから線形独立で、$R$ は
+対角成分が正の三角行列だから正則。すると $A$ の列は
+「線形独立なベクトルの組に正則行列を掛けたもの」となり
+線形独立のはず――しかし実際は従属であり、矛盾する。
+グラム・シュミットの手続きの側でも、$\vect{b}_2 = \vect{0}$ となって
+正規化で止まる(反例 \ref{hanrei:gs-dependent})。
+定理 \ref{thm:qr-main} の仮定「列が線形独立」は飾りではない。
+\end{hanrei}
+
+\begin{hanrei}[「対角成分が正」を外すと一意性が崩れる]\label{hanrei:qr-sign}
+単位行列 $E$($2$ 次)は
+\[
+E = E \cdot E
+= \mat{-1 & 0 \\ 0 & 1}\mat{-1 & 0 \\ 0 & 1}
+\]
+と\textbf{二通り}に「直交行列 × 上三角行列」に書ける
+($\mat{-1 & 0 \\ 0 & 1}$ は鏡映で直交行列、同時に対角行列なので
+上三角でもある)。二つ目の分解は $r_{11} = -1 < 0$ なので、
+定理 \ref{thm:qr-main} の条件「対角成分が正」に反する。
+つまりこの条件は、各 $\vect{u}_j$ の\textbf{向きの選び方}
+($\pm$ の任意性)を一つに固定するための約束であり、
+これを外すと分解は($\pm$ の分だけ)複数現れる。
+一意性を支えているのが不等式 $r_{jj} > 0$ だという点は、
+証明の「ノルムをとって $r_{jj} = r'_{jj}$」の段で確かめられる。
+\end{hanrei}
+
+\section{例題}
+
+QR 分解の計算と、最小二乗法・行列式への応用を練習する。
+以下は\textbf{解答つきの例題}である。手を動かして追ってほしい。
+
+\begin{rei}[例題・基本($2 \times 2$ の分解)]\label{rei:qr-basic2x2}
+$A = \mat{1 & 2 \\ 1 & 0}$ の QR 分解を求めよ。\\
+\textbf{解.}\ $\vect{a}_1 = \mat{1 \\ 1}$ より $r_{11} = \sqrt{2}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{2}}\mat{1 \\ 1}$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = \dfrac{2}{\sqrt{2}}
+= \sqrt{2}$、
+\[
+\vect{b}_2 = \mat{2 \\ 0} - \sqrt{2} \cdot \frac{1}{\sqrt{2}}\mat{1 \\ 1}
+= \mat{1 \\ -1}, \qquad r_{22} = \sqrt{2},\quad
+\vect{u}_2 = \frac{1}{\sqrt{2}}\mat{1 \\ -1}.
+\]
+よって
+\[
+A = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}\mat{\sqrt{2} & \sqrt{2} \\ 0 & \sqrt{2}}.
+\]
+検算:第 $2$ 列は $\sqrt{2}\vect{u}_1 + \sqrt{2}\vect{u}_2
+= \mat{1 \\ 1} + \mat{1 \\ -1} = \mat{2 \\ 0}$。
+また $|\det A| = |0 - 2| = 2 = \sqrt{2} \cdot \sqrt{2}$
+(定理 \ref{thm:qr-det})。
+\end{rei}
+
+\begin{rei}[例題・基本($3 \times 2$ の分解)]\label{rei:qr-basic3x2}
+$A = \mat{1 & 2 \\ 0 & 3 \\ 0 & 4}$ の QR 分解を求めよ。\\
+\textbf{解.}\ $\vect{a}_1 = \vect{e}_1$ はすでに単位ベクトルなので
+$r_{11} = 1$, $\vect{u}_1 = \vect{e}_1$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = 2$、
+\[
+\vect{b}_2 = \mat{2 \\ 3 \\ 4} - 2\mat{1 \\ 0 \\ 0} = \mat{0 \\ 3 \\ 4},
+\qquad r_{22} = 5, \quad \vect{u}_2 = \frac{1}{5}\mat{0 \\ 3 \\ 4}.
+\]
+よって
+\[
+A = QR = \mat{1 & 0 \\ 0 & 3/5 \\ 0 & 4/5}\mat{1 & 2 \\ 0 & 5}.
+\]
+「第 $1$ 列の方向を残し、第 $2$ 列からその成分を取り除いて正規化した」
+という直交化の履歴が、$R$ にそのまま記録されている。
+\end{rei}
+
+\begin{rei}[例題・基本(QR で最小二乗)]\label{rei:qr-lsq-ex}
+例題 \ref{rei:qr-basic3x2} の $A$ と $\vect{b} = \mat{1 \\ 5 \\ 5}$ に
+対する最小二乗解を、$R\vect{x} = {}^t\!Q\vect{b}$ で求めよ。\\
+\textbf{解.}\
+\[
+{}^t\!Q\vect{b} = \mat{\langle \vect{b}, \vect{u}_1 \rangle \\
+\langle \vect{b}, \vect{u}_2 \rangle}
+= \mat{1 \\ (15 + 20)/5} = \mat{1 \\ 7}.
+\]
+$R\vect{x} = \mat{1 \\ 7}$ を下から解く:第 $2$ 行 $5x_2 = 7$ より
+$x_2 = \dfrac{7}{5}$、第 $1$ 行 $x_1 + 2x_2 = 1$ より
+$x_1 = 1 - \dfrac{14}{5} = -\dfrac{9}{5}$。
+検算:正規方程式は ${}^t\!AA = \mat{1 & 2 \\ 2 & 29}$,
+${}^t\!A\vect{b} = \mat{1 \\ 37}$ で、
+$2 \cdot \left(-\dfrac{9}{5}\right) + 29 \cdot \dfrac{7}{5}
+= \dfrac{-18 + 203}{5} = 37$ が成り立つ。
+\end{rei}
+
+\begin{rei}[例題・標準($3 \times 3$ の分解と行列式)]\label{rei:qr-3x3}
+$A = \mat{1 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 1}$ の QR 分解を求め、
+定理 \ref{thm:qr-det} を検証せよ。\\
+\textbf{解.}\ 第 $1$・第 $2$ 列の直交化は例題 \ref{rei:qr-lsq} と同じ計算で
+\[
+\vect{u}_1 = \frac{1}{\sqrt{2}}\mat{1 \\ 1 \\ 0}, \qquad
+\vect{u}_2 = \frac{1}{\sqrt{6}}\mat{1 \\ -1 \\ 2}, \qquad
+r_{11} = \sqrt{2},\ r_{12} = \frac{1}{\sqrt{2}},\ r_{22} = \frac{\sqrt{6}}{2}.
+\]
+第 $3$ 列 $\vect{a}_3 = {}^t(0, 1, 1)$ は
+$r_{13} = \langle \vect{a}_3, \vect{u}_1 \rangle = \dfrac{1}{\sqrt{2}}$,
+$r_{23} = \langle \vect{a}_3, \vect{u}_2 \rangle = \dfrac{1}{\sqrt{6}}$ で、
+\[
+\vect{b}_3 = \mat{0 \\ 1 \\ 1} - \frac{1}{2}\mat{1 \\ 1 \\ 0}
+- \frac{1}{6}\mat{1 \\ -1 \\ 2} = \frac{2}{3}\mat{-1 \\ 1 \\ 1},
+\qquad r_{33} = \|\vect{b}_3\| = \frac{2}{\sqrt{3}}, \quad
+\vect{u}_3 = \frac{1}{\sqrt{3}}\mat{-1 \\ 1 \\ 1}.
+\]
+よって $Q = (\vect{u}_1\ \vect{u}_2\ \vect{u}_3)$,
+$R = \mat{\sqrt{2} & 1/\sqrt{2} & 1/\sqrt{2} \\
+0 & \sqrt{6}/2 & 1/\sqrt{6} \\ 0 & 0 & 2/\sqrt{3}}$。
+検証:$r_{11}r_{22}r_{33} = \sqrt{2} \cdot \dfrac{\sqrt{6}}{2}
+\cdot \dfrac{2}{\sqrt{3}} = \sqrt{\dfrac{2 \cdot 6 \cdot 4}{4 \cdot 3}} = 2$
+で、直接計算した $\det A = -2$ の絶対値と一致する。
+\end{rei}
+
+\begin{rei}[例題・標準(${}^t\!AA = {}^t\!RR$)]\label{rei:qr-cholesky}
+$A = QR$ のとき ${}^t\!AA = {}^t\!RR$ が成り立つことを示し、
+例題 \ref{rei:qr-basic3x2} の行列で数値的に確かめよ。\\
+\textbf{解.}\ ${}^t\!QQ = E$ を使うだけである:
+\[
+{}^t\!AA = {}^t\!(QR)(QR) = {}^t\!R\,{}^t\!QQ\,R = {}^t\!RR.
+\]
+例題 \ref{rei:qr-basic3x2} では
+\[
+{}^t\!RR = \mat{1 & 0 \\ 2 & 5}\mat{1 & 2 \\ 0 & 5}
+= \mat{1 & 2 \\ 2 & 29}, \qquad
+{}^t\!AA = \mat{1 & 2 \\ 2 & 29}
+\]
+で確かに一致する。対称正定値行列 ${}^t\!AA$ が
+「三角行列とその転置の積」に書けるというこの形は
+\textbf{コレスキー分解}と呼ばれ、数値計算で多用される。
+\end{rei}
+
+\begin{rei}[例題・標準(証明:正射影行列は $Q\,{}^t\!Q$)]\label{rei:qr-proj}
+列が線形独立な $A = QR$ について、$W = \mathrm{Im}\,A$ への
+正射影行列(定理 \ref{thm:lsq-projmat})が
+\[
+P = A({}^t\!AA)^{-1}{}^t\!A = Q\,{}^t\!Q
+\]
+と簡単になることを示せ。\\
+\textbf{解.}\ 例題 \ref{rei:qr-cholesky} より ${}^t\!AA = {}^t\!RR$ で、
+$R$ は正則だから $({}^t\!AA)^{-1} = ({}^t\!RR)^{-1} = R^{-1}({}^t\!R)^{-1}$
+(積の逆行列は順序を入れ替えた逆行列の積)。代入して
+\[
+P = QR \cdot R^{-1}({}^t\!R)^{-1} \cdot {}^t\!R\,{}^t\!Q = Q\,{}^t\!Q.
+\]
+$Q\,{}^t\!Q = \vect{u}_1{}^t\vect{u}_1 + \cdots + \vect{u}_n{}^t\vect{u}_n$
+だから、これは「正規直交基底の各方向への正射影の和」
+(定理 \ref{thm:gs-decomp} の公式の行列版)にほかならない。
+逆行列の計算が消えてしまうのが QR 分解の御利益である。
+\end{rei}
+
+\begin{matome}
+\begin{itemize}
+\item 列が線形独立な行列は $A = QR$($Q$:列が正規直交系、
+$R$:対角成分が正の上三角)と\textbf{ただ一通り}に分解できる
+(定理 \ref{thm:qr-main})。存在はグラム・シュミットの
+\textbf{計算記録}、一意性は列を左から順に比べれば出る。
+\item $r_{jj} = \|\vect{b}_j\|$(直交化の途中で出る「高さ」)、
+$r_{ij} = \langle \vect{a}_j, \vect{u}_i \rangle$($i < j$)。
+列が従属なら $\vect{b}_j = \vect{0}$ が現れ、この形の分解は存在しない
+(反例 \ref{hanrei:qr-dependent})。
+\item 最小二乗問題は $R\vect{x} = {}^t\!Q\vect{b}$ の\textbf{後退代入}に
+帰着し、数値計算では正規方程式より安定である。
+また ${}^t\!AA = {}^t\!RR$、正射影行列は $P = Q\,{}^t\!Q$。
+\item 正方行列では $Q$ は直交行列で、
+$|\det A| = r_{11}\cdots r_{nn}$(定理 \ref{thm:qr-det}:
+「底辺 × 高さ」の体積計算の行列版)。
+\item 「対角成分が正」は向きの任意性を固定するための条件で、
+外すと一意性が崩れる(反例 \ref{hanrei:qr-sign})。
+\end{itemize}
+\end{matome}
+
+\section*{章末問題}
+
+\begin{mondai}[基本]\label{q:qr-ex1}
+$A = \mat{1 & 1 \\ 1 & -1}$ の QR 分解を求めよ。
+$R$ が対角行列になるのはなぜか、一言で説明せよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:qr-ex2}
+$A = \mat{0 & 2 \\ 3 & 4}$ の QR 分解を求め、
+$|\det A| = r_{11}r_{22}$(定理 \ref{thm:qr-det})を確かめよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:qr-ex3}
+$A = \mat{1 & 1 \\ 0 & 3 \\ 0 & 4}$ の QR 分解を求めよ。
+\end{mondai}
+
+\begin{mondai}[基本]\label{q:qr-ex4}
+問 \ref{q:qr-ex3} の分解を使い、$\vect{b} = \mat{2 \\ 5 \\ 5}$ に対する
+最小二乗解を $R\vect{x} = {}^t\!Q\vect{b}$ で求めよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex5}
+$A = \mat{2 & 1 \\ 1 & 2}$ の QR 分解を求め、
+$\det Q = 1$(回転)であることと、
+$r_{11}r_{22} = |\det A| = 3$ を確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex6}
+問 \ref{q:lsq} のデータ $(0,0), (1,1), (2,1)$ の当てはめ行列
+$A = \mat{1 & 0 \\ 1 & 1 \\ 1 & 2}$, $\vect{b} = \mat{0 \\ 1 \\ 1}$ について
+QR 分解を求め、$R\vect{x} = {}^t\!Q\vect{b}$ を解いて、
+問 \ref{q:lsq} の答え $a = \dfrac{1}{6}$, $b = \dfrac{1}{2}$ が
+再現されることを確かめよ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex7}
+問 \ref{q:qr-ex3} の $Q$ の $2$ 本の列に、第 $3$ の列
+$\vect{u}_3$ を補って $3$ 次の直交行列を作れ。
+\end{mondai}
+
+\begin{mondai}[標準]\label{q:qr-ex8}
+問 \ref{q:qr-ex3} の $A$ について、正射影行列 $P = Q\,{}^t\!Q$
+(例題 \ref{rei:qr-proj})を計算せよ。さらに
+$P\vect{b}$($\vect{b} = {}^t(2, 5, 5)$)が、
+問 \ref{q:qr-ex4} の最小二乗解 $\vect{x}^*$ に対する $A\vect{x}^*$ と
+一致することを確かめよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:qr-ex9}
+第 $1$ 列が零でない一般の $2$ 次正方行列
+$A = \mat{a & b \\ c & d}$ について、QR 分解の $R$ が
+\[
+R = \mat{\sqrt{a^2 + c^2} & \dfrac{ab + cd}{\sqrt{a^2 + c^2}} \\[2mm]
+0 & \dfrac{|ad - bc|}{\sqrt{a^2 + c^2}}}
+\]
+となることを示せ($A$ は正則とする)。
+例 \ref{rei:qr-2x2} の $A = \mat{3 & 1 \\ 4 & 3}$ で検算せよ。
+\end{mondai}
+
+\begin{mondai}[発展]\label{q:qr-ex10}
+(QR法の入り口)$A = \mat{2 & 1 \\ 1 & 1}$ を QR 分解し、
+積の順序を入れ替えた $A_1 = RQ$ を計算せよ。\\
+　(1) $A_1 = {}^t\!QAQ$ を示し、$A_1$ が $A$ と相似
+(同じ固有値をもつ)であることを確かめよ
+(トレースと行列式で検算せよ)。\\
+　(2) $A$ の固有値は $\dfrac{3 \pm \sqrt{5}}{2} \approx 2.618,\ 0.382$
+である。$A_1$ の対角成分と見比べ、非対角成分の大きさが
+どう変わったかを観察せよ(この操作をくり返すと対角行列に近づいていく
+――これが固有値計算の標準アルゴリズム「QR法」である)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:qr-ex11}
+直交行列 $T$ が上三角で、対角成分がすべて正ならば、$T = E$ である
+ことを示せ(ヒント:第 $1$ 列から順に。各列はノルム $1$ で、
+先に確定した列と直交する)。この事実から定理 \ref{thm:qr-main} の
+一意性をもう一度導け($A = QR = Q'R'$ が正方の場合に、
+$T = R'R^{-1}$ を考えよ。上三角行列の逆行列と積が上三角であることは
+使ってよい)。
+\end{mondai}
+
+\begin{mondai}[証明]\label{q:qr-ex12}
+(アダマールの不等式)正則な $n$ 次正方行列 $A$ の列を
+$\vect{a}_1, \dots, \vect{a}_n$ とすると
+\[
+|\det A| \le \|\vect{a}_1\| \|\vect{a}_2\| \cdots \|\vect{a}_n\|
+\]
+が成り立つことを、QR 分解を使って示せ(ヒント:
+$\vect{a}_j = r_{1j}\vect{u}_1 + \cdots + r_{jj}\vect{u}_j$ と
+ピタゴラスの定理から $r_{jj} \le \|\vect{a}_j\|$)。
+等号が成り立つのはどんなときか。幾何的には何を意味するか。
+\end{mondai}
+
+\bigskip
+{\small
+\noindent\textbf{【章末問題の方針】}\quad
+まず自力で取り組み、行き詰まったら下の方針を見よ。記述による完全解答は
+巻末「問の解答」にある。
+\begin{itemize}
+\item \textbf{問 \ref{q:qr-ex1}}:$2$ つの列がはじめから直交している。
+正規化するだけでよい。
+\item \textbf{問 \ref{q:qr-ex2}}:$r_{11} = \|\vect{a}_1\| = 3$。
+$\vect{u}_1$ は $\vect{e}_2$ になる。
+\item \textbf{問 \ref{q:qr-ex3}}:例題 \ref{rei:qr-basic3x2} と同じ型。
+$\vect{a}_1$ はすでに単位ベクトル。
+\item \textbf{問 \ref{q:qr-ex4}}:${}^t\!Q\vect{b}$ の成分は
+$\langle \vect{b}, \vect{u}_i \rangle$。下の行から解く。
+\item \textbf{問 \ref{q:qr-ex5}}:$r_{11} = \sqrt{5}$。分数の根号は
+最後に整理する。
+\item \textbf{問 \ref{q:qr-ex6}}:$\vect{u}_1 = \dfrac{1}{\sqrt{3}}
+{}^t(1,1,1)$、$\vect{b}_2 = {}^t(-1, 0, 1)$。
+\item \textbf{問 \ref{q:qr-ex7}}:$\vect{u}_1, \vect{u}_2$ の両方と
+直交する単位ベクトルを探す(連立方程式か、成分の観察で)。
+\item \textbf{問 \ref{q:qr-ex8}}:$P = \vect{u}_1{}^t\vect{u}_1 +
+\vect{u}_2{}^t\vect{u}_2$。$A\vect{x}^*$ は問 \ref{q:qr-ex4} の答えを使う。
+\item \textbf{問 \ref{q:qr-ex9}}:定義どおり直交化する。
+$\|\vect{b}_2\|$ の計算で $(ab + cd)^2$ を展開し、
+$(a^2 + c^2)(b^2 + d^2) - (ab + cd)^2 = (ad - bc)^2$ を使う。
+\item \textbf{問 \ref{q:qr-ex10}}:$A = QR$ なら $R = {}^t\!QA$ だから
+$RQ = {}^t\!QAQ$。相似なら固有値・トレース・行列式は不変(第III部・第IV部)。
+\item \textbf{問 \ref{q:qr-ex11}}:第 $1$ 列は ${}^t(t_{11}, 0, \dots, 0)$ で
+ノルム $1$、$t_{11} > 0$ より $t_{11} = 1$。第 $2$ 列は第 $1$ 列と直交…と
+順に進む。後半は $Q' \,T = Q$ の形にして、$T$ が直交かつ上三角・対角正に
+なることを確かめる。
+\item \textbf{問 \ref{q:qr-ex12}}:$\|\vect{a}_j\|^2 = r_{1j}^2 + \cdots
++ r_{jj}^2 \ge r_{jj}^2$。辺々掛けて定理 \ref{thm:qr-det} を使う。
+等号は $R$ が対角、すなわち列がもともと直交するとき。
+\end{itemize}
+}
 
 % =====================================================
 \chapter{特異値分解(SVD) ― すべての行列のための分解}\label{chap:svd}

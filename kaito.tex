@@ -7609,6 +7609,201 @@ $r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle$,
 $r_{22} = \|\vect{b}_2\|$。$QR = A$ を確かめよ。)
 
 \bigskip
+\noindent\textbf{問 \ref{q:qr-ex1}}\quad
+$2$ つの列の内積は $1 - 1 = 0$ で、はじめから直交している。
+よって直交化は不要で、正規化するだけ:
+\[
+Q = \frac{1}{\sqrt{2}}\mat{1 & 1 \\ 1 & -1}, \qquad
+R = \mat{\sqrt{2} & 0 \\ 0 & \sqrt{2}}.
+\]
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = 0$ だから
+$R$ は対角行列になる。「$R$ の非対角成分 $=$ 列どうしの斜め具合の記録」
+である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex2}}\quad
+$\vect{a}_1 = \mat{0 \\ 3}$ より $r_{11} = 3$,
+$\vect{u}_1 = \mat{0 \\ 1}$。
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle = 4$、
+$\vect{b}_2 = \mat{2 \\ 4} - 4\mat{0 \\ 1} = \mat{2 \\ 0}$、
+$r_{22} = 2$, $\vect{u}_2 = \mat{1 \\ 0}$。よって
+\[
+A = \mat{0 & 1 \\ 1 & 0}\mat{3 & 4 \\ 0 & 2}.
+\]
+$|\det A| = |0 \cdot 4 - 2 \cdot 3| = 6 = 3 \cdot 2 = r_{11}r_{22}$ で一致。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex3}}\quad
+$\vect{a}_1 = \vect{e}_1$ より $r_{11} = 1$, $\vect{u}_1 = \vect{e}_1$。
+$r_{12} = 1$、
+$\vect{b}_2 = \mat{1 \\ 3 \\ 4} - \vect{e}_1 = \mat{0 \\ 3 \\ 4}$、
+$r_{22} = 5$, $\vect{u}_2 = \dfrac{1}{5}\mat{0 \\ 3 \\ 4}$。よって
+\[
+Q = \mat{1 & 0 \\ 0 & 3/5 \\ 0 & 4/5}, \qquad R = \mat{1 & 1 \\ 0 & 5}.
+\]
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex4}}\quad
+${}^t\!Q\vect{b} = \mat{\langle \vect{b}, \vect{u}_1 \rangle \\
+\langle \vect{b}, \vect{u}_2 \rangle} = \mat{2 \\ (15 + 20)/5}
+= \mat{2 \\ 7}$。$R\vect{x} = \mat{2 \\ 7}$ を下から解いて
+$5x_2 = 7$ より $x_2 = \dfrac{7}{5}$、$x_1 + x_2 = 2$ より
+$x_1 = \dfrac{3}{5}$。
+(検算:${}^t\!AA = \mat{1 & 1 \\ 1 & 26}$,
+${}^t\!A\vect{b} = \mat{2 \\ 37}$ で、
+$\dfrac{3}{5} + 26 \cdot \dfrac{7}{5} = \dfrac{185}{5} = 37$。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex5}}\quad
+$r_{11} = \|\vect{a}_1\| = \sqrt{5}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{5}}\mat{2 \\ 1}$。
+$r_{12} = \dfrac{2 + 2}{\sqrt{5}} = \dfrac{4}{\sqrt{5}}$、
+\[
+\vect{b}_2 = \mat{1 \\ 2} - \frac{4}{5}\mat{2 \\ 1}
+= \frac{1}{5}\mat{-3 \\ 6}, \qquad
+r_{22} = \frac{3}{\sqrt{5}}, \quad
+\vect{u}_2 = \frac{1}{\sqrt{5}}\mat{-1 \\ 2}.
+\]
+よって
+\[
+A = \frac{1}{\sqrt{5}}\mat{2 & -1 \\ 1 & 2}
+\mat{\sqrt{5} & 4/\sqrt{5} \\ 0 & 3/\sqrt{5}}.
+\]
+$\det Q = \dfrac{4 + 1}{5} = 1$(回転)、
+$r_{11}r_{22} = \sqrt{5} \cdot \dfrac{3}{\sqrt{5}} = 3 = |\det A|$。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex6}}\quad
+$\vect{a}_1 = {}^t(1,1,1)$ より $r_{11} = \sqrt{3}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{3}}{}^t(1,1,1)$。
+$r_{12} = \dfrac{0 + 1 + 2}{\sqrt{3}} = \sqrt{3}$、
+$\vect{b}_2 = {}^t(0,1,2) - {}^t(1,1,1) = {}^t(-1,0,1)$、
+$r_{22} = \sqrt{2}$, $\vect{u}_2 = \dfrac{1}{\sqrt{2}}{}^t(-1,0,1)$。
+右辺は
+\[
+{}^t\!Q\vect{b} = \mat{2/\sqrt{3} \\ 1/\sqrt{2}}.
+\]
+下から解くと $\sqrt{2}\,x_2 = \dfrac{1}{\sqrt{2}}$ より
+$x_2 = \dfrac{1}{2}$、第 $1$ 行 $\sqrt{3}\,x_1 + \sqrt{3}\,x_2
+= \dfrac{2}{\sqrt{3}}$ を $\sqrt{3}$ で割って
+$x_1 = \dfrac{2}{3} - \dfrac{1}{2} = \dfrac{1}{6}$。
+確かに $a = \dfrac{1}{6}$, $b = \dfrac{1}{2}$ が再現された。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex7}}\quad
+$\vect{u}_3 = {}^t(x, y, z)$ が $\vect{u}_1 = \vect{e}_1$ と直交する
+条件は $x = 0$、$\vect{u}_2$ と直交する条件は $3y + 4z = 0$。
+ノルム $1$ に正規化して
+\[
+\vect{u}_3 = \pm\mat{0 \\ -4/5 \\ 3/5}, \qquad
+\text{たとえば}\quad
+\mat{1 & 0 & 0 \\ 0 & 3/5 & -4/5 \\ 0 & 4/5 & 3/5}
+\]
+が求める直交行列である(符号はどちらでもよい)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex8}}\quad
+\[
+P = \vect{u}_1{}^t\vect{u}_1 + \vect{u}_2{}^t\vect{u}_2
+= \mat{1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0}
++ \frac{1}{25}\mat{0 & 0 & 0 \\ 0 & 9 & 12 \\ 0 & 12 & 16}
+= \mat{1 & 0 & 0 \\ 0 & 9/25 & 12/25 \\ 0 & 12/25 & 16/25}.
+\]
+$P\vect{b} = {}^t\!\left(2,\ \dfrac{45 + 60}{25},\ \dfrac{60 + 80}{25}\right)
+= {}^t\!\left(2,\ \dfrac{21}{5},\ \dfrac{28}{5}\right)$。一方、
+問 \ref{q:qr-ex4} の $\vect{x}^* = {}^t\!(3/5,\ 7/5)$ に対し
+\[
+A\vect{x}^* = \mat{3/5 + 7/5 \\ 3 \cdot 7/5 \\ 4 \cdot 7/5}
+= \mat{2 \\ 21/5 \\ 28/5}
+\]
+で一致する(どちらも $\vect{b}$ の $\mathrm{Im}\,A$ への正射影である)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex9}}\quad
+$\vect{a}_1 = \mat{a \\ c}$ より $r_{11} = \sqrt{a^2 + c^2}$,
+$\vect{u}_1 = \dfrac{1}{\sqrt{a^2 + c^2}}\mat{a \\ c}$、
+$r_{12} = \langle \vect{a}_2, \vect{u}_1 \rangle
+= \dfrac{ab + cd}{\sqrt{a^2 + c^2}}$。
+$\vect{b}_2 = \vect{a}_2 - r_{12}\vect{u}_1$ は $\vect{u}_1$ と直交する
+から、ピタゴラスの定理より
+\[
+r_{22}^2 = \|\vect{b}_2\|^2 = \|\vect{a}_2\|^2 - r_{12}^2
+= (b^2 + d^2) - \frac{(ab + cd)^2}{a^2 + c^2}
+= \frac{(a^2 + c^2)(b^2 + d^2) - (ab + cd)^2}{a^2 + c^2}.
+\]
+分子を展開すると
+$a^2d^2 + b^2c^2 - 2abcd = (ad - bc)^2$ となるので
+$r_{22} = \dfrac{|ad - bc|}{\sqrt{a^2 + c^2}}$。
+検算:$A = \mat{3 & 1 \\ 4 & 3}$ では $r_{11} = 5$,
+$r_{12} = \dfrac{3 + 12}{5} = 3$,
+$r_{22} = \dfrac{|9 - 4|}{5} = 1$ で、例 \ref{rei:qr-2x2} と一致する。
+(なお $r_{22}$ の式は $|\det A| = r_{11}r_{22}$ の再確認にもなっている。)
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex10}}\quad
+問 \ref{q:qr-ex5} と同じ計算で
+\[
+Q = \frac{1}{\sqrt{5}}\mat{2 & -1 \\ 1 & 2}, \qquad
+R = \mat{\sqrt{5} & 3/\sqrt{5} \\ 0 & 1/\sqrt{5}}
+\]
+($r_{12} = \dfrac{2 + 1}{\sqrt{5}} = \dfrac{3}{\sqrt{5}}$,
+$\vect{b}_2 = {}^t(-1/5,\ 2/5)$, $r_{22} = \dfrac{1}{\sqrt{5}}$)。よって
+\[
+A_1 = RQ = \frac{1}{\sqrt{5}}
+\mat{\sqrt{5} & 3/\sqrt{5} \\ 0 & 1/\sqrt{5}}\mat{2 & -1 \\ 1 & 2}
+= \frac{1}{5}\mat{13 & 1 \\ 1 & 2}
+= \mat{2.6 & 0.2 \\ 0.2 & 0.4}.
+\]
+　(1) $A = QR$ の両辺に左から ${}^t\!Q$ を掛けると
+$R = {}^t\!QA$。よって $A_1 = RQ = {}^t\!QAQ = Q^{-1}AQ$ で、
+$A_1$ は $A$ と相似、固有値は等しい。検算:
+$\mathrm{tr}\,A_1 = 2.6 + 0.4 = 3 = \mathrm{tr}\,A$,
+$\det A_1 = \dfrac{26 - 1}{25} = 1 = \det A$。\\
+　(2) 対角成分 $2.6,\ 0.4$ は固有値 $2.618\ldots,\ 0.382\ldots$ の
+よい近似になっており、非対角成分は $1$ から $0.2$ へと
+$5$ 分の $1$ に縮んだ。この操作を反復すると非対角成分が
+$0$ に向かい、対角に固有値が並んでいく(QR法)。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex11}}\quad
+$T$ の列を $\vect{t}_1, \dots, \vect{t}_n$ とする。
+上三角なので $\vect{t}_1 = {}^t(t_{11}, 0, \dots, 0)$。
+ノルム $1$ と $t_{11} > 0$ より $t_{11} = 1$、
+すなわち $\vect{t}_1 = \vect{e}_1$。次に
+$\vect{t}_2 = {}^t(t_{12}, t_{22}, 0, \dots, 0)$ は
+$\vect{t}_1 = \vect{e}_1$ と直交するから $t_{12} = 0$、
+ノルム $1$ と $t_{22} > 0$ から $t_{22} = 1$、
+すなわち $\vect{t}_2 = \vect{e}_2$。以下同様に、第 $j$ 列は
+$\vect{e}_1, \dots, \vect{e}_{j-1}$ との直交性で上の成分がすべて $0$、
+ノルムと符号で $t_{jj} = 1$ となり、$\vect{t}_j = \vect{e}_j$。
+よって $T = E$ である。
+
+一意性:$A = QR = Q'R'$($A$ は正則な正方行列)とすると、
+$T = R'R^{-1}$ は上三角どうしの積で上三角、対角成分は
+$\dfrac{r'_{jj}}{r_{jj}} > 0$。一方 $QR = Q'R'$ より
+$T = R'R^{-1} = {}^t\!Q'Q$ で、直交行列どうしの積だから直交行列。
+前半より $T = E$、すなわち $R' = R$, $Q' = Q$ である。
+
+\bigskip
+\noindent\textbf{問 \ref{q:qr-ex12}}\quad
+QR 分解の第 $j$ 列の式
+$\vect{a}_j = r_{1j}\vect{u}_1 + \cdots + r_{jj}\vect{u}_j$ で、
+$\vect{u}_1, \dots, \vect{u}_j$ は正規直交系だから、
+ピタゴラスの定理より
+\[
+\|\vect{a}_j\|^2 = r_{1j}^2 + \cdots + r_{jj}^2 \ \ge\ r_{jj}^2,
+\qquad\text{すなわち}\quad r_{jj} \le \|\vect{a}_j\|.
+\]
+辺々を掛け合わせ、定理 \ref{thm:qr-det} を使うと
+\[
+|\det A| = r_{11}\cdots r_{nn} \le \|\vect{a}_1\| \cdots \|\vect{a}_n\|.
+\]
+等号成立は各 $j$ で $r_{ij} = 0$($i < j$)のとき、すなわち
+$A$ の列が\textbf{互いに直交する}とき。幾何的には、
+「辺の長さを決めたとき、平行体の体積が最大になるのは直方体のとき」
+という直観の証明である。
+
+\bigskip
 \noindent\textbf{問 \ref{q:svd}}\quad
 ${}^t\!AA = \mat{1 & 0 \\ 0 & 4}$ の固有値は $4, 1$(すでに対角)。
 $\vect{v}_1 = \mat{0 \\ 1}$, $\vect{v}_2 = \mat{1 \\ 0}$,
